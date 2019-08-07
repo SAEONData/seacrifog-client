@@ -1,8 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './modules/app'
+import WebFontLoader from 'webfontloader'
 import * as serviceWorker from './serviceWorker'
 import './index.scss'
+
+// Load the fonts
+WebFontLoader.load({
+  google: {
+    families: ['Roboto:300,400,500,700', 'Material Icons']
+  }
+})
 
 ReactDOM.render(<App />, document.getElementById('root'))
 
