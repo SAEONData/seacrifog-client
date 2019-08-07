@@ -6,6 +6,7 @@ import { HttpLink } from 'apollo-link-http'
 import { BrowserRouter, Route } from 'react-router-dom'
 import Navigation from './layout'
 import Home from './home'
+import GqlExample from './gql-example'
 
 // Configure the Apollo Client
 const cache = new InMemoryCache()
@@ -19,6 +20,13 @@ const navItems = [
     label: 'home',
     to: '/',
     icon: 'home',
+    nestedItems: false
+  },
+  {
+    exact: true,
+    label: 'GQL',
+    to: '/gqlexample',
+    icon: 'mood',
     nestedItems: false
   }
 ]
@@ -34,6 +42,12 @@ const App = () => (
           path={'/home'}
           exact={true}
           component={Home}
+        />
+        <Route
+          key={'route-to-gql-test'}
+          path={'/gqlexample'}
+          exact={true}
+          component={GqlExample}
         />
       </Navigation>
     </ApolloProvider>

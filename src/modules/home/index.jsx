@@ -1,13 +1,17 @@
 import React from 'react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
-import { Card, CardTitle, CardText } from 'react-md'
+import { Card, CardTitle, CardText, Grid, Cell } from 'react-md'
 
 export default () => (
-  <Card>
-    <CardTitle title="This is a title" subtitle="And subtitle" />
-    <CardText>
-      <p>Hello! Edit me in /src/modules/home/index.jsx</p>
-    </CardText>
-  </Card>
+  <Grid>
+    <Cell size={12}>
+      <Card>
+        <CardTitle title="This is a title" subtitle="And subtitle" />
+        <CardText>
+          <p>Hello! Edit me in /src/modules/home/index.jsx</p>
+        </CardText>
+      </Card>
+    </Cell>
+  </Grid>
 )
