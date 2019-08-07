@@ -17,8 +17,7 @@
     "start": "PORT=3001 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "precommit": "NODE_ENV=production lint-staged"
+    "eject": "react-scripts eject"
   },
   "lint-staged": {
     "*.{js,jsx}": [
@@ -51,5 +50,10 @@
     "lint-staged": "^9.2.1",
     "prettier": "^1.18.2",
     "pretty-quick": "^1.11.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "NODE_ENV=production lint-staged"
+    }
   }
 }
