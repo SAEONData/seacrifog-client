@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { NavigationDrawer } from 'react-md'
 import { withRouter } from 'react-router'
 import { Switch, Route } from 'react-router-dom'
-// import NavItemLink from './nav-item-link'
+import NavItemLink from './nav-item-link'
 
 const navItems = [
   {
