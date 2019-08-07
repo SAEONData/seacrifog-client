@@ -1,22 +1,31 @@
 import React, { Component } from 'react'
 import { NavigationDrawer } from 'react-md'
 import { withRouter } from 'react-router'
-import { Switch, Route } from 'react-router-dom'
+import { Switch } from 'react-router-dom'
 import NavItemLink from './nav-item-link'
 
-const navItems = [
-  {
-    exact: true,
-    label: 'home',
-    to: '/',
-    icon: 'home'
-  }
-]
+const buildNavItemLinks = (navItems, parent = false) =>
+  navItems.map(route => (
+    <NavItemLink
+      key={'route-' + route.label}
+      nestedItems={
+        route.nestedItems && route.nestedItems.length > 0
+          ? buildNavItemLinks(route.nestedItems, true)
+          : null
+      }
+      hasParent={parent}
+      label={route.label}
+      to={route.to}
+      icon={route.icon}
+      exact
+    />
+  ))
 
 class Navigation extends Component {
   constructor(props) {
     super(props)
     this.state = { toolbarTitle: this.getCurrentTitle(props) }
+    this.navItems = props.navItems
   }
 
   componentWillReceiveProps(nextProps) {
@@ -29,10 +38,16 @@ class Navigation extends Component {
 
   render() {
     const { toolbarTitle } = this.state
-    const { location } = this.props
+    const { location, navItems } = this.props
     return (
-      <NavigationDrawer drawerTitle="SEACRIFOG" navItems={navItems}>
-        <Switch key={location.pathname || '/home'}></Switch>
+      <NavigationDrawer
+        drawerTitle="SEACRIFOG"
+        navItems={buildNavItemLinks(navItems)}
+        toolbarTitle={toolbarTitle || ' '}
+      >
+        <Switch key={location.pathname || '/home'}>
+          {this.props.children}
+        </Switch>
       </NavigationDrawer>
     )
   }
