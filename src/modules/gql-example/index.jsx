@@ -12,15 +12,22 @@ const QUERY = gql`
 export default () => (
   <Query query={QUERY}>
     {({ data, loading, error }) => {
-      if (loading) return <p>loading...</p>
-      if (error) return <p>ERROR</p>
       return (
         <Grid>
           <Cell size={12}>
             <Card>
               <CardTitle title="This is a title" subtitle="And subtitle" />
               <CardText>
-                <p>{JSON.stringify(data)}</p>
+                <p>
+                  {loading ? (
+                    <p>LOADING...</p>
+                  ) : error ? (
+                    <p>ERROR...</p>
+                  ) : (
+                    JSON.stringify(data)
+                  )}
+                </p>
+                <p>Edit me in /src/modules/gql-example/index.jsx</p>
               </CardText>
             </Card>
           </Cell>

@@ -17,7 +17,7 @@ const client = new ApolloClient({ cache, link })
 const navItems = [
   {
     exact: true,
-    label: 'home',
+    label: 'Home',
     to: '/',
     icon: 'home',
     nestedItems: false

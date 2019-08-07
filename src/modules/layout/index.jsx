@@ -43,7 +43,7 @@ class Navigation extends Component {
       <NavigationDrawer
         drawerTitle="SEACRIFOG"
         navItems={buildNavItemLinks(navItems)}
-        toolbarTitle={toolbarTitle || ' '}
+        toolbarTitle={toolbarTitle || 'Home'}
       >
         <Switch key={location.pathname || '/home'}>
           {this.props.children}
