@@ -18,15 +18,13 @@ export default () => (
             <Card>
               <CardTitle title="This is a title" subtitle="And subtitle" />
               <CardText>
-                <p>
-                  {loading ? (
-                    <p>LOADING...</p>
-                  ) : error ? (
-                    <p>ERROR...</p>
-                  ) : (
-                    JSON.stringify(data)
-                  )}
-                </p>
+                {loading ? (
+                  <p>LOADING...</p>
+                ) : error ? (
+                  <p>ERROR...</p>
+                ) : (
+                  JSON.stringify(data)
+                )}
                 <p>Edit me in /src/modules/gql-example/index.jsx</p>
               </CardText>
             </Card>
