@@ -10,10 +10,13 @@ export default ({ label, to, icon, exact, nestedItems, hasParent }) =>
       nestedItems={nestedItems}
     />
   ) : (
-    <Route path={to} exact={exact}>
-      {({ match }) => {
+    <Route
+      path={to}
+      exact={exact}
+      children={({ match }) => {
         return (
           <ListItem
+            tileClassName={'md-list-tile--mini'}
             component={Link}
             active={!!match}
             to={to}
@@ -23,5 +26,5 @@ export default ({ label, to, icon, exact, nestedItems, hasParent }) =>
           />
         )
       }}
-    </Route>
+    />
   )

@@ -5,21 +5,21 @@ import { Switch } from 'react-router-dom'
 import NavItemLink from './nav-item-link'
 
 const buildNavItemLinks = (navItems, parent = false) =>
-  navItems.map(route =>
-    route.divider ? (
+  navItems.map(item =>
+    item.divider ? (
       <Divider style={{ margin: 0 }} />
     ) : (
       <NavItemLink
-        key={'route-' + route.label}
+        key={'route-' + item.label}
         nestedItems={
-          route.nestedItems && route.nestedItems.length > 0
-            ? buildNavItemLinks(route.nestedItems, true)
+          item.nestedItems && item.nestedItems.length > 0
+            ? buildNavItemLinks(item.nestedItems, true)
             : null
         }
         hasParent={parent}
-        label={route.label}
-        to={route.to}
-        icon={route.icon}
+        label={item.label}
+        to={item.to}
+        icon={item.icon}
         exact
       />
     )
