@@ -22,6 +22,7 @@ const navItems = [
     icon: 'home',
     nestedItems: false
   },
+  // {divider: true},
   {
     exact: true,
     label: 'GQL',

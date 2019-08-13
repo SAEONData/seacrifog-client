@@ -1,25 +1,29 @@
 import React, { Component } from 'react'
-import { NavigationDrawer } from 'react-md'
+import { NavigationDrawer, Divider } from 'react-md'
 import { withRouter } from 'react-router'
 import { Switch } from 'react-router-dom'
 import NavItemLink from './nav-item-link'
 
 const buildNavItemLinks = (navItems, parent = false) =>
-  navItems.map(route => (
-    <NavItemLink
-      key={'route-' + route.label}
-      nestedItems={
-        route.nestedItems && route.nestedItems.length > 0
-          ? buildNavItemLinks(route.nestedItems, true)
-          : null
-      }
-      hasParent={parent}
-      label={route.label}
-      to={route.to}
-      icon={route.icon}
-      exact
-    />
-  ))
+  navItems.map(route =>
+    route.divider ? (
+      <Divider style={{ margin: 0 }} />
+    ) : (
+      <NavItemLink
+        key={'route-' + route.label}
+        nestedItems={
+          route.nestedItems && route.nestedItems.length > 0
+            ? buildNavItemLinks(route.nestedItems, true)
+            : null
+        }
+        hasParent={parent}
+        label={route.label}
+        to={route.to}
+        icon={route.icon}
+        exact
+      />
+    )
+  )
 
 class Navigation extends Component {
   constructor(props) {
@@ -43,6 +47,9 @@ class Navigation extends Component {
       <NavigationDrawer
         drawerTitle="SEACRIFOG"
         navItems={buildNavItemLinks(navItems)}
+        mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
+        tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
+        desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         toolbarTitle={toolbarTitle || 'Home'}
       >
         <Switch key={location.pathname || '/home'}>
