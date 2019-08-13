@@ -18,10 +18,12 @@
     "webfontloader": "^1.6.28"
   },
   "scripts": {
-    "start": "PORT=3001 react-scripts start",
+    "start": "npm-run-all -p start:cra watch-prettier start:cra",
+    "start:cra": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "watch-prettier": "onchange '**/!(__generated__)/*.{js,jsx}' -- prettier --single-quote --no-semi --write {{changed}}"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -53,6 +55,8 @@
     "husky": "^3.0.2",
     "lint-staged": "^9.2.1",
     "node-sass": "^4.12.0",
+    "npm-run-all": "^4.1.5",
+    "onchange": "^6.0.0",
     "prettier": "^1.18.2"
   }
 }
