@@ -7,7 +7,7 @@ import NavItemLink from './nav-item-link'
 const buildNavItemLinks = (navItems, parent = false) =>
   navItems.map(item =>
     item.divider ? (
-      <Divider style={{ margin: 0 }} />
+      <Divider key={item.key} style={item.style || {}} />
     ) : (
       <NavItemLink
         key={'route-' + item.label}
@@ -46,6 +46,7 @@ class Navigation extends Component {
     return (
       <NavigationDrawer
         drawerTitle="SEACRIFOG"
+        navStyle={{ padding: 0 }}
         navItems={buildNavItemLinks(navItems)}
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
