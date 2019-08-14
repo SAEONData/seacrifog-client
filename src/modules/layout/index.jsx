@@ -47,6 +47,7 @@ class Navigation extends Component {
       <NavigationDrawer
         drawerTitle="SEACRIFOG"
         navStyle={{ padding: 0 }}
+        miniNavStyle={{ padding: 0 }}
         navItems={buildNavItemLinks(navItems)}
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}

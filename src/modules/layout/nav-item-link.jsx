@@ -16,7 +16,7 @@ export default ({ label, to, icon, exact, nestedItems, hasParent }) =>
       children={({ match }) => {
         return (
           <ListItem
-            tileClassName={'md-list-tile--mini'}
+            tileClassName={'md-list-tile--mini'} // TODO: This is a hack for a bug (https://github.com/mlaursen/react-md/issues/304). But nested items are a problem
             component={Link}
             active={!!match}
             to={to}
