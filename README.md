@@ -2,8 +2,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Dev environment setup
-Install the project dependencies: `npm install`
-
+Install the project dependencies: `npm install`<br>
 Start the dev server: `npm start`
 
 ## Testing
