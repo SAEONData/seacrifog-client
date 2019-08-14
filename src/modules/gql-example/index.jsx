@@ -4,8 +4,14 @@ import gql from 'graphql-tag'
 import { Card, CardTitle, CardText, Grid, Cell } from 'react-md'
 
 const QUERY = gql`
-  query hello {
-    hello
+  query variables {
+    variables {
+      id
+      name
+      class
+      domain
+      test
+    }
   }
 `
 

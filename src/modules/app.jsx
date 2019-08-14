@@ -10,7 +10,9 @@ import GqlExample from './gql-example'
 
 // Configure the Apollo Client
 const cache = new InMemoryCache()
-const link = new HttpLink({ uri: 'http://localhost:3000/graphql' })
+const link = new HttpLink({
+  uri: process.env.REACT_APP_GQL_ENDPOINT || 'http://localhost:3000/graphql'
+})
 const client = new ApolloClient({ cache, link })
 
 // Specify the items in the side menu
