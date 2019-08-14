@@ -2,8 +2,8 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Dev environment setup
-1. Install the project dependencies: `npm install`
-2. Start the dev server: `npm start`
+Install the project dependencies: `npm install`
+Start the dev server: `npm start`
 
 ## Testing
 Run `npm test`. This launches the test runner in the interactive watch mode.<br>
