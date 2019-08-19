@@ -53,10 +53,9 @@ class Navigation extends Component {
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         toolbarTitle={toolbarTitle || 'Dashboard'}
+        defaultVisible={true}
       >
-        <Switch key={location.pathname || '/'}>
-          {this.props.children}
-        </Switch>
+        <Switch key={location.pathname || '/'}>{this.props.children}</Switch>
       </NavigationDrawer>
     )
   }

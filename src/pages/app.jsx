@@ -6,7 +6,7 @@ import { HttpLink } from 'apollo-link-http'
 import { BrowserRouter, Route } from 'react-router-dom'
 import Navigation from './layout'
 import Dashboard from './dashboard'
-import EssentialVariables from './essential-variables'
+import EssentialVariables from './variables'
 import ObservationInfrastructure from './observation-infrastructure'
 import DataProducts from './data-products'
 import Protocols from './protocols'
@@ -31,8 +31,8 @@ const navItems = [
   },
   {
     exact: true,
-    label: 'Essential Variables',
-    to: '/essential-variables',
+    label: 'Variables',
+    to: '/variables',
     icon: 'group_work',
     nestedItems: false
   },
@@ -78,10 +78,15 @@ const App = () => (
   <BrowserRouter>
     <ApolloProvider client={client}>
       <Navigation navItems={navItems}>
-        <Route key={'route-to-home'} path={'/'} exact={true} component={Dashboard} />
+        <Route
+          key={'route-to-home'}
+          path={'/'}
+          exact={true}
+          component={Dashboard}
+        />
         <Route
           key={'route-to-essential'}
-          path={'/essential-variables'}
+          path={'/variables'}
           exact={true}
           component={EssentialVariables}
         />
@@ -109,17 +114,13 @@ const App = () => (
           exact={true}
           component={About}
         />
-        
-        
-        
-        
+
         <Route
           key={'route-to-gql-test'}
           path={'/gqlexample'}
           exact={true}
           component={GqlExample}
         />
-        
       </Navigation>
     </ApolloProvider>
   </BrowserRouter>
