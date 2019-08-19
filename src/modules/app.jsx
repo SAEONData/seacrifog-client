@@ -6,6 +6,7 @@ import { HttpLink } from 'apollo-link-http'
 import { BrowserRouter, Route } from 'react-router-dom'
 import Navigation from './layout'
 import Home from './home'
+import About from './about'
 import GqlExample from './gql-example'
 
 // Configure the Apollo Client
@@ -22,6 +23,13 @@ const navItems = [
     label: 'Home',
     to: '/',
     icon: 'home',
+    nestedItems: false
+  },
+  {
+    exact: true,
+    label: 'About',
+    to: '/about',
+    icon: 'info',
     nestedItems: false
   },
   // {key: 'nav-divider-1', divider: true, style: {margin: 0}},
@@ -51,6 +59,12 @@ const App = () => (
           path={'/gqlexample'}
           exact={true}
           component={GqlExample}
+        />
+        <Route
+          key={'route-to-about'}
+          path={'/about'}
+          exact={true}
+          component={About}
         />
       </Navigation>
     </ApolloProvider>
