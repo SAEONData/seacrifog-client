@@ -52,11 +52,10 @@ class Navigation extends Component {
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
-        toolbarTitle={toolbarTitle || 'Home'}
+        toolbarTitle={toolbarTitle || 'Dashboard'}
+        defaultVisible={true}
       >
-        <Switch key={location.pathname || '/home'}>
-          {this.props.children}
-        </Switch>
+        <Switch key={location.pathname || '/'}>{this.props.children}</Switch>
       </NavigationDrawer>
     )
   }

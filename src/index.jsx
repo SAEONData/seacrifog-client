@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './modules/app'
+import App from './pages/app'
 import WebFontLoader from 'webfontloader'
 import * as serviceWorker from './serviceWorker'
 import './index.scss'
