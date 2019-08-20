@@ -10,7 +10,13 @@ const QUERY = gql`
       name
       class
       domain
-      test
+      protocols {
+        id
+        doi
+        author
+        publisher
+        title
+      }
     }
   }
 `
