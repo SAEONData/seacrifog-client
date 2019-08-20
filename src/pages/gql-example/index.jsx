@@ -17,26 +17,24 @@ const QUERY = gql`
 
 export default () => (
   <Query query={QUERY}>
-    {({ data, loading, error }) => {
-      return (
-        <Grid>
-          <Cell size={12}>
-            <Card>
-              <CardTitle title="This is a title" subtitle="And subtitle" />
-              <CardText>
-                {loading ? (
-                  <p>LOADING...</p>
-                ) : error ? (
-                  <p>ERROR...</p>
-                ) : (
-                  JSON.stringify(data)
-                )}
-                <p>Edit me in /src/modules/gql-example/index.jsx</p>
-              </CardText>
-            </Card>
-          </Cell>
-        </Grid>
-      )
-    }}
+    {({ data, loading, error }) => (
+      <Grid>
+        <Cell size={12}>
+          <Card>
+            <CardTitle title="This is a title" subtitle="And subtitle" />
+            <CardText>
+              {loading ? (
+                <p>LOADING...</p>
+              ) : error ? (
+                <p>ERROR...</p>
+              ) : (
+                JSON.stringify(data)
+              )}
+              <p>Edit me in /src/modules/gql-example/index.jsx</p>
+            </CardText>
+          </Card>
+        </Cell>
+      </Grid>
+    )}
   </Query>
 )
