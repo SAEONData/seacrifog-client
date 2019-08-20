@@ -4,7 +4,7 @@ import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import { BrowserRouter, Route } from 'react-router-dom'
-import Navigation from './layout'
+import Navigation from '../modules/layout'
 import Dashboard from './dashboard'
 import EssentialVariables from './variables'
 import ObservationInfrastructure from './observation-infrastructure'
@@ -104,7 +104,7 @@ const App = () => (
         />
         <Route
           key={'route-to-protocols'}
-          path={'protocols'}
+          path={'/protocols'}
           exact={true}
           component={Protocols}
         />
@@ -114,7 +114,6 @@ const App = () => (
           exact={true}
           component={About}
         />
-
         <Route
           key={'route-to-gql-test'}
           path={'/gqlexample'}
