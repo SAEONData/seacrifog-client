@@ -104,7 +104,7 @@ const App = () => (
         />
         <Route
           key={'route-to-protocols'}
-          path={'protocols'}
+          path={'/protocols'}
           exact={true}
           component={Protocols}
         />
@@ -114,7 +114,6 @@ const App = () => (
           exact={true}
           component={About}
         />
-
         <Route
           key={'route-to-gql-test'}
           path={'/gqlexample'}
