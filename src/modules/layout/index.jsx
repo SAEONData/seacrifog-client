@@ -3,7 +3,6 @@ import { NavigationDrawer, Divider } from 'react-md'
 import { withRouter } from 'react-router'
 import { Switch } from 'react-router-dom'
 import NavItemLink from './nav-item-link'
-import SubNav from './subnav'
 
 const buildNavItemLinks = (navItems, parent = false) =>
   navItems.map(item =>
@@ -45,23 +44,19 @@ class Navigation extends Component {
     const { toolbarTitle } = this.state
     const { location, navItems } = this.props
     return (
-      <>
-        <NavigationDrawer
-          toolbarChildren={<SubNav />}
-          drawerTitle="SEACRIFOG"
-          navStyle={{ padding: 0 }}
-          miniNavStyle={{ padding: 0 }}
-          navItems={buildNavItemLinks(navItems)}
-          mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
-          tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
-          desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
-          toolbarTitle={toolbarTitle || 'Dashboard'}
-          defaultVisible={true}
-          toolbarThemeType="default"
-        >
-          <Switch key={location.pathname || '/'}>{this.props.children}</Switch>
-        </NavigationDrawer>
-      </>
+      <NavigationDrawer
+        drawerTitle="SEACRIFOG"
+        navStyle={{ padding: 0 }}
+        miniNavStyle={{ padding: 0 }}
+        navItems={buildNavItemLinks(navItems)}
+        mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
+        tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
+        desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
+        toolbarTitle={toolbarTitle || 'Dashboard'}
+        defaultVisible={true}
+      >
+        <Switch key={location.pathname || '/'}>{this.props.children}</Switch>
+      </NavigationDrawer>
     )
   }
 }
