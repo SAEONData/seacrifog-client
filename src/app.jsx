@@ -26,51 +26,44 @@ const navItems = [
     exact: true,
     label: 'Dashboard',
     to: '/',
-    icon: 'dashboard',
-    nestedItems: false
+    icon: 'dashboard'
   },
   {
     exact: true,
     label: 'Variables',
     to: '/variables',
-    icon: 'group_work',
-    nestedItems: false
+    icon: 'group_work'
   },
   {
     exact: true,
     label: 'Observation Infrastructure',
     to: '/observation-infrastructure',
-    icon: 'track_changes',
-    nestedItems: false
+    icon: 'track_changes'
   },
   {
     exact: true,
     label: 'Data Products',
     to: '/data-products',
-    icon: 'timeline',
-    nestedItems: false
+    icon: 'timeline'
   },
   {
     exact: true,
     label: 'Protocols',
     to: '/protocols',
-    icon: 'touch_app',
-    nestedItems: false
+    icon: 'touch_app'
   },
   {
     exact: true,
     label: 'About',
     to: '/about',
-    icon: 'info',
-    nestedItems: false
+    icon: 'info'
   },
   // {key: 'nav-divider-1', divider: true, style: {margin: 0}},
   {
     exact: true,
     label: 'GQL',
     to: '/gqlexample',
-    icon: 'mood',
-    nestedItems: false
+    icon: 'mood'
   }
 ]
 // SPA wrapper

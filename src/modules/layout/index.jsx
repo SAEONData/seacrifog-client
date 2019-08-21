@@ -3,28 +3,6 @@ import { NavigationDrawer, Divider } from 'react-md'
 import { withRouter } from 'react-router'
 import { Switch } from 'react-router-dom'
 import NavItemLink from './nav-item-link'
-import SubNav from './subnav'
-
-const buildNavItemLinks = (navItems, parent = false) =>
-  navItems.map(item =>
-    item.divider ? (
-      <Divider key={item.key} style={item.style || {}} />
-    ) : (
-      <NavItemLink
-        key={'route-' + item.label}
-        nestedItems={
-          item.nestedItems && item.nestedItems.length > 0
-            ? buildNavItemLinks(item.nestedItems, true)
-            : null
-        }
-        hasParent={parent}
-        label={item.label}
-        to={item.to}
-        icon={item.icon}
-        exact
-      />
-    )
-  )
 
 class Navigation extends Component {
   constructor(props) {
@@ -45,23 +23,31 @@ class Navigation extends Component {
     const { toolbarTitle } = this.state
     const { location, navItems } = this.props
     return (
-      <>
-        <NavigationDrawer
-          toolbarChildren={<SubNav />}
-          drawerTitle="SEACRIFOG"
-          navStyle={{ padding: 0 }}
-          miniNavStyle={{ padding: 0 }}
-          navItems={buildNavItemLinks(navItems)}
-          mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
-          tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
-          desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
-          toolbarTitle={toolbarTitle || 'Dashboard'}
-          defaultVisible={true}
-          toolbarThemeType="default"
-        >
-          <Switch key={location.pathname || '/'}>{this.props.children}</Switch>
-        </NavigationDrawer>
-      </>
+      <NavigationDrawer
+        drawerTitle="SEACRIFOG"
+        navStyle={{ padding: 0 }}
+        miniNavStyle={{ padding: 0 }}
+        navItems={navItems.map(navItem =>
+          navItem.divider ? (
+            <Divider key={navItem.key} style={navItem.style || {}} />
+          ) : (
+            <NavItemLink
+              key={'route-' + navItem.label}
+              label={navItem.label}
+              to={navItem.to}
+              icon={navItem.icon}
+              exact
+            />
+          )
+        )}
+        mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
+        tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
+        desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
+        toolbarTitle={toolbarTitle || 'Dashboard'}
+        defaultVisible={true}
+      >
+        <Switch key={location.pathname || '/'}>{this.props.children}</Switch>
+      </NavigationDrawer>
     )
   }
 }
