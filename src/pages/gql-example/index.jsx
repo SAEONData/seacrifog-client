@@ -1,5 +1,5 @@
 import React from 'react'
-import QueryRenderer from '../../components/query-renderer'
+import QueryRenderer from '../../modules/query-renderer'
 import { Card, CardTitle, CardText, Grid, Cell } from 'react-md'
 import { VARIABLES } from '../../graphql/queries'
 
