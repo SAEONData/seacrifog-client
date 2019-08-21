@@ -1,8 +1,13 @@
 @import '~react-md/src/scss/react-md';
+@import './pages/layout/style.scss';
 
 // Theme builder: https://react-md.mlaursen.com/customization/theme-builder
 $md-light-theme: true;
-$md-primary-color: #1a237e;
-$md-secondary-color: #ff9100;
+$md-primary-color: #007bff;
+$md-secondary-color: #f5a623;
 
 @include react-md-everything;
+
+.md-toolbar {
+  background: #fff;
+}
