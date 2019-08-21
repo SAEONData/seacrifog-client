@@ -4,27 +4,6 @@ import { withRouter } from 'react-router'
 import { Switch } from 'react-router-dom'
 import NavItemLink from './nav-item-link'
 
-const buildNavItemLinks = (navItems, parent = false) =>
-  navItems.map(item =>
-    item.divider ? (
-      <Divider key={item.key} style={item.style || {}} />
-    ) : (
-      <NavItemLink
-        key={'route-' + item.label}
-        nestedItems={
-          item.nestedItems && item.nestedItems.length > 0
-            ? buildNavItemLinks(item.nestedItems, true)
-            : null
-        }
-        hasParent={parent}
-        label={item.label}
-        to={item.to}
-        icon={item.icon}
-        exact
-      />
-    )
-  )
-
 class Navigation extends Component {
   constructor(props) {
     super(props)
@@ -48,7 +27,19 @@ class Navigation extends Component {
         drawerTitle="SEACRIFOG"
         navStyle={{ padding: 0 }}
         miniNavStyle={{ padding: 0 }}
-        navItems={buildNavItemLinks(navItems)}
+        navItems={navItems.map(navItem =>
+          navItem.divider ? (
+            <Divider key={navItem.key} style={navItem.style || {}} />
+          ) : (
+            <NavItemLink
+              key={'route-' + navItem.label}
+              label={navItem.label}
+              to={navItem.to}
+              icon={navItem.icon}
+              exact
+            />
+          )
+        )}
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
