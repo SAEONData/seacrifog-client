@@ -9,8 +9,8 @@ export default class Form extends Component {
     return (
       <>
         {this.props.children({
-          form: this.state,
-          updateForm: this.updateForm
+          updateForm: this.updateForm,
+          ...this.state
         })}
       </>
     )
