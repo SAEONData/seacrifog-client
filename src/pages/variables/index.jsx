@@ -7,14 +7,17 @@ import { Card, CardTitle, CardText, Grid, Cell } from 'react-md'
 export default () => (
   <QueryRenderer query={VARIABLES}>
     {data => (
-      <Form>
-        {({ form, updateForm }) => (
+      <Form someFormProp="initial value">
+        {({ updateForm, someFormProp }) => (
           <Grid>
             <Cell size={12}>
               <Card>
                 <CardTitle title="This is a title" subtitle="And subtitle" />
                 <CardText>
-                  <p>Hello! essential-variables page</p>
+                  <input
+                    onChange={e => updateForm({ someFormProp: e.target.value })}
+                  />
+                  <input value={someFormProp} onChange={e => ''} />
                 </CardText>
               </Card>
             </Cell>
