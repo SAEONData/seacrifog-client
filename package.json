@@ -18,7 +18,7 @@
     "webfontloader": "^1.6.28"
   },
   "scripts": {
-    "start": "npm-run-all -p start:cra",
+    "start": "npm-run-all -p watch-prettier start:cra",
     "start:cra": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
