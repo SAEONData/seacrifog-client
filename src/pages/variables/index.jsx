@@ -2,7 +2,8 @@ import React from 'react'
 import Form from '../../modules/form'
 import QueryRenderer from '../../modules/query-renderer'
 import { VARIABLES } from '../../graphql/queries'
-import VariablesTable from './variables-table'
+import VariablesList from './variables-detail'
+import ProtocolsList from './protocols-detail'
 import { Card, CardText, Grid, Cell, DropdownMenu, ListItem, TextField, ListItemControl, Checkbox, FontIcon } from 'react-md'
 
 // eslint-disable-next-line no-extend-native
@@ -16,11 +17,19 @@ String.prototype.truncate = function(length, ending) {
 export default () => (
   <QueryRenderer query={VARIABLES}>
     {({ variables }) => (
-      <Form searchTerm="" selectedVariables={[]} selectedVariableRow={null}>
-        {({ updateForm, searchTerm, selectedVariables, selectedVariableRow }) => (
+      <Form searchTerm="" selectedVariables={[]} selectedProtocols={[]}>
+        {({ updateForm, searchTerm, selectedVariables, selectedProtocols }) => (
           <Grid>
             <Cell size={12} tabletSize={8} phoneSize={6}>
               <Card>
+                <span
+                  style={{
+                    float: 'right',
+                    margin: '10px 10px 0 0'
+                  }}
+                >
+                  {selectedVariables.length} variables selected
+                </span>
                 <CardText>
                   <DropdownMenu
                     id="variables-search-menu"
@@ -39,7 +48,7 @@ export default () => (
                                 key={`variable-${v.id}`}
                                 style={{ width: '100%' }}
                                 leftIcon={
-                                  <FontIcon style={{ marginLeft: '10px' }} key="user">
+                                  <FontIcon style={{ marginLeft: '10px' }} key={`variable-icon-${v.id}`}>
                                     code
                                   </FontIcon>
                                 }
@@ -91,20 +100,24 @@ export default () => (
               </Card>
             </Cell>
 
+            {/* Variables Detail */}
             <Cell size={12} tabletSize={8} phoneSize={6}>
-              <Card style={{ height: '100' }}>
-                <Grid>
-                  <Cell size={6} tabletSize={8} phoneSize={6}>
-                    <CardText>
-                      <VariablesTable
-                        selectedVariableRow={selectedVariableRow}
-                        updateForm={updateForm}
-                        data={selectedVariables.map(id => variables.find(v => v.id === id))}
-                      />
-                    </CardText>
-                  </Cell>
-                </Grid>
-              </Card>
+              <h2>Selected variables</h2>
+              {selectedVariables.length > 0 ? (
+                <VariablesList
+                  selectedProtocols={selectedProtocols}
+                  updateMainForm={updateForm}
+                  variables={selectedVariables.map(id => variables.find(v => v.id === id))}
+                />
+              ) : (
+                <span>-</span>
+              )}
+            </Cell>
+
+            {/* Protocols Detail */}
+            <Cell size={12} tabletSize={8} phoneSize={6}>
+              <h2>Selected protocols</h2>
+              {selectedProtocols.length > 0 ? <ProtocolsList protocols={selectedProtocols} /> : <span>-</span>}
             </Cell>
           </Grid>
         )}
