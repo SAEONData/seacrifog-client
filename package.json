@@ -45,6 +45,12 @@
       "pre-commit": "lint-staged"
     }
   },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 150,
+    "semi": false,
+    "tabWidth": 2
+  },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
       "prettier --write",
