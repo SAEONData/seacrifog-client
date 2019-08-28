@@ -8,7 +8,7 @@ const dividerStyle = {
 export default ({ protocols }) => (
   <ExpansionList>
     {protocols.map(p => (
-      <ExpansionPanel key={`variables-detail-${p.id}`} label={p} defaultExpanded={false} footer={false}>
+      <ExpansionPanel key={`variables-detail-${p}`} label={p} defaultExpanded={false} footer={false}>
         <p style={{ fontWeight: 'bold' }}>DOI</p>
         <p>{p.class}</p>
         <Divider style={dividerStyle} />

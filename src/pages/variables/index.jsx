@@ -4,7 +4,20 @@ import QueryRenderer from '../../modules/query-renderer'
 import { VARIABLES } from '../../graphql/queries'
 import VariablesList from './variables-detail'
 import ProtocolsList from './protocols-detail'
-import { Card, CardText, Grid, Cell, DropdownMenu, ListItem, TextField, ListItemControl, Checkbox, FontIcon } from 'react-md'
+import {
+  Card,
+  CardText,
+  Grid,
+  Cell,
+  DropdownMenu,
+  ListItem,
+  TextField,
+  ListItemControl,
+  SelectionControl,
+  ExpansionList,
+  ExpansionPanel,
+  FontIcon
+} from 'react-md'
 
 // eslint-disable-next-line no-extend-native
 String.prototype.truncate = function(length, ending) {
@@ -20,104 +33,139 @@ export default () => (
       <Form searchTerm="" selectedVariables={[]} selectedProtocols={[]}>
         {({ updateForm, searchTerm, selectedVariables, selectedProtocols }) => (
           <Grid>
-            <Cell size={12} tabletSize={8} phoneSize={6}>
-              <Card>
-                <span
-                  style={{
-                    float: 'right',
-                    margin: '10px 10px 0 0'
-                  }}
-                >
-                  {selectedVariables.length} variables selected
-                </span>
-                <CardText>
-                  <DropdownMenu
-                    id="variables-search-menu"
-                    style={{ width: '100%' }}
-                    menuItems={(() => {
-                      const variablesList = variables
-                        .map(v => {
-                          const search = searchTerm.toUpperCase()
-                          const nameFound = v.name.toUpperCase().indexOf(search) >= 0 ? true : false
-                          const classFound = v.class.toUpperCase().indexOf(search) >= 0 ? true : false
-                          const domainFound = v.domain.toUpperCase().indexOf(search) >= 0 ? true : false
-                          const descriptionFound = v.description.toUpperCase().indexOf(search) >= 0 ? true : false
-                          if (nameFound || classFound || domainFound || descriptionFound) {
-                            return (
-                              <ListItemControl
-                                key={`variable-${v.id}`}
-                                style={{ width: '100%' }}
-                                leftIcon={
-                                  <FontIcon style={{ marginLeft: '10px' }} key={`variable-icon-${v.id}`}>
-                                    code
-                                  </FontIcon>
-                                }
-                                secondaryText={`${v.description.truncate(150)}`}
-                                primaryAction={
-                                  <Checkbox
-                                    id={`variable-toggle-${v.id}`}
-                                    label={v.name}
-                                    name={v.name}
-                                    labelBefore
-                                    checked={selectedVariables.includes(v.id) ? true : false}
-                                    onChange={val => {
-                                      if (val)
-                                        updateForm({
-                                          selectedVariables: [...selectedVariables, v.id]
-                                        })
-                                      else
-                                        updateForm({
-                                          selectedVariables: [...selectedVariables].filter(id => id !== v.id)
-                                        })
-                                    }}
+            <Cell phoneSize={6} tabletSize={4} size={9}>
+              <Grid>
+                <Cell phoneSize={6} tabletSize={8} size={12}>
+                  <Card>
+                    <span
+                      style={{
+                        float: 'right',
+                        margin: '10px 10px 0 0'
+                      }}
+                    >
+                      {selectedVariables.length} variables selected
+                    </span>
+                    <CardText>
+                      <DropdownMenu
+                        id="variables-search-menu"
+                        style={{ width: '100%' }}
+                        menuItems={(() => {
+                          const variablesList = variables
+                            .map(v => {
+                              const search = searchTerm.trim().toUpperCase()
+                              const nameFound = search === '' ? true : v.name.toUpperCase().indexOf(search) >= 0 ? true : false
+                              const classFound = search === '' ? true : v.class.toUpperCase().indexOf(search) >= 0 ? true : false
+                              const domainFound = search === '' ? true : v.domain.toUpperCase().indexOf(search) >= 0 ? true : false
+                              const descriptionFound = search === '' ? true : v.description.toUpperCase().indexOf(search) >= 0 ? true : false
+                              if (nameFound || classFound || domainFound || descriptionFound) {
+                                return (
+                                  <ListItemControl
+                                    key={`variable-${v.id}`}
+                                    style={{ width: '100%' }}
+                                    secondaryText={`${v.description.truncate(150)}`}
+                                    primaryAction={
+                                      <SelectionControl
+                                        id={`variable-toggle-${v.id}`}
+                                        label={v.name}
+                                        name={v.name}
+                                        type="checkbox"
+                                        labelBefore
+                                        checked={selectedVariables.includes(v.id) ? true : false}
+                                        onChange={val => {
+                                          if (val)
+                                            updateForm({
+                                              selectedVariables: [...selectedVariables, v.id]
+                                            })
+                                          else
+                                            updateForm({
+                                              selectedVariables: [...selectedVariables].filter(id => id !== v.id)
+                                            })
+                                        }}
+                                      />
+                                    }
                                   />
-                                }
-                              />
-                            )
-                          } else {
-                            return null
-                          }
-                        })
-                        .filter(_ => _)
-                      return variablesList.length > 0 ? variablesList : <ListItem primaryText="No variables found" />
-                    })()}
-                    anchor={{
-                      x: DropdownMenu.HorizontalAnchors.INNER_LEFT,
-                      y: DropdownMenu.VerticalAnchors.BOTTOM
-                    }}
-                    position={DropdownMenu.Positions.BELOW}
-                  >
-                    <TextField
-                      id="variables-search-text"
-                      label="Search"
-                      autoComplete="off"
-                      value={searchTerm}
-                      placeholder="Search variables by name, class, domain, or description"
-                      onChange={val => updateForm({ searchTerm: val })}
-                    />
-                  </DropdownMenu>
-                </CardText>
-              </Card>
+                                )
+                              } else {
+                                return null
+                              }
+                            })
+                            .filter(_ => _)
+                          return variablesList.length > 0 ? variablesList : <ListItem primaryText="No variables found" />
+                        })()}
+                        anchor={{
+                          x: DropdownMenu.HorizontalAnchors.INNER_LEFT,
+                          y: DropdownMenu.VerticalAnchors.BOTTOM
+                        }}
+                        position={DropdownMenu.Positions.BELOW}
+                      >
+                        <TextField
+                          id="variables-search-text"
+                          label="Search"
+                          autoComplete="off"
+                          value={searchTerm}
+                          placeholder="Search variables by name, class, domain, or description"
+                          onChange={val => updateForm({ searchTerm: val })}
+                        />
+                      </DropdownMenu>
+                    </CardText>
+                  </Card>
+                </Cell>
+
+                {/* Variables Detail */}
+                <Cell size={12} tabletSize={8} phoneSize={6}>
+                  {selectedVariables.length > 0 ? (
+                    <>
+                      <Cell phoneSize={6} tabletSize={8} size={12} style={{ textAlign: 'center' }}>
+                        <FontIcon>arrow_downward</FontIcon>
+                      </Cell>
+                      <h3 style={{ margin: '15px', textAlign: 'center' }}>Selected variables</h3>
+                      <VariablesList
+                        selectedProtocols={selectedProtocols}
+                        updateMainForm={updateForm}
+                        variables={selectedVariables.map(id => variables.find(v => v.id === id))}
+                      />
+                    </>
+                  ) : (
+                    ''
+                  )}
+                </Cell>
+
+                {/* Protocols Detail */}
+                <Cell size={12} tabletSize={8} phoneSize={6}>
+                  {selectedProtocols.length > 0 ? (
+                    <>
+                      <Cell phoneSize={6} tabletSize={8} size={12} style={{ textAlign: 'center' }}>
+                        <FontIcon>arrow_downward</FontIcon>
+                      </Cell>
+                      <h3 style={{ margin: '15px', textAlign: 'center' }}>Selected protocols</h3>
+                      <ProtocolsList protocols={selectedProtocols} />
+                    </>
+                  ) : (
+                    ''
+                  )}
+                </Cell>
+              </Grid>
             </Cell>
 
-            {/* Variables Detail */}
-            <Cell size={12} tabletSize={8} phoneSize={6}>
-              <h2>Selected variables</h2>
-              {selectedVariables.length > 0 ? (
-                <VariablesList
-                  selectedProtocols={selectedProtocols}
-                  updateMainForm={updateForm}
-                  variables={selectedVariables.map(id => variables.find(v => v.id === id))}
-                />
-              ) : (
-                <span>-</span>
-              )}
-            </Cell>
-
-            {/* Protocols Detail */}
-            <Cell size={12} tabletSize={8} phoneSize={6}>
-              <h2>Selected protocols</h2>
-              {selectedProtocols.length > 0 ? <ProtocolsList protocols={selectedProtocols} /> : <span>-</span>}
+            {/* Search results */}
+            <Cell phoneSize={6} tabletSize={4} size={3}>
+              <Grid>
+                <Cell size={12}>
+                  <ExpansionList>
+                    <ExpansionPanel key={`search-result-${0}`} label="Search result 1" footer={false}>
+                      <p>After searching variables, protocols, networks, etc. These panels are the search results</p>
+                      <p>Each panel can contain links, buttons, etc.</p>
+                    </ExpansionPanel>
+                    <ExpansionPanel key={`search-result-${1}`} label="Search result 2" footer={false}>
+                      <p>...</p>
+                    </ExpansionPanel>
+                    <ExpansionPanel key={`search-result-${2}`} label="Search result 2" footer={false}>
+                      <p>...</p>
+                      <p>etc</p>
+                    </ExpansionPanel>
+                  </ExpansionList>
+                </Cell>
+              </Grid>
             </Cell>
           </Grid>
         )}
