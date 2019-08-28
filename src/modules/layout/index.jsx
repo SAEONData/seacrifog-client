@@ -31,19 +31,13 @@ class Navigation extends Component {
           navItem.divider ? (
             <Divider key={navItem.key} style={navItem.style || {}} />
           ) : (
-            <NavItemLink
-              key={'route-' + navItem.label}
-              label={navItem.label}
-              to={navItem.to}
-              icon={navItem.icon}
-              exact
-            />
+            <NavItemLink key={'route-' + navItem.label} label={navItem.label} to={navItem.to} icon={navItem.icon} exact />
           )
         )}
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
-        toolbarTitle={toolbarTitle || 'Dashboard'}
+        toolbarTitle={'/' + toolbarTitle || '/'}
         defaultVisible={true}
       >
         <Switch key={location.pathname || '/'}>{this.props.children}</Switch>

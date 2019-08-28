@@ -56,18 +56,24 @@ export default () => (
                               const nameFound = search === '' ? true : v.name.toUpperCase().indexOf(search) >= 0 ? true : false
                               const classFound = search === '' ? true : v.class.toUpperCase().indexOf(search) >= 0 ? true : false
                               const domainFound = search === '' ? true : v.domain.toUpperCase().indexOf(search) >= 0 ? true : false
-                              const descriptionFound = search === '' ? true : v.description.toUpperCase().indexOf(search) >= 0 ? true : false
-                              if (nameFound || classFound || domainFound || descriptionFound) {
+                              if (nameFound || classFound || domainFound) {
                                 return (
                                   <ListItemControl
                                     key={`variable-${v.id}`}
                                     style={{ width: '100%' }}
-                                    secondaryText={`${v.description.truncate(150)}`}
+                                    secondaryText={
+                                      <>
+                                        {v.domain}
+                                        <br />
+                                        {v.class}
+                                      </>
+                                    }
+                                    threeLines
                                     primaryAction={
                                       <SelectionControl
                                         id={`variable-toggle-${v.id}`}
-                                        label={v.name}
-                                        name={v.name}
+                                        label={v.name.truncate(40)}
+                                        name={v.name.truncate(40)}
                                         type="checkbox"
                                         labelBefore
                                         checked={selectedVariables.includes(v.id) ? true : false}
@@ -103,7 +109,7 @@ export default () => (
                           label="Search"
                           autoComplete="off"
                           value={searchTerm}
-                          placeholder="Search variables by name, class, domain, or description"
+                          placeholder="Search variables by name, class, or domain"
                           onChange={val => updateForm({ searchTerm: val })}
                         />
                       </DropdownMenu>
