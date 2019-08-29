@@ -23,7 +23,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "watch-prettier": "onchange '**/!(__generated__)/*.{js,jsx}' -- prettier --write {{changed}}"
+    "watch-prettier": "onchange \"**/!(__generated__)/*.{js,jsx}\" -- prettier --write {{changed}}"
   },
   "eslintConfig": {
     "extends": "react-app"
