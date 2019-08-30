@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardTitle, CardText, Grid, Cell } from 'react-md'
+import { Grid, Cell } from 'react-md'
 
 export default () => (
   <Grid>
