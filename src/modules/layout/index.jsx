@@ -34,6 +34,8 @@ class Navigation extends Component {
             <NavItemLink key={'route-' + navItem.label} label={navItem.label} to={navItem.to} icon={navItem.icon} exact />
           )
         )}
+        toolbarZDepth={0}
+        drawerZDepth={1}
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
