@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const PROTOCOLS = gql`
+export const PROTOCOLS_MIN = gql`
   query protocols {
     protocols {
       id
@@ -27,36 +27,6 @@ export const PROTOCOLS = gql`
       created_at
       edited_by
       updated_at
-      variables {
-        id
-        name
-        class
-        domain
-        set
-        description
-        method
-        uri
-        rftype
-        score
-        rating
-        relevance
-        feasibility
-        cost
-        updated_by
-        updated_at
-        frequency_value
-        frequency_unit
-        frequency_comment
-        res_value
-        res_unit
-        res_comment
-        run_cval
-        run_cunit
-        run_ccomment
-        req_source
-        req_uri
-        technology_type
-      }
     }
   }
 `

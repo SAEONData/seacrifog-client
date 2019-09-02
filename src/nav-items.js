@@ -1,5 +1,10 @@
 export default [
   {
+    keyval: 'nav-drawer-subheader-overview',
+    subheader: true,
+    primaryText: 'Tool Overview'
+  },
+  {
     keyval: 'nav-item-home',
     exact: true,
     label: 'Home',
