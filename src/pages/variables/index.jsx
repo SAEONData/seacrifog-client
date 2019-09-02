@@ -1,6 +1,6 @@
 import React from 'react'
 import Form from '../../modules/form'
-import QueryRenderer from '../../modules/query-renderer'
+import DataQuery from '../../modules/data-query'
 import { VARIABLES } from '../../graphql/queries'
 import VariablesList from './variables-detail'
 import ProtocolsList from './protocols-detail'
@@ -28,7 +28,7 @@ String.prototype.truncate = function(length, ending) {
 }
 
 export default () => (
-  <QueryRenderer query={VARIABLES}>
+  <DataQuery query={VARIABLES}>
     {({ variables }) => (
       <Form searchTerm="" selectedVariables={[]} selectedProtocols={[]}>
         {({ updateForm, searchTerm, selectedVariables, selectedProtocols }) => (
@@ -177,5 +177,5 @@ export default () => (
         )}
       </Form>
     )}
-  </QueryRenderer>
+  </DataQuery>
 )
