@@ -1,14 +1,43 @@
 import gql from 'graphql-tag'
 
+export const PROTOCOL = gql`
+  query protocol($id: Int!) {
+    protocol(id: $id) {
+      id
+      doi
+      author
+      publisher
+      title
+      publish_date
+      publish_year
+      coverage_type
+      category
+      domain
+      purpose
+      abstract
+      license
+      language
+      format
+      sustainability
+      version
+      resolution
+      cost
+      source
+      created_by
+      created_at
+      edited_by
+      updated_at
+    }
+  }
+`
+
 export const PROTOCOLS_MIN = gql`
   query protocols {
     protocols {
       id
       author
-      publisher
       title
       publish_year
-      category
       domain
     }
   }

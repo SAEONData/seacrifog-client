@@ -28,7 +28,6 @@ class Navigation extends Component {
     const { currentPath } = this.state
     const { location, navItems } = this.props
     const hideMenu = ['', '/', 'HOME', 'ABOUT', 'ABOUT/', 'CONTACT', 'CONTACT/'].includes(currentPath.toUpperCase())
-    console.log('hide menu?', hideMenu)
     return (
       <NavigationDrawer
         drawerTitle="SEACRIFOG"
