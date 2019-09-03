@@ -23,7 +23,7 @@ import {
 // eslint-disable-next-line no-extend-native
 String.prototype.truncate = function(length, ending) {
   length = length || 100
-  ending = ending || '...'
+  ending = ending || '..'
   if (this.length > length) return this.substring(0, length - ending.length) + ending
   else return this
 }
@@ -35,17 +35,33 @@ const debounce = (cb, duration) => (...args) => {
   timer = setTimeout(() => cb(...args), duration)
 }
 
-export default () => (
+const tabIndices = {
+  variables: 0,
+  protocols: 1
+}
+
+const entityDescriptions = {
+  0: 'Some interesting anecdotes about the Variables entity + search tool, etc',
+  1: 'Some interesting anecdotes about the Protocols entity + search tool, etc'
+}
+
+export default ({ tab }) => (
   <DataQuery query={PROTOCOLS_MIN}>
     {({ protocols }) => (
-      <Form hoveredRow={null} selectedRow={null}>
-        {({ updateForm, hoveredRow, selectedRow }) => (
-          <TabsContainer colored toolbar={<Toolbar zDepth={0} prominent title="Tools (i.e. search) go here" />} style={{ margin: '0 -8px' }}>
-            <Tabs tabId="simple-tab">
+      <Form hoveredRow={null} selectedRow={null} activeTabIndex={tabIndices[tab] || 0}>
+        {({ updateForm, hoveredRow, selectedRow, activeTabIndex }) => (
+          <TabsContainer
+            activeTabIndex={activeTabIndex}
+            onTabChange={activeTabIndex => updateForm({ activeTabIndex })}
+            colored
+            toolbar={<Toolbar style={{ backgroundColor: '#1976D2' }} zDepth={0} prominent title={entityDescriptions[activeTabIndex]}></Toolbar>}
+            style={{ margin: '0 -8px' }}
+          >
+            <Tabs tabId="simple-tab" style={{ backgroundColor: '#2196F3' }}>
               <Tab label="Variables">
-                <p>
-                  <b>Hello, World!</b>
-                </p>
+                <Grid>
+                  <Cell>The same as the protocols more or less</Cell>
+                </Grid>
               </Tab>
               <Tab label="Protocols">
                 <Grid style={{ paddingLeft: 0, paddingRight: 0 }}>
@@ -77,7 +93,7 @@ export default () => (
                               .filter(col => col !== '__typename' && col !== 'id')
                               .map((col, j) => (
                                 <TableColumn key={`table-col-${i}-${j}`} style={{ cursor: 'pointer' }}>
-                                  {row[col].toString().truncate(30)}
+                                  {row[col].toString().truncate(20)}
                                 </TableColumn>
                               ))}
                           </TableRow>

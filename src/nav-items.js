@@ -52,31 +52,11 @@ export default [
     to: '/atlas',
     icon: 'location_searching'
   },
-  { keyval: 'nav-divider-explore', divider: true, style: {} },
   {
-    keyval: 'nav-drawer-subheader-explore',
-    subheader: true,
-    primaryText: 'Explore'
-  },
-  {
-    keyval: 'nav-item-variables',
+    keyval: 'nav-item-data-explorer',
     exact: true,
-    label: 'Variables',
-    to: '/variables',
-    icon: ''
-  },
-  {
-    keyval: 'nav-item-protocols',
-    exact: true,
-    label: 'Protocols',
-    to: '/protocols',
-    icon: ''
-  },
-  {
-    keyval: 'nav-item-data-products',
-    exact: true,
-    label: 'Data Products',
-    to: '/data-products',
-    icon: ''
+    label: 'Explorer',
+    to: '/data-explorer',
+    icon: 'explore'
   }
 ]
