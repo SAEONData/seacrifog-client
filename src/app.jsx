@@ -1,120 +1,40 @@
 import React from 'react'
-import { ApolloProvider } from 'react-apollo'
-import { ApolloClient } from 'apollo-client'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { HttpLink } from 'apollo-link-http'
 import { BrowserRouter, Route } from 'react-router-dom'
 import Navigation from './modules/layout'
-import Dashboard from './pages/dashboard'
-import EssentialVariables from './pages/variables'
-import ObservationInfrastructure from './pages/observation-infrastructure'
-import DataProducts from './pages/data-products'
-import Protocols from './pages/protocols'
+import navItems from './nav-items'
+
+import Home from './pages/home'
 import About from './pages/about'
-import GqlExample from './pages/gql-example'
+import Contact from './pages/contact'
 
-// Configure the Apollo Client
-const cache = new InMemoryCache()
-const link = new HttpLink({
-  uri: process.env.REACT_APP_GQL_ENDPOINT || 'http://localhost:3000/graphql'
-})
-const client = new ApolloClient({ cache, link })
+import Dashboard from './pages/dashboard'
+import SelectorTool from './pages/selector-tool'
+import Atlas from './pages/atlas'
 
-// Specify the items in the side menu
-const navItems = [
-  {
-    exact: true,
-    label: 'Dashboard',
-    to: '/',
-    icon: 'dashboard'
-  },
-  {
-    exact: true,
-    label: 'Variables',
-    to: '/variables',
-    icon: 'group_work'
-  },
-  {
-    exact: true,
-    label: 'Observation Infrastructure',
-    to: '/observation-infrastructure',
-    icon: 'track_changes'
-  },
-  {
-    exact: true,
-    label: 'Data Products',
-    to: '/data-products',
-    icon: 'timeline'
-  },
-  {
-    exact: true,
-    label: 'Protocols',
-    to: '/protocols',
-    icon: 'touch_app'
-  },
-  {
-    exact: true,
-    label: 'About',
-    to: '/about',
-    icon: 'info'
-  },
-  // {key: 'nav-divider-1', divider: true, style: {margin: 0}},
-  {
-    exact: true,
-    label: 'GQL',
-    to: '/gqlexample',
-    icon: 'mood'
-  }
-]
+import Variables from './pages/variables'
+import Protocols from './pages/protocols'
+import DataProducts from './pages/data-products'
+
 // SPA wrapper
 const App = () => (
   <BrowserRouter>
-    <ApolloProvider client={client}>
-      <Navigation navItems={navItems}>
-        <Route
-          key={'route-to-home'}
-          path={'/'}
-          exact={true}
-          component={Dashboard}
-        />
-        <Route
-          key={'route-to-essential'}
-          path={'/variables'}
-          exact={true}
-          component={EssentialVariables}
-        />
-        <Route
-          key={'route-to-observation'}
-          path={'/observation-infrastructure'}
-          exact={true}
-          component={ObservationInfrastructure}
-        />
-        <Route
-          key={'route-to-data'}
-          path={'/data-products'}
-          exact={true}
-          component={DataProducts}
-        />
-        <Route
-          key={'route-to-protocols'}
-          path={'/protocols'}
-          exact={true}
-          component={Protocols}
-        />
-        <Route
-          key={'route-to-about'}
-          path={'/about'}
-          exact={true}
-          component={About}
-        />
-        <Route
-          key={'route-to-gql-test'}
-          path={'/gqlexample'}
-          exact={true}
-          component={GqlExample}
-        />
-      </Navigation>
-    </ApolloProvider>
+    <Navigation navItems={navItems}>
+      {/* Basic navigation */}
+      <Route key={'route-to-home'} path={'/'} exact={true} component={Home} />
+      <Route key={'route-to-home-2'} path={'/home'} exact={true} component={Home} />
+      <Route key={'route-to-about'} path={'/about'} exact={true} component={About} />
+      <Route key={'route-to-contact'} path={'/contact'} exact={true} component={Contact} />
+
+      {/* Tools */}
+      <Route key={'route-to-dashboard-tool'} path={'/dashboard'} exact={true} component={Dashboard} />
+      <Route key={'route-to-selector-tool'} path={'/selector'} exact={true} component={SelectorTool} />
+      <Route key={'route-to-atlas-tool'} path={'/atlas'} exact={true} component={Atlas} />
+
+      {/* Explorer */}
+      <Route key={'route-to-explorer-variables'} path={'/variables'} exact={true} component={Variables} />
+      <Route key={'route-to-explorer-protocols'} path={'/protocols'} exact={true} component={Protocols} />
+      <Route key={'route-to-explorer-data-products'} path={'/data-products'} exact={true} component={DataProducts} />
+    </Navigation>
   </BrowserRouter>
 )
 
