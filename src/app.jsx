@@ -1,19 +1,16 @@
 import React from 'react'
 import { BrowserRouter, Route } from 'react-router-dom'
 import Navigation from './modules/layout'
-import navItems from './nav-items'
-
 import Home from './pages/home'
 import About from './pages/about'
 import Contact from './pages/contact'
-
 import Dashboard from './pages/dashboard'
 import SelectorTool from './pages/selector-tool'
 import Atlas from './pages/atlas'
-
-import Variables from './pages/variables'
-import Protocols from './pages/protocols'
-import DataProducts from './pages/data-products'
+import ProtocolsExplorer from './pages/protocols-explorer'
+import VariablesExplorer from './pages/variables-explorer'
+import navItems from './nav-items'
+import Test from './pages/test'
 
 // SPA wrapper
 const App = () => (
@@ -25,15 +22,16 @@ const App = () => (
       <Route key={'route-to-about'} path={'/about'} exact={true} component={About} />
       <Route key={'route-to-contact'} path={'/contact'} exact={true} component={Contact} />
 
+      <Route key={'test'} path={'/test'} exact={false} component={Test} />
+
       {/* Tools */}
       <Route key={'route-to-dashboard-tool'} path={'/dashboard'} exact={true} component={Dashboard} />
       <Route key={'route-to-selector-tool'} path={'/selector'} exact={true} component={SelectorTool} />
       <Route key={'route-to-atlas-tool'} path={'/atlas'} exact={true} component={Atlas} />
 
-      {/* Explorer */}
-      <Route key={'route-to-explorer-variables'} path={'/variables'} exact={true} component={Variables} />
-      <Route key={'route-to-explorer-protocols'} path={'/protocols'} exact={true} component={Protocols} />
-      <Route key={'route-to-explorer-data-products'} path={'/data-products'} exact={true} component={DataProducts} />
+      {/* Explorer tool */}
+      <Route key={'route-to-explorer-variables'} path={'/explore/variables'} exact={false} render={props => <VariablesExplorer {...props} />} />
+      <Route key={'route-to-explorer-protocols'} path={'/explore/protocols'} exact={false} render={props => <ProtocolsExplorer {...props} />} />
     </Navigation>
   </BrowserRouter>
 )

@@ -59,24 +59,17 @@ export default [
     primaryText: 'Explore'
   },
   {
-    keyval: 'nav-item-variables',
+    keyval: 'nav-item-explorer-variables',
     exact: true,
     label: 'Variables',
-    to: '/variables',
-    icon: ''
+    to: '/explore/variables',
+    icon: 'explore'
   },
   {
-    keyval: 'nav-item-protocols',
+    keyval: 'nav-item-explorer-protocols',
     exact: true,
     label: 'Protocols',
-    to: '/protocols',
-    icon: ''
-  },
-  {
-    keyval: 'nav-item-data-products',
-    exact: true,
-    label: 'Data Products',
-    to: '/data-products',
-    icon: ''
+    to: '/explore/protocols',
+    icon: 'explore'
   }
 ]

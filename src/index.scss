@@ -7,3 +7,19 @@ $md-primary-color: #007bff;
 $md-secondary-color: #f5a623;
 
 @include react-md-everything;
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.selected-row {
+  background-color: #adadad;
+}
+
+// .footer {
+//   margin: 0 -8px;
+//   padding: 32px;
+//   background-color: $md-primary-color;
+// }
