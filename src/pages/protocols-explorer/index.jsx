@@ -4,11 +4,9 @@ import Form from '../../modules/form'
 import { PROTOCOLS_MIN, PROTOCOL } from '../../graphql/queries'
 import {
   Card,
-  CardTitle,
   CardText,
   Toolbar,
   TextField,
-  Button,
   DataTable,
   TableHeader,
   TableRow,
@@ -19,10 +17,8 @@ import {
   TabsContainer,
   Divider,
   TablePagination,
-  Paper,
   Grid,
   Cell,
-  TableFooter,
   ExpansionList,
   ExpansionPanel
 } from 'react-md'
@@ -60,6 +56,8 @@ class PaginatedTable extends PureComponent {
       const term = searchValue.toUpperCase().trim()
       if (term === '') return true
       else {
+        // There is a bug in eslint that makes this necessary ('key' is used)
+        // eslint-disable-next-line
         for (const key in p) {
           const value = p[key]
             .toString()
