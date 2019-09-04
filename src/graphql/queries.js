@@ -1,5 +1,16 @@
 import gql from 'graphql-tag'
 
+export const VARIABLE = gql`
+  query variable($id: Int!) {
+    variable(id: $id) {
+      id
+      name
+      domain
+      class
+    }
+  }
+`
+
 export const PROTOCOL = gql`
   query protocol($id: Int!) {
     protocol(id: $id) {

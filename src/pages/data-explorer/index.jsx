@@ -54,7 +54,11 @@ export default ({ tab }) => (
             activeTabIndex={activeTabIndex}
             onTabChange={activeTabIndex => updateForm({ activeTabIndex })}
             colored
-            toolbar={<Toolbar style={{ backgroundColor: '#1976D2' }} zDepth={0} prominent title={entityDescriptions[activeTabIndex]}></Toolbar>}
+            toolbar={
+              <Toolbar style={{ backgroundColor: '#1976D2' }} zDepth={0} prominent>
+                {entityDescriptions[activeTabIndex]}
+              </Toolbar>
+            }
             style={{ margin: '0 -8px' }}
           >
             <Tabs tabId="simple-tab" style={{ backgroundColor: '#2196F3' }}>
