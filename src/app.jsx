@@ -7,7 +7,8 @@ import Contact from './pages/contact'
 import Dashboard from './pages/dashboard'
 import SelectorTool from './pages/selector-tool'
 import Atlas from './pages/atlas'
-import DataExplorer from './pages/data-explorer'
+import ProtocolsExplorer from './pages/protocols-explorer'
+import VariablesExplorer from './pages/variables-explorer'
 import navItems from './nav-items'
 import Test from './pages/test'
 
@@ -27,7 +28,10 @@ const App = () => (
       <Route key={'route-to-dashboard-tool'} path={'/dashboard'} exact={true} component={Dashboard} />
       <Route key={'route-to-selector-tool'} path={'/selector'} exact={true} component={SelectorTool} />
       <Route key={'route-to-atlas-tool'} path={'/atlas'} exact={true} component={Atlas} />
-      <Route key={'route-to-explorer'} path={'/data-explorer'} exact={false} render={props => <DataExplorer {...props} />} />
+
+      {/* Explorer tool */}
+      <Route key={'route-to-explorer-variables'} path={'/explore/variables'} exact={false} render={props => <VariablesExplorer {...props} />} />
+      <Route key={'route-to-explorer-protocols'} path={'/explore/protocols'} exact={false} render={props => <ProtocolsExplorer {...props} />} />
     </Navigation>
   </BrowserRouter>
 )

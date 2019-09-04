@@ -52,11 +52,24 @@ export default [
     to: '/atlas',
     icon: 'location_searching'
   },
+  { keyval: 'nav-divider-explore', divider: true, style: {} },
   {
-    keyval: 'nav-item-data-explorer',
+    keyval: 'nav-drawer-subheader-explore',
+    subheader: true,
+    primaryText: 'Explore'
+  },
+  {
+    keyval: 'nav-item-explorer-variables',
     exact: true,
-    label: 'Explorer',
-    to: '/data-explorer',
+    label: 'Variables',
+    to: '/explore/variables',
+    icon: 'explore'
+  },
+  {
+    keyval: 'nav-item-explorer-protocols',
+    exact: true,
+    label: 'Protocols',
+    to: '/explore/protocols',
     icon: 'explore'
   }
 ]
