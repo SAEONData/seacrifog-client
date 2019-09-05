@@ -43,7 +43,6 @@ class Navigation extends Component {
         desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         toolbarTitle={currentPath.capitalize() || 'Home'}
         toolbarThemeType={'default'}
-        toolbarClassName={'taryn'}
         defaultVisible={NavigationDrawer.getCurrentMedia().desktop && !hideMenu ? true : false}
       >
         <Switch key={location.pathname || '/'}>{this.props.children}</Switch>
