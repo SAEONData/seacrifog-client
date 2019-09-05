@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import nativeExtensions from './lib/native-extensions'
 import { ApolloProvider } from 'react-apollo'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
@@ -8,6 +9,9 @@ import App from './app'
 import WebFontLoader from 'webfontloader'
 import * as serviceWorker from './serviceWorker'
 import './index.scss'
+
+// Use with caution!!
+nativeExtensions()
 
 // Configure the Apollo Client
 const cache = new InMemoryCache()

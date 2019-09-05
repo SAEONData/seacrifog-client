@@ -4,11 +4,6 @@ import { withRouter } from 'react-router'
 import { Switch } from 'react-router-dom'
 import NavItemLink from './nav-item-link'
 
-// eslint-disable-next-line no-extend-native
-String.prototype.capitalize = function(string) {
-  return this.charAt(0).toUpperCase() + this.slice(1)
-}
-
 class Navigation extends Component {
   constructor(props) {
     super(props)

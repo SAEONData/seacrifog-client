@@ -38,6 +38,18 @@ export const PROTOCOL = gql`
       created_at
       edited_by
       updated_at
+      indirectly_related_variables {
+        id
+        name
+        class
+        domain
+      }
+      directly_related_variables {
+        id
+        name
+        class
+        domain
+      }
     }
   }
 `
