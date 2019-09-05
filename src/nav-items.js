@@ -63,13 +63,13 @@ export default [
     exact: true,
     label: 'Variables',
     to: '/explore/variables',
-    icon: 'explore'
+    icon: ''
   },
   {
     keyval: 'nav-item-explorer-protocols',
     exact: true,
     label: 'Protocols',
     to: '/explore/protocols',
-    icon: 'explore'
+    icon: ''
   }
 ]
