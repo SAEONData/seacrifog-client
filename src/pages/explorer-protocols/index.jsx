@@ -66,14 +66,14 @@ export default ({ tab }) => (
                   <Grid>
                     <Cell size={12}>
                       <ExpansionList>
-                        <ExpansionPanel animateContent={false} label="Abstract" defaultExpanded footer={false}>
+                        <ExpansionPanel label="Abstract" defaultExpanded footer={false}>
                           <Grid>
                             <Cell size={12}>
                               <p>{protocol.abstract}</p>
                             </Cell>
                           </Grid>
                         </ExpansionPanel>
-                        <ExpansionPanel animateContent={false} label="Additional Information" footer={false}>
+                        <ExpansionPanel label="Additional Information" footer={false}>
                           <Grid>
                             <Cell phoneSize={6} tabletSize={8} size={6}>
                               <p>
@@ -111,31 +111,28 @@ export default ({ tab }) => (
                             </Cell>
                           </Grid>
                         </ExpansionPanel>
-                        <ExpansionPanel animateContent={false} label="Related Variables" defaultExpanded footer={false}>
-                          <Form hoveredVariable={null} selectedVariable={null}>
-                            {({ updateForm: updateVariablesForm, selectedVariable, hoveredVariable }) => (
-                              <Table
-                                headers={Object.keys(protocol.directly_related_variables[0])
-                                  .filter(col => col !== '__typename' && col !== 'id')
-                                  .concat('relationship')
-                                  .concat('')}
-                                data={protocol.directly_related_variables
-                                  .map(v => mergeLeft({ relationship: 'direct', goto: makeGoToButton(v.id) }, v))
-                                  .concat(
-                                    protocol.indirectly_related_variables.map(v =>
-                                      mergeLeft({ relationship: 'indirect', goto: makeGoToButton(v.id) }, v)
-                                    )
-                                  )}
-                                toolbarStyle={{ backgroundColor: 'transparent' }}
-                                tableStyle={{}}
-                                setHoveredRow={row => updateVariablesForm({ hoveredVariable: row })}
-                                selectedRow={selectedVariable}
-                                toolbarButtons={[]}
-                              />
-                            )}
-                          </Form>
-                        </ExpansionPanel>
                       </ExpansionList>
+                      <h3 style={{ textAlign: 'center', marginTop: '40px', marginBottom: 0 }}>Related Variables</h3>
+                      <Form hoveredVariable={null} selectedVariable={null}>
+                        {({ updateForm: updateVariablesForm, selectedVariable, hoveredVariable }) => (
+                          <Table
+                            headers={Object.keys(protocol.directly_related_variables[0])
+                              .filter(col => col !== '__typename' && col !== 'id')
+                              .concat('relationship')
+                              .concat('')}
+                            data={protocol.directly_related_variables
+                              .map(v => mergeLeft({ relationship: 'direct', goto: makeGoToButton(v.id) }, v))
+                              .concat(
+                                protocol.indirectly_related_variables.map(v => mergeLeft({ relationship: 'indirect', goto: makeGoToButton(v.id) }, v))
+                              )}
+                            toolbarStyle={{ backgroundColor: 'transparent' }}
+                            tableStyle={{}}
+                            setHoveredRow={row => updateVariablesForm({ hoveredVariable: row })}
+                            selectedRow={selectedVariable}
+                            toolbarButtons={[]}
+                          />
+                        )}
+                      </Form>
                     </Cell>
                   </Grid>
                 )}
