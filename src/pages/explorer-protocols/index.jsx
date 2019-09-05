@@ -3,8 +3,6 @@ import DataQuery from '../../modules/data-query'
 import Form from '../../modules/form'
 import { PROTOCOLS_MIN, PROTOCOL } from '../../graphql/queries'
 import {
-  Card,
-  CardText,
   Toolbar,
   TextField,
   DataTable,
@@ -13,7 +11,6 @@ import {
   TableColumn,
   TableBody,
   FontIcon,
-  Divider,
   TablePagination,
   Grid,
   Cell,
@@ -165,6 +162,7 @@ export default ({ tab }) => (
                 tooltipLabel={'Download collated information regarding this protocol'}
                 style={{ display: 'flex', marginRight: '20px' }}
                 icon
+                onClick={() => alert('todo')}
               >
                 picture_as_pdf
               </Button>
