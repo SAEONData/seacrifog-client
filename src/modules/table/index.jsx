@@ -21,7 +21,7 @@ export default class extends PureComponent {
         // TODO: This is currently a bug in react-scripts 3.1.1
         // eslint-disable-next-line
         for (const key in p) {
-          const value = p[key]
+          const value = (p[key] || '')
             .toString()
             .toUpperCase()
             .trim()

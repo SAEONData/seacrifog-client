@@ -4,15 +4,9 @@ import Form from '../../modules/form'
 import { VARIABLES_MIN, VARIABLE } from '../../graphql/queries'
 import Table from '../../modules/table'
 import TitleToolbar from '../../modules/title-toolbar'
-import FormattedInfo from '../../modules/formatted-info'
 import { mergeLeft, pickBy } from 'ramda'
+import { GoToButton, NoneMessage, FormattedInfo } from '../../modules/shared-components'
 import { Grid, Cell, ExpansionList, ExpansionPanel, Button } from 'react-md'
-
-const makeGoToButton = id => (
-  <Button onClick={() => alert('this will navigate to the variable that is clicked')} icon>
-    remove_red_eye
-  </Button>
-)
 
 export default () => (
   <DataQuery query={VARIABLES_MIN}>
@@ -87,6 +81,39 @@ export default () => (
                         </ExpansionPanel>
                       </ExpansionList>
 
+                      {/* Role in Radiative Forcing */}
+                      <h3 style={{ textAlign: 'center', marginTop: '40px', marginBottom: 0 }}>Role in Radiative Forcing</h3>
+                      {variable.rforcings[0] ? (
+                        <Table
+                          headers={Object.keys(variable.rforcings[0])
+                            .filter(col => col && col !== '__typename' && col !== 'id')
+                            .concat('')}
+                          data={variable.rforcings.map(d => mergeLeft({ goto: <GoToButton id={d.id} /> }, d))}
+                          toolbarStyle={{ backgroundColor: 'transparent' }}
+                          tableStyle={{}}
+                          toolbarButtons={[]}
+                        />
+                      ) : (
+                        <NoneMessage />
+                      )}
+
+                      {/* Related Data Products */}
+                      <h3 style={{ textAlign: 'center', marginTop: '40px', marginBottom: 0 }}>Related Data Products</h3>
+                      {variable.dataproducts[0] ? (
+                        <Table
+                          headers={Object.keys(variable.dataproducts[0])
+                            .filter(col => col && col !== '__typename' && col !== 'id')
+                            .concat('')}
+                          data={variable.dataproducts.map(d => mergeLeft({ goto: <GoToButton id={d.id} /> }, d))}
+                          toolbarStyle={{ backgroundColor: 'transparent' }}
+                          tableStyle={{}}
+                          toolbarButtons={[]}
+                        />
+                      ) : (
+                        <NoneMessage />
+                      )}
+
+                      {/* Related Protocols */}
                       <h3 style={{ textAlign: 'center', marginTop: '40px', marginBottom: 0 }}>Related Protocols</h3>
                       {variable.directly_related_protocols[0] ? (
                         <Table
@@ -95,16 +122,18 @@ export default () => (
                             .concat('relationship')
                             .concat('')}
                           data={variable.directly_related_protocols
-                            .map(p => mergeLeft({ relationship: 'direct', goto: makeGoToButton(p.id) }, p))
+                            .map(p => mergeLeft({ relationship: 'direct', goto: <GoToButton id={p.id} /> }, p))
                             .concat(
-                              variable.indirectly_related_protocols.map(p => mergeLeft({ relationship: 'indirect', goto: makeGoToButton(p.id) }, p))
+                              variable.indirectly_related_protocols.map(p =>
+                                mergeLeft({ relationship: 'indirect', goto: <GoToButton id={p.id} /> }, p)
+                              )
                             )}
                           toolbarStyle={{ backgroundColor: 'transparent' }}
                           tableStyle={{}}
                           toolbarButtons={[]}
                         />
                       ) : (
-                        <p>NONE</p>
+                        <NoneMessage />
                       )}
                     </Cell>
                   </Grid>

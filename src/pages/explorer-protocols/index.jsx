@@ -5,14 +5,8 @@ import { PROTOCOLS_MIN, PROTOCOL } from '../../graphql/queries'
 import Table from '../../modules/table'
 import TitleToolbar from '../../modules/title-toolbar'
 import { mergeLeft, pickBy } from 'ramda'
-import FormattedInfo from '../../modules/formatted-info'
+import { GoToButton, NoneMessage, FormattedInfo } from '../../modules/shared-components'
 import { Grid, Cell, ExpansionList, ExpansionPanel, Button } from 'react-md'
-
-const makeGoToButton = id => (
-  <Button onClick={() => alert('this will navigate to the variable that is clicked')} icon>
-    remove_red_eye
-  </Button>
-)
 
 export default () => (
   <DataQuery query={PROTOCOLS_MIN}>
@@ -95,16 +89,18 @@ export default () => (
                             .concat('relationship')
                             .concat('')}
                           data={protocol.directly_related_variables
-                            .map(v => mergeLeft({ relationship: 'direct', goto: makeGoToButton(v.id) }, v))
+                            .map(v => mergeLeft({ relationship: 'direct', goto: <GoToButton id={v.id} /> }, v))
                             .concat(
-                              protocol.indirectly_related_variables.map(v => mergeLeft({ relationship: 'indirect', goto: makeGoToButton(v.id) }, v))
+                              protocol.indirectly_related_variables.map(v =>
+                                mergeLeft({ relationship: 'indirect', goto: <GoToButton id={v.id} /> }, v)
+                              )
                             )}
                           toolbarStyle={{ backgroundColor: 'transparent' }}
                           tableStyle={{}}
                           toolbarButtons={[]}
                         />
                       ) : (
-                        <p>NONE</p>
+                        <NoneMessage />
                       )}
                     </Cell>
                   </Grid>

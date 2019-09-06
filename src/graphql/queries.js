@@ -45,6 +45,25 @@ export const VARIABLE = gql`
         category
         domain
       }
+      dataproducts {
+        id
+        title
+        publish_year
+        provider
+        author
+        license
+        url_download
+        file_format
+        file_size
+      }
+      rforcings {
+        id
+        category
+        compound
+        min
+        best
+        max
+      }
     }
   }
 `
