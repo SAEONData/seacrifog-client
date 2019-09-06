@@ -89,7 +89,11 @@ export default class extends PureComponent {
                   .filter(col => col !== '__typename' && col !== 'id')
                   .map((col, j) => (
                     <TableColumn key={`table-col-${i}-${j}`} style={{ cursor: 'pointer' }}>
-                      {row[col].constructor === String ? row[col].toString().truncate(100, '..') : row[col]}
+                      {row[col] === null || row[col] === undefined
+                        ? '-'
+                        : row[col].constructor === String
+                        ? row[col].toString().truncate(70, '..')
+                        : row[col]}
                     </TableColumn>
                   ))}
               </TableRow>

@@ -4,7 +4,8 @@ import Form from '../../modules/form'
 import { PROTOCOLS_MIN, PROTOCOL } from '../../graphql/queries'
 import Table from '../../modules/table'
 import TitleToolbar from '../../modules/title-toolbar'
-import { mergeLeft } from 'ramda'
+import { mergeLeft, pickBy } from 'ramda'
+import FormattedInfo from '../../modules/formatted-info'
 import { Grid, Cell, ExpansionList, ExpansionPanel, Button } from 'react-md'
 
 const makeGoToButton = id => (
@@ -13,20 +14,22 @@ const makeGoToButton = id => (
   </Button>
 )
 
-export default ({ tab }) => (
+export default () => (
   <DataQuery query={PROTOCOLS_MIN}>
     {({ protocols }) => (
-      <Form hoveredRow={null} selectedProtocol={null}>
+      <Form hoveredProtocol={null} selectedProtocol={null}>
         {({ updateForm, hoveredProtocol, selectedProtocol }) => (
           <>
+            {/* Page Heading */}
             <TitleToolbar
               t1={selectedProtocol ? selectedProtocol.title : hoveredProtocol ? hoveredProtocol.title : 'Select rows by clicking on them...'}
               t2={selectedProtocol ? selectedProtocol.author : hoveredProtocol ? hoveredProtocol.author : ''}
               t3={selectedProtocol ? selectedProtocol.domain : hoveredProtocol ? hoveredProtocol.domain : ''}
             />
 
+            {/* Main Table (selectable) */}
             <Table
-              headers={Object.keys(protocols[0]).filter(col => col !== '__typename' && col !== 'id')}
+              headers={Object.keys(protocols[0] || '').filter(col => col !== '__typename' && col !== 'id')}
               data={protocols}
               setSelectedRow={row => updateForm({ selectedProtocol: row })}
               setHoveredRow={row => updateForm({ hoveredProtocol: row })}
@@ -57,6 +60,7 @@ export default ({ tab }) => (
               ]}
             />
 
+            {/* Display information about selected row */}
             {selectedProtocol ? (
               <DataQuery query={PROTOCOL} variables={{ id: selectedProtocol.id }}>
                 {({ protocol }) => (
@@ -71,60 +75,37 @@ export default ({ tab }) => (
                           </Grid>
                         </ExpansionPanel>
                         <ExpansionPanel label="Additional Information" footer={false}>
-                          <Grid>
-                            <Cell phoneSize={6} tabletSize={8} size={6}>
-                              <p>
-                                <b>Thematic category</b> {protocol.category}
-                              </p>
-                              <p>
-                                <b>DOI/ISBN/ISSN</b> {protocol.doi}
-                              </p>
-                              <p>
-                                <b>Publisher</b> {protocol.publisher}
-                              </p>
-                              <p>
-                                <b>Coverage</b> {protocol.coverage_type}
-                              </p>
-                              <p>
-                                <b>Purpose</b> {protocol.purpose}
-                              </p>
-                            </Cell>
-                            <Cell phoneSize={6} tabletSize={8} size={6}>
-                              <p>
-                                <b>Published</b> {protocol.publish_year}
-                              </p>
-                              <p>
-                                <b>License</b> {protocol.license}
-                              </p>
-                              <p>
-                                <b>Language</b> {protocol.language}
-                              </p>
-                              <p>
-                                <b>Format</b> {protocol.format}
-                              </p>
-                              <p>
-                                <b>Sustainability</b> {protocol.sustainability}
-                              </p>
-                            </Cell>
-                          </Grid>
+                          {
+                            <FormattedInfo
+                              object={pickBy((val, key) => {
+                                if (['abstract', '__typename'].includes(key)) return false
+                                if (typeof val === 'object') return false
+                                return true
+                              }, protocol)}
+                            />
+                          }
                         </ExpansionPanel>
                       </ExpansionList>
 
                       <h3 style={{ textAlign: 'center', marginTop: '40px', marginBottom: 0 }}>Related Variables</h3>
-                      <Table
-                        headers={Object.keys(protocol.directly_related_variables[0])
-                          .filter(col => col !== '__typename' && col !== 'id')
-                          .concat('relationship')
-                          .concat('')}
-                        data={protocol.directly_related_variables
-                          .map(v => mergeLeft({ relationship: 'direct', goto: makeGoToButton(v.id) }, v))
-                          .concat(
-                            protocol.indirectly_related_variables.map(v => mergeLeft({ relationship: 'indirect', goto: makeGoToButton(v.id) }, v))
-                          )}
-                        toolbarStyle={{ backgroundColor: 'transparent' }}
-                        tableStyle={{}}
-                        toolbarButtons={[]}
-                      />
+                      {protocol.directly_related_variables[0] ? (
+                        <Table
+                          headers={Object.keys(protocol.directly_related_variables[0])
+                            .filter(col => col !== '__typename' && col !== 'id')
+                            .concat('relationship')
+                            .concat('')}
+                          data={protocol.directly_related_variables
+                            .map(v => mergeLeft({ relationship: 'direct', goto: makeGoToButton(v.id) }, v))
+                            .concat(
+                              protocol.indirectly_related_variables.map(v => mergeLeft({ relationship: 'indirect', goto: makeGoToButton(v.id) }, v))
+                            )}
+                          toolbarStyle={{ backgroundColor: 'transparent' }}
+                          tableStyle={{}}
+                          toolbarButtons={[]}
+                        />
+                      ) : (
+                        <p>NONE</p>
+                      )}
                     </Cell>
                   </Grid>
                 )}

@@ -5,8 +5,46 @@ export const VARIABLE = gql`
     variable(id: $id) {
       id
       name
-      domain
       class
+      domain
+      set
+      description
+      method
+      uri
+      rftype
+      score
+      rating
+      relevance
+      feasibility
+      cost
+      updated_by
+      updated_at
+      frequency_value
+      frequency_unit
+      frequency_comment
+      res_value
+      res_unit
+      res_comment
+      run_cval
+      run_cunit
+      run_ccomment
+      req_source
+      req_uri
+      technology_type
+      indirectly_related_protocols {
+        id
+        title
+        author
+        category
+        domain
+      }
+      directly_related_protocols {
+        id
+        title
+        author
+        category
+        domain
+      }
     }
   }
 `
@@ -61,6 +99,17 @@ export const PROTOCOLS_MIN = gql`
       author
       title
       publish_year
+      domain
+    }
+  }
+`
+
+export const VARIABLES_MIN = gql`
+  query variables {
+    variables {
+      id
+      name
+      class
       domain
     }
   }
