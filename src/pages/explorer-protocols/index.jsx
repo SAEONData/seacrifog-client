@@ -111,25 +111,20 @@ export default ({ tab }) => (
                       </ExpansionList>
 
                       <h3 style={{ textAlign: 'center', marginTop: '40px', marginBottom: 0 }}>Related Variables</h3>
-                      <Form selectedVariable={null}>
-                        {({ updateForm: updateVariablesForm, selectedVariable }) => (
-                          <Table
-                            headers={Object.keys(protocol.directly_related_variables[0])
-                              .filter(col => col !== '__typename' && col !== 'id')
-                              .concat('relationship')
-                              .concat('')}
-                            data={protocol.directly_related_variables
-                              .map(v => mergeLeft({ relationship: 'direct', goto: makeGoToButton(v.id) }, v))
-                              .concat(
-                                protocol.indirectly_related_variables.map(v => mergeLeft({ relationship: 'indirect', goto: makeGoToButton(v.id) }, v))
-                              )}
-                            toolbarStyle={{ backgroundColor: 'transparent' }}
-                            tableStyle={{}}
-                            selectedRow={selectedVariable}
-                            toolbarButtons={[]}
-                          />
-                        )}
-                      </Form>
+                      <Table
+                        headers={Object.keys(protocol.directly_related_variables[0])
+                          .filter(col => col !== '__typename' && col !== 'id')
+                          .concat('relationship')
+                          .concat('')}
+                        data={protocol.directly_related_variables
+                          .map(v => mergeLeft({ relationship: 'direct', goto: makeGoToButton(v.id) }, v))
+                          .concat(
+                            protocol.indirectly_related_variables.map(v => mergeLeft({ relationship: 'indirect', goto: makeGoToButton(v.id) }, v))
+                          )}
+                        toolbarStyle={{ backgroundColor: 'transparent' }}
+                        tableStyle={{}}
+                        toolbarButtons={[]}
+                      />
                     </Cell>
                   </Grid>
                 )}

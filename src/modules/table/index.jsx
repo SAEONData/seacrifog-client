@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import debounce from '../../lib/debounce'
 import { mergeLeft } from 'ramda'
+import { log } from '../../lib/log'
 import { Toolbar, TextField, FontIcon, DataTable, TableHeader, TableRow, TableColumn, TableBody, TablePagination } from 'react-md'
 
 export default class extends PureComponent {
@@ -42,9 +43,11 @@ export default class extends PureComponent {
   }
 
   render() {
-    const { selectedRow, setHoveredRow, setSelectedRow, toolbarButtons, toolbarStyle, headers } = this.props
     const { searchValue } = this.state
-    const rowsPerPageLabel = 'Rows'
+    const { selectedRow, toolbarButtons, toolbarStyle, headers } = this.props
+    const setHoveredRow = this.props.setHoveredRow || (() => log('Row hover changed'))
+    const setSelectedRow = this.props.setSelectedRow || (() => log('Row selection changed'))
+
     return (
       <>
         <Toolbar style={mergeLeft(toolbarStyle, { display: 'flex', alignItems: 'center' })} themed zDepth={0}>
@@ -70,18 +73,12 @@ export default class extends PureComponent {
               ))}
             </TableRow>
           </TableHeader>
-          <TableBody
-            onMouseLeave={() => {
-              if (setHoveredRow) setHoveredRow(null)
-            }}
-          >
+          <TableBody onMouseLeave={() => setHoveredRow(null)}>
             {this.getDataSlice(this.getFilteredData(searchValue)).map((row, i) => (
               <TableRow
                 className={row.id === (selectedRow || {}).id ? 'selected-row' : ''}
                 key={`table-row-${i}`}
-                onMouseOver={() => {
-                  if (setHoveredRow) debounce(() => setHoveredRow(row), 5)
-                }}
+                onMouseOver={debounce(() => setHoveredRow(row), 5)}
                 onClick={() => {
                   if (!setSelectedRow) return
                   else if ((selectedRow || {}).id !== row.id) setSelectedRow(row)
@@ -102,7 +99,7 @@ export default class extends PureComponent {
             defaultRowsPerPage={5}
             rowsPerPageItems={[5, 10, 25, 50]}
             rows={this.getFilteredData(searchValue).length}
-            rowsPerPageLabel={rowsPerPageLabel}
+            rowsPerPageLabel={'Rows'}
             onPagination={this.handlePagination}
           />
         </DataTable>
