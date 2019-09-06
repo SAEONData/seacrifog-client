@@ -2,7 +2,13 @@ import React from 'react'
 import { Button, Grid, Cell } from 'react-md'
 
 export const GoToButton = ({ id }) => (
-  <Button primary tooltipLabel={`Go to ${id}`} tooltipPosition="top" onClick={() => alert('this will navigate to the variable that is clicked')} icon>
+  <Button
+    secondary
+    tooltipLabel={`Go to ${id}`}
+    tooltipPosition="top"
+    onClick={() => alert('this will navigate to the variable that is clicked')}
+    icon
+  >
     remove_red_eye
   </Button>
 )
