@@ -70,12 +70,18 @@ export default class extends PureComponent {
               ))}
             </TableRow>
           </TableHeader>
-          <TableBody onMouseLeave={() => setHoveredRow(null)}>
+          <TableBody
+            onMouseLeave={() => {
+              if (setHoveredRow) setHoveredRow(null)
+            }}
+          >
             {this.getDataSlice(this.getFilteredData(searchValue)).map((row, i) => (
               <TableRow
                 className={row.id === (selectedRow || {}).id ? 'selected-row' : ''}
                 key={`table-row-${i}`}
-                onMouseOver={debounce(() => setHoveredRow(row), 5)}
+                onMouseOver={() => {
+                  if (setHoveredRow) debounce(() => setHoveredRow(row), 5)
+                }}
                 onClick={() => {
                   if (!setSelectedRow) return
                   else if ((selectedRow || {}).id !== row.id) setSelectedRow(row)

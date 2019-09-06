@@ -3,8 +3,9 @@ import DataQuery from '../../modules/data-query'
 import Form from '../../modules/form'
 import { PROTOCOLS_MIN, PROTOCOL } from '../../graphql/queries'
 import Table from '../../modules/table'
+import TitleToolbar from '../../modules/title-toolbar'
 import { mergeLeft } from 'ramda'
-import { Toolbar, Grid, Cell, ExpansionList, ExpansionPanel, Button } from 'react-md'
+import { Grid, Cell, ExpansionList, ExpansionPanel, Button } from 'react-md'
 
 const makeGoToButton = id => (
   <Button onClick={() => alert('this will navigate to the variable that is clicked')} icon>
@@ -18,15 +19,11 @@ export default ({ tab }) => (
       <Form hoveredRow={null} selectedProtocol={null}>
         {({ updateForm, hoveredProtocol, selectedProtocol }) => (
           <>
-            <Toolbar className={'md-grid'} zDepth={0} prominent>
-              <Cell size={12} style={{ textAlign: 'center' }}>
-                <p style={{ fontSize: '20px', lineHeight: '28px' }}>
-                  {selectedProtocol ? selectedProtocol.title : hoveredProtocol ? hoveredProtocol.title : 'Select rows by clicking on them...'}
-                </p>
-                <p style={{ fontSize: '15px' }}>{selectedProtocol ? selectedProtocol.author : hoveredProtocol ? hoveredProtocol.author : ''}</p>
-                <p style={{ fontSize: '15px' }}>{selectedProtocol ? selectedProtocol.domain : hoveredProtocol ? hoveredProtocol.domain : ''}</p>
-              </Cell>
-            </Toolbar>
+            <TitleToolbar
+              t1={selectedProtocol ? selectedProtocol.title : hoveredProtocol ? hoveredProtocol.title : 'Select rows by clicking on them...'}
+              t2={selectedProtocol ? selectedProtocol.author : hoveredProtocol ? hoveredProtocol.author : ''}
+              t3={selectedProtocol ? selectedProtocol.domain : hoveredProtocol ? hoveredProtocol.domain : ''}
+            />
 
             <Table
               headers={Object.keys(protocols[0]).filter(col => col !== '__typename' && col !== 'id')}
@@ -112,9 +109,10 @@ export default ({ tab }) => (
                           </Grid>
                         </ExpansionPanel>
                       </ExpansionList>
+
                       <h3 style={{ textAlign: 'center', marginTop: '40px', marginBottom: 0 }}>Related Variables</h3>
-                      <Form hoveredVariable={null} selectedVariable={null}>
-                        {({ updateForm: updateVariablesForm, selectedVariable, hoveredVariable }) => (
+                      <Form selectedVariable={null}>
+                        {({ updateForm: updateVariablesForm, selectedVariable }) => (
                           <Table
                             headers={Object.keys(protocol.directly_related_variables[0])
                               .filter(col => col !== '__typename' && col !== 'id')
@@ -127,7 +125,6 @@ export default ({ tab }) => (
                               )}
                             toolbarStyle={{ backgroundColor: 'transparent' }}
                             tableStyle={{}}
-                            setHoveredRow={row => updateVariablesForm({ hoveredVariable: row })}
                             selectedRow={selectedVariable}
                             toolbarButtons={[]}
                           />
