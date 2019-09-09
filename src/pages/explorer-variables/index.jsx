@@ -5,8 +5,8 @@ import { VARIABLES_MIN, VARIABLE } from '../../graphql/queries'
 import Table from '../../modules/table'
 import TitleToolbar from '../../modules/title-toolbar'
 import { mergeLeft, pickBy } from 'ramda'
-import { NoneMessage, FormattedInfo } from '../../modules/shared-components'
-import { Grid, Cell, ExpansionList, ExpansionPanel, Button, DataTable, TableHeader, TableRow, TableColumn, TableBody, Card } from 'react-md'
+import { NoneMessage, FormattedInfo, LinkButton, DownloadButton } from '../../modules/shared-components'
+import { Grid, Cell, ExpansionList, ExpansionPanel, DataTable, TableHeader, TableRow, TableColumn, TableBody, Card } from 'react-md'
 
 export default () => (
   <DataQuery query={VARIABLES_MIN}>
@@ -28,30 +28,7 @@ export default () => (
               onRowClick={row => updateForm({ selectedVariable: row })}
               onRowHover={row => updateForm({ hoveredVariable: row })}
               selectedRow={selectedVariable}
-              toolbarButtons={[
-                <Button
-                  key={'url-button'}
-                  tooltipPosition={'left'}
-                  disabled={selectedVariable ? false : true}
-                  tooltipLabel={'Go to <insert URL here>'}
-                  style={{ display: 'flex', marginRight: '20px' }}
-                  icon
-                  onClick={() => alert('todo')}
-                >
-                  link
-                </Button>,
-                <Button
-                  key={'download-button'}
-                  tooltipPosition={'left'}
-                  disabled={selectedVariable ? false : true}
-                  tooltipLabel={'Download collated information for the selected row'}
-                  style={{ display: 'flex', marginRight: '20px' }}
-                  icon
-                  onClick={() => alert('todo')}
-                >
-                  picture_as_pdf
-                </Button>
-              ]}
+              toolbarButtons={[<LinkButton active={selectedVariable ? false : true} />, <DownloadButton active={selectedVariable ? false : true} />]}
             />
 
             {/* Display information about selected row */}

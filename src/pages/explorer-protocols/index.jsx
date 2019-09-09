@@ -5,8 +5,8 @@ import { PROTOCOLS_MIN, PROTOCOL } from '../../graphql/queries'
 import Table from '../../modules/table'
 import TitleToolbar from '../../modules/title-toolbar'
 import { mergeLeft, pickBy } from 'ramda'
-import { NoneMessage, FormattedInfo } from '../../modules/shared-components'
-import { Grid, Cell, ExpansionList, ExpansionPanel, Button, Card } from 'react-md'
+import { NoneMessage, FormattedInfo, LinkButton, DownloadButton } from '../../modules/shared-components'
+import { Grid, Cell, ExpansionList, ExpansionPanel, Card } from 'react-md'
 
 export default () => (
   <DataQuery query={PROTOCOLS_MIN}>
@@ -28,30 +28,7 @@ export default () => (
               onRowClick={row => updateForm({ selectedProtocol: row })}
               onRowHover={row => updateForm({ hoveredProtocol: row })}
               selectedRow={selectedProtocol}
-              toolbarButtons={[
-                <Button
-                  key={'url-button'}
-                  tooltipPosition={'left'}
-                  disabled={selectedProtocol ? false : true}
-                  tooltipLabel={'Go to <insert URL here>'}
-                  style={{ display: 'flex', marginRight: '20px' }}
-                  icon
-                  onClick={() => alert('todo')}
-                >
-                  link
-                </Button>,
-                <Button
-                  key={'download-button'}
-                  tooltipPosition={'left'}
-                  disabled={selectedProtocol ? false : true}
-                  tooltipLabel={'Download collated information for the selected row'}
-                  style={{ display: 'flex', marginRight: '20px' }}
-                  icon
-                  onClick={() => alert('todo')}
-                >
-                  picture_as_pdf
-                </Button>
-              ]}
+              toolbarButtons={[<LinkButton active={selectedProtocol ? false : true} />, <DownloadButton active={selectedProtocol ? false : true} />]}
             />
 
             {/* Display information about selected row */}

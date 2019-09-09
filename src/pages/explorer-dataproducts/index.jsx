@@ -4,8 +4,8 @@ import { DATAPRODUCTS_MIN, DATAPRODUCT } from '../../graphql/queries'
 import Table from '../../modules/table'
 import TitleToolbar from '../../modules/title-toolbar'
 import { mergeLeft, pickBy } from 'ramda'
-import { NoneMessage, FormattedInfo } from '../../modules/shared-components'
-import { Grid, Cell, ExpansionList, ExpansionPanel, Button, Card } from 'react-md'
+import { NoneMessage, FormattedInfo, LinkButton, DownloadButton } from '../../modules/shared-components'
+import { Grid, Cell, ExpansionList, ExpansionPanel, Card } from 'react-md'
 import DataQuery from '../../modules/data-query'
 
 export default () => (
@@ -28,30 +28,7 @@ export default () => (
               onRowClick={row => updateForm({ selectedDP: row })}
               onRowHover={row => updateForm({ hoveredDP: row })}
               selectedRow={selectedDP}
-              toolbarButtons={[
-                <Button
-                  key={'url-button'}
-                  tooltipPosition={'left'}
-                  disabled={selectedDP ? false : true}
-                  tooltipLabel={'Go to <insert URL here>'}
-                  style={{ display: 'flex', marginRight: '20px' }}
-                  icon
-                  onClick={() => alert('todo')}
-                >
-                  link
-                </Button>,
-                <Button
-                  key={'download-button'}
-                  tooltipPosition={'left'}
-                  disabled={selectedDP ? false : true}
-                  tooltipLabel={'Download collated information for the selected row'}
-                  style={{ display: 'flex', marginRight: '20px' }}
-                  icon
-                  onClick={() => alert('todo')}
-                >
-                  picture_as_pdf
-                </Button>
-              ]}
+              toolbarButtons={[<LinkButton active={selectedDP ? false : true} />, <DownloadButton active={selectedDP ? false : true} />]}
             />
 
             {/* Display information about selected row */}
