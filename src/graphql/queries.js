@@ -1,5 +1,91 @@
 import gql from 'graphql-tag'
 
+export const PROTOCOLS_MIN = gql`
+  query protocols {
+    protocols {
+      id
+      author
+      title
+      publish_year
+      domain
+    }
+  }
+`
+
+export const VARIABLES_MIN = gql`
+  query variables {
+    variables {
+      id
+      name
+      class
+      domain
+      set
+      cost
+      feasibility
+      relevance
+    }
+  }
+`
+
+export const DATAPRODUCTS_MIN = gql`
+  query dataProducts {
+    dataProducts {
+      id
+      title
+      publish_year
+      provider
+      contact
+      author
+    }
+  }
+`
+
+export const DATAPRODUCT = gql`
+  query dataProduct($id: Int!) {
+    dataProduct(id: $id) {
+      id
+      title
+      publish_year
+      publish_date
+      keywords
+      abstract
+      provider
+      author
+      contact
+      coverage_temp_start
+      coverage_temp_end
+      res_spatial
+      res_spatial_unit
+      res_temperature
+      res_temperature_unit
+      uncertainty
+      uncertainty_unit
+      doi
+      license
+      url_download
+      file_format
+      file_size
+      file_size_unit
+      url_info
+      created_by
+      created_at
+      modified_by
+      modified_at
+      present
+      variables {
+        id
+        name
+        class
+        domain
+        set
+        cost
+        feasibility
+        relevance
+      }
+    }
+  }
+`
+
 export const VARIABLE = gql`
   query variable($id: Int!) {
     variable(id: $id) {
@@ -107,33 +193,6 @@ export const PROTOCOL = gql`
         class
         domain
       }
-    }
-  }
-`
-
-export const PROTOCOLS_MIN = gql`
-  query protocols {
-    protocols {
-      id
-      author
-      title
-      publish_year
-      domain
-    }
-  }
-`
-
-export const VARIABLES_MIN = gql`
-  query variables {
-    variables {
-      id
-      name
-      class
-      domain
-      set
-      cost
-      feasibility
-      relevance
     }
   }
 `

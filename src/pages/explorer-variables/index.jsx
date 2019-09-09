@@ -6,7 +6,7 @@ import Table from '../../modules/table'
 import TitleToolbar from '../../modules/title-toolbar'
 import { mergeLeft, pickBy } from 'ramda'
 import { NoneMessage, FormattedInfo } from '../../modules/shared-components'
-import { Grid, Cell, ExpansionList, ExpansionPanel, Button, DataTable, TableHeader, TableRow, TableColumn, TableBody } from 'react-md'
+import { Grid, Cell, ExpansionList, ExpansionPanel, Button, DataTable, TableHeader, TableRow, TableColumn, TableBody, Card } from 'react-md'
 
 export default () => (
   <DataQuery query={VARIABLES_MIN}>
@@ -148,35 +148,39 @@ export default () => (
                       </ExpansionList>
 
                       {/* Related Data Products */}
-                      <h3 style={{ textAlign: 'center', marginTop: '100px', marginBottom: 0 }}>Related Data Products</h3>
+                      <h3 style={{ textAlign: 'center', marginTop: '100px', marginBottom: '50px' }}>Related Data Products</h3>
                       {variable.dataproducts[0] ? (
-                        <Table
-                          onRowClick={() => alert('Should this navigate to the clicked data product?')}
-                          headers={Object.keys(variable.dataproducts[0]).filter(col => col && col !== '__typename' && col !== 'id')}
-                          data={variable.dataproducts.map(d => mergeLeft({}, d))}
-                          toolbarStyle={{ backgroundColor: 'transparent' }}
-                          tableStyle={{}}
-                          toolbarButtons={[]}
-                        />
+                        <Card tableCard>
+                          <Table
+                            onRowClick={() => alert('Should this navigate to the clicked data product?')}
+                            headers={Object.keys(variable.dataproducts[0]).filter(col => col && col !== '__typename' && col !== 'id')}
+                            data={variable.dataproducts.map(d => mergeLeft({}, d))}
+                            toolbarStyle={{ backgroundColor: 'transparent' }}
+                            tableStyle={{}}
+                            toolbarButtons={[]}
+                          />
+                        </Card>
                       ) : (
                         <NoneMessage />
                       )}
 
                       {/* Related Protocols */}
-                      <h3 style={{ textAlign: 'center', marginTop: '100px', marginBottom: 0 }}>Related Protocols</h3>
+                      <h3 style={{ textAlign: 'center', marginTop: '100px', marginBottom: '50px' }}>Related Protocols</h3>
                       {variable.directly_related_protocols[0] ? (
-                        <Table
-                          onRowClick={() => alert('Should this navigate to the clicked protocol?')}
-                          headers={Object.keys(variable.directly_related_protocols[0])
-                            .filter(col => col && col !== '__typename' && col !== 'id')
-                            .concat('relationship')}
-                          data={variable.directly_related_protocols
-                            .map(p => mergeLeft({ relationship: 'direct' }, p))
-                            .concat(variable.indirectly_related_protocols.map(p => mergeLeft({ relationship: 'indirect' }, p)))}
-                          toolbarStyle={{ backgroundColor: 'transparent' }}
-                          tableStyle={{}}
-                          toolbarButtons={[]}
-                        />
+                        <Card tableCard>
+                          <Table
+                            onRowClick={() => alert('Should this navigate to the clicked protocol?')}
+                            headers={Object.keys(variable.directly_related_protocols[0])
+                              .filter(col => col && col !== '__typename' && col !== 'id')
+                              .concat('relationship')}
+                            data={variable.directly_related_protocols
+                              .map(p => mergeLeft({ relationship: 'direct' }, p))
+                              .concat(variable.indirectly_related_protocols.map(p => mergeLeft({ relationship: 'indirect' }, p)))}
+                            toolbarStyle={{ backgroundColor: 'transparent' }}
+                            tableStyle={{}}
+                            toolbarButtons={[]}
+                          />
+                        </Card>
                       ) : (
                         <NoneMessage />
                       )}

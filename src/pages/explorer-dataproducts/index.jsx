@@ -1,38 +1,38 @@
 import React from 'react'
-import DataQuery from '../../modules/data-query'
 import Form from '../../modules/form'
-import { PROTOCOLS_MIN, PROTOCOL } from '../../graphql/queries'
+import { DATAPRODUCTS_MIN, DATAPRODUCT } from '../../graphql/queries'
 import Table from '../../modules/table'
 import TitleToolbar from '../../modules/title-toolbar'
 import { mergeLeft, pickBy } from 'ramda'
 import { NoneMessage, FormattedInfo } from '../../modules/shared-components'
 import { Grid, Cell, ExpansionList, ExpansionPanel, Button, Card } from 'react-md'
+import DataQuery from '../../modules/data-query'
 
 export default () => (
-  <DataQuery query={PROTOCOLS_MIN}>
-    {({ protocols }) => (
-      <Form hoveredProtocol={null} selectedProtocol={null}>
-        {({ updateForm, hoveredProtocol, selectedProtocol }) => (
+  <DataQuery query={DATAPRODUCTS_MIN}>
+    {({ dataProducts }) => (
+      <Form hoveredDP={null} selectedDP={null}>
+        {({ updateForm, hoveredDP, selectedDP }) => (
           <>
             {/* Page Heading */}
             <TitleToolbar
-              t1={selectedProtocol ? selectedProtocol.title : hoveredProtocol ? hoveredProtocol.title : 'Select rows by clicking on them...'}
-              t2={selectedProtocol ? selectedProtocol.author : hoveredProtocol ? hoveredProtocol.author : ''}
-              t3={selectedProtocol ? selectedProtocol.domain : hoveredProtocol ? hoveredProtocol.domain : ''}
+              t1={selectedDP ? selectedDP.title : hoveredDP ? hoveredDP.title : 'Select rows by clicking on them...'}
+              t2={selectedDP ? selectedDP.provider : hoveredDP ? hoveredDP.provider : ''}
+              t3={selectedDP ? selectedDP.contact : hoveredDP ? hoveredDP.contact : ''}
             />
 
             {/* Main Table (selectable) */}
             <Table
-              headers={Object.keys(protocols[0] || '').filter(col => col !== '__typename' && col !== 'id')}
-              data={protocols}
-              onRowClick={row => updateForm({ selectedProtocol: row })}
-              onRowHover={row => updateForm({ hoveredProtocol: row })}
-              selectedRow={selectedProtocol}
+              headers={Object.keys(dataProducts[0] || '').filter(col => col !== '__typename' && col !== 'id')}
+              data={dataProducts}
+              onRowClick={row => updateForm({ selectedDP: row })}
+              onRowHover={row => updateForm({ hoveredDP: row })}
+              selectedRow={selectedDP}
               toolbarButtons={[
                 <Button
                   key={'url-button'}
                   tooltipPosition={'left'}
-                  disabled={selectedProtocol ? false : true}
+                  disabled={selectedDP ? false : true}
                   tooltipLabel={'Go to <insert URL here>'}
                   style={{ display: 'flex', marginRight: '20px' }}
                   icon
@@ -43,7 +43,7 @@ export default () => (
                 <Button
                   key={'download-button'}
                   tooltipPosition={'left'}
-                  disabled={selectedProtocol ? false : true}
+                  disabled={selectedDP ? false : true}
                   tooltipLabel={'Download collated information for the selected row'}
                   style={{ display: 'flex', marginRight: '20px' }}
                   icon
@@ -55,16 +55,16 @@ export default () => (
             />
 
             {/* Display information about selected row */}
-            {selectedProtocol ? (
-              <DataQuery query={PROTOCOL} variables={{ id: selectedProtocol.id }}>
-                {({ protocol }) => (
+            {selectedDP ? (
+              <DataQuery query={DATAPRODUCT} variables={{ id: selectedDP.id }}>
+                {({ dataProduct }) => (
                   <Grid>
                     <Cell size={12}>
                       <ExpansionList>
                         <ExpansionPanel label="Abstract" defaultExpanded footer={false}>
                           <Grid>
                             <Cell size={12}>
-                              <p>{protocol.abstract}</p>
+                              <p>{dataProduct.abstract}</p>
                             </Cell>
                           </Grid>
                         </ExpansionPanel>
@@ -75,23 +75,19 @@ export default () => (
                                 if (['abstract', '__typename'].includes(key)) return false
                                 if (typeof val === 'object') return false
                                 return true
-                              }, protocol)}
+                              }, dataProduct)}
                             />
                           }
                         </ExpansionPanel>
                       </ExpansionList>
 
-                      <h3 style={{ textAlign: 'center', marginTop: '100px', marginBottom: '50px' }}>Related Variables</h3>
-                      {protocol.directly_related_variables[0] ? (
+                      <h3 style={{ textAlign: 'center', marginTop: '100px', marginBottom: '50px' }}>Essential Variables</h3>
+                      {dataProduct.variables[0] ? (
                         <Card tableCard>
                           <Table
                             onRowClick={() => alert('Should this navigate to the clicked variable?')}
-                            headers={Object.keys(protocol.directly_related_variables[0])
-                              .filter(col => col !== '__typename' && col !== 'id')
-                              .concat('relationship')}
-                            data={protocol.directly_related_variables
-                              .map(v => mergeLeft({ relationship: 'direct' }, v))
-                              .concat(protocol.indirectly_related_variables.map(v => mergeLeft({ relationship: 'indirect' }, v)))}
+                            headers={Object.keys(dataProduct.variables[0]).filter(col => col !== '__typename' && col !== 'id')}
+                            data={dataProduct.variables.map(v => mergeLeft({ relationship: 'direct' }, v))}
                             toolbarStyle={{ backgroundColor: 'transparent' }}
                             tableStyle={{}}
                             toolbarButtons={[]}

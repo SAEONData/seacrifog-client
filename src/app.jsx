@@ -9,6 +9,7 @@ import SelectorTool from './pages/selector-tool'
 import Atlas from './pages/atlas'
 import ProtocolsExplorer from './pages/explorer-protocols'
 import VariablesExplorer from './pages/explorer-variables'
+import DataproductsExplorer from './pages/explorer-dataproducts'
 import navItems from './nav-items'
 import Test from './pages/test'
 
@@ -32,6 +33,12 @@ const App = () => (
       {/* Explorer tool */}
       <Route key={'route-to-explorer-variables'} path={'/explore/variables'} exact={false} render={props => <VariablesExplorer {...props} />} />
       <Route key={'route-to-explorer-protocols'} path={'/explore/protocols'} exact={false} render={props => <ProtocolsExplorer {...props} />} />
+      <Route
+        key={'route-to-explorer-dataproducts'}
+        path={'/explore/dataproducts'}
+        exact={false}
+        render={props => <DataproductsExplorer {...props} />}
+      />
     </Navigation>
   </BrowserRouter>
 )
