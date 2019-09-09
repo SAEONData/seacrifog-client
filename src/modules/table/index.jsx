@@ -45,8 +45,8 @@ export default class extends PureComponent {
   render() {
     const { searchValue } = this.state
     const { selectedRow, toolbarButtons, toolbarStyle, headers } = this.props
-    const setHoveredRow = this.props.setHoveredRow || (() => log('Row hover changed'))
-    const setSelectedRow = this.props.setSelectedRow || (() => log('Row selection changed'))
+    const onRowHover = this.props.onRowHover || (() => log('Row hover changed'))
+    const onRowClick = this.props.onRowClick || (() => log('Row selection changed'))
 
     return (
       <>
@@ -73,22 +73,22 @@ export default class extends PureComponent {
               ))}
             </TableRow>
           </TableHeader>
-          <TableBody onMouseLeave={() => setHoveredRow(null)}>
+          <TableBody onMouseLeave={() => onRowHover(null)}>
             {this.getDataSlice(this.getFilteredData(searchValue)).map((row, i) => (
               <TableRow
                 className={row.id === (selectedRow || {}).id ? 'selected-row' : ''}
                 key={`table-row-${i}`}
-                onMouseOver={debounce(() => setHoveredRow(row), 5)}
+                onMouseOver={debounce(() => onRowHover(row), 5)}
                 onClick={() => {
-                  if (!setSelectedRow) return
-                  else if ((selectedRow || {}).id !== row.id) setSelectedRow(row)
-                  else setSelectedRow(null)
+                  if (!onRowClick) return
+                  else if ((selectedRow || {}).id !== row.id) onRowClick(row)
+                  else onRowClick(null)
                 }}
               >
                 {Object.keys(row)
                   .filter(col => col !== '__typename' && col !== 'id')
                   .map((col, j) => (
-                    <TableColumn key={`table-col-${i}-${j}`} style={{ cursor: 'pointer' }}>
+                    <TableColumn plain={false} key={`table-col-${i}-${j}`} style={{ cursor: 'pointer' }}>
                       {row[col] === null || row[col] === undefined
                         ? '-'
                         : row[col].constructor === String

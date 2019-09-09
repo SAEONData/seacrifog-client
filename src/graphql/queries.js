@@ -25,9 +25,9 @@ export const VARIABLE = gql`
       res_value
       res_unit
       res_comment
-      run_cval
-      run_cunit
-      run_ccomment
+      unc_val
+      unc_unit
+      unc_comment
       req_source
       req_uri
       technology_type
@@ -130,6 +130,10 @@ export const VARIABLES_MIN = gql`
       name
       class
       domain
+      set
+      cost
+      feasibility
+      relevance
     }
   }
 `
@@ -159,9 +163,9 @@ export const VARIABLES = gql`
       res_value
       res_unit
       res_comment
-      run_cval
-      run_cunit
-      run_ccomment
+      unc_val
+      unc_unit
+      unc_comment
       req_source
       req_uri
       technology_type

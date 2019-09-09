@@ -5,7 +5,7 @@ import { PROTOCOLS_MIN, PROTOCOL } from '../../graphql/queries'
 import Table from '../../modules/table'
 import TitleToolbar from '../../modules/title-toolbar'
 import { mergeLeft, pickBy } from 'ramda'
-import { GoToButton, NoneMessage, FormattedInfo } from '../../modules/shared-components'
+import { NoneMessage, FormattedInfo } from '../../modules/shared-components'
 import { Grid, Cell, ExpansionList, ExpansionPanel, Button } from 'react-md'
 
 export default () => (
@@ -25,8 +25,8 @@ export default () => (
             <Table
               headers={Object.keys(protocols[0] || '').filter(col => col !== '__typename' && col !== 'id')}
               data={protocols}
-              setSelectedRow={row => updateForm({ selectedProtocol: row })}
-              setHoveredRow={row => updateForm({ hoveredProtocol: row })}
+              onRowClick={row => updateForm({ selectedProtocol: row })}
+              onRowHover={row => updateForm({ hoveredProtocol: row })}
               selectedRow={selectedProtocol}
               toolbarButtons={[
                 <Button
@@ -81,20 +81,16 @@ export default () => (
                         </ExpansionPanel>
                       </ExpansionList>
 
-                      <h3 style={{ textAlign: 'center', marginTop: '40px', marginBottom: 0 }}>Related Variables</h3>
+                      <h3 style={{ textAlign: 'center', marginTop: '100px', marginBottom: 0 }}>Related Variables</h3>
                       {protocol.directly_related_variables[0] ? (
                         <Table
+                          onRowClick={() => alert('Should this navigate to the clicked variable?')}
                           headers={Object.keys(protocol.directly_related_variables[0])
                             .filter(col => col !== '__typename' && col !== 'id')
-                            .concat('relationship')
-                            .concat('')}
+                            .concat('relationship')}
                           data={protocol.directly_related_variables
-                            .map(v => mergeLeft({ relationship: 'direct', goto: <GoToButton id={v.id} /> }, v))
-                            .concat(
-                              protocol.indirectly_related_variables.map(v =>
-                                mergeLeft({ relationship: 'indirect', goto: <GoToButton id={v.id} /> }, v)
-                              )
-                            )}
+                            .map(v => mergeLeft({ relationship: 'direct' }, v))
+                            .concat(protocol.indirectly_related_variables.map(v => mergeLeft({ relationship: 'indirect' }, v)))}
                           toolbarStyle={{ backgroundColor: 'transparent' }}
                           tableStyle={{}}
                           toolbarButtons={[]}
