@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Grid, Cell } from 'react-md'
+import { Grid, Cell } from 'react-md'
 
 export const NoneMessage = () => <p style={{ textAlign: 'center' }}>(None)</p>
 
