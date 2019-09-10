@@ -28,7 +28,20 @@ const App = () => (
 
           {/* Tools */}
           <Route key={'route-to-dashboard-tool'} path={'/dashboard'} exact={true} component={Dashboard} />
-          <Route key={'route-to-selector-tool'} path={'/selector'} exact={true} component={SelectorTool} />
+          <Route
+            key={'route-to-selector-tool'}
+            path={'/selector'}
+            exact={true}
+            render={props => (
+              <SelectorTool
+                updateForm={updateForm}
+                selectedDP={selectedDP}
+                selectedProtocol={selectedProtocol}
+                selectedVariable={selectedVariable}
+                {...props}
+              />
+            )}
+          />
           <Route key={'route-to-atlas-tool'} path={'/atlas'} exact={true} component={Atlas} />
 
           {/* Explorer tool */}

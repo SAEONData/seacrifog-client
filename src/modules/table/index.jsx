@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import debounce from '../../lib/debounce'
 import { mergeLeft } from 'ramda'
 import { log } from '../../lib/log'
-import { Toolbar, TextField, FontIcon, DataTable, TableHeader, TableRow, TableColumn, TableBody, TablePagination } from 'react-md'
+import { Toolbar, TextField, FontIcon, DataTable, TableHeader, TableRow, TableColumn, TableBody, TablePagination, Button } from 'react-md'
 
 export default class extends PureComponent {
   state = {}
@@ -45,6 +45,7 @@ export default class extends PureComponent {
   render() {
     const { searchValue } = this.state
     const { selectedRow, toolbarButtons, toolbarStyle, headers } = this.props
+    const resetForm = this.props.resetForm || null
     const onRowHover = this.props.onRowHover || (() => log('Row hover changed'))
     const onRowClick = this.props.onRowClick || (() => log('Row selection changed'))
 
@@ -61,7 +62,23 @@ export default class extends PureComponent {
             placeholder="Search by table fields..."
             leftIcon={<FontIcon>search</FontIcon>}
           />
-          {toolbarButtons}
+          {(toolbarButtons || []).concat(
+            <Button
+              key={'reset-form-button'}
+              primary
+              tooltipPosition={'left'}
+              disabled={selectedRow || searchValue ? false : true}
+              tooltipLabel={'Reset the form'}
+              style={{ display: 'flex', marginRight: '20px' }}
+              icon
+              onClick={() => {
+                this.setState({ searchValue: '' })
+                if (resetForm) resetForm()
+              }}
+            >
+              refresh
+            </Button>
+          )}
         </Toolbar>
         <DataTable baseId="paginated-table" plain>
           <TableHeader>

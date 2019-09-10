@@ -30,7 +30,10 @@ class Navigation extends Component {
           divider || subheader ? { divider, subheader, ...navItem } : <NavItemLink key={'route-' + navItem.keyval} {...navItem} />
         )}
         toolbarZDepth={0}
-        drawerZDepth={1}
+        drawerZDepth={0}
+        miniDrawerStyle={{ borderRight: '1px solid rgba(0, 0, 0, 0.1)', boxShadow: 'none' }}
+        drawerStyle={{ borderRight: '1px solid rgba(0, 0, 0, 0.1)' }}
+        toolbarStyle={{ borderBottom: '1px solid rgba(0, 0, 0, 0.1)' }}
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}

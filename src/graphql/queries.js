@@ -1,7 +1,8 @@
 import gql from 'graphql-tag'
+import { PROTOCOL_FRAGMENT, VARIABLE_FRAGMENT } from './fragments'
 
 export const PROTOCOLS_MIN = gql`
-  query protocols {
+  query protocolsMin {
     protocols {
       id
       author
@@ -13,7 +14,7 @@ export const PROTOCOLS_MIN = gql`
 `
 
 export const VARIABLES_MIN = gql`
-  query variables {
+  query variablesMin {
     variables {
       id
       name
@@ -28,7 +29,7 @@ export const VARIABLES_MIN = gql`
 `
 
 export const DATAPRODUCTS_MIN = gql`
-  query dataProducts {
+  query dataProductsMin {
     dataProducts {
       id
       title
@@ -228,32 +229,19 @@ export const VARIABLES = gql`
       req_source
       req_uri
       technology_type
-      protocols {
-        id
-        doi
-        author
-        publisher
-        title
-        publish_date
-        publish_year
-        coverage_type
-        category
-        domain
-        purpose
-        abstract
-        license
-        language
-        format
-        sustainability
-        version
-        resolution
-        cost
-        source
-        created_by
-        created_at
-        edited_by
-        updated_at
-      }
+      protocols ${PROTOCOL_FRAGMENT}
+    }
+  }
+`
+
+export const ENTIRE_GRAPH = gql`
+  query entireGraph {
+    variables ${VARIABLE_FRAGMENT}
+    protocols ${PROTOCOL_FRAGMENT}
+    protocolsXrefVariables {
+      id
+      protocol_id
+      variable_id
     }
   }
 `

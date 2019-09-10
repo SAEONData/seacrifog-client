@@ -1,0 +1,63 @@
+import gql from 'graphql-tag'
+
+export const PROTOCOL_FRAGMENT = gql`
+  {
+    id
+    doi
+    author
+    publisher
+    title
+    publish_date
+    publish_year
+    coverage_type
+    category
+    domain
+    purpose
+    abstract
+    license
+    language
+    format
+    sustainability
+    version
+    resolution
+    cost
+    source
+    created_by
+    created_at
+    edited_by
+    updated_at
+  }
+`
+
+export const VARIABLE_FRAGMENT = gql`
+  {
+    id
+    name
+    class
+    domain
+    set
+    description
+    method
+    uri
+    rftype
+    score
+    rating
+    relevance
+    feasibility
+    cost
+    updated_by
+    updated_at
+    frequency_value
+    frequency_unit
+    frequency_comment
+    res_value
+    res_unit
+    res_comment
+    unc_val
+    unc_unit
+    unc_comment
+    req_source
+    req_uri
+    technology_type
+  }
+`
