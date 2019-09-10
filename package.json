@@ -3,7 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "author": {"email": "zach@saeon.ac.za", "name": "Zach Smith", "url": "http://saeon.ac.za"},
+  "author": {
+    "email": "zach@saeon.ac.za",
+    "name": "Zach Smith",
+    "url": "http://saeon.ac.za"
+  },
   "dependencies": {
     "@apollo/react-hooks": "^3.0.1",
     "apollo-cache-inmemory": "^1.6.3",

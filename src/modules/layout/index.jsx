@@ -26,8 +26,6 @@ class Navigation extends Component {
     return (
       <NavigationDrawer
         drawerTitle="SEACRIFOG"
-        navStyle={{ padding: 0 }}
-        miniNavStyle={{ padding: 0 }}
         navItems={navItems.map(({ divider, subheader, ...navItem }) =>
           divider || subheader ? { divider, subheader, ...navItem } : <NavItemLink key={'route-' + navItem.keyval} {...navItem} />
         )}

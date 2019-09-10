@@ -7,13 +7,6 @@ export default [
     icon: 'home'
   },
   {
-    keyval: 'nav-item-about',
-    exact: true,
-    label: 'About',
-    to: '/about',
-    icon: 'help'
-  },
-  {
     keyval: 'nav-item-contact',
     exact: true,
     label: 'Contact',
