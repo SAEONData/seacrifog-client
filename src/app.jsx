@@ -11,34 +11,53 @@ import VariablesExplorer from './pages/explorer-variables'
 import DataproductsExplorer from './pages/explorer-dataproducts'
 import navItems from './nav-items'
 import Test from './pages/test'
+import Form from './modules/form'
 
 // SPA wrapper
 const App = () => (
-  <BrowserRouter>
-    <Navigation navItems={navItems}>
-      {/* Basic navigation */}
-      <Route key={'route-to-home'} path={'/'} exact={true} component={Home} />
-      <Route key={'route-to-home-2'} path={'/home'} exact={true} component={Home} />
-      <Route key={'route-to-contact'} path={'/contact'} exact={true} component={Contact} />
+  <Form hoveredProtocol={null} selectedProtocol={null} hoveredDP={null} selectedDP={null} hoveredVariable={null} selectedVariable={null}>
+    {({ updateForm, hoveredProtocol, selectedProtocol, hoveredDP, selectedDP, hoveredVariable, selectedVariable }) => (
+      <BrowserRouter>
+        <Navigation navItems={navItems}>
+          {/* Basic navigation */}
+          <Route key={'route-to-home'} path={'/'} exact={true} component={Home} />
+          <Route key={'route-to-home-2'} path={'/home'} exact={true} component={Home} />
+          <Route key={'route-to-contact'} path={'/contact'} exact={true} component={Contact} />
 
-      <Route key={'test'} path={'/test'} exact={false} component={Test} />
+          <Route key={'test'} path={'/test'} exact={false} component={Test} />
 
-      {/* Tools */}
-      <Route key={'route-to-dashboard-tool'} path={'/dashboard'} exact={true} component={Dashboard} />
-      <Route key={'route-to-selector-tool'} path={'/selector'} exact={true} component={SelectorTool} />
-      <Route key={'route-to-atlas-tool'} path={'/atlas'} exact={true} component={Atlas} />
+          {/* Tools */}
+          <Route key={'route-to-dashboard-tool'} path={'/dashboard'} exact={true} component={Dashboard} />
+          <Route key={'route-to-selector-tool'} path={'/selector'} exact={true} component={SelectorTool} />
+          <Route key={'route-to-atlas-tool'} path={'/atlas'} exact={true} component={Atlas} />
 
-      {/* Explorer tool */}
-      <Route key={'route-to-explorer-variables'} path={'/explore/variables'} exact={false} render={props => <VariablesExplorer {...props} />} />
-      <Route key={'route-to-explorer-protocols'} path={'/explore/protocols'} exact={false} render={props => <ProtocolsExplorer {...props} />} />
-      <Route
-        key={'route-to-explorer-dataproducts'}
-        path={'/explore/dataproducts'}
-        exact={false}
-        render={props => <DataproductsExplorer {...props} />}
-      />
-    </Navigation>
-  </BrowserRouter>
+          {/* Explorer tool */}
+          <Route
+            key={'route-to-explorer-variables'}
+            path={'/explore/variables'}
+            exact={false}
+            render={props => (
+              <VariablesExplorer updateForm={updateForm} hoveredVariable={hoveredVariable} selectedVariable={selectedVariable} {...props} />
+            )}
+          />
+          <Route
+            key={'route-to-explorer-protocols'}
+            path={'/explore/protocols'}
+            exact={false}
+            render={props => (
+              <ProtocolsExplorer updateForm={updateForm} hoveredProtocol={hoveredProtocol} selectedProtocol={selectedProtocol} {...props} />
+            )}
+          />
+          <Route
+            key={'route-to-explorer-dataproducts'}
+            path={'/explore/dataproducts'}
+            exact={false}
+            render={props => <DataproductsExplorer updateForm={updateForm} hoveredDP={hoveredDP} selectedDP={selectedDP} {...props} />}
+          />
+        </Navigation>
+      </BrowserRouter>
+    )}
+  </Form>
 )
 
 export default App
