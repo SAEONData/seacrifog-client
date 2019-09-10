@@ -23,7 +23,13 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
         <Table
           headers={Object.keys(dataProducts[0] || '').filter(col => col !== '__typename' && col !== 'id')}
           data={dataProducts}
-          initialSearch={props.history.location.search ? q.parse(props.history.location.search, { ignoreQueryPrefix: true }).searchTerm : ''}
+          initialSearch={
+            props.history.location.search
+              ? q.parse(props.history.location.search, { ignoreQueryPrefix: true }).searchTerm
+              : selectedDP
+              ? selectedDP.title
+              : ''
+          }
           onRowClick={row => updateForm({ selectedDP: row })}
           onRowHover={row => updateForm({ hoveredDP: row })}
           selectedRow={selectedDP}

@@ -23,7 +23,13 @@ export default ({ updateForm, hoveredProtocol, selectedProtocol, ...props }) => 
         <Table
           headers={Object.keys(protocols[0] || '').filter(col => col !== '__typename' && col !== 'id')}
           data={protocols}
-          initialSearch={props.history.location.search ? q.parse(props.history.location.search, { ignoreQueryPrefix: true }).searchTerm : ''}
+          initialSearch={
+            props.history.location.search
+              ? q.parse(props.history.location.search, { ignoreQueryPrefix: true }).searchTerm
+              : selectedProtocol
+              ? selectedProtocol.title
+              : ''
+          }
           onRowClick={row => updateForm({ selectedProtocol: row })}
           onRowHover={row => updateForm({ hoveredProtocol: row })}
           selectedRow={selectedProtocol}

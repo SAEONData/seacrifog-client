@@ -23,7 +23,13 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
         <Table
           headers={Object.keys(variables[0]).filter(col => col && col !== '__typename' && col !== 'id')}
           data={variables}
-          initialSearch={props.history.location.search ? q.parse(props.history.location.search, { ignoreQueryPrefix: true }).searchTerm : ''}
+          initialSearch={
+            props.history.location.search
+              ? q.parse(props.history.location.search, { ignoreQueryPrefix: true }).searchTerm
+              : selectedVariable
+              ? selectedVariable.name
+              : ''
+          }
           onRowClick={row => updateForm({ selectedVariable: row })}
           onRowHover={row => updateForm({ hoveredVariable: row })}
           selectedRow={selectedVariable}
