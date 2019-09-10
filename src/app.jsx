@@ -13,6 +13,9 @@ import navItems from './nav-items'
 import Test from './pages/test'
 import Form from './modules/form'
 
+// TODO: Each page navigation should scroll to top of page
+// https://stackoverflow.com/a/44438949/3114742
+
 // SPA wrapper
 const App = () => (
   <Form hoveredProtocol={null} selectedProtocol={null} hoveredDP={null} selectedDP={null} hoveredVariable={null} selectedVariable={null}>
@@ -33,13 +36,7 @@ const App = () => (
             path={'/selector'}
             exact={true}
             render={props => (
-              <SelectorTool
-                updateForm={updateForm}
-                selectedDP={selectedDP}
-                selectedProtocol={selectedProtocol}
-                selectedVariable={selectedVariable}
-                {...props}
-              />
+              <SelectorTool updateForm={updateForm} selectedProtocol={selectedProtocol} selectedVariable={selectedVariable} {...props} />
             )}
           />
           <Route key={'route-to-atlas-tool'} path={'/atlas'} exact={true} component={Atlas} />

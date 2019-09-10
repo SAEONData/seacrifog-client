@@ -56,7 +56,7 @@ export default [
   {
     keyval: 'nav-item-data-selector',
     exact: true,
-    label: 'Data Selector',
+    label: 'Finder',
     to: '/selector',
     icon: 'search'
   },
