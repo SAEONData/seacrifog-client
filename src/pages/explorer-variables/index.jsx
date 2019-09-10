@@ -5,9 +5,10 @@ import Table from '../../modules/table'
 import TitleToolbar from '../../modules/title-toolbar'
 import { mergeLeft, pickBy } from 'ramda'
 import { NoneMessage, FormattedInfo, LinkButton, DownloadButton } from '../../modules/shared-components'
+import q from 'query-string'
 import { Grid, Cell, ExpansionList, ExpansionPanel, DataTable, TableHeader, TableRow, TableColumn, TableBody, Card } from 'react-md'
 
-export default ({ updateForm, hoveredVariable, selectedVariable }) => (
+export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => (
   <DataQuery query={VARIABLES_MIN}>
     {({ variables }) => (
       <>
@@ -22,10 +23,14 @@ export default ({ updateForm, hoveredVariable, selectedVariable }) => (
         <Table
           headers={Object.keys(variables[0]).filter(col => col && col !== '__typename' && col !== 'id')}
           data={variables}
+          initialSearch={props.history.location.search ? q.parse(props.history.location.search, { ignoreQueryPrefix: true }).searchTerm : ''}
           onRowClick={row => updateForm({ selectedVariable: row })}
           onRowHover={row => updateForm({ hoveredVariable: row })}
           selectedRow={selectedVariable}
-          toolbarButtons={[<LinkButton active={selectedVariable ? false : true} />, <DownloadButton active={selectedVariable ? false : true} />]}
+          toolbarButtons={[
+            <LinkButton key={'url-button'} active={selectedVariable ? false : true} />,
+            <DownloadButton key={'download-button'} active={selectedVariable ? false : true} />
+          ]}
         />
 
         {/* Display information about selected row */}
@@ -126,7 +131,7 @@ export default ({ updateForm, hoveredVariable, selectedVariable }) => (
                   {variable.dataproducts[0] ? (
                     <Card tableCard>
                       <Table
-                        onRowClick={() => alert('Should this navigate to the clicked data product?')}
+                        onRowClick={row => updateForm({ selectedDP: row }, () => props.history.push(`/explore/dataproducts?searchTerm=${row.title}`))}
                         headers={Object.keys(variable.dataproducts[0]).filter(col => col && col !== '__typename' && col !== 'id')}
                         data={variable.dataproducts.map(d => mergeLeft({}, d))}
                         toolbarStyle={{ backgroundColor: 'transparent' }}
@@ -143,7 +148,9 @@ export default ({ updateForm, hoveredVariable, selectedVariable }) => (
                   {variable.directly_related_protocols[0] ? (
                     <Card tableCard>
                       <Table
-                        onRowClick={() => alert('Should this navigate to the clicked protocol?')}
+                        onRowClick={row =>
+                          updateForm({ selectedProtocol: row }, () => props.history.push(`/explore/protocols?searchTerm=${row.title}`))
+                        }
                         headers={Object.keys(variable.directly_related_protocols[0])
                           .filter(col => col && col !== '__typename' && col !== 'id')
                           .concat('relationship')}

@@ -10,7 +10,7 @@ export default class extends PureComponent {
     super(props)
     this.rows = this.props.data.length
     this.state.slice = [0, 5]
-    this.state.searchValue = ''
+    this.state.searchValue = this.props.initialSearch ? this.props.initialSearch : ''
   }
 
   getFilteredData = searchValue => {

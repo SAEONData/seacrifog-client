@@ -5,9 +5,10 @@ import Table from '../../modules/table'
 import TitleToolbar from '../../modules/title-toolbar'
 import { mergeLeft, pickBy } from 'ramda'
 import { NoneMessage, FormattedInfo, LinkButton, DownloadButton } from '../../modules/shared-components'
+import q from 'query-string'
 import { Grid, Cell, ExpansionList, ExpansionPanel, Card } from 'react-md'
 
-export default ({ updateForm, hoveredProtocol, selectedProtocol }) => (
+export default ({ updateForm, hoveredProtocol, selectedProtocol, ...props }) => (
   <DataQuery query={PROTOCOLS_MIN}>
     {({ protocols }) => (
       <>
@@ -22,10 +23,14 @@ export default ({ updateForm, hoveredProtocol, selectedProtocol }) => (
         <Table
           headers={Object.keys(protocols[0] || '').filter(col => col !== '__typename' && col !== 'id')}
           data={protocols}
+          initialSearch={props.history.location.search ? q.parse(props.history.location.search, { ignoreQueryPrefix: true }).searchTerm : ''}
           onRowClick={row => updateForm({ selectedProtocol: row })}
           onRowHover={row => updateForm({ hoveredProtocol: row })}
           selectedRow={selectedProtocol}
-          toolbarButtons={[<LinkButton active={selectedProtocol ? false : true} />, <DownloadButton active={selectedProtocol ? false : true} />]}
+          toolbarButtons={[
+            <LinkButton key={'url-button'} active={selectedProtocol ? false : true} />,
+            <DownloadButton key={'download-button'} active={selectedProtocol ? false : true} />
+          ]}
         />
 
         {/* Display information about selected row */}
@@ -59,7 +64,9 @@ export default ({ updateForm, hoveredProtocol, selectedProtocol }) => (
                   {protocol.directly_related_variables[0] ? (
                     <Card tableCard>
                       <Table
-                        onRowClick={() => alert('Should this navigate to the clicked variable?')}
+                        onRowClick={row =>
+                          updateForm({ selectedVariable: row }, () => props.history.push(`/explore/variables?searchTerm=${row.name}`))
+                        }
                         headers={Object.keys(protocol.directly_related_variables[0])
                           .filter(col => col !== '__typename' && col !== 'id')
                           .concat('relationship')}

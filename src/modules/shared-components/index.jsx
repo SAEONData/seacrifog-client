@@ -18,7 +18,6 @@ export const FormattedInfo = ({ object }) => (
 export const DownloadButton = ({ active }) => (
   <Button
     secondary
-    key={'download-button'}
     tooltipPosition={'left'}
     disabled={active}
     tooltipLabel={'Download collated information for the selected row'}
@@ -33,7 +32,6 @@ export const DownloadButton = ({ active }) => (
 export const LinkButton = ({ active }) => (
   <Button
     secondary
-    key={'url-button'}
     tooltipPosition={'left'}
     disabled={active}
     tooltipLabel={'Go to <insert URL here>'}

@@ -5,9 +5,10 @@ import TitleToolbar from '../../modules/title-toolbar'
 import { mergeLeft, pickBy } from 'ramda'
 import { NoneMessage, FormattedInfo, LinkButton, DownloadButton } from '../../modules/shared-components'
 import { Grid, Cell, ExpansionList, ExpansionPanel, Card } from 'react-md'
+import q from 'query-string'
 import DataQuery from '../../modules/data-query'
 
-export default ({ updateForm, hoveredDP, selectedDP }) => (
+export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
   <DataQuery query={DATAPRODUCTS_MIN}>
     {({ dataProducts }) => (
       <>
@@ -22,10 +23,14 @@ export default ({ updateForm, hoveredDP, selectedDP }) => (
         <Table
           headers={Object.keys(dataProducts[0] || '').filter(col => col !== '__typename' && col !== 'id')}
           data={dataProducts}
+          initialSearch={props.history.location.search ? q.parse(props.history.location.search, { ignoreQueryPrefix: true }).searchTerm : ''}
           onRowClick={row => updateForm({ selectedDP: row })}
           onRowHover={row => updateForm({ hoveredDP: row })}
           selectedRow={selectedDP}
-          toolbarButtons={[<LinkButton active={selectedDP ? false : true} />, <DownloadButton active={selectedDP ? false : true} />]}
+          toolbarButtons={[
+            <LinkButton key={'url-button'} active={selectedDP ? false : true} />,
+            <DownloadButton key={'download-button'} active={selectedDP ? false : true} />
+          ]}
         />
 
         {/* Display information about selected row */}
@@ -59,8 +64,12 @@ export default ({ updateForm, hoveredDP, selectedDP }) => (
                   {dataProduct.variables[0] ? (
                     <Card tableCard>
                       <Table
-                        onRowClick={() => alert('Should this navigate to the clicked variable?')}
-                        headers={Object.keys(dataProduct.variables[0]).filter(col => col !== '__typename' && col !== 'id')}
+                        onRowClick={row =>
+                          updateForm({ selectedVariable: row }, () => props.history.push(`/explore/variables?searchTerm=${row.name}`))
+                        }
+                        headers={Object.keys(dataProduct.variables[0])
+                          .filter(col => col !== '__typename' && col !== 'id')
+                          .concat('Relationship')}
                         data={dataProduct.variables.map(v => mergeLeft({ relationship: 'direct' }, v))}
                         toolbarStyle={{ backgroundColor: 'transparent' }}
                         tableStyle={{}}
