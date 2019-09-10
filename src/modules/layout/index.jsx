@@ -30,6 +30,9 @@ class Navigation extends Component {
           divider || subheader ? { divider, subheader, ...navItem } : <NavItemLink key={'route-' + navItem.keyval} {...navItem} />
         )}
         toolbarZDepth={0}
+        toolbarStyle={{ backgroundColor: '#fff' }}
+        toolbarThemeType="themed"
+        toolbarClassName="sf-toolbar"
         drawerZDepth={1}
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}

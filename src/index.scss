@@ -1,6 +1,8 @@
 @import '~react-md/src/scss/react-md';
 
 // Theme builder: https://react-md.mlaursen.com/customization/theme-builder
+$md-blue-400: #007bff;
+$md-orange-400: #f5a623;
 $md-light-theme: true;
 $md-primary-color: $md-blue-400;
 $md-secondary-color: $md-orange-400;
@@ -15,8 +17,15 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  background: #f5f6f8;
 }
 
 .selected-row {
   background-color: $md-secondary-color !important; // !important overrides the hover event on other rows
+}
+/* Navigation toolbar */
+.sf-toolbar {
+  -webkit-box-shadow: 74px 2px 5px 0px rgba(90, 97, 105, 0.12);
+  -moz-box-shadow: 74px 2px 5px 0px rgba(90, 97, 105, 0.12);
+  box-shadow: 74px 2px 5px 0px rgba(90, 97, 105, 0.12);
 }
