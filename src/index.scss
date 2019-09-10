@@ -1,4 +1,5 @@
 @import '~react-md/src/scss/react-md';
+@import './modules/layout/style.scss';
 
 // Theme builder: https://react-md.mlaursen.com/customization/theme-builder
 $md-blue-400: #007bff;
@@ -10,6 +11,9 @@ $md-secondary-color: $md-orange-400;
 // Set warnings to false
 $md-slider-warn-md: false;
 
+// Font Family
+$md-font-family: 'Open Sans';
+
 @include react-md-everything;
 
 html,
@@ -19,7 +23,19 @@ body {
   overflow-x: hidden;
   background: #f5f6f8;
 }
+/* Custom scroll bar style - class specific for now - think * might cause user confusion on page scroll*/
+.md-list--drawer::-webkit-scrollbar-track {
+  background-color: #ccc;
+}
+.md-list--drawer::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f5f5f5;
+}
+.md-list--drawer::-webkit-scrollbar-thumb {
+  background-color: $md-blue-400;
+}
 
+/* unsure of where this is used */
 .selected-row {
   background-color: $md-secondary-color !important; // !important overrides the hover event on other rows
 }
