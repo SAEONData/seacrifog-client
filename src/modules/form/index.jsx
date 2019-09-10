@@ -4,7 +4,7 @@ export default class Form extends Component {
   state = {}
   constructor(props) {
     super(props)
-    // I don't know why 'prop' is being picked up as 'unused'. Seems like a bug
+    // TODO: This is currently a bug in react-scripts 3.1.1
     // eslint-disable-next-line
     for (const prop in this.props) {
       if (this.props.hasOwnProperty(prop)) {

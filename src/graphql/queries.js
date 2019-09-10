@@ -1,12 +1,155 @@
 import gql from 'graphql-tag'
 
+export const PROTOCOLS_MIN = gql`
+  query protocols {
+    protocols {
+      id
+      author
+      title
+      publish_year
+      domain
+    }
+  }
+`
+
+export const VARIABLES_MIN = gql`
+  query variables {
+    variables {
+      id
+      name
+      class
+      domain
+      set
+      cost
+      feasibility
+      relevance
+    }
+  }
+`
+
+export const DATAPRODUCTS_MIN = gql`
+  query dataProducts {
+    dataProducts {
+      id
+      title
+      publish_year
+      provider
+      contact
+      author
+    }
+  }
+`
+
+export const DATAPRODUCT = gql`
+  query dataProduct($id: Int!) {
+    dataProduct(id: $id) {
+      id
+      title
+      publish_year
+      publish_date
+      keywords
+      abstract
+      provider
+      author
+      contact
+      coverage_temp_start
+      coverage_temp_end
+      res_spatial
+      res_spatial_unit
+      res_temperature
+      res_temperature_unit
+      uncertainty
+      uncertainty_unit
+      doi
+      license
+      url_download
+      file_format
+      file_size
+      file_size_unit
+      url_info
+      created_by
+      created_at
+      modified_by
+      modified_at
+      present
+      variables {
+        id
+        name
+        class
+        domain
+        set
+        cost
+        feasibility
+        relevance
+      }
+    }
+  }
+`
+
 export const VARIABLE = gql`
   query variable($id: Int!) {
     variable(id: $id) {
       id
       name
-      domain
       class
+      domain
+      set
+      description
+      method
+      uri
+      rftype
+      score
+      rating
+      relevance
+      feasibility
+      cost
+      updated_by
+      updated_at
+      frequency_value
+      frequency_unit
+      frequency_comment
+      res_value
+      res_unit
+      res_comment
+      unc_val
+      unc_unit
+      unc_comment
+      req_source
+      req_uri
+      technology_type
+      indirectly_related_protocols {
+        id
+        title
+        author
+        category
+        domain
+      }
+      directly_related_protocols {
+        id
+        title
+        author
+        category
+        domain
+      }
+      dataproducts {
+        id
+        title
+        publish_year
+        provider
+        author
+        license
+        url_download
+        file_format
+        file_size
+      }
+      rforcings {
+        id
+        category
+        compound
+        min
+        best
+        max
+      }
     }
   }
 `
@@ -38,18 +181,18 @@ export const PROTOCOL = gql`
       created_at
       edited_by
       updated_at
-    }
-  }
-`
-
-export const PROTOCOLS_MIN = gql`
-  query protocols {
-    protocols {
-      id
-      author
-      title
-      publish_year
-      domain
+      indirectly_related_variables {
+        id
+        name
+        class
+        domain
+      }
+      directly_related_variables {
+        id
+        name
+        class
+        domain
+      }
     }
   }
 `
@@ -79,9 +222,9 @@ export const VARIABLES = gql`
       res_value
       res_unit
       res_comment
-      run_cval
-      run_cunit
-      run_ccomment
+      unc_val
+      unc_unit
+      unc_comment
       req_source
       req_uri
       technology_type

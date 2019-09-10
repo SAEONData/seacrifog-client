@@ -19,14 +19,6 @@ import {
   FontIcon
 } from 'react-md'
 
-// eslint-disable-next-line no-extend-native
-String.prototype.truncate = function(length, ending) {
-  length = length || 100
-  ending = ending || '...'
-  if (this.length > length) return this.substring(0, length - ending.length) + ending
-  else return this
-}
-
 export default () => (
   <DataQuery query={VARIABLES}>
     {({ variables }) => (

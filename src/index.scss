@@ -1,10 +1,12 @@
 @import '~react-md/src/scss/react-md';
-@import './modules/layout/style.scss';
 
 // Theme builder: https://react-md.mlaursen.com/customization/theme-builder
 $md-light-theme: true;
-$md-primary-color: #007bff;
-$md-secondary-color: #f5a623;
+$md-primary-color: $md-blue-400;
+$md-secondary-color: $md-orange-400;
+
+// Set warnings to false
+$md-slider-warn-md: false;
 
 @include react-md-everything;
 
@@ -12,14 +14,9 @@ html,
 body {
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 .selected-row {
-  background-color: #adadad;
+  background-color: $md-secondary-color !important; // !important overrides the hover event on other rows
 }
-
-// .footer {
-//   margin: 0 -8px;
-//   padding: 32px;
-//   background-color: $md-primary-color;
-// }

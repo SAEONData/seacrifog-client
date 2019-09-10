@@ -4,11 +4,6 @@ import { withRouter } from 'react-router'
 import { Switch } from 'react-router-dom'
 import NavItemLink from './nav-item-link'
 
-// eslint-disable-next-line no-extend-native
-String.prototype.capitalize = function(string) {
-  return this.charAt(0).toUpperCase() + this.slice(1)
-}
-
 class Navigation extends Component {
   constructor(props) {
     super(props)
@@ -31,8 +26,6 @@ class Navigation extends Component {
     return (
       <NavigationDrawer
         drawerTitle="SEACRIFOG"
-        navStyle={{ padding: 0 }}
-        miniNavStyle={{ padding: 0 }}
         navItems={navItems.map(({ divider, subheader, ...navItem }) =>
           divider || subheader ? { divider, subheader, ...navItem } : <NavItemLink key={'route-' + navItem.keyval} {...navItem} />
         )}
@@ -42,7 +35,6 @@ class Navigation extends Component {
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         toolbarTitle={currentPath.capitalize() || 'Home'}
-        toolbarThemeType={'default'}
         defaultVisible={NavigationDrawer.getCurrentMedia().desktop && !hideMenu ? true : false}
       >
         <Switch key={location.pathname || '/'}>{this.props.children}</Switch>
