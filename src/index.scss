@@ -1,5 +1,4 @@
 @import '~react-md/src/scss/react-md';
-@import './modules/layout/style.scss';
 
 // Theme builder: https://react-md.mlaursen.com/customization/theme-builder
 $md-blue-400: #007bff;
@@ -7,6 +6,9 @@ $md-orange-400: #f5a623;
 $md-light-theme: true;
 $md-primary-color: $md-blue-400;
 $md-secondary-color: $md-orange-400;
+
+// SF variables
+$sf-shadow-color: rgba(90, 97, 105, 0.12);
 
 // Set warnings to false
 $md-slider-warn-md: false;
@@ -16,6 +18,16 @@ $md-font-family: 'Open Sans';
 
 @include react-md-everything;
 
+/* mixins : usage example: @include sf-box-shadow(2px, $y-axis, 7px, #000)*/
+@mixin sf-box-shadow($x-axis: 0px, $y-axis: 2px, $blur: 13px, $spread: 0px, $color: $sf-shadow-color) {
+  -webkit-box-shadow: $x-axis $y-axis $blur $spread $color;
+  -moz-box-shadow: $x-axis $y-axis $blur $spread $color;
+  box-shadow: $x-axis $y-axis $blur $spread $color;
+}
+
+@import './modules/layout/style.scss';
+
+/* Global styles */
 html,
 body {
   margin: 0;
@@ -24,24 +36,18 @@ body {
   background: #f5f6f8;
 }
 /* Custom scroll bar style - class specific for now - think * might cause user confusion on page scroll*/
-.md-list--drawer::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background-color: #ccc;
 }
-.md-list--drawer::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 10px;
   background-color: #f5f5f5;
 }
-.md-list--drawer::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background-color: $md-blue-400;
 }
 
 /* unsure of where this is used */
 .selected-row {
   background-color: $md-secondary-color !important; // !important overrides the hover event on other rows
-}
-/* Navigation toolbar */
-.sf-toolbar {
-  -webkit-box-shadow: 74px 2px 5px 0px rgba(90, 97, 105, 0.12);
-  -moz-box-shadow: 74px 2px 5px 0px rgba(90, 97, 105, 0.12);
-  box-shadow: 74px 2px 5px 0px rgba(90, 97, 105, 0.12);
 }

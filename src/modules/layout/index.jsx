@@ -33,7 +33,8 @@ class Navigation extends Component {
         toolbarStyle={{ backgroundColor: '#fff' }}
         toolbarThemeType="themed"
         toolbarClassName="sf-toolbar"
-        drawerZDepth={1}
+        drawerZDepth={0}
+        miniDrawerClassName="sf-miniDrawer"
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}

@@ -23,7 +23,7 @@ const client = new ApolloClient({ cache, link })
 // Load the fonts
 WebFontLoader.load({
   google: {
-    families: ['Roboto:300,400,500,700', 'Material Icons']
+    families: ['Roboto:300,400,500,700', 'Material Icons', 'Open+Sans:400,600']
   }
 })
 
