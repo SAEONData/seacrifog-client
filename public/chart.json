@@ -3,23 +3,19 @@
   "categories": [
       {
           "name": "HTMLElement",
-          "keyword": {},
-          "base": "HTMLElement"
+          "keyword": {}
       },
       {
           "name": "WebGL",
-          "keyword": {},
-          "base": "WebGLRenderingContext"
+          "keyword": {}
       },
       {
           "name": "SVG",
-          "keyword": {},
-          "base": "SVGElement"
+          "keyword": {}
       },
       {
           "name": "CSS",
-          "keyword": {},
-          "base": "CSSRule"
+          "keyword": {}
       },
       {
           "name": "Other",
