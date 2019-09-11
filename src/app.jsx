@@ -9,6 +9,9 @@ import Atlas from './pages/atlas'
 import ProtocolsExplorer from './pages/explorer-protocols'
 import VariablesExplorer from './pages/explorer-variables'
 import DataproductsExplorer from './pages/explorer-dataproducts'
+import VariableEditor from './pages/editor-variables'
+import ProtocolEditor from './pages/editor-protocols'
+import DataproductEditor from './pages/editor-dataproducts'
 import navItems from './nav-items'
 import Test from './pages/test'
 import Form from './modules/form'
@@ -24,48 +27,68 @@ const App = () => (
       <BrowserRouter>
         <Navigation navItems={navItems}>
           {/* Basic navigation */}
-          <Route key={'route-to-home'} path={'/'} exact={true} component={Home} />
-          <Route key={'route-to-home-2'} path={'/home'} exact={true} component={Home} />
-          <Route key={'route-to-contact'} path={'/contact'} exact={true} component={Contact} />
+          <Route key={'home'} path={'/'} exact={true} component={Home} />
+          <Route key={'home-2'} path={'/home'} exact={true} component={Home} />
+          <Route key={'contact'} path={'/contact'} exact={true} component={Contact} />
 
           <Route key={'test'} path={'/test'} exact={false} component={Test} />
 
-          {/* Tools */}
-          <Route key={'route-to-dashboard-tool'} path={'/dashboard'} exact={true} component={Dashboard} />
+          {/* Explorer data */}
           <Route
-            key={'route-to-selector-tool'}
+            key={'explorer-variables'}
+            path={'/variables'}
+            exact={true}
+            render={props => (
+              <VariablesExplorer updateForm={updateForm} hoveredVariable={hoveredVariable} selectedVariable={selectedVariable} {...props} />
+            )}
+          />
+          <Route
+            key={'explorer-protocols'}
+            path={'/protocols'}
+            exact={true}
+            render={props => (
+              <ProtocolsExplorer updateForm={updateForm} hoveredProtocol={hoveredProtocol} selectedProtocol={selectedProtocol} {...props} />
+            )}
+          />
+          <Route
+            key={'explorer-dataproducts'}
+            path={'/dataproducts'}
+            exact={true}
+            render={props => <DataproductsExplorer updateForm={updateForm} hoveredDP={hoveredDP} selectedDP={selectedDP} {...props} />}
+          />
+
+          {/* Edit data */}
+          <Route
+            key={'edit-variables'}
+            path={'/variables/:id'}
+            exact={false}
+            render={props => <VariableEditor id={props.match.params.id} {...props} />}
+          />
+          <Route
+            key={'edit-protocols'}
+            path={'/protocols/:id'}
+            exact={false}
+            render={props => <ProtocolEditor id={props.match.params.id} {...props} />}
+          />
+          <Route
+            key={'edit-dataproducts'}
+            path={'/dataproducts/:id'}
+            exact={false}
+            render={props => <DataproductEditor id={props.match.params.id} {...props} />}
+          />
+
+          {/* Tools */}
+          <Route key={'dashboard-tool'} path={'/dashboard'} exact={true} component={Dashboard} />
+          <Route
+            key={'selector-tool'}
             path={'/selector'}
             exact={true}
             render={props => (
               <SelectorTool updateForm={updateForm} selectedProtocol={selectedProtocol} selectedVariable={selectedVariable} {...props} />
             )}
           />
-          <Route key={'route-to-atlas-tool'} path={'/atlas'} exact={true} component={Atlas} />
-          <Route key={'route-to-graph-tool'} path={'/graph'} exact={true} component={Graph} />
-
-          {/* Explorer tool */}
-          <Route
-            key={'route-to-explorer-variables'}
-            path={'/explore/variables'}
-            exact={false}
-            render={props => (
-              <VariablesExplorer updateForm={updateForm} hoveredVariable={hoveredVariable} selectedVariable={selectedVariable} {...props} />
-            )}
-          />
-          <Route
-            key={'route-to-explorer-protocols'}
-            path={'/explore/protocols'}
-            exact={false}
-            render={props => (
-              <ProtocolsExplorer updateForm={updateForm} hoveredProtocol={hoveredProtocol} selectedProtocol={selectedProtocol} {...props} />
-            )}
-          />
-          <Route
-            key={'route-to-explorer-dataproducts'}
-            path={'/explore/dataproducts'}
-            exact={false}
-            render={props => <DataproductsExplorer updateForm={updateForm} hoveredDP={hoveredDP} selectedDP={selectedDP} {...props} />}
-          />
+          <Route key={'atlas-tool'} path={'/atlas'} exact={true} component={Atlas} />
+          <Route key={'graph-tool'} path={'/graph'} exact={true} component={Graph} />
         </Navigation>
       </BrowserRouter>
     )}

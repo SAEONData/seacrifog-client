@@ -1,5 +1,6 @@
 import React from 'react'
 import { Grid, Cell, Button } from 'react-md'
+import { Link } from 'react-router-dom'
 
 export const NoneMessage = () => <p style={{ textAlign: 'center' }}>(None)</p>
 
@@ -13,6 +14,12 @@ export const FormattedInfo = ({ object }) => (
       ))}
     </Cell>
   </Grid>
+)
+
+export const EditButton = ({ to }) => (
+  <Link to={to}>
+    <Button icon>edit</Button>
+  </Link>
 )
 
 export const DownloadButton = ({ active }) => (

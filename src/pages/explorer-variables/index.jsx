@@ -4,7 +4,7 @@ import { VARIABLES_MIN, VARIABLE } from '../../graphql/queries'
 import Table from '../../modules/table'
 import TitleToolbar from '../../modules/title-toolbar'
 import { mergeLeft, pickBy } from 'ramda'
-import { NoneMessage, FormattedInfo, LinkButton, DownloadButton } from '../../modules/shared-components'
+import { NoneMessage, FormattedInfo, LinkButton, DownloadButton, EditButton } from '../../modules/shared-components'
 import q from 'query-string'
 import { Grid, Cell, ExpansionList, ExpansionPanel, DataTable, TableHeader, TableRow, TableColumn, TableBody, Card } from 'react-md'
 
@@ -24,8 +24,8 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
           <Cell size={12}>
             <Card tableCard>
               <Table
-                headers={Object.keys(variables[0]).filter(col => col && col !== '__typename' && col !== 'id')}
-                data={variables}
+                headers={[''].concat(Object.keys(variables[0]).filter(col => col && col !== '__typename' && col !== 'id'))}
+                data={variables.map(v => mergeLeft({ '': <EditButton to={`/variables/${v.id}`} /> }, v))}
                 initialSearch={
                   props.history.location.search
                     ? q.parse(props.history.location.search, { ignoreQueryPrefix: true }).searchTerm
@@ -140,9 +140,7 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
                     {variable.dataproducts[0] ? (
                       <Card tableCard>
                         <Table
-                          onRowClick={row =>
-                            updateForm({ selectedDP: row }, () => props.history.push(`/explore/dataproducts?searchTerm=${row.title}`))
-                          }
+                          onRowClick={row => updateForm({ selectedDP: row }, () => props.history.push(`/dataproducts?searchTerm=${row.title}`))}
                           headers={Object.keys(variable.dataproducts[0]).filter(col => col && col !== '__typename' && col !== 'id')}
                           data={variable.dataproducts.map(d => mergeLeft({}, d))}
                           tableStyle={{}}

@@ -5,7 +5,7 @@ import { ENTIRE_GRAPH } from '../../graphql/queries'
 import Form from '../../modules/form'
 import Echart from '../../modules/echarts'
 
-const NODE_LIMIT_PER_ENTITY = 18
+const NODE_LIMIT_PER_ENTITY = 24
 
 export default () => (
   <DataQuery query={ENTIRE_GRAPH}>

@@ -21,23 +21,23 @@ export default [
   },
   {
     keyval: 'nav-item-explorer-variables',
-    exact: true,
+    exact: false,
     label: 'Variables',
-    to: '/explore/variables',
+    to: '/variables',
     icon: 'code'
   },
   {
     keyval: 'nav-item-explorer-protocols',
-    exact: true,
+    exact: false,
     label: 'Protocols',
-    to: '/explore/protocols',
+    to: '/protocols',
     icon: 'scatter_plot'
   },
   {
     keyval: 'nav-item-explorer-dataproducts',
-    exact: true,
+    exact: false,
     label: 'Data-products',
-    to: '/explore/dataproducts',
+    to: '/dataproducts',
     icon: 'shopping_cart'
   },
   { keyval: 'nav-divider-tools', divider: true, style: {} },

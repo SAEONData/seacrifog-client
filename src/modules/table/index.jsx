@@ -6,11 +6,15 @@ import { Toolbar, TextField, FontIcon, DataTable, TableHeader, TableRow, TableCo
 
 export default class extends PureComponent {
   state = {}
+  headers = {}
   constructor(props) {
     super(props)
     this.rows = this.props.data.length
     this.state.slice = [0, 5]
     this.state.searchValue = this.props.initialSearch ? this.props.initialSearch : ''
+
+    // Setup headers for keeping header-column values aligned
+    this.props.headers.forEach((h, i) => (this.headers[h] = i))
   }
 
   getFilteredData = searchValue => {
@@ -44,7 +48,8 @@ export default class extends PureComponent {
 
   render() {
     const { searchValue } = this.state
-    const { selectedRow, toolbarButtons, toolbarStyle, headers } = this.props
+    const { selectedRow, toolbarButtons, toolbarStyle } = this.props
+    const { headers } = this
     const resetForm = this.props.resetForm || null
     const onRowHover = this.props.onRowHover || (() => log('Row hover changed'))
     const onRowClick = this.props.onRowClick || (() => log('Row selection changed'))
@@ -83,8 +88,8 @@ export default class extends PureComponent {
         <DataTable baseId="paginated-table" plain>
           <TableHeader>
             <TableRow>
-              {headers.map(header => (
-                <TableColumn role="button" key={`header-col-${header}`} style={{ textAlign: 'center' }}>
+              {Object.keys(headers).map((header, i) => (
+                <TableColumn role="button" key={i} style={{ textAlign: 'center' }}>
                   {header}
                 </TableColumn>
               ))}
@@ -94,7 +99,7 @@ export default class extends PureComponent {
             {this.getDataSlice(this.getFilteredData(searchValue)).map((row, i) => (
               <TableRow
                 className={row.id === (selectedRow || {}).id ? 'selected-row' : ''}
-                key={`table-row-${i}`}
+                key={i}
                 onMouseOver={debounce(() => onRowHover(row), 5)}
                 onClick={() => {
                   if (!onRowClick) return
@@ -102,17 +107,25 @@ export default class extends PureComponent {
                   else onRowClick(null)
                 }}
               >
-                {Object.keys(row)
-                  .filter(col => col !== '__typename' && col !== 'id')
-                  .map((col, j) => (
-                    <TableColumn plain={false} key={`table-col-${i}-${j}`} style={{ cursor: 'pointer' }}>
-                      {row[col] === null || row[col] === undefined
-                        ? '-'
-                        : row[col].constructor === String
-                        ? row[col].toString().truncate(70, '..')
-                        : row[col]}
-                    </TableColumn>
-                  ))}
+                {(row => {
+                  const cols = []
+                  Object.keys(row)
+                    .filter(col => col !== '__typename' && col !== 'id')
+                    .forEach((col, j) => {
+                      // Get the header index
+                      const index = headers[col]
+                      cols[index] = (
+                        <TableColumn plain={false} key={j} style={{ cursor: 'pointer' }}>
+                          {row[col] === null || row[col] === undefined
+                            ? '-'
+                            : row[col].constructor === String
+                            ? row[col].toString().truncate(70, '..')
+                            : row[col]}
+                        </TableColumn>
+                      )
+                    })
+                  return cols
+                })(row)}
               </TableRow>
             ))}
           </TableBody>

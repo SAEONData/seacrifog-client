@@ -229,7 +229,6 @@ export const VARIABLES = gql`
       req_source
       req_uri
       technology_type
-      protocols ${PROTOCOL_FRAGMENT}
     }
   }
 `

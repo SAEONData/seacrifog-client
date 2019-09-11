@@ -16,7 +16,11 @@ class Navigation extends Component {
   }
 
   getCurrentPath({ location: { pathname } }) {
-    return pathname.substring(pathname.lastIndexOf('/') + 1)
+    return pathname
+      .substring(pathname.indexOf('/') + 1)
+      .split('/')
+      .map(p => p.capitalize())
+      .join('/')
   }
 
   render() {

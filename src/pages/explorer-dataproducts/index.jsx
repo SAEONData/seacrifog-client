@@ -3,7 +3,7 @@ import { DATAPRODUCTS_MIN, DATAPRODUCT } from '../../graphql/queries'
 import Table from '../../modules/table'
 import TitleToolbar from '../../modules/title-toolbar'
 import { mergeLeft, pickBy } from 'ramda'
-import { NoneMessage, FormattedInfo, LinkButton, DownloadButton } from '../../modules/shared-components'
+import { NoneMessage, FormattedInfo, LinkButton, DownloadButton, EditButton } from '../../modules/shared-components'
 import { Grid, Cell, ExpansionList, ExpansionPanel, Card } from 'react-md'
 import q from 'query-string'
 import DataQuery from '../../modules/data-query'
@@ -25,8 +25,8 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
             <Card tableCard>
               {' '}
               <Table
-                headers={Object.keys(dataproducts[0] || '').filter(col => col !== '__typename' && col !== 'id')}
-                data={dataproducts}
+                headers={[''].concat(Object.keys(dataproducts[0] || '').filter(col => col !== '__typename' && col !== 'id'))}
+                data={dataproducts.map(d => mergeLeft({ '': <EditButton to={`/dataproducts/${d.id}`} /> }, d))}
                 initialSearch={
                   props.history.location.search
                     ? q.parse(props.history.location.search, { ignoreQueryPrefix: true }).searchTerm
@@ -74,9 +74,7 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
                     {dataproduct.variables[0] ? (
                       <Card tableCard>
                         <Table
-                          onRowClick={row =>
-                            updateForm({ selectedVariable: row }, () => props.history.push(`/explore/variables?searchTerm=${row.name}`))
-                          }
+                          onRowClick={row => updateForm({ selectedVariable: row }, () => props.history.push(`/variables?searchTerm=${row.name}`))}
                           headers={Object.keys(dataproduct.variables[0])
                             .filter(col => col !== '__typename' && col !== 'id')
                             .concat('Relationship')}
