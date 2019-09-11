@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { PROTOCOL_FRAGMENT, VARIABLE_FRAGMENT } from './fragments'
+import { PROTOCOL_FRAGMENT, VARIABLE_FRAGMENT, DATAPRODUCT_FRAGMENT } from './fragments'
 
 export const PROTOCOLS_MIN = gql`
   query protocolsMin {
@@ -29,8 +29,8 @@ export const VARIABLES_MIN = gql`
 `
 
 export const DATAPRODUCTS_MIN = gql`
-  query dataProductsMin {
-    dataProducts {
+  query dataproductsMin {
+    dataproducts {
       id
       title
       publish_year
@@ -42,8 +42,8 @@ export const DATAPRODUCTS_MIN = gql`
 `
 
 export const DATAPRODUCT = gql`
-  query dataProduct($id: Int!) {
-    dataProduct(id: $id) {
+  query dataproduct($id: Int!) {
+    dataproduct(id: $id) {
       id
       title
       publish_year
@@ -238,10 +238,16 @@ export const ENTIRE_GRAPH = gql`
   query entireGraph {
     variables ${VARIABLE_FRAGMENT}
     protocols ${PROTOCOL_FRAGMENT}
+    dataproducts ${DATAPRODUCT_FRAGMENT}
     protocolsXrefVariables {
       id
       protocol_id
       variable_id
+    }
+    dataproductsXrefVariables {
+      id
+      variable_id
+      dataproduct_id
     }
   }
 `

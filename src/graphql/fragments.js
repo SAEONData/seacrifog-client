@@ -1,5 +1,39 @@
 import gql from 'graphql-tag'
 
+export const DATAPRODUCT_FRAGMENT = gql`
+  {
+    id
+    title
+    publish_year
+    publish_date
+    keywords
+    abstract
+    provider
+    author
+    contact
+    coverage_temp_start
+    coverage_temp_end
+    res_spatial
+    res_spatial_unit
+    res_temperature
+    res_temperature_unit
+    uncertainty
+    uncertainty_unit
+    doi
+    license
+    url_download
+    file_format
+    file_size
+    file_size_unit
+    url_info
+    created_by
+    created_at
+    modified_by
+    modified_at
+    present
+  }
+`
+
 export const PROTOCOL_FRAGMENT = gql`
   {
     id

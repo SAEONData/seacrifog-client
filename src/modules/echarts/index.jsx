@@ -9,7 +9,7 @@ export default class extends Component {
   }
 
   componentDidMount() {
-    this.setState({ height: window.innerHeight - 120 + 'px' })
+    this.setState({ height: window.innerHeight - 200 + 'px' })
   }
 
   async componentDidUpdate() {

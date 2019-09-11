@@ -10,7 +10,7 @@ import DataQuery from '../../modules/data-query'
 
 export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
   <DataQuery query={DATAPRODUCTS_MIN}>
-    {({ dataProducts }) => (
+    {({ dataproducts }) => (
       <>
         {/* Page Heading */}
         <TitleToolbar
@@ -25,8 +25,8 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
             <Card tableCard>
               {' '}
               <Table
-                headers={Object.keys(dataProducts[0] || '').filter(col => col !== '__typename' && col !== 'id')}
-                data={dataProducts}
+                headers={Object.keys(dataproducts[0] || '').filter(col => col !== '__typename' && col !== 'id')}
+                data={dataproducts}
                 initialSearch={
                   props.history.location.search
                     ? q.parse(props.history.location.search, { ignoreQueryPrefix: true }).searchTerm
@@ -47,13 +47,13 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
             {/* Display information about selected row */}
             {selectedDP ? (
               <DataQuery query={DATAPRODUCT} variables={{ id: selectedDP.id }}>
-                {({ dataProduct }) => (
+                {({ dataproduct }) => (
                   <>
                     <ExpansionList>
                       <ExpansionPanel label="Abstract" defaultExpanded footer={false}>
                         <Grid>
                           <Cell size={12}>
-                            <p>{dataProduct.abstract}</p>
+                            <p>{dataproduct.abstract}</p>
                           </Cell>
                         </Grid>
                       </ExpansionPanel>
@@ -64,23 +64,23 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
                               if (['abstract', '__typename'].includes(key)) return false
                               if (typeof val === 'object') return false
                               return true
-                            }, dataProduct)}
+                            }, dataproduct)}
                           />
                         }
                       </ExpansionPanel>
                     </ExpansionList>
 
                     <h3 style={{ textAlign: 'center', marginTop: '100px', marginBottom: '50px' }}>Essential Variables</h3>
-                    {dataProduct.variables[0] ? (
+                    {dataproduct.variables[0] ? (
                       <Card tableCard>
                         <Table
                           onRowClick={row =>
                             updateForm({ selectedVariable: row }, () => props.history.push(`/explore/variables?searchTerm=${row.name}`))
                           }
-                          headers={Object.keys(dataProduct.variables[0])
+                          headers={Object.keys(dataproduct.variables[0])
                             .filter(col => col !== '__typename' && col !== 'id')
                             .concat('Relationship')}
-                          data={dataProduct.variables.map(v => mergeLeft({ relationship: 'direct' }, v))}
+                          data={dataproduct.variables.map(v => mergeLeft({ relationship: 'direct' }, v))}
                           tableStyle={{}}
                           toolbarButtons={[]}
                         />
