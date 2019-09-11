@@ -156,9 +156,7 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
                     {variable.directly_related_protocols[0] ? (
                       <Card tableCard>
                         <Table
-                          onRowClick={row =>
-                            updateForm({ selectedProtocol: row }, () => props.history.push(`/explore/protocols?searchTerm=${row.title}`))
-                          }
+                          onRowClick={row => updateForm({ selectedProtocol: row }, () => props.history.push(`/protocols?searchTerm=${row.title}`))}
                           headers={Object.keys(variable.directly_related_protocols[0])
                             .filter(col => col && col !== '__typename' && col !== 'id')
                             .concat('relationship')}
