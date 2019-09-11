@@ -4,7 +4,7 @@ import { ENTIRE_GRAPH } from '../../graphql/queries'
 import DropdownSelect from '../../modules/dropdown-select'
 import Form from '../../modules/form'
 import { pickBy } from 'ramda'
-import { Grid, Cell, Card, CardTitle, CardText } from 'react-md'
+import { Grid, Cell, Card, CardText } from 'react-md'
 
 export default ({ selectedProtocol, selectedVariable }) => (
   <Form>

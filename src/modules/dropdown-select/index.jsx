@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
-import { SelectionControl, ListItem, DropdownMenu, TextField, ListItemControl } from 'react-md'
+import { SelectionControl, DropdownMenu, TextField, ListItemControl } from 'react-md'
 
 export default class DropdownList extends Component {
   state = {}
-  constructor(props) {
-    super(props)
-  }
   render() {
-    const { searchTerm, menuItems, placeholder, updateForm } = this.props
+    const { searchTerm, menuItems, placeholder } = this.props
     return (
       <DropdownMenu
         id="variables-search-menu"
