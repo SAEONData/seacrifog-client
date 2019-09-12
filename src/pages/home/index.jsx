@@ -8,7 +8,7 @@ export default () => (
       <p>
         The{' '}
         {
-          <a href="http://www.seacrifog.eu/" target="_blank" rel="noopener noreferrer">
+          <a className="link" href="http://www.seacrifog.eu/" target="_blank" rel="noopener noreferrer">
             SEACRIFOG Project
           </a>
         }{' '}
@@ -23,7 +23,7 @@ export default () => (
       <p>
         For further reading on the SEACRIFOG project and its outcomes to date, please click{' '}
         {
-          <a href="https://www.seacrifog.eu/publications/publications/" target="_blank" rel="noopener noreferrer">
+          <a className="link" href="https://www.seacrifog.eu/publications/publications/" target="_blank" rel="noopener noreferrer">
             here
           </a>
         }
