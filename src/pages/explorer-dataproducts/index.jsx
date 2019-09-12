@@ -25,8 +25,9 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
             <Card tableCard>
               {' '}
               <Table
-                headers={[''].concat(Object.keys(dataproducts[0] || '').filter(col => col !== '__typename' && col !== 'id'))}
-                data={dataproducts.map(d => mergeLeft({ '': <EditButton to={`/dataproducts/${d.id}`} /> }, d))}
+                invisibleHeaders={['EDIT']}
+                headers={['EDIT'].concat(Object.keys(dataproducts[0] || '').filter(col => col !== '__typename' && col !== 'id'))}
+                data={dataproducts.map(d => mergeLeft({ EDIT: <EditButton to={`/dataproducts/${d.id}`} /> }, d))}
                 initialSearch={
                   props.history.location.search
                     ? q.parse(props.history.location.search, { ignoreQueryPrefix: true }).searchTerm

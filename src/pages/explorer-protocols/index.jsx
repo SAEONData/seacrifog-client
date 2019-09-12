@@ -24,8 +24,9 @@ export default ({ updateForm, hoveredProtocol, selectedProtocol, ...props }) => 
           <Cell size={12}>
             <Card tableCard>
               <Table
-                headers={[''].concat(Object.keys(protocols[0] || '').filter(col => col !== '__typename' && col !== 'id'))}
-                data={protocols.map(p => mergeLeft({ '': <EditButton to={`/protocols/${p.id}`} /> }, p))}
+                invisibleHeaders={['EDIT']}
+                headers={['EDIT'].concat(Object.keys(protocols[0] || '').filter(col => col !== '__typename' && col !== 'id'))}
+                data={protocols.map(p => mergeLeft({ EDIT: <EditButton to={`/protocols/${p.id}`} /> }, p))}
                 initialSearch={
                   props.history.location.search
                     ? q.parse(props.history.location.search, { ignoreQueryPrefix: true }).searchTerm

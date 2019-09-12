@@ -7,11 +7,18 @@ import { Toolbar, TextField, FontIcon, DataTable, TableHeader, TableRow, TableCo
 export default class extends PureComponent {
   state = {}
   headers = {}
+
   constructor(props) {
     super(props)
     this.rows = this.props.data.length
     this.state.slice = [0, 5]
     this.state.searchValue = this.props.initialSearch ? this.props.initialSearch : ''
+
+    // Some headers shouldn't get column names
+    this.invisibleHeaders = this.props.invisibleHeaders || []
+
+    // Some columns should ignore row clicks
+    this.unlickableCols = this.props.unlickableCols || []
 
     // Setup headers for keeping header-column values aligned
     this.props.headers.forEach((h, i) => (this.headers[h] = i))
@@ -49,7 +56,7 @@ export default class extends PureComponent {
   render() {
     const { searchValue } = this.state
     const { selectedRow, toolbarButtons, toolbarStyle } = this.props
-    const { headers } = this
+    const { headers, invisibleHeaders: specialHeaders } = this
     const resetForm = this.props.resetForm || null
     const onRowHover = this.props.onRowHover || (() => log('Row hover changed'))
     const onRowClick = this.props.onRowClick || (() => log('Row selection changed'))
@@ -90,7 +97,7 @@ export default class extends PureComponent {
             <TableRow>
               {Object.keys(headers).map((header, i) => (
                 <TableColumn role="button" key={i} style={{ textAlign: 'center' }}>
-                  {header}
+                  {specialHeaders.includes(header) ? '' : header}
                 </TableColumn>
               ))}
             </TableRow>

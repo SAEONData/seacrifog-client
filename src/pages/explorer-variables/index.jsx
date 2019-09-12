@@ -24,8 +24,10 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
           <Cell size={12}>
             <Card tableCard>
               <Table
-                headers={[''].concat(Object.keys(variables[0]).filter(col => col && col !== '__typename' && col !== 'id'))}
-                data={variables.map(v => mergeLeft({ '': <EditButton to={`/variables/${v.id}`} /> }, v))}
+                invisibleHeaders={['EDIT']}
+                unlickableCols={['EDIT']}
+                headers={['EDIT'].concat(Object.keys(variables[0]).filter(col => col && col !== '__typename' && col !== 'id'))}
+                data={variables.map(v => mergeLeft({ EDIT: <EditButton to={`/variables/${v.id}`} /> }, v))}
                 initialSearch={
                   props.history.location.search
                     ? q.parse(props.history.location.search, { ignoreQueryPrefix: true }).searchTerm
