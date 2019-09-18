@@ -6,18 +6,18 @@ import GeoJSON from 'ol/format/GeoJSON.js'
 import { Fill, Stroke, Style } from 'ol/style.js'
 import { fromLonLat } from 'ol/proj.js'
 
-const workingExample = {
-  type: 'FeatureCollection',
-  features: [
-    {
-      type: 'Feature',
-      geometry: {
-        type: 'Polygon',
-        coordinates: [[fromLonLat([-26, -40]), fromLonLat([-26, 38]), fromLonLat([64, 38]), fromLonLat([64, -40]), fromLonLat([-26, -40])]]
-      }
-    }
-  ]
-}
+// const workingExample = {
+//   type: 'FeatureCollection',
+//   features: [
+//     {
+//       type: 'Feature',
+//       geometry: {
+//         type: 'Polygon',
+//         coordinates: [[fromLonLat([-26, -40]), fromLonLat([-26, 38]), fromLonLat([64, 38]), fromLonLat([64, -40]), fromLonLat([-26, -40])]]
+//       }
+//     }
+//   ]
+// }
 
 export default ({ geoJson }) => {
   const layers = [
