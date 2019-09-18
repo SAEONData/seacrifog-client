@@ -53,6 +53,7 @@ export const DATAPRODUCT = gql`
       provider
       author
       contact
+      coverage_spatial
       coverage_temp_start
       coverage_temp_end
       res_spatial

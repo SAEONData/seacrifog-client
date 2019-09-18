@@ -5,6 +5,7 @@ import TitleToolbar from '../../modules/title-toolbar'
 import { mergeLeft, pickBy } from 'ramda'
 import { NoneMessage, FormattedInfo, LinkButton, DownloadButton, EditButton } from '../../modules/shared-components'
 import { Grid, Cell, ExpansionList, ExpansionPanel, Card } from 'react-md'
+import CoverageMap from './coverage-map'
 import q from 'query-string'
 import DataQuery from '../../modules/data-query'
 
@@ -68,6 +69,9 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
                             }, dataproduct)}
                           />
                         }
+                      </ExpansionPanel>
+                      <ExpansionPanel contentStyle={{ paddingTop: 16 }} label="Spatial coverage information" footer={false}>
+                        <CoverageMap geoJson={dataproduct.coverage_spatial} />
                       </ExpansionPanel>
                     </ExpansionList>
 
