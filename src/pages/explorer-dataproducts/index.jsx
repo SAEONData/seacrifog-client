@@ -70,7 +70,7 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
                           />
                         }
                       </ExpansionPanel>
-                      <ExpansionPanel contentStyle={{ paddingTop: 16 }} label="Spatial coverage information" footer={false}>
+                      <ExpansionPanel contentStyle={{ paddingTop: 16 }} label="Spatial Coverage Information" footer={false}>
                         <CoverageMap geoJson={dataproduct.coverage_spatial} />
                       </ExpansionPanel>
                     </ExpansionList>

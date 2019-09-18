@@ -40,5 +40,12 @@ export default ({ geoJson }) => {
       })
     })
   ]
-  return <OpenLayers layers={layers} />
+  return (
+    <OpenLayers
+      viewOptions={{
+        zoom: 3
+      }}
+      layers={layers}
+    />
+  )
 }
