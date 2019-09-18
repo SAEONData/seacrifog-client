@@ -4,7 +4,7 @@ import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js'
 import { OSM, Vector as VectorSource } from 'ol/source'
 import GeoJSON from 'ol/format/GeoJSON.js'
 import { Fill, Stroke, Style } from 'ol/style.js'
-import { fromLonLat } from 'ol/proj.js'
+// import { fromLonLat } from 'ol/proj.js'
 
 // const workingExample = {
 //   type: 'FeatureCollection',
