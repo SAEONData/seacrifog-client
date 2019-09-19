@@ -4,20 +4,6 @@ import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js'
 import { OSM, Vector as VectorSource } from 'ol/source'
 import GeoJSON from 'ol/format/GeoJSON.js'
 import { Fill, Stroke, Style } from 'ol/style.js'
-// import { fromLonLat } from 'ol/proj.js'
-
-// const workingExample = {
-//   type: 'FeatureCollection',
-//   features: [
-//     {
-//       type: 'Feature',
-//       geometry: {
-//         type: 'Polygon',
-//         coordinates: [[fromLonLat([-26, -40]), fromLonLat([-26, 38]), fromLonLat([64, 38]), fromLonLat([64, -40]), fromLonLat([-26, -40])]]
-//       }
-//     }
-//   ]
-// }
 
 export default ({ geoJson }) => {
   const layers = [
@@ -30,12 +16,12 @@ export default ({ geoJson }) => {
       }),
       style: new Style({
         stroke: new Stroke({
-          color: 'blue',
-          lineDash: [4],
-          width: 3
+          color: 'rgba(243, 117, 31)',
+          lineDash: [0],
+          width: 1
         }),
         fill: new Fill({
-          color: 'rgba(0, 0, 255, 0.1)'
+          color: 'rgba(243, 117, 31, 0.2)'
         })
       })
     })

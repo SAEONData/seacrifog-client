@@ -4,6 +4,7 @@ import View from 'ol/View'
 import { mergeLeft } from 'ramda'
 import { defaults as olControls } from 'ol/control.js'
 import { fromLonLat } from 'ol/proj.js'
+import debounce from '../../lib/debounce'
 
 export default class extends PureComponent {
   constructor(props) {
@@ -36,6 +37,8 @@ export default class extends PureComponent {
   }
 
   render() {
+    window.addEventListener('nav-resize', debounce(() => this.map.updateSize(), 400))
+
     return <div style={{ width: '100%', height: '100%' }} ref={this.mapRef} />
   }
 }
