@@ -47,6 +47,13 @@ body {
   background-color: $md-blue-400;
 }
 
+/* Fixes for react-md bugs that can hopefully be deleted in the future */
+.fix-panel-content-style {
+  .md-panel-content {
+    padding: 0;
+  }
+}
+
 /* unsure of where this is used */
 .selected-row {
   background-color: $md-secondary-color !important; // !important overrides the hover event on other rows
