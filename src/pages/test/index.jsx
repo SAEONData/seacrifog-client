@@ -2,7 +2,7 @@ import React from 'react'
 import DataQuery from '../../modules/data-query'
 import { VARIABLE } from '../../graphql/queries'
 import { Button, Grid, Cell, SVGIcon, Card, CardText } from 'react-md'
-import { DatabaseIcon } from '../../icons'
+import { DatabaseIcon, PencilIcon } from '../../svg-icons'
 
 const InlineSvgIcon = ({ size }) => (
   <SVGIcon primary size={size} desc={'Test SVG icon'}>
@@ -14,6 +14,11 @@ const ZachsTests = () => (
   <Grid>
     <Cell size={12}>
       <Card>
+        <CardText>
+          <Button icon>
+            <PencilIcon />
+          </Button>
+        </CardText>
         <CardText>
           <Button icon>
             <DatabaseIcon primary={true} />
