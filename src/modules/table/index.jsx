@@ -151,7 +151,7 @@ export default class extends PureComponent {
                   key={i}
                   style={{ textAlign: 'center' }}
                 >
-                  {specialHeaders.includes(header) ? '' : header}
+                  {specialHeaders.includes(header) ? '' : header.replace(/_/g, ' ').titleize()}
                 </TableColumn>
               ))}
             </TableRow>

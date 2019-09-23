@@ -8,7 +8,14 @@ export default () => {
   }
 
   // eslint-disable-next-line no-extend-native
-  String.prototype.capitalize = function(string) {
+  String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1)
+  }
+
+  // eslint-disable-next-line no-extend-native
+  String.prototype.titleize = function() {
+    return this.split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ')
   }
 }
