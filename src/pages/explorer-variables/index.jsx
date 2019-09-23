@@ -26,7 +26,9 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
               <Table
                 invisibleHeaders={['EDIT']}
                 unlickableCols={['EDIT']}
-                headers={['EDIT'].concat(Object.keys(variables[0]).filter(col => col && col !== '__typename' && col !== 'id'))}
+                headers={Object.keys(variables[0])
+                  .filter(col => col && col !== '__typename' && col !== 'id')
+                  .concat('EDIT')}
                 data={variables.map(v => mergeLeft({ EDIT: <EditButton to={`/variables/${v.id}`} /> }, v))}
                 initialSearch={
                   props.history.location.search

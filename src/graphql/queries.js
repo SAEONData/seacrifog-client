@@ -7,7 +7,6 @@ export const PROTOCOLS_MIN = gql`
       id
       author
       title
-      publish_year
       domain
     }
   }

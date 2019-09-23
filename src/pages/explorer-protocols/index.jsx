@@ -25,7 +25,9 @@ export default ({ updateForm, hoveredProtocol, selectedProtocol, ...props }) => 
             <Card tableCard>
               <Table
                 invisibleHeaders={['EDIT']}
-                headers={['EDIT'].concat(Object.keys(protocols[0] || '').filter(col => col !== '__typename' && col !== 'id'))}
+                headers={Object.keys(protocols[0] || '')
+                  .filter(col => col !== '__typename' && col !== 'id')
+                  .concat('EDIT')}
                 data={protocols.map(p => mergeLeft({ EDIT: <EditButton to={`/protocols/${p.id}`} /> }, p))}
                 initialSearch={
                   props.history.location.search
