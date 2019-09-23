@@ -17,7 +17,7 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
         <TitleToolbar
           t1={selectedDP ? selectedDP.title : hoveredDP ? hoveredDP.title : 'Select rows by clicking on them...'}
           t2={selectedDP ? selectedDP.provider : hoveredDP ? hoveredDP.provider : ''}
-          t3={selectedDP ? selectedDP.contact : hoveredDP ? hoveredDP.contact : ''}
+          t3={selectedDP ? selectedDP.publish_year : hoveredDP ? hoveredDP.publish_year : ''}
         />
 
         <Grid>
