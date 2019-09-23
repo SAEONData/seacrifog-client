@@ -20,10 +20,6 @@ export const VARIABLES_MIN = gql`
       name
       class
       domain
-      set
-      cost
-      feasibility
-      relevance
     }
   }
 `
@@ -35,8 +31,6 @@ export const DATAPRODUCTS_MIN = gql`
       title
       publish_year
       provider
-      contact
-      author
     }
   }
 `

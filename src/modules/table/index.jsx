@@ -139,7 +139,7 @@ export default class extends PureComponent {
             </Button>
           )}
         </Toolbar>
-        <DataTable baseId="paginated-table" plain>
+        <DataTable responsive={true} baseId="paginated-table" plain>
           <TableHeader>
             <TableRow>
               {Object.keys(headers).map((header, i) => (
@@ -181,7 +181,7 @@ export default class extends PureComponent {
                           {row[col] === null || row[col] === undefined
                             ? '-'
                             : row[col].constructor === String
-                            ? row[col].toString().truncate(70, '..')
+                            ? row[col].toString().truncate(80, '..')
                             : row[col]}
                         </TableColumn>
                       )
