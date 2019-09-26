@@ -40,8 +40,6 @@ export default class extends PureComponent {
       const term = searchValue.toUpperCase().trim()
       if (term === '') return true
       else {
-        // TODO: This is currently a bug in react-scripts 3.1.1
-        // eslint-disable-next-line
         for (const key in p) {
           const value = (p[key] || '')
             .toString()
@@ -56,8 +54,6 @@ export default class extends PureComponent {
     // Then apply sorting
     const { sorting } = this.state || {}
     let sortedCol
-    // TODO: This is currently a bug in react-scripts 3.1.1
-    // eslint-disable-next-line
     for (let col in sorting) {
       if (sorting[col].sorted) sortedCol = col
     }
