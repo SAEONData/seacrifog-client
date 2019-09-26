@@ -17,7 +17,7 @@ export const SITES = gql`
     sites {
       id
       name
-      lng_lat
+      xyz
     }
   }
 `

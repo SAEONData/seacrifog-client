@@ -14,7 +14,7 @@ class Atlas extends PureComponent {
     super(props)
     const geoJson = {
       type: 'FeatureCollection',
-      features: this.props.sites.map(site => JSON.parse(site.lng_lat))
+      features: this.props.sites.map(site => JSON.parse(site.xyz))
     }
 
     this.layers = [
