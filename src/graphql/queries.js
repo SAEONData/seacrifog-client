@@ -12,6 +12,16 @@ export const PROTOCOLS_MIN = gql`
   }
 `
 
+export const SITES = gql`
+  query sites {
+    sites {
+      id
+      name
+      lng_lat
+    }
+  }
+`
+
 export const VARIABLES_MIN = gql`
   query variablesMin {
     variables {

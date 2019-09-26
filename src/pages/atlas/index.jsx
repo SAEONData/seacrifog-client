@@ -1,17 +1,30 @@
 import React, { PureComponent } from 'react'
 import OpenLayers from '../../modules/open-layers'
-import { Tile as TileLayer } from 'ol/layer.js'
-import { OSM } from 'ol/source'
+import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js'
+import GeoJSON from 'ol/format/GeoJSON.js'
+import { OSM, Vector as VectorSource } from 'ol/source'
+import DataQuery from '../../modules/data-query'
+import { SITES } from '../../graphql/queries'
 import { Button, Drawer, Toolbar, FontIcon } from 'react-md'
 
-export default class extends PureComponent {
+class Atlas extends PureComponent {
   state = { visible: false }
 
   constructor(props) {
     super(props)
+    const geoJson = {
+      type: 'FeatureCollection',
+      features: this.props.sites.map(site => JSON.parse(site.lng_lat))
+    }
+
     this.layers = [
       new TileLayer({
         source: new OSM({})
+      }),
+      new VectorLayer({
+        source: new VectorSource({
+          features: new GeoJSON().readFeatures(geoJson)
+        })
       })
     ]
   }
@@ -101,3 +114,9 @@ export default class extends PureComponent {
     )
   }
 }
+
+export default () => (
+  <DataQuery query={SITES} variables={{}}>
+    {props => <Atlas {...props} />}
+  </DataQuery>
+)

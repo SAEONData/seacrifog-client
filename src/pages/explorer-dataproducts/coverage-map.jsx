@@ -12,7 +12,7 @@ export default ({ geoJson }) => {
     }),
     new VectorLayer({
       source: new VectorSource({
-        features: new GeoJSON('EPSG:4326').readFeatures(geoJson)
+        features: new GeoJSON().readFeatures(geoJson)
       }),
       style: new Style({
         stroke: new Stroke({
