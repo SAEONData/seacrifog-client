@@ -78,7 +78,9 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
                               }
                             </ExpansionPanel>
                             <ExpansionPanel className="fix-panel-content-style" label="Spatial Coverage" footer={false}>
-                              <CoverageMap geoJson={dataproduct.coverage_spatial} />
+                              <div style={{ height: '500px' }}>
+                                <CoverageMap geoJson={dataproduct.coverage_spatial} />
+                              </div>
                             </ExpansionPanel>
                           </ExpansionList>
                         </Cell>

@@ -1,14 +1,21 @@
 import React from 'react'
 import OpenLayers from '../../modules/open-layers'
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js'
-import { OSM, Vector as VectorSource } from 'ol/source'
+import { Vector as VectorSource } from 'ol/source'
+import TileWMS from 'ol/source/TileWMS'
 import GeoJSON from 'ol/format/GeoJSON.js'
 import { Fill, Stroke, Style } from 'ol/style.js'
 
 export default ({ geoJson }) => {
   const layers = [
     new TileLayer({
-      source: new OSM({})
+      source: new TileWMS({
+        url: 'https://ahocevar.com/geoserver/wms',
+        params: {
+          LAYERS: 'ne:NE1_HR_LC_SR_W_DR',
+          TILED: true
+        }
+      })
     }),
     new VectorLayer({
       source: new VectorSource({
@@ -29,7 +36,7 @@ export default ({ geoJson }) => {
   return (
     <OpenLayers
       viewOptions={{
-        zoom: 3
+        zoom: 2
       }}
       layers={layers}
     />

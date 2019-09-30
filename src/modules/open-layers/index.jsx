@@ -3,7 +3,6 @@ import Map from 'ol/Map'
 import View from 'ol/View'
 import { mergeLeft } from 'ramda'
 import { defaults as defaultControls } from 'ol/control.js'
-import { fromLonLat } from 'ol/proj.js'
 import debounce from '../../lib/debounce'
 
 export default class extends PureComponent {
@@ -30,7 +29,7 @@ export default class extends PureComponent {
           this.props.viewOptions || {},
           // Some sensible/required defaults
           {
-            center: fromLonLat([0, 0]),
+            center: [0, 0],
             zoom: 2.5,
             projection: 'EPSG:4326'
           }
