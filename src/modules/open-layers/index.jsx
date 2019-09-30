@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import Map from 'ol/Map'
 import View from 'ol/View'
 import { mergeLeft } from 'ramda'
-import { defaults as olControls } from 'ol/control.js'
+import { defaults as defaultControls } from 'ol/control.js'
 import { fromLonLat } from 'ol/proj.js'
 import debounce from '../../lib/debounce'
 
@@ -17,19 +17,22 @@ export default class extends PureComponent {
     this.map = new Map({
       target: this.mapRef.current,
       layers: this.props.layers,
-      controls: olControls({
+      controls: defaultControls({
         zoom: false,
         rotateOptions: false,
         rotate: false,
         attribution: false
-      }),
+      }).extend([
+        // Specify controls externally to this component?
+      ]),
       view: new View(
         mergeLeft(
           this.props.viewOptions || {},
           // Some sensible/required defaults
           {
             center: fromLonLat([0, 0]),
-            zoom: 2.5
+            zoom: 2.5,
+            projection: 'EPSG:4326'
           }
         )
       )
