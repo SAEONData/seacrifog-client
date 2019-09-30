@@ -1,8 +1,6 @@
 import React from 'react'
 import { Grid, Cell, Card, CardText } from 'react-md'
 import EChart from '../../modules/echarts'
-import GlTest from './test-gl'
-import TreeTest from './tree-map-example'
 
 export default () => (
   <Grid>
@@ -55,13 +53,13 @@ export default () => (
     <Cell phoneSize={6} tabletSize={8} size={6}>
       <Card>
         <CardText>
-          <TreeTest />
+          <CardText>Look at the echarts-example branch to see this example</CardText>
         </CardText>
       </Card>
     </Cell>
     <Cell phoneSize={6} tabletSize={8} size={12}>
       <Card>
-        <GlTest />
+        <CardText>Look at the echarts-example branch to see this example</CardText>
       </Card>
     </Cell>
   </Grid>

@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import echarts from 'echarts'
 
-// eslint-disable-next-line no-unused-vars
-import echartsgl from 'echarts-gl' // This sets up a global GL environment or something
-
 export default class extends Component {
   state = { height: 0 }
   constructor(props) {
