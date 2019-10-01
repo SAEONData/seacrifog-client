@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import OpenLayers from '../../modules/open-layers'
+import debounce from '../../lib/debounce'
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js'
 import { Cluster, Vector as VectorSource } from 'ol/source'
 // import { OSM, Vector as VectorSource } from 'ol/source'
@@ -18,8 +19,7 @@ class Atlas extends PureComponent {
     super(props)
     this.state = {
       menuOpen: false,
-      siteSearchTerm: '',
-      sites: this.getClusteredData(this.props.sites)
+      siteSearchTerm: ''
     }
 
     this.baseMap = new TileLayer({
@@ -35,7 +35,7 @@ class Atlas extends PureComponent {
     this.clusteredSitesSource = new Cluster({
       distance: 100,
       source: new VectorSource({
-        features: this.state.sites
+        features: this.getClusteredData(this.props.sites)
       })
     })
 
@@ -45,12 +45,12 @@ class Atlas extends PureComponent {
         var size = feature.get('features').length
         return new Style({
           image: new CircleStyle({
-            radius: size > 200 ? 40 : size > 100 ? 30 : size > 20 ? 20 : 15,
+            radius: size > 300 ? 50 : size > 250 ? 45 : size > 200 ? 40 : size > 100 ? 30 : size > 50 ? 25 : size > 20 ? 20 : 15,
             stroke: new Stroke({
               color: '#fff'
             }),
             fill: new Fill({
-              color: '#3399CC'
+              color: 'rgba(51, 153, 204, 0.5)'
             })
           }),
           text: new Text({
@@ -64,11 +64,19 @@ class Atlas extends PureComponent {
     })
   }
 
-  getClusteredData = sites =>
-    sites.map(site => {
-      const xyz = JSON.parse(site.xyz).coordinates
-      return new Feature(new Point([xyz[0], xyz[1]]))
-    })
+  getClusteredData = sites => {
+    const { siteSearchTerm } = this.state
+    return sites
+      .map(site => {
+        if (site.name.toUpperCase().indexOf(siteSearchTerm.toUpperCase()) < 0) {
+          return null
+        } else {
+          const xyz = JSON.parse(site.xyz).coordinates
+          return new Feature(new Point([xyz[0], xyz[1]]))
+        }
+      })
+      .filter(_ => _)
+  }
 
   openDrawer = () => {
     this.setState({ menuOpen: true })
@@ -83,12 +91,13 @@ class Atlas extends PureComponent {
   }
 
   searchSites = val => {
-    // https://stackoverflow.com/questions/50967221/openlayers-how-to-refresh-cluster
-    const sites = this.getClusteredData([])
-    this.setState({ siteSearchTerm: val, sites }, () => {
-      this.clusteredSitesSource.source.clear()
-      this.clusteredSitesSource.getSource().addFeatures(sites)
-    })
+    this.setState(
+      { siteSearchTerm: val },
+      debounce(() => {
+        this.clusteredSitesSource.source.clear()
+        this.clusteredSitesSource.getSource().addFeatures(this.getClusteredData(this.props.sites))
+      })
+    )
   }
 
   render() {
@@ -102,7 +111,7 @@ class Atlas extends PureComponent {
     return (
       <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
         <Drawer
-          style={{ zIndex: 999 }}
+          style={{ zIndex: 999, opacity: 0.85, minWidth: '400px', paddingRight: '30px' }}
           id="simple-drawer-example"
           type={Drawer.DrawerTypes.TEMPORARY}
           visible={menuOpen}
@@ -110,8 +119,9 @@ class Atlas extends PureComponent {
           onVisibilityChange={this.handleVisibility}
           navItems={[
             <TextField
+              autocomplete="off"
               key={'site-search'}
-              style={{ margin: '0 20px', width: '200px' }}
+              style={{ margin: '0 20px', width: '100%' }}
               id="atlas-search-field"
               label="Search sites"
               placeholder="(site name)"
@@ -131,8 +141,8 @@ class Atlas extends PureComponent {
           layers={[this.baseMap, this.clusteredSites]}
         />
 
-        <Button style={{ position: 'absolute', top: 10, right: 10 }} raised onClick={this.openDrawer}>
-          Menu
+        <Button style={{ position: 'absolute', top: 10, right: 10 }} icon onClick={this.openDrawer}>
+          menu
         </Button>
       </div>
     )
