@@ -6,8 +6,8 @@ import { Cluster, Vector as VectorSource } from 'ol/source'
 // import { OSM, Vector as VectorSource } from 'ol/source'
 import TileWMS from 'ol/source/TileWMS'
 import DataQuery from '../../modules/data-query'
-import { SITES } from '../../graphql/queries'
-import { Button, Drawer, Toolbar, FontIcon, TextField } from 'react-md'
+import { SITES_VARIABLES } from '../../graphql/queries'
+import { Button, Drawer, Toolbar, TextField, Autocomplete } from 'react-md'
 
 // For clustering
 import Feature from 'ol/Feature'
@@ -15,12 +15,14 @@ import Point from 'ol/geom/Point'
 import { Circle as CircleStyle, Fill, Stroke, Style, Text } from 'ol/style'
 
 class Atlas extends PureComponent {
+  state = {
+    menuOpen: false,
+    siteSearchTerm: '',
+    variableSearchTerm: ''
+  }
+
   constructor(props) {
     super(props)
-    this.state = {
-      menuOpen: false,
-      siteSearchTerm: ''
-    }
 
     this.baseMap = new TileLayer({
       source: new TileWMS({
@@ -65,14 +67,31 @@ class Atlas extends PureComponent {
   }
 
   getClusteredData = sites => {
-    const { siteSearchTerm } = this.state
+    const { siteSearchTerm, variableSearchTerm } = this.state
+    let siteFound = false
+    let variableFound = true
     return sites
       .map(site => {
-        if (site.name.toUpperCase().indexOf(siteSearchTerm.toUpperCase()) < 0) {
+        if (site.name.toUpperCase().indexOf((siteSearchTerm || '').toUpperCase()) < 0) {
           return null
         } else {
-          const xyz = JSON.parse(site.xyz).coordinates
-          return new Feature(new Point([xyz[0], xyz[1]]))
+          siteFound = true
+          if (variableSearchTerm && variableSearchTerm !== '') {
+            variableFound = false
+            for (const network of site.networks) {
+              for (const variable of network.variables) {
+                if (variable.name.toUpperCase().indexOf(variableSearchTerm.toUpperCase()) >= 0) {
+                  variableFound = true
+                }
+              }
+            }
+          }
+          if (siteFound && variableFound) {
+            const xyz = JSON.parse(site.xyz).coordinates
+            return new Feature(new Point([xyz[0], xyz[1]]))
+          } else {
+            return null
+          }
         }
       })
       .filter(_ => _)
@@ -90,9 +109,9 @@ class Atlas extends PureComponent {
     this.setState({ menuOpen })
   }
 
-  searchSites = val => {
+  searchSites = ({ siteSearchTerm, variableSearchTerm }) => {
     this.setState(
-      { siteSearchTerm: val },
+      { siteSearchTerm, variableSearchTerm },
       debounce(() => {
         this.clusteredSitesSource.source.clear()
         this.clusteredSitesSource.getSource().addFeatures(this.getClusteredData(this.props.sites))
@@ -101,7 +120,7 @@ class Atlas extends PureComponent {
   }
 
   render() {
-    const { menuOpen, siteSearchTerm } = this.state
+    const { menuOpen, siteSearchTerm, variableSearchTerm } = this.state
     const closeBtn = (
       <Button icon onClick={this.closeDrawer}>
         close
@@ -111,10 +130,13 @@ class Atlas extends PureComponent {
     return (
       <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
         <Drawer
-          style={{ zIndex: 999, opacity: 0.85, minWidth: '400px', paddingLeft: '30px', paddingRight: '30px' }}
-          id="simple-drawer-example"
-          type={Drawer.DrawerTypes.TEMPORARY}
+          style={{ zIndex: 999, minWidth: '400px' }}
+          navStyle={{ paddingLeft: '30px', paddingRight: '30px' }}
+          id="atlas-menu"
           visible={menuOpen}
+          mobileType={Drawer.DrawerTypes.TEMPORARY}
+          tabletType={Drawer.DrawerTypes.TEMPORARY}
+          desktopType={Drawer.DrawerTypes.TEMPORARY}
           position={'right'}
           onVisibilityChange={this.handleVisibility}
           navItems={[
@@ -122,16 +144,55 @@ class Atlas extends PureComponent {
               autoComplete="off"
               key={'site-search'}
               style={{ width: '100%' }}
-              id="atlas-search-field"
+              id="atlas-search-field-sites"
               label="Search sites"
-              placeholder="(site name)"
+              placeholder="(by name)"
               value={siteSearchTerm}
-              onChange={val => this.searchSites(val)}
-              leftIcon={<FontIcon>search</FontIcon>}
+              onChange={val => this.searchSites({ siteSearchTerm: val })}
               fullWidth={true}
+            />,
+            <Autocomplete
+              key={'variable-search'}
+              type="search"
+              id="atlas-search-field-variables"
+              label="Search variables"
+              placeholder="(by name)"
+              value={variableSearchTerm}
+              onAutocomplete={val => this.searchSites({ variableSearchTerm: val })}
+              onChange={val => this.searchSites({ variableSearchTerm: val })}
+              data={[
+                ...new Set(
+                  this.props.sites
+                    .map(s => s.networks.map(n => n.variables.map(v => v.name)))
+                    .flat()
+                    .flat()
+                )
+              ]}
+              filter={Autocomplete.fuzzyFilter}
+            />,
+            <Autocomplete
+              key={'protocol-search'}
+              type="search"
+              id="atlas-search-field-protocols"
+              label="Search protocols"
+              placeholder="(by name)"
+              data={[
+                ...new Set(
+                  this.props.sites
+                    .map(s =>
+                      s.networks.map(n =>
+                        n.variables.map(v => [...new Set(v.directly_related_protocols), ...new Set(v.indirectly_related_protocols)].map(p => p.title))
+                      )
+                    )
+                    .flat()
+                    .flat()
+                    .flat()
+                )
+              ]}
+              filter={Autocomplete.fuzzyFilter}
             />
           ]}
-          header={<Toolbar nav={closeBtn} className="md-divider-border md-divider-border--bottom" />}
+          header={<Toolbar nav={closeBtn} />}
         />
 
         <OpenLayers
@@ -150,7 +211,7 @@ class Atlas extends PureComponent {
 }
 
 export default () => (
-  <DataQuery query={SITES} variables={{}}>
+  <DataQuery query={SITES_VARIABLES} variables={{}}>
     {props => <Atlas {...props} />}
   </DataQuery>
 )

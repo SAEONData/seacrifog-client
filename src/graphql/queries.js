@@ -12,12 +12,31 @@ export const PROTOCOLS_MIN = gql`
   }
 `
 
-export const SITES = gql`
-  query sites {
+export const SITES_VARIABLES = gql`
+  query sitesVariables {
     sites {
       id
       name
       xyz
+      networks {
+        id
+        title
+        acronym
+        variables {
+          id
+          name
+          class
+          domain
+          directly_related_protocols {
+            id
+            title
+          }
+          indirectly_related_protocols {
+            id
+            title
+          }
+        }
+      }
     }
   }
 `
