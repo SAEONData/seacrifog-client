@@ -111,7 +111,7 @@ class Atlas extends PureComponent {
     return (
       <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
         <Drawer
-          style={{ zIndex: 999, opacity: 0.85, minWidth: '400px', paddingRight: '30px' }}
+          style={{ zIndex: 999, opacity: 0.85, minWidth: '400px', paddingLeft: '30px', paddingRight: '30px' }}
           id="simple-drawer-example"
           type={Drawer.DrawerTypes.TEMPORARY}
           visible={menuOpen}
@@ -119,9 +119,9 @@ class Atlas extends PureComponent {
           onVisibilityChange={this.handleVisibility}
           navItems={[
             <TextField
-              autocomplete="off"
+              autoComplete="off"
               key={'site-search'}
-              style={{ margin: '0 20px', width: '100%' }}
+              style={{ width: '100%' }}
               id="atlas-search-field"
               label="Search sites"
               placeholder="(site name)"
