@@ -1,5 +1,21 @@
 import gql from 'graphql-tag'
 
+export const NETWORK_FRAGMENT = gql`
+  {
+    id
+    title
+    acronym
+  }
+`
+
+export const SITE_FRAGMENT = gql`
+  {
+    id
+    name
+    xyz
+  }
+`
+
 export const DATAPRODUCT_FRAGMENT = gql`
   {
     id

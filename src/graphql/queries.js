@@ -1,5 +1,26 @@
 import gql from 'graphql-tag'
-import { PROTOCOL_FRAGMENT, VARIABLE_FRAGMENT, DATAPRODUCT_FRAGMENT } from './fragments'
+import { PROTOCOL_FRAGMENT, VARIABLE_FRAGMENT, DATAPRODUCT_FRAGMENT, SITE_FRAGMENT, NETWORK_FRAGMENT } from './fragments'
+
+export const ENTIRE_GRAPH = gql`
+  query entireGraph {
+    sites ${SITE_FRAGMENT}
+    networks ${NETWORK_FRAGMENT}
+    variables ${VARIABLE_FRAGMENT}
+    protocols ${PROTOCOL_FRAGMENT}
+    dataproducts ${DATAPRODUCT_FRAGMENT}
+    xrefProtocolsVariables {
+      id
+      protocol_id
+      variable_id
+      relationship_type
+    }
+    xrefDataproductsVariables {
+      id
+      variable_id
+      dataproduct_id
+    }
+  }
+`
 
 export const PROTOCOLS_MIN = gql`
   query protocolsMin {
@@ -8,35 +29,6 @@ export const PROTOCOLS_MIN = gql`
       author
       title
       domain
-    }
-  }
-`
-
-export const SITES_VARIABLES = gql`
-  query sitesVariables {
-    sites {
-      id
-      name
-      xyz
-      networks {
-        id
-        title
-        acronym
-        variables {
-          id
-          name
-          class
-          domain
-          directly_related_protocols {
-            id
-            title
-          }
-          indirectly_related_protocols {
-            id
-            title
-          }
-        }
-      }
     }
   }
 `
@@ -252,24 +244,6 @@ export const VARIABLES = gql`
       req_source
       req_uri
       technology_type
-    }
-  }
-`
-
-export const ENTIRE_GRAPH = gql`
-  query entireGraph {
-    variables ${VARIABLE_FRAGMENT}
-    protocols ${PROTOCOL_FRAGMENT}
-    dataproducts ${DATAPRODUCT_FRAGMENT}
-    protocolsXrefVariables {
-      id
-      protocol_id
-      variable_id
-    }
-    dataproductsXrefVariables {
-      id
-      variable_id
-      dataproduct_id
     }
   }
 `

@@ -3,7 +3,11 @@
   // -webkit-box-shadow: 74px 2px 13px 0px $sf-shadow-color;
   // -moz-box-shadow: 74px 2px 13px 0px $sf-shadow-color;
   // box-shadow: 74px 2px 13px 0px $sf-shadow-color;
-  @include sf-box-shadow($x-axis: 74px);
+  @include sf-box-shadow($x-axis: 0);
+
+  @media (min-width: $md-grid-desktop-breakpoint) {
+    @include sf-box-shadow($x-axis: 74px);
+  }
 }
 /* Side Navigation bar */
 .sf-drawer {

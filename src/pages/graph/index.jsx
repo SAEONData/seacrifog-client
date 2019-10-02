@@ -9,7 +9,7 @@ const NODE_LIMIT_PER_ENTITY = 24
 
 export default () => (
   <DataQuery query={ENTIRE_GRAPH}>
-    {({ variables, protocols, dataproducts, protocolsXrefVariables, dataproductsXrefVariables }) => (
+    {({ variables, protocols, dataproducts, xrefProtocolsVariables, xrefDataproductsVariables }) => (
       <Form searchTerm="">
         {({ updateForm, searchTerm }) => {
           // Keep track of the order each variable/prototype is placed in the nodes
@@ -44,7 +44,7 @@ export default () => (
             type: 'force',
             categories: [{ name: 'Variables', keyword: {} }, { name: 'Protocols', keyword: {} }, { name: 'Data products', keyword: {} }],
             nodes,
-            links: protocolsXrefVariables
+            links: xrefProtocolsVariables
               .map(x => {
                 const protocol_id = x.protocol_id
                 const variable_id = x.variable_id
@@ -56,7 +56,7 @@ export default () => (
                 return { source, target }
               })
               .concat(
-                dataproductsXrefVariables.map(x => {
+                xrefDataproductsVariables.map(x => {
                   const dataproduct_id = x.protocol_id
                   const variable_id = x.variable_id
 
@@ -74,6 +74,7 @@ export default () => (
                 <Cell phoneSize={6} tabletSize={8} size={12}>
                   <Card>
                     <CardText style={{ padding: '0 10px 10px 10px' }}>
+                      <i>Note this is a proof of concept only - the relationships are not correct after filtering</i>
                       <TextField
                         id="temp-graph-search"
                         label="Find..."
