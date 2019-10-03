@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react'
-import { Button, Drawer, Toolbar } from 'react-md'
+import { Button, Drawer, Toolbar, TextField, FontIcon } from 'react-md'
+import { mergeLeft } from 'ramda'
 
 export default class extends PureComponent {
-  state = { menuOpen: false }
+  state = {
+    menuOpen: false
+  }
 
   openMenu = () => this.setState({ menuOpen: true })
   closeMenu = () => this.setState({ menuOpen: false })
@@ -11,7 +14,7 @@ export default class extends PureComponent {
   render() {
     const { menuOpen } = this.state
     const { openMenu, closeMenu, onVizChange } = this
-    const { tools } = this.props
+    const { filters, filter } = this.props
 
     return (
       <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
@@ -34,7 +37,20 @@ export default class extends PureComponent {
               }
             />
           }
-          navItems={tools.map(t => t)}
+          navItems={filters.map((f, i) => (
+            <TextField
+              id="atlas-search-field-sites"
+              key={i}
+              autoComplete="off"
+              style={{ width: '100%' }}
+              leftIcon={<FontIcon>search</FontIcon>}
+              label={f.label}
+              placeholder={f.placeholder}
+              value={f.value}
+              onChange={value => filter(mergeLeft({ value }, f))}
+              fullWidth={true}
+            />
+          ))}
         />
         {this.props.children}
         <Button style={{ position: 'absolute', top: 10, right: 10 }} icon onClick={openMenu}>
