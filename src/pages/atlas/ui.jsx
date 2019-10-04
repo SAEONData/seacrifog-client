@@ -1,6 +1,57 @@
 import React, { PureComponent } from 'react'
-import { Button, Drawer, Toolbar, TextField, FontIcon, CircularProgress } from 'react-md'
+import {
+  Button,
+  Drawer,
+  Toolbar,
+  TextField,
+  FontIcon,
+  CircularProgress,
+  DropdownMenu,
+  ListItemControl,
+  List,
+  ListItem,
+  SelectionControl
+} from 'react-md'
 import { mergeLeft } from 'ramda'
+
+class SelectionList extends React.PureComponent {
+  render() {
+    const { filter, filterFunction } = this.props
+    return (
+      <>
+        <DropdownMenu
+          style={{ width: '100%' }}
+          listStyle={{ width: '100%' }}
+          anchor={{
+            x: DropdownMenu.HorizontalAnchors.INNER_LEFT,
+            y: DropdownMenu.VerticalAnchors.BOTTOM
+          }}
+          position={DropdownMenu.Positions.BELOW}
+          menuItems={[
+            <ListItemControl
+              primaryAction={<SelectionControl type={'checkbox'} label="hi there" checked={true} labelBefore />}
+            />
+          ]}
+        >
+          <TextField
+            id={`atlas-filter-${filter.id}`}
+            key={filter.id}
+            autoComplete="off"
+            style={{ width: '100%' }}
+            leftIcon={<FontIcon>search</FontIcon>}
+            label={filter.label}
+            fullWidth={true}
+            value={filter.value}
+            onChange={value => filterFunction(mergeLeft({ value }, filter))}
+          />
+        </DropdownMenu>
+        {/* <List>
+          <ListItem rightIcon={<FontIcon>close</FontIcon>} primaryText={'hi'} />
+        </List> */}
+      </>
+    )
+  }
+}
 
 export default class extends PureComponent {
   state = {
@@ -14,14 +65,13 @@ export default class extends PureComponent {
   render() {
     const { menuOpen } = this.state
     const { openMenu, closeMenu, onVizChange } = this
-    const { filters, filter, showThinking } = this.props
+    const { filters, filterFunction, showThinking } = this.props
 
     return (
       <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
         <Drawer
           id="atlas-ui"
           style={{ zIndex: 999, minWidth: '400px' }}
-          navStyle={{ paddingLeft: '30px', paddingRight: '30px' }}
           visible={menuOpen}
           mobileType={Drawer.DrawerTypes.TEMPORARY}
           tabletType={Drawer.DrawerTypes.TEMPORARY}
@@ -44,19 +94,16 @@ export default class extends PureComponent {
               }
             />
           }
-          navItems={filters.map((f, i) => (
-            <TextField
-              id="atlas-search-field-sites"
-              key={i}
-              autoComplete="off"
-              style={{ width: '100%' }}
-              leftIcon={<FontIcon>search</FontIcon>}
-              label={f.label}
-              value={f.value}
-              onChange={value => filter(mergeLeft({ value }, f))}
-              fullWidth={true}
-            />
-          ))}
+          children={
+            <div style={{ paddingLeft: '30px', paddingRight: '30px' }}>
+              <Button icon>edit</Button>
+              <Button icon>picture_as_pdf</Button>
+              <Button icon>get_app</Button>
+              {filters.map(filter => (
+                <SelectionList filterFunction={filterFunction} filter={filter} />
+              ))}
+            </div>
+          }
         />
         {this.props.children}
         <Button style={{ position: 'absolute', top: 10, right: 10 }} icon onClick={openMenu}>

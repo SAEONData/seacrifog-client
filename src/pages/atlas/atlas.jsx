@@ -6,7 +6,7 @@ import { cluster as clusterLayer, ahocevarBaseMap } from './layers'
 import debounce from '../../lib/debounce'
 import sift from 'sift'
 
-export default class extends PureComponent {
+export default class Atlas extends PureComponent {
   state = {
     showThinking: false,
     filters: [
@@ -46,7 +46,7 @@ export default class extends PureComponent {
    * The outcome of this filter is a list of sites to display
    *  => (1) Get site IDs
    */
-  filter = filter =>
+  filterFunction = filter =>
     this.setState(
       {
         showThinking: true,
@@ -101,10 +101,10 @@ export default class extends PureComponent {
     )
 
   render() {
-    const { ahocevarBaseMap, clusteredSitesLayer, filter } = this
+    const { ahocevarBaseMap, clusteredSitesLayer, filterFunction } = this
     const { filters, showThinking } = this.state
     return (
-      <UI showThinking={showThinking} filter={filter} filters={filters}>
+      <UI showThinking={showThinking} filterFunction={filterFunction} filters={filters}>
         <OpenLayers
           viewOptions={{
             zoom: 3
