@@ -97,7 +97,7 @@ export default class extends PureComponent {
 
         // Stop the thinking spinner
         this.setState({ showThinking: false })
-      }, 350)
+      })
     )
 
   render() {

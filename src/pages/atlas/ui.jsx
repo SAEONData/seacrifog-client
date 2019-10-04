@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Button, Drawer, Toolbar, TextField, FontIcon, LinearProgress } from 'react-md'
+import { Button, Drawer, Toolbar, TextField, FontIcon, CircularProgress } from 'react-md'
 import { mergeLeft } from 'ramda'
 
 export default class extends PureComponent {
@@ -30,6 +30,13 @@ export default class extends PureComponent {
           onVisibilityChange={onVizChange}
           header={
             <Toolbar
+              actions={[
+                <CircularProgress
+                  id="map-calculation-progress"
+                  key="map-calc-progress"
+                  style={showThinking ? { position: 'relative', top: '12px', right: '12px' } : { visibility: 'hidden' }}
+                />
+              ]}
               nav={
                 <Button icon onClick={closeMenu}>
                   close
@@ -37,27 +44,19 @@ export default class extends PureComponent {
               }
             />
           }
-          navItems={[
-            <LinearProgress
-              id="map-calculation-progress"
-              key="map-calc-progress"
-              style={showThinking ? { margin: 0 } : { visibility: 'hidden', margin: 0 }}
+          navItems={filters.map((f, i) => (
+            <TextField
+              id="atlas-search-field-sites"
+              key={i}
+              autoComplete="off"
+              style={{ width: '100%' }}
+              leftIcon={<FontIcon>search</FontIcon>}
+              label={f.label}
+              value={f.value}
+              onChange={value => filter(mergeLeft({ value }, f))}
+              fullWidth={true}
             />
-          ].concat(
-            filters.map((f, i) => (
-              <TextField
-                id="atlas-search-field-sites"
-                key={i}
-                autoComplete="off"
-                style={{ width: '100%' }}
-                leftIcon={<FontIcon>search</FontIcon>}
-                label={f.label}
-                value={f.value}
-                onChange={value => filter(mergeLeft({ value }, f))}
-                fullWidth={true}
-              />
-            ))
-          )}
+          ))}
         />
         {this.props.children}
         <Button style={{ position: 'absolute', top: 10, right: 10 }} icon onClick={openMenu}>
