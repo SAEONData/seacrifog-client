@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Button, Drawer, Toolbar, TextField, FontIcon } from 'react-md'
+import { Button, Drawer, Toolbar, TextField, FontIcon, LinearProgress } from 'react-md'
 import { mergeLeft } from 'ramda'
 
 export default class extends PureComponent {
@@ -14,7 +14,7 @@ export default class extends PureComponent {
   render() {
     const { menuOpen } = this.state
     const { openMenu, closeMenu, onVizChange } = this
-    const { filters, filter } = this.props
+    const { filters, filter, showThinking } = this.props
 
     return (
       <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
@@ -37,20 +37,27 @@ export default class extends PureComponent {
               }
             />
           }
-          navItems={filters.map((f, i) => (
-            <TextField
-              id="atlas-search-field-sites"
-              key={i}
-              autoComplete="off"
-              style={{ width: '100%' }}
-              leftIcon={<FontIcon>search</FontIcon>}
-              label={f.label}
-              placeholder={f.placeholder}
-              value={f.value}
-              onChange={value => filter(mergeLeft({ value }, f))}
-              fullWidth={true}
+          navItems={[
+            <LinearProgress
+              id="map-calculation-progress"
+              key="map-calc-progress"
+              style={showThinking ? { margin: 0 } : { visibility: 'hidden', margin: 0 }}
             />
-          ))}
+          ].concat(
+            filters.map((f, i) => (
+              <TextField
+                id="atlas-search-field-sites"
+                key={i}
+                autoComplete="off"
+                style={{ width: '100%' }}
+                leftIcon={<FontIcon>search</FontIcon>}
+                label={f.label}
+                value={f.value}
+                onChange={value => filter(mergeLeft({ value }, f))}
+                fullWidth={true}
+              />
+            ))
+          )}
         />
         {this.props.children}
         <Button style={{ position: 'absolute', top: 10, right: 10 }} icon onClick={openMenu}>

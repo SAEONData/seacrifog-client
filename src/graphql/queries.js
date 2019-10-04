@@ -1,5 +1,11 @@
 import gql from 'graphql-tag'
-import { PROTOCOL_FRAGMENT, VARIABLE_FRAGMENT, DATAPRODUCT_FRAGMENT, SITE_FRAGMENT, NETWORK_FRAGMENT } from './fragments'
+import {
+  PROTOCOL_FRAGMENT,
+  VARIABLE_FRAGMENT,
+  DATAPRODUCT_FRAGMENT,
+  SITE_FRAGMENT,
+  NETWORK_FRAGMENT
+} from './fragments'
 
 export const ENTIRE_GRAPH = gql`
   query entireGraph {
@@ -18,6 +24,16 @@ export const ENTIRE_GRAPH = gql`
       id
       variable_id
       dataproduct_id
+    }
+    xrefSitesNetworks {
+      id
+      site_id
+      network_id
+    }
+    xrefNetworksVariables {
+      id
+      network_id
+      variable_id
     }
   }
 `

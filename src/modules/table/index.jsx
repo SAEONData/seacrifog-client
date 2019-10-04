@@ -2,7 +2,18 @@ import React, { PureComponent } from 'react'
 import debounce from '../../lib/debounce'
 import { mergeLeft } from 'ramda'
 import { log } from '../../lib/log'
-import { Toolbar, TextField, FontIcon, DataTable, TableHeader, TableRow, TableColumn, TableBody, TablePagination, Button } from 'react-md'
+import {
+  Toolbar,
+  TextField,
+  FontIcon,
+  DataTable,
+  TableHeader,
+  TableRow,
+  TableColumn,
+  TableBody,
+  TablePagination,
+  Button
+} from 'react-md'
 
 export default class extends PureComponent {
   headers = {}
@@ -154,7 +165,11 @@ export default class extends PureComponent {
           </TableHeader>
           <TableBody onMouseLeave={() => onRowHover(null)}>
             {this.getDataSlice(filteredData).map((row, i) => (
-              <TableRow className={row.id === (selectedRow || {}).id ? 'selected-row' : ''} key={i} onMouseOver={debounce(() => onRowHover(row), 5)}>
+              <TableRow
+                className={row.id === (selectedRow || {}).id ? 'selected-row' : ''}
+                key={i}
+                onMouseOver={debounce(() => onRowHover(row), 5)}
+              >
                 {(row => {
                   const cols = []
                   Object.keys(row)

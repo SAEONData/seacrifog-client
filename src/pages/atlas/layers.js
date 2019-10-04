@@ -1,21 +1,19 @@
 import { Circle as CircleStyle, Fill, Stroke, Style, Text } from 'ol/style'
 import { Vector as VectorLayer } from 'ol/layer.js'
-import { Cluster, Vector as VectorSource } from 'ol/source'
-import Feature from 'ol/Feature'
-import Point from 'ol/geom/Point'
+import { Tile as TileLayer } from 'ol/layer.js'
+import TileWMS from 'ol/source/TileWMS'
 
-export const clusterData = data =>
-  new Cluster({
-    distance: 100,
-    source: new VectorSource({
-      features: data.map(site => {
-        const xyz = JSON.parse(site.xyz).coordinates
-        return new Feature(new Point([xyz[0], xyz[1]]))
-      })
-    })
+export const ahocevarBaseMap = new TileLayer({
+  source: new TileWMS({
+    url: 'https://ahocevar.com/geoserver/wms',
+    params: {
+      LAYERS: 'ne:NE1_HR_LC_SR_W_DR',
+      TILED: true
+    }
   })
+})
 
-export const clusterLayer = source =>
+export const cluster = source =>
   new VectorLayer({
     source,
     style: function(feature) {
