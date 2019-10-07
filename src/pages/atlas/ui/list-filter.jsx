@@ -16,26 +16,30 @@ export default class extends PureComponent {
             y: DropdownMenu.VerticalAnchors.BOTTOM
           }}
           position={DropdownMenu.Positions.BELOW}
-          menuItems={
-            items.length > 0
-              ? items.map(item => (
-                  <ListItemControl
-                    key={item.id}
-                    primaryAction={
-                      <SelectionControl
-                        id={`filter-select-option-${item.id}-${item.label}`}
-                        name={'filter-select-option'}
-                        onChange={() => toggleItemSelect(item)}
-                        type={'checkbox'}
-                        label={item.value.truncate(30)}
-                        checked={selectedItems.includes(item.id) ? true : false}
-                        labelBefore
-                      />
-                    }
-                  />
-                ))
-              : 'No search result'
-          }
+          menuItems={(() => {
+            const result =
+              items.length > 0
+                ? items.map(item => (
+                    <ListItemControl
+                      key={item.id}
+                      primaryAction={
+                        <SelectionControl
+                          id={`filter-select-option-${item.id}-${item.label}`}
+                          name={'filter-select-option'}
+                          onChange={() => toggleItemSelect(item)}
+                          type={'checkbox'}
+                          label={item.value.truncate(30)}
+                          checked={selectedItems.includes(item.id) ? true : false}
+                          labelBefore
+                        />
+                      }
+                    />
+                  ))
+                : 'No search result'
+
+            if (result.length >= 20) result.push('...')
+            return result
+          })()}
         >
           <TextField
             id={`atlas-filter-${id}`}
