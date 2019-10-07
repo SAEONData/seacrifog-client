@@ -1,26 +1,50 @@
 import React, { PureComponent } from 'react'
 import OpenLayers from '../../modules/open-layers'
-import UI from './ui'
+import { Menu, ListFilter } from './ui'
 import { cluster as clusterSource } from './sources'
 import { cluster as clusterLayer, ahocevarBaseMap } from './layers'
 import debounce from '../../lib/debounce'
-import sift from 'sift'
+
+class DataFilter extends PureComponent {
+  state = {
+    searchTerm: '',
+    selectedItems: []
+  }
+  constructor(props) {
+    super(props)
+    this.id = this.props.id
+    this.items = this.props.items
+    this.state.searchTerm = this.props.searchTerm
+  }
+
+  updateSearchTerm = searchTerm => this.setState({ searchTerm })
+
+  toggleItemSelect = item => {
+    const { selectedItems } = this.state
+    const newList = selectedItems.includes(item.id)
+      ? selectedItems.filter(id => (id === item.id ? false : true))
+      : [...this.state.selectedItems, item.id]
+
+    this.setState({ selectedItems: newList })
+  }
+
+  render() {
+    const { updateSearchTerm, toggleItemSelect } = this
+    const { searchTerm, selectedItems } = this.state
+    const items = this.items
+      .filter(item =>
+        item.value.toUpperCase().indexOf(searchTerm.toUpperCase()) >= 0 || selectedItems.includes(item.id)
+          ? true
+          : false
+      )
+      .splice(0, 20)
+    return <>{this.props.children({ searchTerm, updateSearchTerm, items, toggleItemSelect, selectedItems })}</>
+  }
+}
 
 export default class Atlas extends PureComponent {
   state = {
-    showThinking: false,
-    filters: [
-      {
-        id: 'site-name',
-        label: 'Search sites',
-        value: ''
-      },
-      {
-        id: 'network-name',
-        label: 'Search networks',
-        value: ''
-      }
-    ]
+    showThinking: false
   }
 
   constructor(props) {
@@ -40,78 +64,52 @@ export default class Atlas extends PureComponent {
     this.clusteredSites = clusterSource(this.props.data.sites)
     this.clusteredSitesLayer = clusterLayer(this.clusteredSites)
     this.ahocevarBaseMap = ahocevarBaseMap
+
+    // The filters
+    this.filters = [
+      {
+        id: 'site-name',
+        label: 'Search sites',
+        searchTerm: '',
+        items: this.sites.map(s => ({ id: s.id, value: s.name }))
+      },
+      {
+        id: 'network-name',
+        label: 'Search networks',
+        searchTerm: '',
+        items: this.networks.map(n => ({ id: n.id, value: n.acronym }))
+      }
+    ]
   }
 
-  /**
-   * The outcome of this filter is a list of sites to display
-   *  => (1) Get site IDs
-   */
-  filterFunction = filter =>
-    this.setState(
-      {
-        showThinking: true,
-        filters: this.state.filters.map(f => (f.id === filter.id ? filter : Object.assign({}, f)))
-      },
-      debounce(() => {
-        // TODO - Get filter requirements HERE!
-        const [siteFilter, networkFilter] = this.state.filters
-
-        const networkSearchTerm = networkFilter.value.toUpperCase()
-        let networkIds = []
-
-        const siteSearchTerm = siteFilter.value.toUpperCase()
-        let xSiteIds = []
-        let sites = []
-
-        // Get the ID of networks to include in the site-search'
-        if (networkFilter.value) {
-          networkIds = this.networks
-            .filter(n => {
-              let includeNetwork = false
-              if (n.title.toUpperCase().indexOf(networkSearchTerm) >= 0) includeNetwork = true // Search by title
-              if (n.acronym.toUpperCase().indexOf(networkSearchTerm) >= 0) includeNetwork = true // Search by acronym
-              return includeNetwork
-            })
-            .map(n => n.id)
-        }
-
-        // With reference xrefSitesNetworks the network IDs, get a list of site IDs to include in the site-search
-        if (networkIds.length >= 0) {
-          xSiteIds = this.xrefSitesNetworks.filter(sift({ network_id: { $in: networkIds } })).map(x => x.site_id)
-        }
-
-        // Get a list of site IDs to render
-        sites = this.sites.filter(s => {
-          let includeSite = false
-          if (networkSearchTerm && !siteSearchTerm) if (xSiteIds.includes(s.id)) includeSite = true
-          if (!networkSearchTerm && siteSearchTerm)
-            if (s.name.toUpperCase().indexOf(siteSearchTerm) >= 0) includeSite = true
-          if (networkSearchTerm && siteSearchTerm)
-            if (xSiteIds.includes(s.id) && s.name.toUpperCase().indexOf(siteSearchTerm) >= 0) includeSite = true
-          if (!networkSearchTerm && !siteSearchTerm) includeSite = true
-          return includeSite
-        })
-
-        // Set the new clustered data source
-        this.clusteredSitesLayer.setSource(clusterSource(sites))
-
-        // Stop the thinking spinner
-        this.setState({ showThinking: false })
-      })
-    )
-
   render() {
-    const { ahocevarBaseMap, clusteredSitesLayer, filterFunction } = this
-    const { filters, showThinking } = this.state
+    const { ahocevarBaseMap, clusteredSitesLayer, filters } = this
+    const { showThinking } = this.state
     return (
-      <UI showThinking={showThinking} filterFunction={filterFunction} filters={filters}>
+      <Menu
+        showThinking={showThinking}
+        filters={filters.map(filter => (
+          <DataFilter key={filter.id} {...filter}>
+            {({ updateSearchTerm, searchTerm, items, toggleItemSelect, selectedItems }) => (
+              <ListFilter
+                searchTerm={searchTerm}
+                items={items}
+                selectedItems={selectedItems}
+                toggleItemSelect={toggleItemSelect}
+                updateSearchTerm={updateSearchTerm}
+                label={filter.label}
+              />
+            )}
+          </DataFilter>
+        ))}
+      >
         <OpenLayers
           viewOptions={{
             zoom: 3
           }}
           layers={[ahocevarBaseMap, clusteredSitesLayer]}
         />
-      </UI>
+      </Menu>
     )
   }
 }
