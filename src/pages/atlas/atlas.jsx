@@ -91,66 +91,44 @@ export default class Atlas extends PureComponent {
       { filters, showThinking: true },
       debounce(() => {
         // Get the selected items of each filter
+        let sites
         const [sitesFilter, networksFilter, variablesFilter, protocolsFilter] = this.state.filters
-        let selectedSites = new Set(sitesFilter.selectedItems)
-        let selectedNetworks = new Set(networksFilter.selectedItems)
-        let selectedVariables = new Set(variablesFilter.selectedItems)
-        let selectedProtocols = new Set(protocolsFilter.selectedItems)
+        const selectedSites = new Set(sitesFilter.selectedItems)
+        const selectedNetworks = new Set(networksFilter.selectedItems)
+        const selectedVariables = new Set(variablesFilter.selectedItems)
+        const selectedProtocols = new Set(protocolsFilter.selectedItems)
 
-        /**
-         * Filtering is done via indirect relationship to sites
-         *  => protocols => variables => networks => sites
-         *
-         * Work from protocols down to networks
-         */
-        const xVariableIds = new Set(
-          (selectedProtocols.size
-            ? this.xrefProtocolsVariables.filter(sift({ protocol_id: { $in: [...selectedProtocols] } }))
-            : this.xrefProtocolsVariables
-          ).map(x => x.variable_id)
-        )
+        // Start with sites - if there are site IDs, filter on these
+        sites = selectedSites.size ? this.sites.filter(s => selectedSites.has(s.id)) : this.sites
 
-        console.log('xVariableIds', xVariableIds)
+        // Next, if a network search exists, filter on that
+        if (selectedNetworks.size) {
+          const ids = new Set(
+            this.xrefSitesNetworks.filter(x => selectedNetworks.has(x.network_id)).map(x => x.site_id)
+          )
+          sites = ids.size ? sites.filter(s => ids.has(s.id)) : sites
+        }
 
-        selectedVariables = selectedVariables.size
-          ? new Set([...selectedVariables].filter(id => xVariableIds.has(id)))
-          : xVariableIds
+        // Next, if a variable search exists, filter on that
+        if (selectedVariables.size) {
+          const networkIds = new Set(
+            this.xrefNetworksVariables.filter(x => selectedVariables.has(x.variable_id)).map(x => x.network_id)
+          )
+          const ids = new Set(this.xrefSitesNetworks.filter(x => networkIds.has(x.network_id)).map(x => x.site_id))
+          sites = ids.size ? sites.filter(s => ids.has(s.id)) : sites
+        }
 
-        console.log('selectedVariables', selectedVariables)
-
-        const xNetworkIds = new Set(
-          (selectedVariables.size
-            ? this.xrefNetworksVariables.filter(sift({ variable_id: { $in: [...selectedVariables] } }))
-            : this.xrefNetworksVariables
-          ).map(x => x.network_id)
-        )
-
-        console.log('xNetworkIds', xNetworkIds)
-
-        // Get the intersection of selectedNetworks, and networks associated with selected variables
-        selectedNetworks = selectedNetworks.size
-          ? new Set([...selectedNetworks].filter(id => xNetworkIds.has(id)))
-          : xNetworkIds
-
-        console.log('selectedNetworks', selectedNetworks)
-
-        // Get the intersection of selectedNetworks and sites
-        const xSiteIds = new Set(
-          (selectedNetworks.size
-            ? this.xrefSitesNetworks.filter(sift({ network_id: { $in: [...selectedNetworks] } }))
-            : selectedVariables.size
-            ? []
-            : this.xrefSitesNetworks
-          ).map(x => x.site_id)
-        )
-
-        console.log('xSiteIds', xSiteIds)
-
-        // Get the intersection of selectedSites, and selected networks
-        selectedSites = selectedSites.size ? new Set([...selectedSites].filter(id => xSiteIds.has(id))) : xSiteIds
-
-        // Get the new sites to display
-        const sites = this.sites.filter(s => selectedSites.has(s.id))
+        // Next, if a protocol search exists, filter on that
+        if (selectedProtocols.size) {
+          const variableIds = new Set(
+            this.xrefProtocolsVariables.filter(x => selectedProtocols.has(x.protocol_id)).map(x => x.variable_id)
+          )
+          const networkIds = new Set(
+            this.xrefNetworksVariables.filter(x => variableIds.has(x.variable_id)).map(x => x.network_id)
+          )
+          const ids = new Set(this.xrefSitesNetworks.filter(x => networkIds.has(x.network_id)).map(x => x.site_id))
+          sites = ids.size ? sites.filter(s => ids.has(s.id)) : sites
+        }
 
         // Set the new clustered data source
         this.clusteredSites = clusterSource(sites)
