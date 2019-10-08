@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 export default class extends PureComponent {
   state = {
-    searchTerm: this.props.searchTerm || ''
+    searchTerm: ''
   }
 
   updateSearchTerm = searchTerm => this.setState({ searchTerm })

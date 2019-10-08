@@ -16,15 +16,28 @@ export default class Atlas extends PureComponent {
   constructor(props) {
     super(props)
 
-    // Data references
+    /**
+     * Cascading data references:
+     * Since the point of the map is to identify 'sites',
+     * only include networks/variables/protocols that can resolve to sites
+     */
     this.sites = this.props.data.sites
-    this.networks = this.props.data.networks
-    this.variables = this.props.data.variables
-    this.protocols = this.props.data.protocols
-    this.dataproducts = this.props.data.dataproducts
     this.xrefSitesNetworks = this.props.data.xrefSitesNetworks
-    this.xrefNetworksVariables = this.props.data.xrefNetworksVariables
-    this.xrefProtocolsVariables = this.props.data.xrefProtocolsVariables
+    this.networks = this.props.data.networks.filter(
+      sift({ id: { $in: this.xrefSitesNetworks.map(x => x.network_id) } })
+    )
+    this.xrefNetworksVariables = this.props.data.xrefNetworksVariables.filter(
+      sift({ network_id: { $in: this.networks.map(x => x.id) } })
+    )
+    this.variables = this.props.data.variables.filter(
+      sift({ id: { $in: this.xrefNetworksVariables.map(x => x.variable_id) } })
+    )
+    this.xrefProtocolsVariables = this.props.data.xrefProtocolsVariables.filter(
+      sift({ variable_id: { $in: this.variables.map(v => v.id) } })
+    )
+    this.protocols = this.props.data.protocols.filter(
+      sift({ id: { $in: this.xrefProtocolsVariables.map(x => x.protocol_id) } })
+    )
 
     // OpenLayers related references
     this.clusteredSites = clusterSource(this.props.data.sites)
@@ -36,16 +49,20 @@ export default class Atlas extends PureComponent {
       {
         id: 'filterSites',
         label: 'Search sites',
-        searchTerm: '',
         selectedItems: [],
         items: this.sites.map(s => ({ id: s.id, value: s.name }))
       },
       {
         id: 'filterNetworks',
         label: 'Search networks',
-        searchTerm: '',
         selectedItems: [],
         items: this.networks.map(n => ({ id: n.id, value: n.acronym }))
+      },
+      {
+        id: 'filterVariables',
+        label: 'Search variables',
+        selectedItems: [],
+        items: this.variables.map(n => ({ id: n.id, value: n.name }))
       }
     ]
   }
@@ -67,40 +84,48 @@ export default class Atlas extends PureComponent {
     this.setState(
       { filters, showThinking: true },
       debounce(() => {
-        const [siteFilter, networkFilter] = this.state.filters
-        const filterSites = siteFilter.selectedItems
-        const filterNetworks = networkFilter.selectedItems
-        const xSiteIds =
-          filterNetworks.length > 0
-            ? this.xrefSitesNetworks.filter(sift({ network_id: { $in: filterNetworks } })).map(x => x.site_id)
-            : []
+        // Get the selected items of each filter
+        const [sitesFilter, networksFilter, variablesFilter] = this.state.filters
+        let selectedSites = new Set(sitesFilter.selectedItems)
+        let selectedNetworks = new Set(networksFilter.selectedItems)
+        let selectedVariables = new Set(variablesFilter.selectedItems)
+
+        /**
+         * Filtering is done via indirect relationship to sites
+         *  => variables => networks => sites
+         *
+         * These indirect relationships must be resolved:
+         *  (1) Get the network IDs based on what variables are selected
+         *  (2) Get the network IDs based on (1) and what networks are selected
+         *  (3) Get sites based on (2) or what sites are selected
+         */
+        const xNetworkIds = new Set(
+          (selectedVariables.size
+            ? this.xrefNetworksVariables.filter(sift({ variable_id: { $in: [...selectedVariables] } }))
+            : this.xrefNetworksVariables
+          ).map(x => x.network_id)
+        )
+
+        // Get the intersection of selectedNetworks, and networks associated with selected variables
+        selectedNetworks = selectedNetworks.size
+          ? new Set([...selectedNetworks].filter(id => xNetworkIds.has(id)))
+          : xNetworkIds
+
+        // Get the intersection of selectedNetworks and sites
+        const xSiteIds = new Set(
+          (selectedNetworks.size
+            ? this.xrefSitesNetworks.filter(sift({ network_id: { $in: [...selectedNetworks] } }))
+            : selectedVariables.size
+            ? []
+            : this.xrefSitesNetworks
+          ).map(x => x.site_id)
+        )
+
+        // Get the intersection of selectedSites, and selected networks
+        selectedSites = selectedSites.size ? new Set([...selectedSites].filter(id => xSiteIds.has(id))) : xSiteIds
 
         // Get the new sites to display
-        const sites = this.sites.filter(s => {
-          let includeSite = false
-
-          // (1) No search
-          if (filterSites.length === 0 && filterNetworks.length === 0) {
-            includeSite = true
-          }
-
-          // (2 A) Only sites searched
-          if (filterSites.length > 0 && filterNetworks.length === 0) {
-            if (filterSites.includes(s.id)) includeSite = true
-          }
-
-          // (2 B) Only networks searched
-          if (filterNetworks.length > 0 && filterSites.length === 0) {
-            if (xSiteIds.includes(s.id)) includeSite = true
-          }
-
-          // (3) Site and network search term (this could RESET the filter)
-          if (filterSites.length > 0 && filterNetworks.length > 0) {
-            includeSite = xSiteIds.includes(s.id) && filterSites.includes(s.id) ? true : false
-          }
-
-          return includeSite
-        })
+        const sites = this.sites.filter(s => selectedSites.has(s.id))
 
         // Set the new clustered data source
         this.clusteredSites = clusterSource(sites)

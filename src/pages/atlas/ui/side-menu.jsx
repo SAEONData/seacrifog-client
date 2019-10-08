@@ -19,7 +19,7 @@ export default class extends PureComponent {
       <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
         <Drawer
           id="atlas-ui"
-          style={{ zIndex: 999, minWidth: '400px' }}
+          style={{ zIndex: 999, minWidth: '400px', overflowY: 'auto' }}
           visible={menuOpen}
           mobileType={Drawer.DrawerTypes.TEMPORARY}
           tabletType={Drawer.DrawerTypes.TEMPORARY}

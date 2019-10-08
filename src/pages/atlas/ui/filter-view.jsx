@@ -2,6 +2,11 @@ import React, { PureComponent } from 'react'
 import { TextField, FontIcon, DropdownMenu, ListItemControl, SelectionControl, List, ListItem } from 'react-md'
 import sift from 'sift'
 
+const listItemStyle = {
+  backgroundColor: 'rgba(220, 220, 220, 0.5)',
+  margin: '2px 0'
+}
+
 export default class extends PureComponent {
   render() {
     const {
@@ -72,6 +77,7 @@ export default class extends PureComponent {
             })
             .map(item => (
               <ListItem
+                style={listItemStyle}
                 key={item.id}
                 onClick={() => toggleItemSelect(item)}
                 rightIcon={<FontIcon>close</FontIcon>}
