@@ -4,43 +4,46 @@ import { Menu, ListFilter } from './ui'
 import { cluster as clusterSource } from './sources'
 import { cluster as clusterLayer, ahocevarBaseMap } from './layers'
 import debounce from '../../lib/debounce'
+import { clone, mergeLeft } from 'ramda'
 import sift from 'sift'
 
 class DataFilter extends PureComponent {
   state = {
-    searchTerm: this.props.searchTerm || '',
-    selectedItems: []
-  }
-  constructor(props) {
-    super(props)
-    this.id = this.props.id
-    this.items = this.props.items
+    searchTerm: this.props.searchTerm || ''
   }
 
   updateSearchTerm = searchTerm => this.setState({ searchTerm })
 
   toggleItemSelect = item => {
-    const { selectedItems } = this.state
+    const { id, selectedItems, updateFilters } = this.props
     const newList = selectedItems.includes(item.id)
-      ? selectedItems.filter(id => (id === item.id ? false : true))
-      : [...this.state.selectedItems, item.id]
+      ? [...selectedItems].filter(id => (id === item.id ? false : true))
+      : [...selectedItems, item.id]
 
-    this.setState({ selectedItems: newList }, () =>
-      this.props.updateMap({ filterId: this.id, selectedIds: this.state.selectedItems })
-    )
+    updateFilters({ id, selectedItems: newList })
   }
 
   render() {
     const { updateSearchTerm, toggleItemSelect } = this
-    const { searchTerm, selectedItems } = this.state
-    const items = this.items
+    const { searchTerm } = this.state
+    const { selectedItems, items } = this.props
+    const filteredItems = [...items]
       .filter(item =>
         item.value.toUpperCase().indexOf(searchTerm.toUpperCase()) >= 0 || selectedItems.includes(item.id)
           ? true
           : false
       )
+      .sort((a, b) => {
+        const aVal = a.value.toUpperCase()
+        const bVal = b.value.toUpperCase()
+        return aVal >= bVal ? 1 : -1
+      })
       .splice(0, 20)
-    return <>{this.props.children({ searchTerm, updateSearchTerm, items, toggleItemSelect, selectedItems })}</>
+    return (
+      <>
+        {this.props.children({ searchTerm, updateSearchTerm, items, filteredItems, toggleItemSelect, selectedItems })}
+      </>
+    )
   }
 }
 
@@ -70,81 +73,102 @@ export default class Atlas extends PureComponent {
     this.ahocevarBaseMap = ahocevarBaseMap
 
     // The filters
-    this.filters = [
+    this.state.filters = [
       {
         id: 'filterSites',
         label: 'Search sites',
         searchTerm: '',
+        selectedItems: [],
         items: this.sites.map(s => ({ id: s.id, value: s.name }))
       },
       {
         id: 'filterNetworks',
         label: 'Search networks',
         searchTerm: '',
+        selectedItems: [],
         items: this.networks.map(n => ({ id: n.id, value: n.acronym }))
       }
     ]
   }
 
-  updateMap = ({ filterId, selectedIds }) =>
+  refreshFilters = () => {
+    const filters = clone(this.state.filters).map(f => mergeLeft({ selectedItems: [] }, f))
+    this.setState({ filters, showThinking: true }, () => {
+      // Set the new clustered data source
+      this.clusteredSites = clusterSource(this.props.data.sites)
+      this.clusteredSitesLayer.setSource(this.clusteredSites)
+
+      // Stop the thinking spinner
+      setTimeout(() => this.setState({ showThinking: false }), 300)
+    })
+  }
+
+  updateFilters = ({ id, selectedItems }) => {
+    const filters = clone(this.state.filters).map(f => (f.id === id ? mergeLeft({ selectedItems }, f) : f))
     this.setState(
-      { showThinking: true },
-      debounce(() =>
-        this.setState({ [filterId]: selectedIds }, () => {
-          const { filterSites, filterNetworks } = this.state
-          const xSiteIds =
-            filterNetworks.length > 0
-              ? this.xrefSitesNetworks.filter(sift({ network_id: { $in: filterNetworks } })).map(x => x.site_id)
-              : []
+      { filters, showThinking: true },
+      debounce(() => {
+        const [siteFilter, networkFilter] = this.state.filters
+        const filterSites = siteFilter.selectedItems
+        const filterNetworks = networkFilter.selectedItems
+        const xSiteIds =
+          filterNetworks.length > 0
+            ? this.xrefSitesNetworks.filter(sift({ network_id: { $in: filterNetworks } })).map(x => x.site_id)
+            : []
 
-          // Get the new sites to display
-          const sites = this.sites.filter(s => {
-            let includeSite = false
+        // Get the new sites to display
+        const sites = this.sites.filter(s => {
+          let includeSite = false
 
-            // (1) No search
-            if (filterSites.length === 0 && filterNetworks.length === 0) {
-              includeSite = true
-            }
+          // (1) No search
+          if (filterSites.length === 0 && filterNetworks.length === 0) {
+            includeSite = true
+          }
 
-            // (2 A) Only sites searched
-            if (filterSites.length > 0 && filterNetworks.length === 0) {
-              if (filterSites.includes(s.id)) includeSite = true
-            }
+          // (2 A) Only sites searched
+          if (filterSites.length > 0 && filterNetworks.length === 0) {
+            if (filterSites.includes(s.id)) includeSite = true
+          }
 
-            // (2 B) Only networks searched
-            if (filterNetworks.length > 0 && filterSites.length === 0) {
-              if (xSiteIds.includes(s.id)) includeSite = true
-            }
+          // (2 B) Only networks searched
+          if (filterNetworks.length > 0 && filterSites.length === 0) {
+            if (xSiteIds.includes(s.id)) includeSite = true
+          }
 
-            // (3) Site and network search term (this could RESET the filter)
-            if (filterSites.length > 0 && filterNetworks.length > 0) {
-              includeSite = xSiteIds.includes(s.id) && filterSites.includes(s.id) ? true : false
-            }
+          // (3) Site and network search term (this could RESET the filter)
+          if (filterSites.length > 0 && filterNetworks.length > 0) {
+            includeSite = xSiteIds.includes(s.id) && filterSites.includes(s.id) ? true : false
+          }
 
-            return includeSite
-          })
-
-          // Set the new clustered data source
-          this.clusteredSitesLayer.setSource(clusterSource(sites))
-
-          // Stop the thinking spinner
-          this.setState({ showThinking: false })
+          return includeSite
         })
-      )
+
+        // Set the new clustered data source
+        this.clusteredSites = clusterSource(sites)
+        this.clusteredSitesLayer.setSource(this.clusteredSites)
+
+        // Stop the thinking spinner
+        setTimeout(() => this.setState({ showThinking: false }), 300)
+      })
     )
+  }
 
   render() {
-    const { ahocevarBaseMap, clusteredSitesLayer, updateMap, filters } = this
-    const { showThinking } = this.state
+    const { ahocevarBaseMap, clusteredSitesLayer, updateFilters, refreshFilters } = this
+    const { showThinking, filters } = this.state
+    const filtersActive = filters.map(f => f.selectedItems).flat().length > 0 ? true : false
     return (
       <Menu
+        refreshFilters={refreshFilters}
         showThinking={showThinking}
+        filtersActive={filtersActive}
         filters={filters.map(filter => (
-          <DataFilter key={filter.id} {...filter} updateMap={updateMap}>
-            {({ updateSearchTerm, searchTerm, items, toggleItemSelect, selectedItems }) => (
+          <DataFilter key={filter.id} {...filter} updateFilters={updateFilters}>
+            {({ updateSearchTerm, searchTerm, filteredItems, items, toggleItemSelect, selectedItems }) => (
               <ListFilter
                 searchTerm={searchTerm}
                 items={items}
+                filteredItems={filteredItems}
                 selectedItems={selectedItems}
                 toggleItemSelect={toggleItemSelect}
                 updateSearchTerm={updateSearchTerm}

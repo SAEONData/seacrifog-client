@@ -4,7 +4,16 @@ import sift from 'sift'
 
 export default class extends PureComponent {
   render() {
-    const { id, items, label, searchTerm, updateSearchTerm, toggleItemSelect, selectedItems } = this.props
+    const {
+      id,
+      items,
+      filteredItems,
+      label,
+      searchTerm,
+      updateSearchTerm,
+      toggleItemSelect,
+      selectedItems
+    } = this.props
     return (
       <>
         <DropdownMenu
@@ -18,8 +27,8 @@ export default class extends PureComponent {
           position={DropdownMenu.Positions.BELOW}
           menuItems={(() => {
             const result =
-              items.length > 0
-                ? items.map(item => (
+              filteredItems.length > 0
+                ? filteredItems.map(item => (
                     <ListItemControl
                       key={item.id}
                       primaryAction={
@@ -28,7 +37,7 @@ export default class extends PureComponent {
                           name={'filter-select-option'}
                           onChange={() => toggleItemSelect(item)}
                           type={'checkbox'}
-                          label={item.value.truncate(30)}
+                          label={(item.value || '(UNKNOWN)').truncate(25).toUpperCase()}
                           checked={selectedItems.includes(item.id) ? true : false}
                           labelBefore
                         />
@@ -54,14 +63,21 @@ export default class extends PureComponent {
           />
         </DropdownMenu>
         <List>
-          {items.filter(sift({ id: { $in: selectedItems } })).map(item => (
-            <ListItem
-              key={item.id}
-              onClick={() => toggleItemSelect(item)}
-              rightIcon={<FontIcon>close</FontIcon>}
-              primaryText={item.value.truncate(30)}
-            />
-          ))}
+          {items
+            .filter(sift({ id: { $in: selectedItems } }))
+            .sort((a, b) => {
+              const aVal = a.value.toUpperCase()
+              const bVal = b.value.toUpperCase()
+              return aVal >= bVal ? 1 : -1
+            })
+            .map(item => (
+              <ListItem
+                key={item.id}
+                onClick={() => toggleItemSelect(item)}
+                rightIcon={<FontIcon>close</FontIcon>}
+                primaryText={(item.value || '(UNKNOWN)').truncate(25).toUpperCase()}
+              />
+            ))}
         </List>
       </>
     )
