@@ -62,7 +62,13 @@ export default class Atlas extends PureComponent {
         id: 'filterVariables',
         label: 'Search variables',
         selectedItems: [],
-        items: this.variables.map(n => ({ id: n.id, value: n.name }))
+        items: this.variables.map(v => ({ id: v.id, value: v.name }))
+      },
+      {
+        id: 'filterProtocols',
+        label: 'Search protocols',
+        selectedItems: [],
+        items: this.protocols.map(p => ({ id: p.id, value: p.title }))
       }
     ]
   }
@@ -85,20 +91,33 @@ export default class Atlas extends PureComponent {
       { filters, showThinking: true },
       debounce(() => {
         // Get the selected items of each filter
-        const [sitesFilter, networksFilter, variablesFilter] = this.state.filters
+        const [sitesFilter, networksFilter, variablesFilter, protocolsFilter] = this.state.filters
         let selectedSites = new Set(sitesFilter.selectedItems)
         let selectedNetworks = new Set(networksFilter.selectedItems)
         let selectedVariables = new Set(variablesFilter.selectedItems)
+        let selectedProtocols = new Set(protocolsFilter.selectedItems)
 
         /**
          * Filtering is done via indirect relationship to sites
-         *  => variables => networks => sites
+         *  => protocols => variables => networks => sites
          *
-         * These indirect relationships must be resolved:
-         *  (1) Get the network IDs based on what variables are selected
-         *  (2) Get the network IDs based on (1) and what networks are selected
-         *  (3) Get sites based on (2) or what sites are selected
+         * Work from protocols down to networks
          */
+        const xVariableIds = new Set(
+          (selectedProtocols.size
+            ? this.xrefProtocolsVariables.filter(sift({ protocol_id: { $in: [...selectedProtocols] } }))
+            : this.xrefProtocolsVariables
+          ).map(x => x.variable_id)
+        )
+
+        console.log('xVariableIds', xVariableIds)
+
+        selectedVariables = selectedVariables.size
+          ? new Set([...selectedVariables].filter(id => xVariableIds.has(id)))
+          : xVariableIds
+
+        console.log('selectedVariables', selectedVariables)
+
         const xNetworkIds = new Set(
           (selectedVariables.size
             ? this.xrefNetworksVariables.filter(sift({ variable_id: { $in: [...selectedVariables] } }))
@@ -106,10 +125,14 @@ export default class Atlas extends PureComponent {
           ).map(x => x.network_id)
         )
 
+        console.log('xNetworkIds', xNetworkIds)
+
         // Get the intersection of selectedNetworks, and networks associated with selected variables
         selectedNetworks = selectedNetworks.size
           ? new Set([...selectedNetworks].filter(id => xNetworkIds.has(id)))
           : xNetworkIds
+
+        console.log('selectedNetworks', selectedNetworks)
 
         // Get the intersection of selectedNetworks and sites
         const xSiteIds = new Set(
@@ -120,6 +143,8 @@ export default class Atlas extends PureComponent {
             : this.xrefSitesNetworks
           ).map(x => x.site_id)
         )
+
+        console.log('xSiteIds', xSiteIds)
 
         // Get the intersection of selectedSites, and selected networks
         selectedSites = selectedSites.size ? new Set([...selectedSites].filter(id => xSiteIds.has(id))) : xSiteIds
