@@ -1,51 +1,10 @@
 import React, { PureComponent } from 'react'
-import OpenLayers from '../../modules/open-layers'
-import { Menu, ListFilter } from './ui'
-import { cluster as clusterSource } from './sources'
-import { cluster as clusterLayer, ahocevarBaseMap } from './layers'
+import { OpenLayers, clusterLayer, clusterSource, ahocevarBaseMap } from '../../modules/map'
 import debounce from '../../lib/debounce'
 import { clone, mergeLeft } from 'ramda'
 import sift from 'sift'
-
-class DataFilter extends PureComponent {
-  state = {
-    searchTerm: this.props.searchTerm || ''
-  }
-
-  updateSearchTerm = searchTerm => this.setState({ searchTerm })
-
-  toggleItemSelect = item => {
-    const { id, selectedItems, updateFilters } = this.props
-    const newList = selectedItems.includes(item.id)
-      ? [...selectedItems].filter(id => (id === item.id ? false : true))
-      : [...selectedItems, item.id]
-
-    updateFilters({ id, selectedItems: newList })
-  }
-
-  render() {
-    const { updateSearchTerm, toggleItemSelect } = this
-    const { searchTerm } = this.state
-    const { selectedItems, items } = this.props
-    const filteredItems = [...items]
-      .filter(item =>
-        item.value.toUpperCase().indexOf(searchTerm.toUpperCase()) >= 0 || selectedItems.includes(item.id)
-          ? true
-          : false
-      )
-      .sort((a, b) => {
-        const aVal = a.value.toUpperCase()
-        const bVal = b.value.toUpperCase()
-        return aVal >= bVal ? 1 : -1
-      })
-      .splice(0, 20)
-    return (
-      <>
-        {this.props.children({ searchTerm, updateSearchTerm, items, filteredItems, toggleItemSelect, selectedItems })}
-      </>
-    )
-  }
-}
+import { SideMenu, FilterView } from './ui'
+import { FilterControl } from './controls'
 
 export default class Atlas extends PureComponent {
   state = {
@@ -158,14 +117,14 @@ export default class Atlas extends PureComponent {
     const { showThinking, filters } = this.state
     const filtersActive = filters.map(f => f.selectedItems).flat().length > 0 ? true : false
     return (
-      <Menu
+      <SideMenu
         refreshFilters={refreshFilters}
         showThinking={showThinking}
         filtersActive={filtersActive}
         filters={filters.map(filter => (
-          <DataFilter key={filter.id} {...filter} updateFilters={updateFilters}>
+          <FilterControl key={filter.id} {...filter} updateFilters={updateFilters}>
             {({ updateSearchTerm, searchTerm, filteredItems, items, toggleItemSelect, selectedItems }) => (
-              <ListFilter
+              <FilterView
                 searchTerm={searchTerm}
                 items={items}
                 filteredItems={filteredItems}
@@ -175,7 +134,7 @@ export default class Atlas extends PureComponent {
                 label={filter.label}
               />
             )}
-          </DataFilter>
+          </FilterControl>
         ))}
       >
         <OpenLayers
@@ -184,7 +143,7 @@ export default class Atlas extends PureComponent {
           }}
           layers={[ahocevarBaseMap, clusteredSitesLayer]}
         />
-      </Menu>
+      </SideMenu>
     )
   }
 }

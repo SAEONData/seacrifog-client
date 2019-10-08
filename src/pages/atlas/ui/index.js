@@ -1,2 +1,2 @@
-export { default as ListFilter } from './list-filter'
-export { default as Menu } from './menu'
+export { default as FilterView } from './filter-view'
+export { default as SideMenu } from './side-menu'

@@ -13,7 +13,7 @@ export const ahocevarBaseMap = new TileLayer({
   })
 })
 
-export const cluster = source =>
+export const clusterLayer = source =>
   new VectorLayer({
     source,
     style: function(feature) {

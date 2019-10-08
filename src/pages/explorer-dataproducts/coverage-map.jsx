@@ -1,5 +1,5 @@
 import React from 'react'
-import OpenLayers from '../../modules/open-layers'
+import { OpenLayers } from '../../modules/map'
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js'
 import { Vector as VectorSource } from 'ol/source'
 import TileWMS from 'ol/source/TileWMS'

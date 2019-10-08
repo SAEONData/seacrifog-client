@@ -2,7 +2,7 @@ import { Cluster, Vector as VectorSource } from 'ol/source'
 import Feature from 'ol/Feature'
 import Point from 'ol/geom/Point'
 
-export const cluster = data =>
+export const clusterSource = data =>
   new Cluster({
     distance: 100,
     source: new VectorSource({
