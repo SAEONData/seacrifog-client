@@ -93,41 +93,43 @@ export default class Atlas extends PureComponent {
         // Get the selected items of each filter
         let sites
         const [sitesFilter, networksFilter, variablesFilter, protocolsFilter] = this.state.filters
-        const selectedSites = new Set(sitesFilter.selectedItems)
-        const selectedNetworks = new Set(networksFilter.selectedItems)
-        const selectedVariables = new Set(variablesFilter.selectedItems)
-        const selectedProtocols = new Set(protocolsFilter.selectedItems)
+        const selectedSites = sitesFilter.selectedItems
+        const selectedNetworks = networksFilter.selectedItems
+        const selectedVariables = variablesFilter.selectedItems
+        const selectedProtocols = protocolsFilter.selectedItems
 
         // Start with sites - if there are site IDs, filter on these
-        sites = selectedSites.size ? this.sites.filter(s => selectedSites.has(s.id)) : this.sites
+        sites = selectedSites.length ? this.sites.filter(s => selectedSites.includes(s.id)) : this.sites
 
         // Next, if a network search exists, filter on that
-        if (selectedNetworks.size) {
-          const ids = new Set(
-            this.xrefSitesNetworks.filter(x => selectedNetworks.has(x.network_id)).map(x => x.site_id)
-          )
-          sites = ids.size ? sites.filter(s => ids.has(s.id)) : sites
+        if (selectedNetworks.length) {
+          const ids = this.xrefSitesNetworks.filter(x => selectedNetworks.includes(x.network_id)).map(x => x.site_id)
+
+          sites = ids.length ? sites.filter(s => ids.includes(s.id)) : sites
         }
 
         // Next, if a variable search exists, filter on that
-        if (selectedVariables.size) {
-          const networkIds = new Set(
-            this.xrefNetworksVariables.filter(x => selectedVariables.has(x.variable_id)).map(x => x.network_id)
-          )
-          const ids = new Set(this.xrefSitesNetworks.filter(x => networkIds.has(x.network_id)).map(x => x.site_id))
-          sites = ids.size ? sites.filter(s => ids.has(s.id)) : sites
+        if (selectedVariables.length) {
+          const networkIds = this.xrefNetworksVariables
+            .filter(x => selectedVariables.includes(x.variable_id))
+            .map(x => x.network_id)
+
+          const ids = this.xrefSitesNetworks.filter(x => networkIds.includes(x.network_id)).map(x => x.site_id)
+          sites = ids.length ? sites.filter(s => ids.includes(s.id)) : sites
         }
 
         // Next, if a protocol search exists, filter on that
-        if (selectedProtocols.size) {
-          const variableIds = new Set(
-            this.xrefProtocolsVariables.filter(x => selectedProtocols.has(x.protocol_id)).map(x => x.variable_id)
-          )
-          const networkIds = new Set(
-            this.xrefNetworksVariables.filter(x => variableIds.has(x.variable_id)).map(x => x.network_id)
-          )
-          const ids = new Set(this.xrefSitesNetworks.filter(x => networkIds.has(x.network_id)).map(x => x.site_id))
-          sites = ids.size ? sites.filter(s => ids.has(s.id)) : sites
+        if (selectedProtocols.length) {
+          const variableIds = this.xrefProtocolsVariables
+            .filter(x => selectedProtocols.includes(x.protocol_id))
+            .map(x => x.variable_id)
+
+          const networkIds = this.xrefNetworksVariables
+            .filter(x => variableIds.includes(x.variable_id))
+            .map(x => x.network_id)
+
+          const ids = this.xrefSitesNetworks.filter(x => networkIds.includes(x.network_id)).map(x => x.site_id)
+          sites = ids.length ? sites.filter(s => ids.includes(s.id)) : sites
         }
 
         // Set the new clustered data source
