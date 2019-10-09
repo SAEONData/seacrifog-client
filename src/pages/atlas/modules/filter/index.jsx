@@ -1,12 +1,10 @@
 import React, { PureComponent } from 'react'
-import { OpenLayers, clusterLayer, clusterSource, ahocevarBaseMap } from '../../modules/map'
-import debounce from '../../lib/debounce'
+import { clusterSource } from '../../open-layers'
+import debounce from '../../../../lib/debounce'
 import { clone, mergeLeft } from 'ramda'
-import sift from 'sift'
-import { SideMenu, FilterView } from './ui'
-import { FilterControl } from './controls'
+import { SideMenu, SelectListFilter } from '../../ui'
 
-export default class Atlas extends PureComponent {
+export default class extends PureComponent {
   state = {
     showThinking: false,
     filterSites: [],
@@ -16,33 +14,15 @@ export default class Atlas extends PureComponent {
   constructor(props) {
     super(props)
 
-    /**
-     * Cascading data references:
-     * Since the point of the map is to identify 'sites',
-     * only include networks/variables/protocols that can resolve to sites
-     */
+    // Just for easier reference
+    this.map = this.props.map
     this.sites = this.props.data.sites
+    this.networks = this.props.data.networks
+    this.variables = this.props.data.variables
+    this.protocols = this.props.data.protocols
     this.xrefSitesNetworks = this.props.data.xrefSitesNetworks
-    this.networks = this.props.data.networks.filter(
-      sift({ id: { $in: this.xrefSitesNetworks.map(x => x.network_id) } })
-    )
-    this.xrefNetworksVariables = this.props.data.xrefNetworksVariables.filter(
-      sift({ network_id: { $in: this.networks.map(x => x.id) } })
-    )
-    this.variables = this.props.data.variables.filter(
-      sift({ id: { $in: this.xrefNetworksVariables.map(x => x.variable_id) } })
-    )
-    this.xrefProtocolsVariables = this.props.data.xrefProtocolsVariables.filter(
-      sift({ variable_id: { $in: this.variables.map(v => v.id) } })
-    )
-    this.protocols = this.props.data.protocols.filter(
-      sift({ id: { $in: this.xrefProtocolsVariables.map(x => x.protocol_id) } })
-    )
-
-    // OpenLayers related references
-    this.clusteredSites = clusterSource(this.props.data.sites)
-    this.clusteredSitesLayer = clusterLayer(this.clusteredSites)
-    this.ahocevarBaseMap = ahocevarBaseMap
+    this.xrefNetworksVariables = this.props.data.xrefNetworksVariables
+    this.xrefProtocolsVariables = this.props.data.xrefProtocolsVariables
 
     // The filters
     this.state.filters = [
@@ -76,12 +56,8 @@ export default class Atlas extends PureComponent {
   refreshFilters = () => {
     const filters = clone(this.state.filters).map(f => mergeLeft({ selectedItems: [] }, f))
     this.setState({ filters, showThinking: true }, () => {
-      // Set the new clustered data source
-      this.clusteredSites = clusterSource(this.props.data.sites)
-      this.clusteredSitesLayer.setSource(this.clusteredSites)
-
-      // Stop the thinking spinner
-      setTimeout(() => this.setState({ showThinking: false }), 300)
+      this.props.updateMapLayer({ source: clusterSource(this.sites) })
+      this.setState({ showThinking: false })
     })
   }
 
@@ -133,17 +109,14 @@ export default class Atlas extends PureComponent {
         }
 
         // Set the new clustered data source
-        this.clusteredSites = clusterSource(sites)
-        this.clusteredSitesLayer.setSource(this.clusteredSites)
-
-        // Stop the thinking spinner
-        setTimeout(() => this.setState({ showThinking: false }), 300)
+        this.props.updateMapLayer({ source: clusterSource(sites) })
+        this.setState({ showThinking: false })
       })
     )
   }
 
   render() {
-    const { ahocevarBaseMap, clusteredSitesLayer, updateFilters, refreshFilters } = this
+    const { updateFilters, refreshFilters } = this
     const { showThinking, filters } = this.state
     const filtersActive = filters.map(f => f.selectedItems).flat().length > 0 ? true : false
     return (
@@ -152,28 +125,9 @@ export default class Atlas extends PureComponent {
         showThinking={showThinking}
         filtersActive={filtersActive}
         filters={filters.map(filter => (
-          <FilterControl key={filter.id} {...filter} updateFilters={updateFilters}>
-            {({ updateSearchTerm, searchTerm, filteredItems, items, toggleItemSelect, selectedItems }) => (
-              <FilterView
-                searchTerm={searchTerm}
-                items={items}
-                filteredItems={filteredItems}
-                selectedItems={selectedItems}
-                toggleItemSelect={toggleItemSelect}
-                updateSearchTerm={updateSearchTerm}
-                label={filter.label}
-              />
-            )}
-          </FilterControl>
+          <SelectListFilter key={filter.id} {...filter} updateFilters={updateFilters} />
         ))}
-      >
-        <OpenLayers
-          viewOptions={{
-            zoom: 3
-          }}
-          layers={[ahocevarBaseMap, clusteredSitesLayer]}
-        />
-      </SideMenu>
+      />
     )
   }
 }

@@ -1,2 +1,2 @@
-export { default as FilterView } from './filter-view'
 export { default as SideMenu } from './side-menu'
+export { default as SelectListFilter } from './select-list-filter'

@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react'
+import UI from './ui'
 
 export default class extends PureComponent {
-  state = {
-    searchTerm: ''
-  }
+  state = { searchTerm: '' }
 
   updateSearchTerm = searchTerm => this.setState({ searchTerm })
 
@@ -33,9 +32,15 @@ export default class extends PureComponent {
       })
       .splice(0, 20)
     return (
-      <>
-        {this.props.children({ searchTerm, updateSearchTerm, items, filteredItems, toggleItemSelect, selectedItems })}
-      </>
+      <UI
+        searchTerm={searchTerm}
+        updateSearchTerm={updateSearchTerm}
+        items={items}
+        filteredItems={filteredItems}
+        toggleItemSelect={toggleItemSelect}
+        selectedItems={selectedItems}
+        {...this.props}
+      />
     )
   }
 }

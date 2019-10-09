@@ -51,8 +51,13 @@ export default class extends PureComponent {
             </>
           }
         />
-        {this.props.children}
-        <Button swapTheming primary style={{ position: 'absolute', top: 10, right: 10 }} icon onClick={openMenu}>
+        <Button
+          swapTheming
+          primary
+          style={{ position: 'absolute', top: 10, right: 10, zIndex: 997 }}
+          icon
+          onClick={openMenu}
+        >
           search
         </Button>
       </div>

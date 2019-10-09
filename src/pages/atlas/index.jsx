@@ -1,10 +1,10 @@
 import React from 'react'
 import DataQuery from '../../modules/data-query'
 import { ENTIRE_GRAPH } from '../../graphql/queries'
-import Atlas from './atlas'
+import Layout from './modules/layout'
 
 export default () => (
   <DataQuery query={ENTIRE_GRAPH} variables={{}}>
-    {data => <Atlas data={data} />}
+    {data => <Layout data={data} />}
   </DataQuery>
 )
