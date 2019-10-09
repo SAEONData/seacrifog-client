@@ -3,6 +3,7 @@ import { OpenLayers, clusterLayer, clusterSource, ahocevarBaseMap } from '../ope
 import Filter from './filter'
 import Reporting from './reporting'
 import Info from './info'
+import Popups from './popups'
 import sift from 'sift'
 
 export default class extends PureComponent {
@@ -47,7 +48,10 @@ export default class extends PureComponent {
         layers={[ahocevarBaseMap, clusteredSitesLayer]}
         render={({ map }) => (
           <>
+            {/* Side menus */}
+            <Info position={1} />
             <Filter
+              position={2}
               map={map}
               updateMapLayer={updateMapLayer}
               data={{
@@ -60,8 +64,10 @@ export default class extends PureComponent {
                 protocols: this.protocols
               }}
             />
-            <Reporting />
-            <Info />
+            <Reporting position={3} />
+
+            {/* No UI */}
+            <Popups map={map} />
           </>
         )}
       />

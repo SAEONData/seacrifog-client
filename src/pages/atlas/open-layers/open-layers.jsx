@@ -3,18 +3,16 @@ import Map from 'ol/Map'
 import View from 'ol/View'
 import { mergeLeft } from 'ramda'
 import { defaults as defaultControls } from 'ol/control.js'
-import debounce from '../../../lib/debounce'
 
 export default class extends PureComponent {
   constructor(props) {
     super(props)
-    this.map = null
-    this.mapRef = React.createRef()
-  }
 
-  async componentDidMount() {
+    // DOM reference used by THIS component
+    this.mapRef = React.createRef()
+
+    // Create a map reference
     this.map = new Map({
-      target: this.mapRef.current,
       layers: [...this.props.layers],
       controls: defaultControls({
         zoom: false,
@@ -38,9 +36,11 @@ export default class extends PureComponent {
     })
   }
 
-  render() {
-    window.addEventListener('nav-resize', debounce(() => this.map.updateSize(), 400))
+  async componentDidMount() {
+    this.map.setTarget(this.mapRef.current)
+  }
 
+  render() {
     return (
       <>
         {this.props.render({ map: this.map })}

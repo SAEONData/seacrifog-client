@@ -10,7 +10,7 @@ export default class extends PureComponent {
     const { showThinking } = this.state
     return (
       <SideMenu
-        position={1}
+        position={this.props.position}
         items={[1].map(item => (
           <div key={item}>
             <p>This will show a summary of all the apps. Maybe provide links to the WMS servers being used, etc.</p>

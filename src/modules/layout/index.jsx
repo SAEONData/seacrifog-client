@@ -4,8 +4,6 @@ import { withRouter } from 'react-router'
 import { Switch } from 'react-router-dom'
 import NavItemLink from './nav-item-link'
 
-const navResize = new Event('nav-resize')
-
 class Navigation extends Component {
   constructor(props) {
     super(props)
@@ -33,10 +31,13 @@ class Navigation extends Component {
       <NavigationDrawer
         drawerTitle="SEACRIFOG"
         navItems={navItems.map(({ divider, subheader, ...navItem }) =>
-          divider || subheader ? { divider, subheader, ...navItem } : <NavItemLink key={'route-' + navItem.keyval} {...navItem} />
+          divider || subheader ? (
+            { divider, subheader, ...navItem }
+          ) : (
+            <NavItemLink key={'route-' + navItem.keyval} {...navItem} />
+          )
         )}
         contentStyle={{ position: 'relative' }}
-        onVisibilityChange={() => window.dispatchEvent(navResize)}
         toolbarZDepth={0}
         toolbarStyle={{ backgroundColor: '#fff', borderBottom: '1px solid rgba(0,0,0,0.1)' }}
         toolbarThemeType="themed"

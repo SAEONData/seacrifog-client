@@ -10,7 +10,7 @@ export default class extends PureComponent {
     const { showThinking } = this.state
     return (
       <SideMenu
-        position={3}
+        position={this.props.position}
         items={[1].map(item => (
           <div key={item}>
             <p>A second menu showing other chart options</p>
