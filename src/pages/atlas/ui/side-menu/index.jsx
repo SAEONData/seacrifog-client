@@ -13,7 +13,19 @@ export default class extends PureComponent {
   render() {
     const { menuOpen } = this.state
     const { openMenu, closeMenu, onVizChange } = this
-    const { filters, showThinking, refreshFilters, filtersActive } = this.props
+    const { items, showThinking } = this.props
+    let top
+    switch (this.props.position) {
+      case 1:
+        top = 10
+        break
+      case 2:
+        top = 60
+        break
+      default:
+        top = 10
+        break
+    }
 
     return (
       <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
@@ -28,11 +40,7 @@ export default class extends PureComponent {
           onVisibilityChange={onVizChange}
           header={
             <Toolbar
-              actions={[
-                <Button disabled={filtersActive ? false : true} primary onClick={refreshFilters} icon>
-                  refresh
-                </Button>
-              ]}
+              actions={this.props.toolbarActions}
               nav={
                 <Button icon onClick={closeMenu}>
                   close
@@ -47,18 +55,12 @@ export default class extends PureComponent {
                 key="map-calc-progress"
                 style={showThinking ? { height: '1px', margin: 0 } : { height: '1px', visibility: 'hidden', margin: 0 }}
               />
-              <div style={{ paddingLeft: '24px', paddingRight: '24px' }}>{filters}</div>
+              <div style={{ paddingLeft: '24px', paddingRight: '24px' }}>{items}</div>
             </>
           }
         />
-        <Button
-          swapTheming
-          primary
-          style={{ position: 'absolute', top: 10, right: 10, zIndex: 997 }}
-          icon
-          onClick={openMenu}
-        >
-          search
+        <Button swapTheming primary style={{ float: 'right', top, right: 10, zIndex: 997 }} icon onClick={openMenu}>
+          {this.props.icon}
         </Button>
       </div>
     )

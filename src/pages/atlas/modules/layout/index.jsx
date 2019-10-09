@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import { OpenLayers, clusterLayer, clusterSource, ahocevarBaseMap } from '../../open-layers'
 import Filter from '../filter'
+import Reporting from '../reporting'
 import sift from 'sift'
 
 export default class extends PureComponent {
@@ -44,19 +45,22 @@ export default class extends PureComponent {
         }}
         layers={[ahocevarBaseMap, clusteredSitesLayer]}
         render={({ map }) => (
-          <Filter
-            map={map}
-            updateMapLayer={updateMapLayer}
-            data={{
-              sites: this.sites,
-              xrefSitesNetworks: this.xrefSitesNetworks,
-              networks: this.networks,
-              xrefNetworksVariables: this.xrefNetworksVariables,
-              variables: this.variables,
-              xrefProtocolsVariables: this.xrefProtocolsVariables,
-              protocols: this.protocols
-            }}
-          />
+          <>
+            <Filter
+              map={map}
+              updateMapLayer={updateMapLayer}
+              data={{
+                sites: this.sites,
+                xrefSitesNetworks: this.xrefSitesNetworks,
+                networks: this.networks,
+                xrefNetworksVariables: this.xrefNetworksVariables,
+                variables: this.variables,
+                xrefProtocolsVariables: this.xrefProtocolsVariables,
+                protocols: this.protocols
+              }}
+            />
+            <Reporting />
+          </>
         )}
       />
     )

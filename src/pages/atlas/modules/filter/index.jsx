@@ -3,6 +3,7 @@ import { clusterSource } from '../../open-layers'
 import debounce from '../../../../lib/debounce'
 import { clone, mergeLeft } from 'ramda'
 import { SideMenu, SelectListFilter } from '../../ui'
+import { Button } from 'react-md'
 
 export default class extends PureComponent {
   state = {
@@ -121,10 +122,15 @@ export default class extends PureComponent {
     const filtersActive = filters.map(f => f.selectedItems).flat().length > 0 ? true : false
     return (
       <SideMenu
-        refreshFilters={refreshFilters}
+        position={1}
+        icon={'search'}
+        toolbarActions={
+          <Button disabled={filtersActive ? false : true} primary onClick={refreshFilters} icon>
+            refresh
+          </Button>
+        }
         showThinking={showThinking}
-        filtersActive={filtersActive}
-        filters={filters.map(filter => (
+        items={filters.map(filter => (
           <SelectListFilter key={filter.id} {...filter} updateFilters={updateFilters} />
         ))}
       />
