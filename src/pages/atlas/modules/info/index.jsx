@@ -10,14 +10,13 @@ export default class extends PureComponent {
     const { showThinking } = this.state
     return (
       <SideMenu
-        position={3}
+        position={1}
         items={[1].map(item => (
           <div key={item}>
-            <p>A second menu showing other chart options</p>
-            <p>This could provide controls to show charts?</p>
+            <p>This will show a summary of all the apps. Maybe provide links to the WMS servers being used, etc.</p>
           </div>
         ))}
-        icon={'show_chart'}
+        icon={'info'}
         showThinking={showThinking}
       />
     )

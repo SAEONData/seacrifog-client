@@ -122,7 +122,7 @@ export default class extends PureComponent {
     const filtersActive = filters.map(f => f.selectedItems).flat().length > 0 ? true : false
     return (
       <SideMenu
-        position={1}
+        position={2}
         icon={'search'}
         toolbarActions={
           <Button disabled={filtersActive ? false : true} primary onClick={refreshFilters} icon>

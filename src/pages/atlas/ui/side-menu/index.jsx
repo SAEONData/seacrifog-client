@@ -22,6 +22,9 @@ export default class extends PureComponent {
       case 2:
         top = 60
         break
+      case 3:
+        top = 110
+        break
       default:
         top = 10
         break

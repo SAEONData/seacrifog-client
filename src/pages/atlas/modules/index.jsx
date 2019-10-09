@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react'
-import { OpenLayers, clusterLayer, clusterSource, ahocevarBaseMap } from '../../open-layers'
-import Filter from '../filter'
-import Reporting from '../reporting'
+import { OpenLayers, clusterLayer, clusterSource, ahocevarBaseMap } from '../open-layers'
+import Filter from './filter'
+import Reporting from './reporting'
+import Info from './info'
 import sift from 'sift'
 
 export default class extends PureComponent {
@@ -60,6 +61,7 @@ export default class extends PureComponent {
               }}
             />
             <Reporting />
+            <Info />
           </>
         )}
       />
