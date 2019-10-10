@@ -8,7 +8,7 @@ const listItemStyle = {
 }
 
 export default class extends PureComponent {
-  state = { searchTerm: '', filteredItems: [] }
+  state = { searchTerm: '', filteredItems: [], visible: false }
 
   componentDidMount() {
     this.updateItems()
@@ -16,13 +16,14 @@ export default class extends PureComponent {
 
   updateItems = () =>
     this.setState({
-      filteredItems: [...this.props.items]
-        .filter(item =>
-          item.value.toUpperCase().indexOf(this.state.searchTerm.toUpperCase()) >= 0 ||
-          this.props.selectedItems.includes(item.id)
-            ? true
-            : false
-        )
+      filteredItems: (this.state.searchTerm
+        ? [...this.props.items].filter(item =>
+            item.value.toUpperCase().indexOf(this.state.searchTerm) >= 0 || this.props.selectedItems.includes(item.id)
+              ? true
+              : false
+          )
+        : [...this.props.items]
+      )
         .sort((a, b) => {
           const aVal = a.value.toUpperCase()
           const bVal = b.value.toUpperCase()
@@ -31,7 +32,8 @@ export default class extends PureComponent {
         .splice(0, 20)
     })
 
-  updateSearchTerm = searchTerm => this.setState({ searchTerm }, () => this.updateItems())
+  updateSearchTerm = searchTerm =>
+    this.setState({ searchTerm: searchTerm.toUpperCase(), visible: true }, () => this.updateItems())
 
   toggleItemSelect = item => {
     const { id, selectedItems, updateFilters } = this.props
@@ -55,6 +57,9 @@ export default class extends PureComponent {
           id={`filter-component-${label}-${id}`}
           style={{ width: '100%' }}
           listStyle={{ width: '100%' }}
+          defaultVisible={false}
+          visible={this.state.visible}
+          onVisibilityChange={() => this.setState({ visible: !this.state.visible })}
           anchor={{
             x: DropdownMenu.HorizontalAnchors.INNER_LEFT,
             y: DropdownMenu.VerticalAnchors.BOTTOM

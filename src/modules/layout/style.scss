@@ -1,18 +1,28 @@
-/* Top Navigation toolbar */
-.sf-toolbar {
-  // -webkit-box-shadow: 74px 2px 13px 0px $sf-shadow-color;
-  // -moz-box-shadow: 74px 2px 13px 0px $sf-shadow-color;
-  // box-shadow: 74px 2px 13px 0px $sf-shadow-color;
-  @include sf-box-shadow($x-axis: 0);
+#app-navigation-drawer {
+  /* Top Navigation toolbar */
+  .sf-toolbar {
+    .md-toolbar--action-right {
+      margin-right: 0;
+      .funder-logo {
+        &:hover {
+          background-color: #efefef;
+        }
+      }
+    }
+    // -webkit-box-shadow: 74px 2px 13px 0px $sf-shadow-color;
+    // -moz-box-shadow: 74px 2px 13px 0px $sf-shadow-color;
+    // box-shadow: 74px 2px 13px 0px $sf-shadow-color;
+    @include sf-box-shadow($x-axis: 0);
 
-  @media (min-width: $md-grid-desktop-breakpoint) {
-    @include sf-box-shadow($x-axis: 74px);
+    @media (min-width: $md-grid-desktop-breakpoint) {
+      @include sf-box-shadow($x-axis: 74px);
+    }
   }
-}
-/* Side Navigation bar */
-.sf-drawer {
-  // -webkit-box-shadow: 0px 2px 13px 0px $sf-shadow-color;
-  // -moz-box-shadow: 0px 2px 13px 0px $sf-shadow-color;
-  // box-shadow: 0px 2px 13px 0px $sf-shadow-color;
-  @include sf-box-shadow;
+  /* Side Navigation bar */
+  .sf-drawer {
+    // -webkit-box-shadow: 0px 2px 13px 0px $sf-shadow-color;
+    // -moz-box-shadow: 0px 2px 13px 0px $sf-shadow-color;
+    // box-shadow: 0px 2px 13px 0px $sf-shadow-color;
+    @include sf-box-shadow;
+  }
 }
