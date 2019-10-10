@@ -36,8 +36,12 @@ export default class extends PureComponent {
     })
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     this.map.setTarget(this.mapRef.current)
+  }
+
+  componentWillUnmount() {
+    this.map.dispose()
   }
 
   render() {
