@@ -3,7 +3,7 @@ import { OpenLayers, clusterLayer, clusterSource, ahocevarBaseMap } from '../ope
 import Filter from './filter'
 import Reporting from './reporting'
 import Info from './info'
-// import Popups from './popups'
+import Popups from './popups'
 import sift from 'sift'
 
 export default class extends PureComponent {
@@ -67,7 +67,7 @@ export default class extends PureComponent {
             <Reporting position={3} />
 
             {/* No UI */}
-            {/* <Popups map={map} /> */}
+            <Popups map={map} />
           </>
         )}
       />
