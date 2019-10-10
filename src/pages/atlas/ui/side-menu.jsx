@@ -29,12 +29,16 @@ export default class extends PureComponent {
         top = 10
         break
     }
-
     return (
       <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
         <Drawer
           id="atlas-ui"
-          style={{ zIndex: 999, minWidth: '400px', overflowY: 'auto' }}
+          style={{
+            zIndex: 999,
+            minWidth: '400px',
+            overflowY: 'auto',
+            opacity: Drawer.getCurrentMedia().desktop ? 1 : 0.6
+          }}
           visible={menuOpen}
           mobileType={Drawer.DrawerTypes.TEMPORARY}
           tabletType={Drawer.DrawerTypes.TEMPORARY}

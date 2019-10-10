@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { clusterSource } from '../../open-layers'
 import debounce from '../../../../lib/debounce'
-import { clone, mergeLeft } from 'ramda'
+import { mergeLeft } from 'ramda'
 import SideMenu from '../../ui/side-menu'
 import SelectListFilter from './select-list-filter'
 import { Button } from 'react-md'
@@ -57,7 +57,7 @@ export default class extends PureComponent {
 
   refreshFilters = () =>
     this.setState(
-      { filters: clone(this.state.filters).map(f => mergeLeft({ selectedItems: [] }, f)), showThinking: true },
+      { filters: [...this.state.filters].map(f => mergeLeft({ selectedItems: [] }, f)), showThinking: true },
       () => {
         this.props.updateMapLayer({ source: clusterSource(this.sites) })
         this.setState({ showThinking: false })
@@ -67,7 +67,7 @@ export default class extends PureComponent {
   updateFilters = ({ id, selectedItems }) =>
     this.setState(
       {
-        filters: clone(this.state.filters).map(f => (f.id === id ? mergeLeft({ selectedItems }, f) : f)),
+        filters: [...this.state.filters].map(f => (f.id === id ? mergeLeft({ selectedItems }, f) : f)),
         showThinking: true
       },
       debounce(() => {
