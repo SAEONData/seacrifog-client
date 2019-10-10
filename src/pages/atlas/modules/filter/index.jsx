@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react'
 import { clusterSource } from '../../open-layers'
 import debounce from '../../../../lib/debounce'
 import { clone, mergeLeft } from 'ramda'
-import { SideMenu, SelectListFilter } from '../../ui'
+import SideMenu from '../../ui/side-menu'
+import SelectListFilter from './select-list-filter'
 import { Button } from 'react-md'
 
 export default class extends PureComponent {
@@ -54,18 +55,21 @@ export default class extends PureComponent {
     ]
   }
 
-  refreshFilters = () => {
-    const filters = clone(this.state.filters).map(f => mergeLeft({ selectedItems: [] }, f))
-    this.setState({ filters, showThinking: true }, () => {
-      this.props.updateMapLayer({ source: clusterSource(this.sites) })
-      this.setState({ showThinking: false })
-    })
-  }
-
-  updateFilters = ({ id, selectedItems }) => {
-    const filters = clone(this.state.filters).map(f => (f.id === id ? mergeLeft({ selectedItems }, f) : f))
+  refreshFilters = () =>
     this.setState(
-      { filters, showThinking: true },
+      { filters: clone(this.state.filters).map(f => mergeLeft({ selectedItems: [] }, f)), showThinking: true },
+      () => {
+        this.props.updateMapLayer({ source: clusterSource(this.sites) })
+        this.setState({ showThinking: false })
+      }
+    )
+
+  updateFilters = ({ id, selectedItems }) =>
+    this.setState(
+      {
+        filters: clone(this.state.filters).map(f => (f.id === id ? mergeLeft({ selectedItems }, f) : f)),
+        showThinking: true
+      },
       debounce(() => {
         // Get the selected items of each filter
         let sites
@@ -114,7 +118,6 @@ export default class extends PureComponent {
         this.setState({ showThinking: false })
       })
     )
-  }
 
   render() {
     const { updateFilters, refreshFilters } = this

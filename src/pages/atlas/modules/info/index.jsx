@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { SideMenu } from '../../ui'
+import SideMenu from '../../ui/side-menu'
 
 export default class extends PureComponent {
   state = {
