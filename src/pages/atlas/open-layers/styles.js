@@ -1,11 +1,11 @@
 import { Circle as CircleStyle, Fill, Stroke, Style, Text } from 'ol/style'
 
 const OPACITY_DEFAULT = 0.3
-const OPACITY_2 = 0.6
+const OPACITY_2 = 0.8
 
-export const resetClusterLayerOpacity = layer => {
-  layer.getSource().forEachFeature(feature => feature.setStyle(clusterStyle(feature)))
-}
+// export const resetClusterLayerOpacity = layer => {
+//   layer.getSource().forEachFeature(feature => feature.setStyle(clusterStyle(feature)))
+// }
 
 export const clusterStyleHovered = feature => {
   const size = feature.get('features').length
