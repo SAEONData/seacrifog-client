@@ -36,8 +36,7 @@ export default class extends PureComponent {
           style={{
             zIndex: 999,
             minWidth: '400px',
-            overflowY: 'auto',
-            opacity: Drawer.getCurrentMedia().desktop ? 1 : 0.6
+            overflowY: 'auto'
           }}
           visible={menuOpen}
           mobileType={Drawer.DrawerTypes.TEMPORARY}

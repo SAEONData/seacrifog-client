@@ -31,6 +31,10 @@ $md-font-family: 'Open Sans';
   box-shadow: $x-axis $y-axis $blur $spread $color;
 }
 
+.better-box-shadow {
+  @include sf-box-shadow();
+}
+
 @import './modules/layout/style.scss';
 
 /* Global styles */
