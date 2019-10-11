@@ -8,7 +8,7 @@ export const clusterSource = data =>
     source: new VectorSource({
       features: data.map(site => {
         const xyz = JSON.parse(site.xyz).coordinates
-        return new Feature(new Point([xyz[0], xyz[1]]))
+        return new Feature({ siteId: site.id, geometry: new Point([xyz[0], xyz[1]]) })
       })
     })
   })

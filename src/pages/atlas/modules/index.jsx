@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { OpenLayers, clusterLayer, clusterSource, ahocevarBaseMap } from '../open-layers'
+import { OpenLayers, clusterLayer, clusterSource, openStreetLayers, ahocevarBaseMap } from '../open-layers'
 import Filter from './filter'
 import Reporting from './reporting'
 import Info from './info'
@@ -31,6 +31,7 @@ export default class extends PureComponent {
     this.clusteredSites = clusterSource(this.sites)
     this.clusteredSitesLayer = clusterLayer(this.clusteredSites)
     this.ahocevarBaseMap = ahocevarBaseMap
+    this.openStreetLayers = openStreetLayers
   }
 
   updateMapLayer = ({ source }) => {
@@ -38,7 +39,7 @@ export default class extends PureComponent {
   }
 
   render() {
-    const { ahocevarBaseMap, clusteredSitesLayer, updateMapLayer } = this
+    const { clusteredSitesLayer, updateMapLayer, ahocevarBaseMap } = this
 
     return (
       <OpenLayers

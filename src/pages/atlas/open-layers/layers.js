@@ -1,5 +1,5 @@
-import { Vector as VectorLayer } from 'ol/layer.js'
-import { Tile as TileLayer } from 'ol/layer.js'
+import { Vector as VectorLayer, Tile as TileLayer } from 'ol/layer.js'
+import { OSM } from 'ol/source'
 import TileWMS from 'ol/source/TileWMS'
 import { clusterStyle } from './styles'
 
@@ -11,6 +11,10 @@ export const ahocevarBaseMap = new TileLayer({
       TILED: true
     }
   })
+})
+
+export const openStreetLayers = new TileLayer({
+  source: new OSM({})
 })
 
 export const clusterLayer = source =>

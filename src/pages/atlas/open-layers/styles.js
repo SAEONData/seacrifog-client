@@ -1,6 +1,6 @@
 import { Circle as CircleStyle, Fill, Stroke, Style, Text } from 'ol/style'
 
-const OPACITY_DEFAULT = 0.3
+const OPACITY_DEFAULT = 0.4
 const OPACITY_2 = 0.8
 
 // export const resetClusterLayerOpacity = layer => {

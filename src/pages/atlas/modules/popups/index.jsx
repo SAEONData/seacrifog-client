@@ -1,14 +1,54 @@
 import React, { PureComponent } from 'react'
-import Overlay from 'ol/Overlay'
 import { Card, CardTitle, CardText } from 'react-md'
+import DataQuery from '../../../../modules/data-query'
+import { SITE } from '../../../../graphql/queries'
 import { clusterStyleHovered, clusterStyle } from '../../open-layers'
+
+const MultipleFeaturesDescription = ({ features }) => {
+  console.log(features)
+  return (
+    <Card style={{ height: '100%' }} className="better-box-shadow">
+      <CardTitle title={features.length + ' features selected'} />
+      <CardText>
+        <p>List of sites?</p>
+        <p>List of variables measured by these sites</p>
+        <p>List of networks these sites are part of</p>
+        <p>List of protocols implemented at these sites?</p>
+        <p>Pie chart: variables by site</p>
+        <p>Pie chart: protocols by site</p>
+        <p>Pie chart: networks by site</p>
+        <p>Drilldown? networks -> variables - protocols</p>
+      </CardText>
+    </Card>
+  )
+}
+
+const SingleFeatureDescription = ({ feature }) => (
+  <DataQuery query={SITE} variables={{ id: feature.get('siteId') }}>
+    {({ site }) => (
+      <Card style={{ height: '100%' }} className="better-box-shadow">
+        <CardTitle title={site.name} />
+        <CardText>
+          <p>Chart?</p>
+          <p>Links?</p>
+          <p>What else?</p>
+        </CardText>
+      </Card>
+    )}
+  </DataQuery>
+)
+
+const FeatureCard = ({ feature }) =>
+  feature.get('features').length > 1 ? (
+    <MultipleFeaturesDescription features={feature.get('features')} />
+  ) : (
+    <SingleFeatureDescription feature={feature.get('features')[0]} />
+  )
 
 export default class extends PureComponent {
   state = {
-    panelVisible: false
+    selectedFeature: null
   }
-
-  hoveredFeatures = []
 
   constructor(props) {
     super(props)
@@ -17,81 +57,48 @@ export default class extends PureComponent {
   }
 
   componentDidMount() {
-    this.popupOverlay = new Overlay({
-      element: this.popupRef.current
-    })
-
-    this.map.addOverlay(this.popupOverlay)
-
     // Pointer cursor
     this.map.on('pointermove', e => {
-      const hit = this.map.forEachFeatureAtPixel(e.pixel, (feature, layer) => ({ layer, feature })) || false
-      if (hit) {
-        e.target.getTarget().style.cursor = 'pointer'
-        hit.feature.setStyle(clusterStyleHovered(hit.feature))
-        this.hoveredFeatures.push(hit.feature)
-      } else {
-        e.target.getTarget().style.cursor = ''
-        while (this.hoveredFeatures.length) {
-          const feature = this.hoveredFeatures.shift()
-          if (this.feature !== feature) feature.setStyle(clusterStyle(feature))
-        }
-      }
+      const hit = this.map.forEachFeatureAtPixel(e.pixel, () => true) || false
+      e.target.getTarget().style.cursor = hit ? 'pointer' : ''
     })
 
     // Add click handler
     this.map.on('click', e => {
-      const feature = this.map.forEachFeatureAtPixel(e.pixel, (feature, layer) => feature)
-      if (feature) {
-        if (this.feature && this.feature !== feature) this.feature.setStyle(clusterStyle(this.feature))
-        this.feature = feature
-        feature.setStyle(clusterStyleHovered(feature))
-        this.setState({ panelVisible: true })
-        const coordinate = e.coordinate
-        this.popupOverlay.setPosition(coordinate)
+      const { selectedFeature } = this.state
+      const feature = this.map.forEachFeatureAtPixel(e.pixel, feature => feature)
+      if (selectedFeature) selectedFeature.setStyle(clusterStyle(selectedFeature))
+      if (feature && feature !== selectedFeature) {
+        this.setState({ selectedFeature: feature }, () => {
+          const { selectedFeature } = this.state
+          selectedFeature.setStyle(clusterStyleHovered(feature))
+        })
       } else {
-        if (this.feature) this.feature.setStyle(clusterStyle(this.feature))
-        this.setState({ panelVisible: false })
-        this.popupOverlay.setPosition(undefined)
+        if (selectedFeature) selectedFeature.setStyle(clusterStyle(selectedFeature))
+        this.setState({ selectedFeature: null })
       }
     })
   }
 
   render() {
-    const { panelVisible } = this.state
-    const { popupRef } = this
+    const { selectedFeature } = this.state
 
-    return (
-      <div>
-        <div
-          style={{
-            zIndex: 1000,
-            position: 'absolute',
-            margin: '12px 0 0 12px',
-            display: panelVisible ? 'inherit' : 'none'
-          }}
-        >
-          <Card className="better-box-shadow">
-            <CardTitle title="Site Summary" />
-            <CardText>
-              <p>Chart?</p>
-              <p>Links?</p>
-              <p>What else?</p>
-            </CardText>
-          </Card>
-        </div>
-        <div ref={popupRef} style={{ zIndex: 1000 }}>
-          <Card className="better-box-shadow">
-            <CardTitle title="Card Title" />
-            <CardText>
-              You clicked me
-              <span role="img" aria-label="testing">
-                🤨
-              </span>
-            </CardText>
-          </Card>
-        </div>
+    return selectedFeature ? (
+      <div
+        style={{
+          zIndex: 1000,
+          position: 'absolute',
+          margin: '12px',
+          top: 0,
+          bottom: 0,
+          display: selectedFeature ? 'inherit' : 'none',
+          opacity: 0.8
+        }}
+      >
+        <FeatureCard feature={selectedFeature} />
       </div>
+    ) : (
+      ''
     )
   }
 }

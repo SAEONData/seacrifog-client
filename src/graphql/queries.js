@@ -118,6 +118,15 @@ export const DATAPRODUCT = gql`
   }
 `
 
+export const SITE = gql`
+  query site($id: Int!) {
+    site(id: $id) {
+      id
+      name
+    }
+  }
+`
+
 export const VARIABLE = gql`
   query variable($id: Int!) {
     variable(id: $id) {
