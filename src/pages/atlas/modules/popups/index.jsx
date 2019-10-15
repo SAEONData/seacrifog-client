@@ -86,7 +86,7 @@ export default class extends PureComponent {
     return selectedFeature ? (
       <div
         style={{
-          zIndex: 1000,
+          zIndex: 1,
           position: 'absolute',
           margin: '12px',
           top: 0,
