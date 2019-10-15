@@ -13,7 +13,7 @@ export default class extends PureComponent {
   render() {
     const { menuOpen } = this.state
     const { openMenu, closeMenu, onVizChange } = this
-    const { items, showThinking } = this.props
+    const { items, thinking } = this.props
     let top
     switch (this.props.position) {
       case 1:
@@ -36,8 +36,7 @@ export default class extends PureComponent {
           style={{
             zIndex: 999,
             minWidth: '400px',
-            overflowY: 'auto',
-            opacity: Drawer.getCurrentMedia().desktop ? 1 : 0.6
+            overflowY: 'auto'
           }}
           visible={menuOpen}
           mobileType={Drawer.DrawerTypes.TEMPORARY}
@@ -60,7 +59,7 @@ export default class extends PureComponent {
               <LinearProgress
                 id="map-calculation-progress"
                 key="map-calc-progress"
-                style={showThinking ? { height: '1px', margin: 0 } : { height: '1px', visibility: 'hidden', margin: 0 }}
+                style={thinking ? { height: '1px', margin: 0 } : { height: '1px', visibility: 'hidden', margin: 0 }}
               />
               <div style={{ paddingLeft: '24px', paddingRight: '24px' }}>{items}</div>
             </>

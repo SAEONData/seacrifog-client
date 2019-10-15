@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import { clusterSource } from '../../open-layers'
-import debounce from '../../../../lib/debounce'
 import { mergeLeft } from 'ramda'
 import SideMenu from '../../ui/side-menu'
 import SelectListFilter from './select-list-filter'
@@ -8,7 +7,6 @@ import { Button } from 'react-md'
 
 export default class extends PureComponent {
   state = {
-    showThinking: false,
     filterSites: [],
     filterNetworks: []
   }
@@ -56,21 +54,16 @@ export default class extends PureComponent {
   }
 
   refreshFilters = () =>
-    this.setState(
-      { filters: [...this.state.filters].map(f => mergeLeft({ selectedItems: [] }, f)), showThinking: true },
-      () => {
-        this.props.updateMapLayer({ source: clusterSource(this.sites) })
-        this.setState({ showThinking: false })
-      }
-    )
+    this.setState({ filters: [...this.state.filters].map(f => mergeLeft({ selectedItems: [] }, f)) }, () => {
+      this.props.updateMapLayer({ source: clusterSource(this.sites) })
+    })
 
   updateFilters = ({ id, selectedItems }) =>
     this.setState(
       {
-        filters: [...this.state.filters].map(f => (f.id === id ? mergeLeft({ selectedItems }, f) : f)),
-        showThinking: true
+        filters: [...this.state.filters].map(f => (f.id === id ? mergeLeft({ selectedItems }, f) : f))
       },
-      debounce(() => {
+      () => {
         // Get the selected items of each filter
         let sites
         const [sitesFilter, networksFilter, variablesFilter, protocolsFilter] = this.state.filters
@@ -115,13 +108,12 @@ export default class extends PureComponent {
 
         // Set the new clustered data source
         this.props.updateMapLayer({ source: clusterSource(sites) })
-        this.setState({ showThinking: false })
-      })
+      }
     )
 
   render() {
     const { updateFilters, refreshFilters } = this
-    const { showThinking, filters } = this.state
+    const { filters } = this.state
     const filtersActive = filters.map(f => f.selectedItems).flat().length > 0 ? true : false
     return (
       <SideMenu
@@ -132,7 +124,6 @@ export default class extends PureComponent {
             refresh
           </Button>
         }
-        showThinking={showThinking}
         items={filters.map(filter => (
           <SelectListFilter key={filter.id} {...filter} updateFilters={updateFilters} />
         ))}

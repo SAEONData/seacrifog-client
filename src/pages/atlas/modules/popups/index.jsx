@@ -1,10 +1,55 @@
-// https://openlayers.org/en/latest/examples/overlay.html
-
 import React, { PureComponent } from 'react'
-import Overlay from 'ol/Overlay'
-import { Circle as CircleStyle, Fill, Stroke, Style, Text } from 'ol/style'
+import { Card, CardTitle, CardText } from 'react-md'
+import DataQuery from '../../../../modules/data-query'
+import { SITE } from '../../../../graphql/queries'
+import { clusterStyleHovered, clusterStyle } from '../../open-layers'
+
+const MultipleFeaturesDescription = ({ features }) => {
+  console.log(features)
+  return (
+    <Card style={{ height: '100%' }} className="better-box-shadow">
+      <CardTitle title={features.length + ' features selected'} />
+      <CardText>
+        <p>List of sites?</p>
+        <p>List of variables measured by these sites</p>
+        <p>List of networks these sites are part of</p>
+        <p>List of protocols implemented at these sites?</p>
+        <p>Pie chart: variables by site</p>
+        <p>Pie chart: protocols by site</p>
+        <p>Pie chart: networks by site</p>
+        <p>Drilldown? networks -> variables - protocols</p>
+      </CardText>
+    </Card>
+  )
+}
+
+const SingleFeatureDescription = ({ feature }) => (
+  <DataQuery query={SITE} variables={{ id: feature.get('siteId') }}>
+    {({ site }) => (
+      <Card style={{ height: '100%' }} className="better-box-shadow">
+        <CardTitle title={site.name} />
+        <CardText>
+          <p>Chart?</p>
+          <p>Links?</p>
+          <p>What else?</p>
+        </CardText>
+      </Card>
+    )}
+  </DataQuery>
+)
+
+const FeatureCard = ({ feature }) =>
+  feature.get('features').length > 1 ? (
+    <MultipleFeaturesDescription features={feature.get('features')} />
+  ) : (
+    <SingleFeatureDescription feature={feature.get('features')[0]} />
+  )
 
 export default class extends PureComponent {
+  state = {
+    selectedFeature: null
+  }
+
   constructor(props) {
     super(props)
     this.map = this.props.map
@@ -12,70 +57,48 @@ export default class extends PureComponent {
   }
 
   componentDidMount() {
-    const self = this
-    this.overlay = new Overlay({
-      element: this.popupRef.current
-    })
-
-    this.map.addOverlay(this.overlay)
-
     // Pointer cursor
-    this.map.on('pointermove', function(e) {
-      const hit =
-        self.map.forEachFeatureAtPixel(e.pixel, (feature, layer) => {
-          feature.setStyle(
-            new Style({
-              image: new CircleStyle({
-                radius: 10,
-                stroke: new Stroke({
-                  color: '#fff'
-                }),
-                fill: new Fill({
-                  color: 'rgba(51, 153, 204, 0.5)'
-                })
-              }),
-              text: new Text({
-                text: '!',
-                fill: new Fill({
-                  color: '#fff'
-                })
-              })
-            })
-          )
-          return true
-        }) || false
-      if (hit) {
-        this.getTarget().style.cursor = 'pointer'
-      } else {
-        this.getTarget().style.cursor = ''
-      }
+    this.map.on('pointermove', e => {
+      const hit = this.map.forEachFeatureAtPixel(e.pixel, () => true) || false
+      e.target.getTarget().style.cursor = hit ? 'pointer' : ''
     })
 
     // Add click handler
-    this.map.on('click', function(e) {
-      const features = []
-      self.map.forEachFeatureAtPixel(e.pixel, (feature, layer) => {
-        features.push(feature)
-      })
-      if (features.length) {
-        const coordinate = e.coordinate
-        self.overlay.setPosition(coordinate)
+    this.map.on('click', e => {
+      const { selectedFeature } = this.state
+      const feature = this.map.forEachFeatureAtPixel(e.pixel, feature => feature)
+      if (selectedFeature) selectedFeature.setStyle(clusterStyle(selectedFeature))
+      if (feature && feature !== selectedFeature) {
+        this.setState({ selectedFeature: feature }, () => {
+          const { selectedFeature } = this.state
+          selectedFeature.setStyle(clusterStyleHovered(feature))
+        })
+      } else {
+        if (selectedFeature) selectedFeature.setStyle(clusterStyle(selectedFeature))
+        this.setState({ selectedFeature: null })
       }
     })
   }
 
   render() {
-    const { popupRef } = this
+    const { selectedFeature } = this.state
 
-    return (
-      <div>
-        <div ref={popupRef} style={{ zIndex: 1000, fontSize: '32px' }}>
-          You clicked me{' '}
-          <span role="img" aria-label="testing">
-            🤨
-          </span>
-        </div>
+    return selectedFeature ? (
+      <div
+        style={{
+          zIndex: 1000,
+          position: 'absolute',
+          margin: '12px',
+          top: 0,
+          bottom: 0,
+          display: selectedFeature ? 'inherit' : 'none',
+          opacity: 0.8
+        }}
+      >
+        <FeatureCard feature={selectedFeature} />
       </div>
+    ) : (
+      ''
     )
   }
 }

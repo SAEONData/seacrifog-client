@@ -18,4 +18,11 @@ export default () => {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ')
   }
+
+  if (!Array.prototype.flat) {
+    // eslint-disable-next-line no-extend-native
+    Array.prototype.flat = function() {
+      return [].concat(...this)
+    }
+  }
 }
