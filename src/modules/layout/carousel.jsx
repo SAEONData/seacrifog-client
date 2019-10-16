@@ -21,9 +21,13 @@ export default class extends PureComponent {
   }
 
   componentDidMount() {
-    setInterval(() => {
+    this.timer = setInterval(() => {
       this.setState({ items: shufflePartnersPreferentially([...this.state.items]) })
     }, 300000)
+  }
+
+  componentWillMount() {
+    clearInterval(this.timer)
   }
 
   render() {

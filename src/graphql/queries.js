@@ -118,6 +118,18 @@ export const DATAPRODUCT = gql`
   }
 `
 
+export const SITES = gql`
+  query sites($ids: [Int!]) {
+    sites(ids: $ids) {
+      id
+      name
+      networks {
+        acronym
+      }
+    }
+  }
+`
+
 export const SITE = gql`
   query site($id: Int!) {
     site(id: $id) {

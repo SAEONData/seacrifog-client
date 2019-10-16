@@ -1,25 +1,72 @@
 import React, { PureComponent } from 'react'
 import { Card, CardTitle, CardText } from 'react-md'
 import DataQuery from '../../../../modules/data-query'
-import { SITE } from '../../../../graphql/queries'
+import { SITE, SITES } from '../../../../graphql/queries'
 import { clusterStyleHovered, clusterStyle } from '../../open-layers'
+import EChart from '../../../../modules/echarts'
 
 const MultipleFeaturesDescription = ({ features }) => {
-  console.log(features)
   return (
-    <Card style={{ height: '100%' }} className="better-box-shadow">
-      <CardTitle title={features.length + ' features selected'} />
-      <CardText>
-        <p>List of sites?</p>
-        <p>List of variables measured by these sites</p>
-        <p>List of networks these sites are part of</p>
-        <p>List of protocols implemented at these sites?</p>
-        <p>Pie chart: variables by site</p>
-        <p>Pie chart: protocols by site</p>
-        <p>Pie chart: networks by site</p>
-        <p>Drilldown? networks -> variables - protocols</p>
-      </CardText>
-    </Card>
+    <DataQuery query={SITES} variables={{ ids: features.map(feature => feature.get('siteId')) }}>
+      {({ sites }) => {
+        const rawData = {}
+        sites.forEach(s => {
+          s.networks.forEach(n => {
+            rawData[n.acronym] = rawData[n.acronym] ? rawData[n.acronym] + 1 : 1
+          })
+        })
+        const data = Object.keys(rawData)
+          .map(acronym => ({ value: rawData[acronym], name: acronym }))
+          .sort((a, b) => (a.value >= b.value ? -1 : 1))
+        return (
+          <Card style={{ height: '100%', minWidth: '500px' }} className="better-box-shadow">
+            <CardTitle title={'Sites: (' + features.length + ' selected features)'} />
+            <CardText>
+              <EChart
+                option={{
+                  title: {
+                    text: 'Networks',
+                    subtext: 'By selected sites',
+                    x: 'center'
+                  },
+                  tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c} sites ({d}%)'
+                  },
+
+                  series: [
+                    {
+                      name: 'Networks',
+                      type: 'pie',
+                      radius: '55%',
+                      center: ['50%', '60%'],
+                      data,
+                      itemStyle: {
+                        emphasis: {
+                          shadowBlur: 10,
+                          shadowOffsetX: 0,
+                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                      }
+                    }
+                  ]
+                }}
+              />
+            </CardText>
+            {/* <CardText>
+              <p>List of sites?</p>
+              <p>List of variables measured by these sites</p>
+              <p>List of networks these sites are part of</p>
+              <p>List of protocols implemented at these sites?</p>
+              <p>Pie chart: variables by site</p>
+              <p>Pie chart: protocols by site</p>
+              <p>Pie chart: networks by site</p>
+              <p>Drilldown? networks -> variables - protocols</p>
+            </CardText> */}
+          </Card>
+        )
+      }}
+    </DataQuery>
   )
 }
 

@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import echarts from 'echarts'
+// import shineTheme from './themes/shine'
+import macaronsTheme from './themes/macarons'
 
 export default class extends Component {
   state = { height: 0 }
@@ -13,7 +15,7 @@ export default class extends Component {
   }
 
   async componentDidUpdate() {
-    this.chart = echarts.init(this.ref.current)
+    this.chart = echarts.init(this.ref.current, macaronsTheme)
 
     // Set the chart option
     this.option = await this.props.option
