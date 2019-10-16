@@ -124,7 +124,12 @@ export const SITES = gql`
       id
       name
       networks {
+        id
         acronym
+        variables {
+          id
+          class
+        }
       }
     }
   }

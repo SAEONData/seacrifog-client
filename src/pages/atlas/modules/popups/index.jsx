@@ -1,58 +1,72 @@
 import React, { PureComponent } from 'react'
-import { Card, CardTitle, CardText } from 'react-md'
+import { Card, CardTitle, CardText, Button, Grid, Cell, List, ListItem, Avatar, FontIcon } from 'react-md'
 import DataQuery from '../../../../modules/data-query'
 import { SITE, SITES } from '../../../../graphql/queries'
 import { clusterStyleHovered, clusterStyle } from '../../open-layers'
-import EChart from '../../../../modules/echarts'
+import PieChart from './pie-chart'
 
-const MultipleFeaturesDescription = ({ features }) => {
+const InfoIcon = () => <FontIcon>info</FontIcon>
+
+const MultipleFeaturesDescription = ({ features, close }) => {
   return (
     <DataQuery query={SITES} variables={{ ids: features.map(feature => feature.get('siteId')) }}>
       {({ sites }) => {
-        const rawData = {}
+        const sitesByNetworksRaw = {}
+        const variablesBySitesRaw = {}
         sites.forEach(s => {
           s.networks.forEach(n => {
-            rawData[n.acronym] = rawData[n.acronym] ? rawData[n.acronym] + 1 : 1
+            sitesByNetworksRaw[n.acronym] = sitesByNetworksRaw[n.acronym] ? sitesByNetworksRaw[n.acronym] + 1 : 1
+            n.variables.forEach(v => {
+              variablesBySitesRaw[v.class] = variablesBySitesRaw[v.class] ? variablesBySitesRaw[v.class] + 1 : 1
+            })
           })
         })
-        const data = Object.keys(rawData)
-          .map(acronym => ({ value: rawData[acronym], name: acronym }))
+        const sitesByNetworks = Object.keys(sitesByNetworksRaw)
+          .map(acronym => ({ value: sitesByNetworksRaw[acronym], name: acronym, selected: false }))
           .sort((a, b) => (a.value >= b.value ? -1 : 1))
-        return (
-          <Card style={{ height: '100%', minWidth: '500px' }} className="better-box-shadow">
-            <CardTitle title={'Sites: (' + features.length + ' selected features)'} />
-            <CardText>
-              <EChart
-                option={{
-                  title: {
-                    text: 'Networks',
-                    subtext: 'By selected sites',
-                    x: 'center'
-                  },
-                  tooltip: {
-                    trigger: 'item',
-                    formatter: '{a} <br/>{b} : {c} sites ({d}%)'
-                  },
 
-                  series: [
-                    {
-                      name: 'Networks',
-                      type: 'pie',
-                      radius: '55%',
-                      center: ['50%', '60%'],
-                      data,
-                      itemStyle: {
-                        emphasis: {
-                          shadowBlur: 10,
-                          shadowOffsetX: 0,
-                          shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                      }
-                    }
-                  ]
-                }}
-              />
-            </CardText>
+        const variablesBySites = Object.keys(variablesBySitesRaw)
+          .map(c => ({ value: variablesBySitesRaw[c], name: c, selected: false }))
+          .sort((a, b) => (a.value >= b.value ? -1 : 1))
+
+        return (
+          <Card style={{ height: '100%' }} className="better-box-shadow">
+            <Button onClick={close} style={{ position: 'absolute', top: 10, right: 10 }} icon>
+              close
+            </Button>
+            <CardTitle title={'Sites: (' + features.length + ' selected features)'} />
+
+            <Grid>
+              <Cell phoneSize={6} tabletSize={5} size={9}>
+                <PieChart series1={sitesByNetworks} series2={variablesBySites} />
+              </Cell>
+              <Cell phoneSize={6} tabletSize={3} size={3}>
+                <h4>Metadata collections by organization</h4>
+                <List>
+                  <ListItem
+                    leftAvatar={<Avatar icon={<FontIcon>folder</FontIcon>} />}
+                    rightIcon={<InfoIcon />}
+                    primaryText="SAEON"
+                  />
+                  <ListItem
+                    leftAvatar={<Avatar icon={<FontIcon>folder</FontIcon>} />}
+                    rightIcon={<InfoIcon />}
+                    primaryText="ICOS"
+                  />
+                  <ListItem
+                    leftAvatar={<Avatar icon={<FontIcon>folder</FontIcon>} />}
+                    rightIcon={<InfoIcon />}
+                    primaryText="SASSCAL"
+                  />
+                  <ListItem
+                    leftAvatar={<Avatar icon={<FontIcon>folder</FontIcon>} />}
+                    rightIcon={<InfoIcon />}
+                    primaryText="ETC ..."
+                  />
+                </List>
+              </Cell>
+            </Grid>
+
             {/* <CardText>
               <p>List of sites?</p>
               <p>List of variables measured by these sites</p>
@@ -70,10 +84,10 @@ const MultipleFeaturesDescription = ({ features }) => {
   )
 }
 
-const SingleFeatureDescription = ({ feature }) => (
+const SingleFeatureDescription = ({ feature, close }) => (
   <DataQuery query={SITE} variables={{ id: feature.get('siteId') }}>
     {({ site }) => (
-      <Card style={{ height: '100%' }} className="better-box-shadow">
+      <Card onClick={close} style={{ height: '100%' }} className="better-box-shadow">
         <CardTitle title={site.name} />
         <CardText>
           <p>Chart?</p>
@@ -85,11 +99,11 @@ const SingleFeatureDescription = ({ feature }) => (
   </DataQuery>
 )
 
-const FeatureCard = ({ feature }) =>
+const FeatureCard = ({ feature, close }) =>
   feature.get('features').length > 1 ? (
-    <MultipleFeaturesDescription features={feature.get('features')} />
+    <MultipleFeaturesDescription close={close} features={feature.get('features')} />
   ) : (
-    <SingleFeatureDescription feature={feature.get('features')[0]} />
+    <SingleFeatureDescription close={close} feature={feature.get('features')[0]} />
   )
 
 export default class extends PureComponent {
@@ -101,6 +115,11 @@ export default class extends PureComponent {
     super(props)
     this.map = this.props.map
     this.popupRef = React.createRef()
+  }
+
+  closePanel = () => {
+    this.state.selectedFeature.setStyle(clusterStyle(this.state.selectedFeature))
+    this.setState({ selectedFeature: null })
   }
 
   componentDidMount() {
@@ -135,14 +154,16 @@ export default class extends PureComponent {
         style={{
           zIndex: 1,
           position: 'absolute',
-          margin: '12px',
+          margin: '12px 0 12px 12px',
           top: 0,
           bottom: 0,
+          left: 0,
+          right: 64,
           display: selectedFeature ? 'inherit' : 'none',
           opacity: 0.8
         }}
       >
-        <FeatureCard feature={selectedFeature} />
+        <FeatureCard close={this.closePanel} feature={selectedFeature} />
       </div>
     ) : (
       ''
