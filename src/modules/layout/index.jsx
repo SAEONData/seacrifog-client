@@ -25,9 +25,7 @@ class Navigation extends PureComponent {
   }
 
   render() {
-    const { currentPath } = this.state
     const { location, navItems } = this.props
-    const hideMenu = ['', '/', 'HOME', 'ABOUT', 'ABOUT/', 'CONTACT', 'CONTACT/'].includes(currentPath.toUpperCase())
     const currentMedia = NavigationDrawer.getCurrentMedia()
     return (
       <NavigationDrawer
@@ -52,9 +50,8 @@ class Navigation extends PureComponent {
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
-        // toolbarTitle={currentPath.capitalize() || 'Home'} // The toolbar is currently used to display funding calls
         toolbarActions={<Carousel currentMedia={currentMedia} />}
-        defaultVisible={currentMedia.desktop && !hideMenu ? true : false}
+        defaultVisible={false}
       >
         <Switch key={location.pathname || '/'}>{this.props.children}</Switch>
       </NavigationDrawer>
