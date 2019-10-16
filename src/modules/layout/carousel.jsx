@@ -3,26 +3,27 @@ import { Flipper, Flipped } from 'react-flip-toolkit'
 import FundingAcknowledgement from './funding-acknowledgement'
 import partners from './partners'
 
-function shuffleArray(d) {
-  for (var c = d.length - 1; c > 0; c--) {
+function shufflePartnersPreferentially(items) {
+  const fixedItems = items.filter(item => item.fixed)
+  const randomItems = items.filter(item => !item.fixed)
+  for (var c = randomItems.length - 1; c > 0; c--) {
     var b = Math.floor(Math.random() * (c + 1))
-    var a = d[c]
-    d[c] = d[b]
-    d[b] = a
+    var a = randomItems[c]
+    randomItems[c] = randomItems[b]
+    randomItems[b] = a
   }
-  return d
+  return [...fixedItems, ...randomItems]
 }
 
 export default class extends PureComponent {
   state = {
-    items: partners
-    // items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    items: shufflePartnersPreferentially(partners)
   }
 
   componentDidMount() {
     setInterval(() => {
-      this.setState({ items: shuffleArray([...this.state.items]) })
-    }, 4000)
+      this.setState({ items: shufflePartnersPreferentially([...this.state.items]) })
+    }, 300000)
   }
 
   render() {
