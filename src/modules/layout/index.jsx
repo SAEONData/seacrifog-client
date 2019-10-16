@@ -3,7 +3,7 @@ import { NavigationDrawer } from 'react-md'
 import { withRouter } from 'react-router'
 import { Switch } from 'react-router-dom'
 import NavItemLink from './nav-item-link'
-import FundingAcknowledgement from './funding-acknowledgement'
+import Carousel from './carousel'
 
 class Navigation extends PureComponent {
   constructor(props) {
@@ -52,56 +52,8 @@ class Navigation extends PureComponent {
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
-        toolbarTitle={currentPath.capitalize() || 'Home'}
-        toolbarActions={[
-          <FundingAcknowledgement
-            mediaType={currentMedia}
-            imgPath={'/seacrifog-logo.png'}
-            alt="SEACRIFOG logo"
-            content={
-              <>
-                <p>
-                  Supporting EU-African Cooperation on Research Infrastructures for Food Security and Greenhouse Gas
-                  Observations
-                </p>
-                <a className="link" target="_blank" rel="noopener noreferrer" href="https://www.seacrifog.eu/">
-                  more information
-                </a>
-              </>
-            }
-          />,
-          <FundingAcknowledgement
-            mediaType={currentMedia}
-            imgPath={'/sasscal-logo.png'}
-            content={
-              <>
-                <p>South African Science Service Center for Climate Change and Adaptive Land Management</p>
-                <a className="link" target="_blank" rel="noopener noreferrer" href="http://www.sasscal.org/">
-                  more information
-                </a>
-              </>
-            }
-            alt="SASSCAL logo"
-          />,
-          <FundingAcknowledgement
-            mediaType={currentMedia}
-            imgPath={'/eu-funding-achnowledgement.jpg'}
-            alt="EU funding acknowledgement"
-            content={
-              <>
-                <p>European Commission: Horizon 2020</p>
-                <a
-                  className="link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://ec.europa.eu/inea/en/horizon-2020"
-                >
-                  more information
-                </a>
-              </>
-            }
-          />
-        ]}
+        // toolbarTitle={currentPath.capitalize() || 'Home'} // The toolbar is currently used to display funding calls
+        toolbarActions={<Carousel currentMedia={currentMedia} />}
         defaultVisible={currentMedia.desktop && !hideMenu ? true : false}
       >
         <Switch key={location.pathname || '/'}>{this.props.children}</Switch>

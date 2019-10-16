@@ -17,11 +17,17 @@ export const FormattedInfo = ({ object }) => (
   </Grid>
 )
 
-export const EditButton = ({ to }) => (
+export const EditButtonSVG = ({ to }) => (
   <Link to={to}>
     <Button icon>
       <PencilIcon />
     </Button>
+  </Link>
+)
+
+export const EditButton = ({ to }) => (
+  <Link to={to}>
+    <Button icon>edit</Button>
   </Link>
 )
 

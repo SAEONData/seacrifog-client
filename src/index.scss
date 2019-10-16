@@ -50,13 +50,12 @@ body {
   background-color: #dadada;
 }
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  // width: 12px;
+  // height: 12px;
   background-color: #f5f5f5;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: $md-blue-400;
-  border-radius: 10px;
+  background-color: #cac9c9;
 }
 
 /* Fixes for react-md bugs that can hopefully be deleted in the future */
@@ -85,4 +84,12 @@ body {
     color: get-color('text', $md-light-theme);
     text-decoration: underline;
   }
+}
+
+.md-avatar__google-logo {
+  background: $md-white-base;
+}
+
+.react-md-logo {
+  fill: 'blue';
 }

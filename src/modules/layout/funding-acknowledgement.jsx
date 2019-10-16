@@ -33,9 +33,9 @@ export default class extends PureComponent {
         />
         <DialogContainer
           id="funding-acknowledgement"
+          title={'Acknowledgement'}
           visible={visible}
           titleStyle={{ textAlign: 'center' }}
-          title={this.props.title || 'Acknowledgement'}
           focusOnMount={false}
           onHide={this.hide}
           contentStyle={{ maxHeight: 'inherit' }}
