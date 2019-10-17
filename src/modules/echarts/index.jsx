@@ -8,6 +8,8 @@ export default class extends Component {
   constructor(props) {
     super(props)
     this.ref = React.createRef()
+    this.onEvents = this.props.onEvents || {}
+    this.option = this.props.option
   }
 
   componentDidMount() {
@@ -17,11 +19,13 @@ export default class extends Component {
   async componentDidUpdate() {
     this.chart = echarts.init(this.ref.current, macaronsTheme)
 
-    // Set the chart option
-    this.option = await this.props.option
-
     // Apply chart option
     this.chart.setOption(this.option)
+
+    // Register any event handlers
+    Object.keys(this.onEvents).forEach(ev => {
+      this.chart.on(ev, this.onEvents[ev])
+    })
   }
   render() {
     return <div ref={this.ref} style={{ height: this.state.height }} />
