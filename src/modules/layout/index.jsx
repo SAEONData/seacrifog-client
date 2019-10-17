@@ -3,7 +3,6 @@ import { NavigationDrawer } from 'react-md'
 import { withRouter } from 'react-router'
 import { Switch } from 'react-router-dom'
 import NavItemLink from './nav-item-link'
-import Carousel from './carousel'
 
 class Navigation extends PureComponent {
   constructor(props) {
@@ -26,7 +25,6 @@ class Navigation extends PureComponent {
 
   render() {
     const { location, navItems } = this.props
-    const currentMedia = NavigationDrawer.getCurrentMedia()
     return (
       <NavigationDrawer
         id="app-navigation-drawer"
@@ -50,7 +48,7 @@ class Navigation extends PureComponent {
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
-        toolbarActions={<Carousel currentMedia={currentMedia} />}
+        toolbarActions={<div>hi</div>}
         defaultVisible={false}
       >
         <Switch key={location.pathname || '/'}>{this.props.children}</Switch>

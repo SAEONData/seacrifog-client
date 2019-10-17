@@ -22,7 +22,14 @@ import Graph from './pages/graph'
 
 // SPA wrapper
 const App = () => (
-  <Form hoveredProtocol={null} selectedProtocol={null} hoveredDP={null} selectedDP={null} hoveredVariable={null} selectedVariable={null}>
+  <Form
+    hoveredProtocol={null}
+    selectedProtocol={null}
+    hoveredDP={null}
+    selectedDP={null}
+    hoveredVariable={null}
+    selectedVariable={null}
+  >
     {({ updateForm, hoveredProtocol, selectedProtocol, hoveredDP, selectedDP, hoveredVariable, selectedVariable }) => (
       <BrowserRouter>
         <Navigation navItems={navItems}>
@@ -39,7 +46,12 @@ const App = () => (
             path={'/variables'}
             exact={true}
             render={props => (
-              <VariablesExplorer updateForm={updateForm} hoveredVariable={hoveredVariable} selectedVariable={selectedVariable} {...props} />
+              <VariablesExplorer
+                updateForm={updateForm}
+                hoveredVariable={hoveredVariable}
+                selectedVariable={selectedVariable}
+                {...props}
+              />
             )}
           />
           <Route
@@ -47,14 +59,21 @@ const App = () => (
             path={'/protocols'}
             exact={true}
             render={props => (
-              <ProtocolsExplorer updateForm={updateForm} hoveredProtocol={hoveredProtocol} selectedProtocol={selectedProtocol} {...props} />
+              <ProtocolsExplorer
+                updateForm={updateForm}
+                hoveredProtocol={hoveredProtocol}
+                selectedProtocol={selectedProtocol}
+                {...props}
+              />
             )}
           />
           <Route
             key={'explorer-dataproducts'}
             path={'/dataproducts'}
             exact={true}
-            render={props => <DataproductsExplorer updateForm={updateForm} hoveredDP={hoveredDP} selectedDP={selectedDP} {...props} />}
+            render={props => (
+              <DataproductsExplorer updateForm={updateForm} hoveredDP={hoveredDP} selectedDP={selectedDP} {...props} />
+            )}
           />
 
           {/* Edit data */}
@@ -84,7 +103,12 @@ const App = () => (
             path={'/selector'}
             exact={true}
             render={props => (
-              <SelectorTool updateForm={updateForm} selectedProtocol={selectedProtocol} selectedVariable={selectedVariable} {...props} />
+              <SelectorTool
+                updateForm={updateForm}
+                selectedProtocol={selectedProtocol}
+                selectedVariable={selectedVariable}
+                {...props}
+              />
             )}
           />
           <Route key={'atlas-tool'} path={'/atlas'} exact={true} component={Atlas} />
