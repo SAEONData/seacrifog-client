@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Cell, Card } from 'react-md'
+import { Grid, Cell } from 'react-md'
 import partners from '../../partners'
 import FundingAcknowledgement from './funding-acknowledgement'
 

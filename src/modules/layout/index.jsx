@@ -24,7 +24,10 @@ class Navigation extends PureComponent {
   }
 
   render() {
+    const { currentPath } = this.state
     const { location, navItems } = this.props
+    const hideMenu = ['', '/', 'HOME', 'ABOUT', 'ABOUT/', 'CONTACT', 'CONTACT/'].includes(currentPath.toUpperCase())
+    const currentMedia = NavigationDrawer.getCurrentMedia()
     return (
       <NavigationDrawer
         id="app-navigation-drawer"
@@ -48,8 +51,9 @@ class Navigation extends PureComponent {
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
-        toolbarActions={<div>hi</div>}
-        defaultVisible={false}
+        // toolbarActions={<div>hi</div>}
+        toolbarTitle={currentPath.capitalize() || 'Home'}
+        defaultVisible={currentMedia.desktop && !hideMenu ? true : false}
       >
         <Switch key={location.pathname || '/'}>{this.props.children}</Switch>
       </NavigationDrawer>
