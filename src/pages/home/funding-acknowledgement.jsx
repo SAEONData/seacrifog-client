@@ -4,29 +4,23 @@ import { DialogContainer, Card, CardText } from 'react-md'
 export default class extends PureComponent {
   state = { visible: false }
 
-  show = () => {
-    this.setState({ visible: true })
-  }
-
-  hide = () => {
-    this.setState({ visible: false })
-  }
+  toggleVisible = () => this.setState({ visible: !this.state.visible })
 
   render() {
     const { visible } = this.state
 
     return (
-      <Card className="funder-logo" style={{ height: '100px' }}>
-        <CardText style={{ height: '100%', padding: '12px' }}>
+      <Card onClick={this.toggleVisible} className={'funder-logo'} style={{ height: '100px', cursor: 'pointer' }}>
+        <CardText style={{ height: '100%', padding: '12px', display: 'flex' }}>
           <img
-            className="funder-logo"
-            onClick={this.show}
             style={{
-              display: 'block',
+              display: 'flex',
               margin: 'auto',
-              height: '100%',
-              padding: '0',
-              cursor: 'pointer'
+              maxWidth: '100%',
+              maxHeight: '100%',
+              width: 'auto',
+              height: 'auto',
+              padding: '0'
             }}
             src={this.props.imgPath}
             alt={this.props.alt}
@@ -37,7 +31,7 @@ export default class extends PureComponent {
             visible={visible}
             titleStyle={{ textAlign: 'center' }}
             focusOnMount={false}
-            onHide={this.hide}
+            onHide={this.toggleVisible}
             contentStyle={{ maxHeight: 'inherit' }}
           >
             <img
