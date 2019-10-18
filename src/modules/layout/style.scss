@@ -6,6 +6,15 @@
     // box-shadow: 74px 2px 13px 0px $sf-shadow-color;
     @include sf-box-shadow($x-axis: 0);
 
+    .md-toolbar--action-right {
+      // background-color: blue;
+      width: 100%;
+      margin: 0;
+      position: absolute;
+      height: 64px;
+      z-index: -1;
+    }
+
     @media (min-width: $md-grid-desktop-breakpoint) {
       @include sf-box-shadow($x-axis: 74px);
     }

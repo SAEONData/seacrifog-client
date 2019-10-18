@@ -51,8 +51,34 @@ class Navigation extends PureComponent {
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
-        toolbarActions={<div>hi</div>}
-        toolbarTitle={currentPath.capitalize() || 'Home'}
+        toolbarActions={[
+          <h3
+            style={{
+              position: 'absolute',
+              width: '100%',
+              textAlign: 'center',
+              lineHeight: '64px',
+              margin: 0,
+              display: currentMedia.mobile ? 'none' : 'inherit'
+            }}
+          >
+            Carbon Observation Platform Explorer
+          </h3>,
+          <img
+            style={{
+              height: 'auto',
+              width: 'auto',
+              maxWidth: '100%',
+              maxHeight: '100%',
+              float: 'right',
+              margin: 0,
+              padding: '8px 14px'
+            }}
+            src="/seacrifog-logo.png"
+            alt="SEACRIFOG logo"
+          />
+        ]}
+        // toolbarTitle={currentPath.capitalize() || 'Home'}
         defaultVisible={currentMedia.desktop && !hideMenu ? true : false}
       >
         <Switch key={location.pathname || '/'}>{this.props.children}</Switch>
