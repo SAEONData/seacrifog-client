@@ -2,7 +2,6 @@ import React from 'react'
 import DataQuery from '../../modules/data-query'
 import { PROTOCOLS_MIN, PROTOCOL } from '../../graphql/queries'
 import Table from '../../modules/table'
-import TitleToolbar from '../../modules/title-toolbar'
 import { mergeLeft, pickBy } from 'ramda'
 import { NoneMessage, FormattedInfo, LinkButton, DownloadButton, EditButton } from '../../modules/shared-components'
 import q from 'query-string'
@@ -12,13 +11,6 @@ export default ({ updateForm, hoveredProtocol, selectedProtocol, ...props }) => 
   <DataQuery query={PROTOCOLS_MIN}>
     {({ protocols }) => (
       <>
-        {/* Page Heading */}
-        <TitleToolbar
-          t1={selectedProtocol ? selectedProtocol.title : hoveredProtocol ? hoveredProtocol.title : 'Select rows by clicking on them...'}
-          t2={selectedProtocol ? selectedProtocol.author : hoveredProtocol ? hoveredProtocol.author : ''}
-          t3={selectedProtocol ? selectedProtocol.domain : hoveredProtocol ? hoveredProtocol.domain : ''}
-        />
-
         {/* Main Table (selectable) */}
         <Grid>
           <Cell size={12}>
@@ -53,12 +45,15 @@ export default ({ updateForm, hoveredProtocol, selectedProtocol, ...props }) => 
                 {({ protocol }) => (
                   <>
                     <ExpansionList>
-                      <ExpansionPanel label="Abstract" defaultExpanded footer={false}>
-                        <Grid>
-                          <Cell size={12}>
-                            <p>{protocol.abstract}</p>
-                          </Cell>
-                        </Grid>
+                      <ExpansionPanel label="Overview" defaultExpanded footer={false}>
+                        {
+                          <FormattedInfo
+                            object={pickBy((val, key) => {
+                              if (['title', 'author', 'domain', 'abstract'].includes(key)) return true
+                              else return false
+                            }, protocol)}
+                          />
+                        }
                       </ExpansionPanel>
                       <ExpansionPanel label="Additional Information" footer={false}>
                         {
@@ -77,13 +72,19 @@ export default ({ updateForm, hoveredProtocol, selectedProtocol, ...props }) => 
                     {protocol.directly_related_variables[0] ? (
                       <Card tableCard>
                         <Table
-                          onRowClick={row => updateForm({ selectedVariable: row }, () => props.history.push(`/variables?searchTerm=${row.name}`))}
+                          onRowClick={row =>
+                            updateForm({ selectedVariable: row }, () =>
+                              props.history.push(`/variables?searchTerm=${row.name}`)
+                            )
+                          }
                           headers={Object.keys(protocol.directly_related_variables[0])
                             .filter(col => col !== '__typename' && col !== 'id')
                             .concat('relationship')}
                           data={protocol.directly_related_variables
                             .map(v => mergeLeft({ relationship: 'direct' }, v))
-                            .concat(protocol.indirectly_related_variables.map(v => mergeLeft({ relationship: 'indirect' }, v)))}
+                            .concat(
+                              protocol.indirectly_related_variables.map(v => mergeLeft({ relationship: 'indirect' }, v))
+                            )}
                           tableStyle={{}}
                           toolbarButtons={[]}
                         />
@@ -95,13 +96,31 @@ export default ({ updateForm, hoveredProtocol, selectedProtocol, ...props }) => 
                 )}
               </DataQuery>
             ) : (
-              <Grid>
-                <Cell size={12}>
-                  <p>
+              <FormattedInfo
+                object={{
+                  title: selectedProtocol ? (
+                    selectedProtocol.title
+                  ) : hoveredProtocol ? (
+                    hoveredProtocol.title
+                  ) : (
                     <i>Select a row for more detailed information</i>
-                  </p>
-                </Cell>
-              </Grid>
+                  ),
+                  author: selectedProtocol ? (
+                    selectedProtocol.author
+                  ) : hoveredProtocol ? (
+                    hoveredProtocol.author
+                  ) : (
+                    <i>Select a row for more detailed information</i>
+                  ),
+                  domain: selectedProtocol ? (
+                    selectedProtocol.domain
+                  ) : hoveredProtocol ? (
+                    hoveredProtocol.domain
+                  ) : (
+                    <i>Select a row for more detailed information</i>
+                  )
+                }}
+              />
             )}
           </Cell>
         </Grid>

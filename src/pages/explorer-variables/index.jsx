@@ -2,23 +2,26 @@ import React from 'react'
 import DataQuery from '../../modules/data-query'
 import { VARIABLES_MIN, VARIABLE } from '../../graphql/queries'
 import Table from '../../modules/table'
-import TitleToolbar from '../../modules/title-toolbar'
 import { mergeLeft, pickBy } from 'ramda'
 import { NoneMessage, FormattedInfo, LinkButton, DownloadButton, EditButton } from '../../modules/shared-components'
 import q from 'query-string'
-import { Grid, Cell, ExpansionList, ExpansionPanel, DataTable, TableHeader, TableRow, TableColumn, TableBody, Card } from 'react-md'
+import {
+  Grid,
+  Cell,
+  ExpansionList,
+  ExpansionPanel,
+  DataTable,
+  TableHeader,
+  TableRow,
+  TableColumn,
+  TableBody,
+  Card
+} from 'react-md'
 
 export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => (
   <DataQuery query={VARIABLES_MIN}>
     {({ variables }) => (
       <>
-        {/* Page Heading */}
-        <TitleToolbar
-          t1={selectedVariable ? selectedVariable.name : hoveredVariable ? hoveredVariable.name : 'Select rows by clicking on them...'}
-          t2={selectedVariable ? selectedVariable.domain : hoveredVariable ? hoveredVariable.domain : ''}
-          t3={selectedVariable ? selectedVariable.class : hoveredVariable ? hoveredVariable.class : ''}
-        />
-
         {/* Main Table (selectable) */}
         <Grid>
           <Cell size={12}>
@@ -53,12 +56,15 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
                 {({ variable }) => (
                   <>
                     <ExpansionList>
-                      <ExpansionPanel label="Description" defaultExpanded footer={false}>
-                        <Grid>
-                          <Cell size={12}>
-                            <p>{variable.description}</p>
-                          </Cell>
-                        </Grid>
+                      <ExpansionPanel label="Overview" defaultExpanded footer={false}>
+                        {
+                          <FormattedInfo
+                            object={pickBy((val, key) => {
+                              if (['name', 'domain', 'class', 'description'].includes(key)) return true
+                              else return false
+                            }, variable)}
+                          />
+                        }
                       </ExpansionPanel>
                       <ExpansionPanel label="General Information" footer={false}>
                         {
@@ -104,9 +110,10 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
                       </ExpansionPanel>
                       <ExpansionPanel label="Role of variable in Radiative Forcing" footer={false}>
                         <p>
-                          Below figures are simple aggregates of global figures from the IPCC 5th Assessment Report and are only meant to provide a
-                          very coarse guidance with regards to sign and magnitude of uncertainty of the variable's contribution to radiative forcing
-                          on the African continent. Also shown are related RF components (Global Values)
+                          Below figures are simple aggregates of global figures from the IPCC 5th Assessment Report and
+                          are only meant to provide a very coarse guidance with regards to sign and magnitude of
+                          uncertainty of the variable's contribution to radiative forcing on the African continent. Also
+                          shown are related RF components (Global Values)
                         </p>
                         {
                           <FormattedInfo
@@ -140,12 +147,20 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
                     </ExpansionList>
 
                     {/* Related Data Products */}
-                    <h3 style={{ textAlign: 'center', marginTop: '100px', marginBottom: '50px' }}>Related Data Products</h3>
+                    <h3 style={{ textAlign: 'center', marginTop: '100px', marginBottom: '50px' }}>
+                      Related Data Products
+                    </h3>
                     {variable.dataproducts[0] ? (
                       <Card tableCard>
                         <Table
-                          onRowClick={row => updateForm({ selectedDP: row }, () => props.history.push(`/dataproducts?searchTerm=${row.title}`))}
-                          headers={Object.keys(variable.dataproducts[0]).filter(col => col && col !== '__typename' && col !== 'id')}
+                          onRowClick={row =>
+                            updateForm({ selectedDP: row }, () =>
+                              props.history.push(`/dataproducts?searchTerm=${row.title}`)
+                            )
+                          }
+                          headers={Object.keys(variable.dataproducts[0]).filter(
+                            col => col && col !== '__typename' && col !== 'id'
+                          )}
                           data={variable.dataproducts.map(d => mergeLeft({}, d))}
                           tableStyle={{}}
                           toolbarButtons={[]}
@@ -160,13 +175,19 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
                     {variable.directly_related_protocols[0] ? (
                       <Card tableCard>
                         <Table
-                          onRowClick={row => updateForm({ selectedProtocol: row }, () => props.history.push(`/protocols?searchTerm=${row.title}`))}
+                          onRowClick={row =>
+                            updateForm({ selectedProtocol: row }, () =>
+                              props.history.push(`/protocols?searchTerm=${row.title}`)
+                            )
+                          }
                           headers={Object.keys(variable.directly_related_protocols[0])
                             .filter(col => col && col !== '__typename' && col !== 'id')
                             .concat('relationship')}
                           data={variable.directly_related_protocols
                             .map(p => mergeLeft({ relationship: 'direct' }, p))
-                            .concat(variable.indirectly_related_protocols.map(p => mergeLeft({ relationship: 'indirect' }, p)))}
+                            .concat(
+                              variable.indirectly_related_protocols.map(p => mergeLeft({ relationship: 'indirect' }, p))
+                            )}
                           tableStyle={{}}
                           toolbarButtons={[]}
                         />
@@ -178,13 +199,31 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
                 )}
               </DataQuery>
             ) : (
-              <Grid>
-                <Cell size={12}>
-                  <p>
+              <FormattedInfo
+                object={{
+                  name: selectedVariable ? (
+                    selectedVariable.name
+                  ) : hoveredVariable ? (
+                    hoveredVariable.name
+                  ) : (
                     <i>Select a row for more detailed information</i>
-                  </p>
-                </Cell>
-              </Grid>
+                  ),
+                  domain: selectedVariable ? (
+                    selectedVariable.domain
+                  ) : hoveredVariable ? (
+                    hoveredVariable.domain
+                  ) : (
+                    <i>Select a row for more detailed information</i>
+                  ),
+                  class: selectedVariable ? (
+                    selectedVariable.class
+                  ) : hoveredVariable ? (
+                    hoveredVariable.class
+                  ) : (
+                    <i>Select a row for more detailed information</i>
+                  )
+                }}
+              />
             )}
           </Cell>
         </Grid>

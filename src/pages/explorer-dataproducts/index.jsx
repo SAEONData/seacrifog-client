@@ -1,7 +1,6 @@
 import React from 'react'
 import { DATAPRODUCTS_MIN, DATAPRODUCT } from '../../graphql/queries'
 import Table from '../../modules/table'
-import TitleToolbar from '../../modules/title-toolbar'
 import { mergeLeft, pickBy } from 'ramda'
 import { NoneMessage, FormattedInfo, LinkButton, DownloadButton, EditButton } from '../../modules/shared-components'
 import { Grid, Cell, ExpansionList, ExpansionPanel, Card } from 'react-md'
@@ -13,13 +12,6 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
   <DataQuery query={DATAPRODUCTS_MIN}>
     {({ dataproducts }) => (
       <>
-        {/* Page Heading */}
-        <TitleToolbar
-          t1={selectedDP ? selectedDP.title : hoveredDP ? hoveredDP.title : 'Select rows by clicking on them...'}
-          t2={selectedDP ? selectedDP.provider : hoveredDP ? hoveredDP.provider : ''}
-          t3={selectedDP ? selectedDP.publish_year : hoveredDP ? hoveredDP.publish_year : ''}
-        />
-
         <Grid>
           <Cell size={12}>
             {/* Main Table (selectable) */}
@@ -59,12 +51,15 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
                       <Grid noSpacing>
                         <Cell size={12}>
                           <ExpansionList>
-                            <ExpansionPanel label="Abstract" defaultExpanded footer={false}>
-                              <Grid>
-                                <Cell size={12}>
-                                  <p>{dataproduct.abstract}</p>
-                                </Cell>
-                              </Grid>
+                            <ExpansionPanel label="Overview" defaultExpanded footer={false}>
+                              {
+                                <FormattedInfo
+                                  object={pickBy((val, key) => {
+                                    if (['title', 'provider', 'publish_year', 'abstract'].includes(key)) return true
+                                    else return false
+                                  }, dataproduct)}
+                                />
+                              }
                             </ExpansionPanel>
                             <ExpansionPanel label="Additional Information" footer={false}>
                               {
@@ -85,12 +80,16 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
                           </ExpansionList>
                         </Cell>
                         <Cell size={12}>
-                          <h3 style={{ textAlign: 'center', marginTop: '100px', marginBottom: '50px' }}>Essential Variables</h3>
+                          <h3 style={{ textAlign: 'center', marginTop: '100px', marginBottom: '50px' }}>
+                            Essential Variables
+                          </h3>
                           {dataproduct.variables[0] ? (
                             <Card tableCard>
                               <Table
                                 onRowClick={row =>
-                                  updateForm({ selectedVariable: row }, () => props.history.push(`/variables?searchTerm=${row.name}`))
+                                  updateForm({ selectedVariable: row }, () =>
+                                    props.history.push(`/variables?searchTerm=${row.name}`)
+                                  )
                                 }
                                 headers={Object.keys(dataproduct.variables[0])
                                   .filter(col => col !== '__typename' && col !== 'id')
@@ -108,13 +107,31 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
                     )}
                   </DataQuery>
                 ) : (
-                  <Grid>
-                    <Cell size={12}>
-                      <p>
+                  <FormattedInfo
+                    object={{
+                      title: selectedDP ? (
+                        selectedDP.title
+                      ) : hoveredDP ? (
+                        hoveredDP.title
+                      ) : (
                         <i>Select a row for more detailed information</i>
-                      </p>
-                    </Cell>
-                  </Grid>
+                      ),
+                      provider: selectedDP ? (
+                        selectedDP.provider
+                      ) : hoveredDP ? (
+                        hoveredDP.provider
+                      ) : (
+                        <i>Select a row for more detailed information</i>
+                      ),
+                      publish_year: selectedDP ? (
+                        selectedDP.publish_year
+                      ) : hoveredDP ? (
+                        hoveredDP.publish_year
+                      ) : (
+                        <i>Select a row for more detailed information</i>
+                      )
+                    }}
+                  />
                 )}
               </Cell>
             </Grid>

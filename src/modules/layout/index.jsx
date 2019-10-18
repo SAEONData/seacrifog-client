@@ -72,7 +72,7 @@ class Navigation extends PureComponent {
               maxHeight: '100%',
               float: 'right',
               margin: 0,
-              padding: '8px 14px'
+              padding: '8px 16px'
             }}
             src="/seacrifog-logo.png"
             alt="SEACRIFOG logo"
