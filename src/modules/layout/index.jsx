@@ -51,7 +51,7 @@ class Navigation extends PureComponent {
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
         desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
-        // toolbarActions={<div>hi</div>}
+        toolbarActions={<div>hi</div>}
         toolbarTitle={currentPath.capitalize() || 'Home'}
         defaultVisible={currentMedia.desktop && !hideMenu ? true : false}
       >
