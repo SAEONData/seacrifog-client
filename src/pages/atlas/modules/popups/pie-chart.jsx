@@ -17,50 +17,38 @@ export default class extends PureComponent {
   }
 
   render() {
-    const { series1, series2 } = this.props
+    const { data } = this.props
+
+    const radii = {
+      0: [0, '20%'],
+      1: ['50%', '65%']
+    }
 
     return (
       <EChart
-        onEvents={{
-          pieselectchanged: this.setSelectedSlice
-        }}
+        // onEvents={{
+        //   pieselectchanged: this.setSelectedSlice
+        // }}
         option={{
           tooltip: {
             trigger: 'item',
             formatter: '{a} <br/>{b} : {c} sites ({d}%)'
           },
 
-          series: [
-            {
-              name: 'Networks',
-              selectedMode: 'single',
-              type: 'pie',
-              radius: [0, '20%'],
-              data: series1,
-              itemStyle: {
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.2)'
-                }
-              }
-            },
-
-            {
-              name: 'Variables',
-              selectedMode: 'single',
-              type: 'pie',
-              radius: ['50%', '65%'],
-              data: series2,
-              itemStyle: {
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.2)'
-                }
+          series: data.map((data, i) => ({
+            name: 'series' + i,
+            selectedMode: 'single',
+            type: 'pie',
+            radius: radii[i],
+            data: data,
+            itemStyle: {
+              emphasis: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.2)'
               }
             }
-          ]
+          }))
         }}
       />
     )

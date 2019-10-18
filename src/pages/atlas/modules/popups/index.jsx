@@ -21,13 +21,6 @@ const MultipleFeaturesDescription = ({ features, close }) => {
             })
           })
         })
-        const sitesByNetworks = Object.keys(sitesByNetworksRaw)
-          .map(acronym => ({ value: sitesByNetworksRaw[acronym], name: acronym, selected: false }))
-          .sort((a, b) => (a.value >= b.value ? -1 : 1))
-
-        const variablesBySites = Object.keys(variablesBySitesRaw)
-          .map(c => ({ value: variablesBySitesRaw[c], name: c, selected: false }))
-          .sort((a, b) => (a.value >= b.value ? -1 : 1))
 
         return (
           <Card style={{ height: '100%' }} className="better-box-shadow">
@@ -38,7 +31,16 @@ const MultipleFeaturesDescription = ({ features, close }) => {
 
             <Grid>
               <Cell phoneSize={6} tabletSize={5} size={9}>
-                <PieChart series1={sitesByNetworks} series2={variablesBySites} />
+                <PieChart
+                  data={[
+                    Object.keys(sitesByNetworksRaw)
+                      .map(acronym => ({ value: sitesByNetworksRaw[acronym], name: acronym, selected: false }))
+                      .sort((a, b) => (a.value >= b.value ? -1 : 1)),
+                    Object.keys(variablesBySitesRaw)
+                      .map(c => ({ value: variablesBySitesRaw[c], name: c, selected: false }))
+                      .sort((a, b) => (a.value >= b.value ? -1 : 1))
+                  ]}
+                />
               </Cell>
               <Cell phoneSize={6} tabletSize={3} size={3}>
                 <h4>Metadata collections by organization</h4>
