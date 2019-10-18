@@ -80,9 +80,7 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
                           </ExpansionList>
                         </Cell>
                         <Cell size={12}>
-                          <h3 style={{ textAlign: 'center', marginTop: '100px', marginBottom: '50px' }}>
-                            Essential Variables
-                          </h3>
+                          <h3 style={{ marginTop: '100px' }}>Essential Variables</h3>
                           {dataproduct.variables[0] ? (
                             <Card tableCard>
                               <Table
@@ -95,8 +93,7 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
                                   .filter(col => col !== '__typename' && col !== 'id')
                                   .concat('relationship')}
                                 data={dataproduct.variables.map(v => mergeLeft({ relationship: 'direct' }, v))}
-                                tableStyle={{}}
-                                toolbarButtons={[]}
+                                hideToolbar
                               />
                             </Card>
                           ) : (

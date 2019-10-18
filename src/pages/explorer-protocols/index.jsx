@@ -68,7 +68,7 @@ export default ({ updateForm, hoveredProtocol, selectedProtocol, ...props }) => 
                       </ExpansionPanel>
                     </ExpansionList>
 
-                    <h3 style={{ textAlign: 'center', marginTop: '100px', marginBottom: '50px' }}>Related Variables</h3>
+                    <h3 style={{ marginTop: '100px' }}>Related Variables</h3>
                     {protocol.directly_related_variables[0] ? (
                       <Card tableCard>
                         <Table
@@ -85,8 +85,7 @@ export default ({ updateForm, hoveredProtocol, selectedProtocol, ...props }) => 
                             .concat(
                               protocol.indirectly_related_variables.map(v => mergeLeft({ relationship: 'indirect' }, v))
                             )}
-                          tableStyle={{}}
-                          toolbarButtons={[]}
+                          hideToolbar
                         />
                       </Card>
                     ) : (

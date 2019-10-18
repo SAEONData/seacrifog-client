@@ -109,7 +109,7 @@ export default class extends PureComponent {
 
   render() {
     const { searchValue, sorting, filteredData } = this.state
-    const { selectedRow, toolbarButtons, toolbarStyle } = this.props
+    const { selectedRow, toolbarButtons, toolbarStyle, hideToolbar } = this.props
     const { headers, invisibleHeaders: specialHeaders, applySorting } = this
     const resetForm = this.props.resetForm || null
     const onRowHover = this.props.onRowHover || (() => log('Row hover changed'))
@@ -117,35 +117,40 @@ export default class extends PureComponent {
 
     return (
       <>
-        <Toolbar style={mergeLeft(toolbarStyle, { display: 'flex', alignItems: 'center' })} themed zDepth={0}>
-          <TextField
-            id="table-search"
-            style={{ marginLeft: '20px', display: 'flex' }}
-            block={true}
-            autoComplete={'off'}
-            value={searchValue}
-            onChange={val => this.setState({ searchValue: val }, () => this.setFilteredData())}
-            placeholder="Search by table fields..."
-            leftIcon={<FontIcon>search</FontIcon>}
-          />
-          {(toolbarButtons || []).concat(
-            <Button
-              key={'reset-form-button'}
-              primary
-              tooltipPosition={'left'}
-              disabled={selectedRow || searchValue ? false : true}
-              tooltipLabel={'Reset the form'}
-              style={{ display: 'flex', marginRight: '20px' }}
-              icon
-              onClick={() => {
-                this.setState({ searchValue: '' }, () => this.setFilteredData())
-                if (resetForm) resetForm()
-              }}
-            >
-              refresh
-            </Button>
-          )}
-        </Toolbar>
+        {hideToolbar ? (
+          ''
+        ) : (
+          <Toolbar style={mergeLeft(toolbarStyle, { display: 'flex', alignItems: 'center' })} themed zDepth={0}>
+            <TextField
+              id="table-search"
+              style={{ marginLeft: '20px', display: 'flex' }}
+              block={true}
+              autoComplete={'off'}
+              value={searchValue}
+              onChange={val => this.setState({ searchValue: val }, () => this.setFilteredData())}
+              placeholder="Search by table fields..."
+              leftIcon={<FontIcon>search</FontIcon>}
+            />
+            {(toolbarButtons || []).concat(
+              <Button
+                key={'reset-form-button'}
+                primary
+                tooltipPosition={'left'}
+                disabled={selectedRow || searchValue ? false : true}
+                tooltipLabel={'Reset the form'}
+                style={{ display: 'flex', marginRight: '20px' }}
+                icon
+                onClick={() => {
+                  this.setState({ searchValue: '' }, () => this.setFilteredData())
+                  if (resetForm) resetForm()
+                }}
+              >
+                refresh
+              </Button>
+            )}
+          </Toolbar>
+        )}
+
         <DataTable responsive={true} baseId="paginated-table" plain>
           <TableHeader>
             <TableRow>

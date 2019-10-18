@@ -147,9 +147,7 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
                     </ExpansionList>
 
                     {/* Related Data Products */}
-                    <h3 style={{ textAlign: 'center', marginTop: '100px', marginBottom: '50px' }}>
-                      Related Data Products
-                    </h3>
+                    <h3 style={{ marginTop: '100px' }}>Related Data Products</h3>
                     {variable.dataproducts[0] ? (
                       <Card tableCard>
                         <Table
@@ -162,8 +160,7 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
                             col => col && col !== '__typename' && col !== 'id'
                           )}
                           data={variable.dataproducts.map(d => mergeLeft({}, d))}
-                          tableStyle={{}}
-                          toolbarButtons={[]}
+                          hideToolbar
                         />
                       </Card>
                     ) : (
@@ -171,7 +168,7 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
                     )}
 
                     {/* Related Protocols */}
-                    <h3 style={{ textAlign: 'center', marginTop: '100px', marginBottom: '50px' }}>Related Protocols</h3>
+                    <h3 style={{ marginTop: '100px' }}>Related Protocols</h3>
                     {variable.directly_related_protocols[0] ? (
                       <Card tableCard>
                         <Table
@@ -188,8 +185,7 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
                             .concat(
                               variable.indirectly_related_protocols.map(p => mergeLeft({ relationship: 'indirect' }, p))
                             )}
-                          tableStyle={{}}
-                          toolbarButtons={[]}
+                          hideToolbar
                         />
                       </Card>
                     ) : (
