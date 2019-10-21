@@ -26,7 +26,7 @@ export default class extends PureComponent {
     // Setup state
     const state = {
       searchValue: this.props.initialSearch ? this.props.initialSearch : '',
-      slice: [0, 5],
+      slice: [0, this.props.defaultRowsPerPage || 5],
       sorting: {}
     }
 
@@ -109,7 +109,7 @@ export default class extends PureComponent {
 
   render() {
     const { searchValue, sorting, filteredData } = this.state
-    const { selectedRow, toolbarButtons, toolbarStyle, hideToolbar } = this.props
+    const { selectedRow, toolbarButtons, toolbarStyle, hideToolbar, defaultRowsPerPage } = this.props
     const { headers, invisibleHeaders: specialHeaders, applySorting } = this
     const resetForm = this.props.resetForm || null
     const onRowHover = this.props.onRowHover || (() => log('Row hover changed'))
@@ -208,7 +208,7 @@ export default class extends PureComponent {
             ))}
           </TableBody>
           <TablePagination
-            defaultRowsPerPage={5}
+            defaultRowsPerPage={defaultRowsPerPage || 5}
             rowsPerPageItems={[5, 10, 25, 50]}
             rows={filteredData.length}
             rowsPerPageLabel={'Rows'}

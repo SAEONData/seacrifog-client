@@ -36,8 +36,10 @@ export default class extends PureComponent {
             name: name,
             selectedMode: 'single',
             type: 'pie',
+            roseType: 'area',
             minShowLabelAngle: 5,
             radius: [`${i * 40}%`, `${i * 40 + 10}%`],
+            center: ['65%', '50%'],
             data: getFilteredData({ dataset, name }),
             itemStyle: {
               emphasis: {
@@ -58,7 +60,7 @@ export default class extends PureComponent {
               show: true,
               align: 'right',
               fontWeight: 'lighter',
-              fontSize: 11,
+              fontSize: 12,
               fontFamily: 'monospace'
             },
             seriesLayoutBy: 'row'

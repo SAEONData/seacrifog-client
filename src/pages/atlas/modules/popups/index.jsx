@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Card, CardTitle, CardText, Button, Grid, Cell } from 'react-md'
+import { Card, CardTitle, CardText, Button, Grid, Cell, Toolbar } from 'react-md'
 import DataQuery from '../../../../modules/data-query'
 import { SITE, SITES } from '../../../../graphql/queries'
 import { clusterStyleHovered, clusterStyle } from '../../open-layers'
@@ -9,38 +9,47 @@ const MultipleFeaturesDescription = ({ features, close }) => {
   return (
     <DataQuery query={SITES} variables={{ ids: features.map(feature => feature.get('id')) }}>
       {({ sites }) => {
-        const sitesByNetworksRaw = {}
-        const variablesBySitesRaw = {}
+        const networks = {}
+        const variablesAtSites = {}
         sites.forEach(s => {
           s.networks.forEach(n => {
-            sitesByNetworksRaw[n.acronym] = sitesByNetworksRaw[n.acronym] ? sitesByNetworksRaw[n.acronym] + 1 : 1
+            networks[n.acronym] = networks[n.acronym] ? networks[n.acronym] + 1 : 1
             n.variables.forEach(v => {
-              variablesBySitesRaw[v.class] = variablesBySitesRaw[v.class] ? variablesBySitesRaw[v.class] + 1 : 1
+              variablesAtSites[s.id] = variablesAtSites[s.id] ? variablesAtSites[s.id] : {}
+              variablesAtSites[s.id][v.class] = 1
             })
+          })
+        })
+
+        const variables = {}
+        Object.keys(variablesAtSites).forEach(siteId => {
+          const site = variablesAtSites[siteId]
+          Object.keys(site).forEach(vClass => {
+            variables[vClass] = variables[vClass] ? variables[vClass] + 1 : 1
           })
         })
 
         return (
           <Card style={{ height: '100%' }} className="better-box-shadow">
-            <Button onClick={close} style={{ position: 'absolute', top: 10, right: 10 }} icon>
-              close
-            </Button>
-            <CardTitle title={'Sites: (' + features.length + ' selected features)'} />
-
+            <Toolbar colored title={features.length + ' Sites selected'}>
+              <Button onClick={close} style={{ position: 'absolute', top: 10, right: 10 }} icon>
+                close
+              </Button>
+            </Toolbar>
             <Grid>
               <Cell phoneSize={4} tabletSize={8} size={12}>
                 <PieChart
                   data={[
                     {
-                      name: 'Sites',
-                      dataset: Object.keys(sitesByNetworksRaw)
-                        .map(acronym => ({ value: sitesByNetworksRaw[acronym], name: acronym, selected: false }))
+                      name: 'Networks',
+                      dataset: Object.keys(networks)
+                        .map(acronym => ({ value: networks[acronym], name: acronym, selected: false }))
                         .sort((a, b) => (a.value >= b.value ? -1 : 1))
                     },
                     {
-                      name: 'Networks',
-                      dataset: Object.keys(variablesBySitesRaw)
-                        .map(c => ({ value: variablesBySitesRaw[c], name: c, selected: false }))
+                      name: 'Variables',
+                      dataset: Object.keys(variables)
+                        .map(c => ({ value: variables[c], name: c, selected: false }))
                         .sort((a, b) => (a.value >= b.value ? -1 : 1))
                     }
                   ]}
