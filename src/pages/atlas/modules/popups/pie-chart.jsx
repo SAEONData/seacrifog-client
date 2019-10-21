@@ -1,28 +1,17 @@
 import React, { PureComponent } from 'react'
 import EChart from '../../../../modules/echarts'
+import { mergeLeft } from 'ramda'
 
 export default class extends PureComponent {
-  state = {
-    selectedSlice: 'none'
-  }
+  state = this.props.data.map(({ name }) => name).reduce((acc, curr) => mergeLeft(acc, { [curr]: null }), {})
 
-  setSelectedSlice = event => {
-    const selected = event.selected
-    console.log(event)
-    let selectedSlice = 'none'
-    Object.keys(selected).forEach(key => {
-      if (selected[key]) selectedSlice = key
-    })
-    this.setState({ selectedSlice })
-  }
+  setSelectedSlice = event => {}
+
+  getFilteredData = ({ dataset, name }) => dataset
 
   render() {
     const { data } = this.props
-
-    const radii = {
-      0: [0, '20%'],
-      1: ['50%', '65%']
-    }
+    const { getFilteredData } = this
 
     return (
       <EChart
@@ -35,19 +24,44 @@ export default class extends PureComponent {
             formatter: '{a} <br/>{b} : {c} sites ({d}%)'
           },
 
-          series: data.map((data, i) => ({
-            name: 'series' + i,
+          legend: {
+            type: 'scroll',
+            icon: 'circle',
+            orient: 'vertical',
+            x: 'left',
+            data: data.map(data => data.dataset.map(({ name }) => ({ name }))).flat()
+          },
+
+          series: data.map(({ dataset, name }, i) => ({
+            name: name,
             selectedMode: 'single',
             type: 'pie',
-            radius: radii[i],
-            data: data,
+            minShowLabelAngle: 5,
+            radius: [`${i * 40}%`, `${i * 40 + 10}%`],
+            data: getFilteredData({ dataset, name }),
             itemStyle: {
               emphasis: {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
                 shadowColor: 'rgba(0, 0, 0, 0.2)'
               }
-            }
+            },
+            labelLine: {
+              show: true,
+              smooth: true,
+              lineStyle: {
+                type: 'dotted',
+                opacity: 0.5
+              }
+            },
+            label: {
+              show: true,
+              align: 'right',
+              fontWeight: 'lighter',
+              fontSize: 11,
+              fontFamily: 'monospace'
+            },
+            seriesLayoutBy: 'row'
           }))
         }}
       />

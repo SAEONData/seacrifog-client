@@ -1,15 +1,13 @@
 import React, { PureComponent } from 'react'
-import { Card, CardTitle, CardText, Button, Grid, Cell, List, ListItem, Avatar, FontIcon } from 'react-md'
+import { Card, CardTitle, CardText, Button, Grid, Cell } from 'react-md'
 import DataQuery from '../../../../modules/data-query'
 import { SITE, SITES } from '../../../../graphql/queries'
 import { clusterStyleHovered, clusterStyle } from '../../open-layers'
 import PieChart from './pie-chart'
 
-const InfoIcon = () => <FontIcon>info</FontIcon>
-
 const MultipleFeaturesDescription = ({ features, close }) => {
   return (
-    <DataQuery query={SITES} variables={{ ids: features.map(feature => feature.get('siteId')) }}>
+    <DataQuery query={SITES} variables={{ ids: features.map(feature => feature.get('id')) }}>
       {({ sites }) => {
         const sitesByNetworksRaw = {}
         const variablesBySitesRaw = {}
@@ -30,42 +28,23 @@ const MultipleFeaturesDescription = ({ features, close }) => {
             <CardTitle title={'Sites: (' + features.length + ' selected features)'} />
 
             <Grid>
-              <Cell phoneSize={6} tabletSize={5} size={9}>
+              <Cell phoneSize={4} tabletSize={8} size={12}>
                 <PieChart
                   data={[
-                    Object.keys(sitesByNetworksRaw)
-                      .map(acronym => ({ value: sitesByNetworksRaw[acronym], name: acronym, selected: false }))
-                      .sort((a, b) => (a.value >= b.value ? -1 : 1)),
-                    Object.keys(variablesBySitesRaw)
-                      .map(c => ({ value: variablesBySitesRaw[c], name: c, selected: false }))
-                      .sort((a, b) => (a.value >= b.value ? -1 : 1))
+                    {
+                      name: 'Sites',
+                      dataset: Object.keys(sitesByNetworksRaw)
+                        .map(acronym => ({ value: sitesByNetworksRaw[acronym], name: acronym, selected: false }))
+                        .sort((a, b) => (a.value >= b.value ? -1 : 1))
+                    },
+                    {
+                      name: 'Networks',
+                      dataset: Object.keys(variablesBySitesRaw)
+                        .map(c => ({ value: variablesBySitesRaw[c], name: c, selected: false }))
+                        .sort((a, b) => (a.value >= b.value ? -1 : 1))
+                    }
                   ]}
                 />
-              </Cell>
-              <Cell phoneSize={6} tabletSize={3} size={3}>
-                <h4>Metadata collections by organization</h4>
-                <List>
-                  <ListItem
-                    leftAvatar={<Avatar icon={<FontIcon>folder</FontIcon>} />}
-                    rightIcon={<InfoIcon />}
-                    primaryText="SAEON"
-                  />
-                  <ListItem
-                    leftAvatar={<Avatar icon={<FontIcon>folder</FontIcon>} />}
-                    rightIcon={<InfoIcon />}
-                    primaryText="ICOS"
-                  />
-                  <ListItem
-                    leftAvatar={<Avatar icon={<FontIcon>folder</FontIcon>} />}
-                    rightIcon={<InfoIcon />}
-                    primaryText="SASSCAL"
-                  />
-                  <ListItem
-                    leftAvatar={<Avatar icon={<FontIcon>folder</FontIcon>} />}
-                    rightIcon={<InfoIcon />}
-                    primaryText="ETC ..."
-                  />
-                </List>
               </Cell>
             </Grid>
 
@@ -87,7 +66,7 @@ const MultipleFeaturesDescription = ({ features, close }) => {
 }
 
 const SingleFeatureDescription = ({ feature, close }) => (
-  <DataQuery query={SITE} variables={{ id: feature.get('siteId') }}>
+  <DataQuery query={SITE} variables={{ id: feature.get('id') }}>
     {({ site }) => (
       <Card onClick={close} style={{ height: '100%' }} className="better-box-shadow">
         <CardTitle title={site.name} />
