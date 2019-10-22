@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Button, Grid, Cell, Toolbar, NavigationDrawer } from 'react-md'
+import { Card, Button, Toolbar, NavigationDrawer, CardText } from 'react-md'
 import DataQuery from '../../../../modules/data-query'
 import { SITES } from '../../../../graphql/queries'
 import PieChart from './pie-chart'
@@ -28,30 +28,29 @@ export default ({ feature, close }) => (
               close
             </Button>
           </Toolbar>
-          <Grid>
-            <Cell phoneSize={4} tabletSize={8} size={12}>
-              <PieChart
-                deviceSize={pickBy(
-                  (v, k) => ['mobile', 'tablet', 'desktop'].includes(k),
-                  NavigationDrawer.getCurrentMedia()
-                )}
-                data={[
-                  {
-                    name: 'Networks',
-                    dataset: Object.entries(networks)
-                      .map(([name, set]) => ({ name, value: set.size, selected: false }))
-                      .sort((a, b) => (a.value >= b.value ? -1 : 1))
-                  },
-                  {
-                    name: 'Variables',
-                    dataset: Object.entries(variables)
-                      .map(([name, set]) => ({ name, value: set.size, selected: false }))
-                      .sort((a, b) => (a.value >= b.value ? -1 : 1))
-                  }
-                ]}
-              />
-            </Cell>
-          </Grid>
+          <CardText style={{ height: 'calc(100% - 64px)' }}>
+            <PieChart
+              a={'Sites'}
+              deviceSize={pickBy(
+                (v, k) => ['mobile', 'tablet', 'desktop'].includes(k),
+                NavigationDrawer.getCurrentMedia()
+              )}
+              data={[
+                {
+                  name: 'Networks',
+                  dataset: Object.entries(networks)
+                    .map(([name, set]) => ({ name, value: set.size, selected: false }))
+                    .sort((a, b) => (a.value >= b.value ? -1 : 1))
+                },
+                {
+                  name: 'Variables',
+                  dataset: Object.entries(variables)
+                    .map(([name, set]) => ({ name, value: set.size, selected: false }))
+                    .sort((a, b) => (a.value >= b.value ? -1 : 1))
+                }
+              ]}
+            />
+          </CardText>
         </Card>
       )
     }}
