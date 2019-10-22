@@ -128,7 +128,7 @@ export const SITES = gql`
         acronym
         variables {
           id
-          class
+          name
         }
       }
     }

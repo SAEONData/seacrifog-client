@@ -1,16 +1,15 @@
 import React, { PureComponent } from 'react'
 import EChart from '../../../../modules/echarts'
-import { mergeLeft } from 'ramda'
 
 export default class extends PureComponent {
-  state = this.props.data.map(({ name }) => name).reduce((acc, curr) => mergeLeft(acc, { [curr]: null }), {})
+  state = Object.fromEntries(this.props.data.map(({ name }) => [name, null]))
 
   setSelectedSlice = event => {}
 
   getFilteredData = ({ dataset, name }) => dataset
 
   render() {
-    const { data } = this.props
+    const { data, deviceSize } = this.props
     const { getFilteredData } = this
 
     return (
@@ -21,10 +20,11 @@ export default class extends PureComponent {
         option={{
           tooltip: {
             trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} sites ({d}%)'
+            formatter: '{a} <br/>{b} : {c} site(s) ({d}%)'
           },
 
           legend: {
+            show: deviceSize.mobile ? false : true,
             type: 'scroll',
             icon: 'circle',
             orient: 'vertical',
@@ -39,7 +39,7 @@ export default class extends PureComponent {
             roseType: 'area',
             minShowLabelAngle: 5,
             radius: [`${i * 40}%`, `${i * 40 + 10}%`],
-            center: ['65%', '50%'],
+            center: [deviceSize.mobile ? '50%' : '65%', '50%'],
             data: getFilteredData({ dataset, name }),
             itemStyle: {
               emphasis: {
@@ -49,7 +49,7 @@ export default class extends PureComponent {
               }
             },
             labelLine: {
-              show: true,
+              show: deviceSize.mobile ? false : true,
               smooth: true,
               lineStyle: {
                 type: 'dotted',
@@ -57,7 +57,7 @@ export default class extends PureComponent {
               }
             },
             label: {
-              show: true,
+              show: deviceSize.mobile ? false : true,
               align: 'right',
               fontWeight: 'lighter',
               fontSize: 12,
