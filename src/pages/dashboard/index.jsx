@@ -1,6 +1,5 @@
 import React from 'react'
 import { Grid, Cell, Card, CardText } from 'react-md'
-import EChart from '../../modules/echarts'
 
 export default () => (
   <Grid>
