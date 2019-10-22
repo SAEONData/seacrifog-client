@@ -13,13 +13,42 @@ export default class extends PureComponent {
     this.setState({ [seriesName]: e })
   }
 
-  filterDataset = (dataset, name) => {
+  filterDataset = ({ dataset, name }) => {
     const selectFilter = this.state[name]
-    console.log(selectFilter, dataset)
+    // console.log(selectFilter, dataset)
     return dataset
   }
 
   setOption = ({ deviceSize, data }) => {
+    const x = [{}, {}]
+    const data1 = {}
+    const data2 = {}
+    for (const set of data) {
+      for (const item1 of set.networks) {
+        if (!data1[item1.acronym]) data1[item1.acronym] = new Set()
+        data1[item1.acronym].add(set.id)
+        for (const item2 of item1.variables) {
+          if (!data2[item2.name]) data2[item2.name] = new Set()
+          data2[item2.name].add(set.id)
+        }
+      }
+    }
+
+    const sets = [
+      {
+        name: 'Networks',
+        dataset: Object.entries(data1)
+          .map(([name, set]) => ({ name, value: set.size, selected: false }))
+          .sort((a, b) => (a.value >= b.value ? -1 : 1))
+      },
+      {
+        name: 'Variables',
+        dataset: Object.entries(data2)
+          .map(([name, set]) => ({ name, value: set.size, selected: false }))
+          .sort((a, b) => (a.value >= b.value ? -1 : 1))
+      }
+    ]
+
     return {
       tooltip: {
         trigger: 'item',
@@ -34,16 +63,16 @@ export default class extends PureComponent {
         x: 'left'
       },
 
-      series: data.map(({ dataset, name }, i) => ({
-        id: name,
-        name: name,
+      series: sets.map((set, i) => ({
+        id: set.name,
+        name: set.name,
         selectedMode: 'single',
         type: 'pie',
         roseType: 'area',
         minShowLabelAngle: 5,
         radius: [`${i * 40}%`, `${i * 40 + 10}%`],
         center: [deviceSize.mobile ? '50%' : '65%', '50%'],
-        data: this.filterDataset(dataset, name),
+        data: this.filterDataset(set),
         itemStyle: {
           emphasis: {
             shadowBlur: 10,
