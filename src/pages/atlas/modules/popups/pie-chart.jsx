@@ -3,52 +3,55 @@ import ECharts from 'echarts-for-react'
 import theme from './echarts-theme'
 
 export default class extends PureComponent {
+  state = {}
   constructor(props) {
     super(props)
-    this.state = Object.fromEntries(this.props.data.map(({ name }) => [name, {}]))
+
+    // State contains information on what has been clicked
+    this.state.filters = this.props.sets.map(name => '')
   }
 
   onPieSelectChange = e => {
-    const seriesName = e.seriesId
-    this.setState({ [seriesName]: e })
+    const filters = [...this.state.filters]
+    const i = this.props.sets.indexOf(e.seriesId)
+    const selectedName = e.name && e.selected[e.name] ? e.name : ''
+    filters[i] = selectedName
+    this.setState({ filters })
   }
 
-  filterDataset = ({ dataset, name }) => {
-    const selectFilter = this.state[name]
-    // console.log(selectFilter, dataset)
-    return dataset
-  }
+  filterDataset = i => {
+    const filters = this.state.filters
+    const set1Filter = filters[0]
+    const set2Filter = filters[1]
 
-  setOption = ({ deviceSize, data }) => {
     const x = [{}, {}]
-    const data1 = {}
-    const data2 = {}
-    for (const set of data) {
+    for (const set of this.props.data) {
       for (const item1 of set.networks) {
-        if (!data1[item1.acronym]) data1[item1.acronym] = new Set()
-        data1[item1.acronym].add(set.id)
-        for (const item2 of item1.variables) {
-          if (!data2[item2.name]) data2[item2.name] = new Set()
-          data2[item2.name].add(set.id)
+        if (item1.acronym.indexOf(set1Filter) >= 0) {
+          if (!x[0][item1.acronym]) x[0][item1.acronym] = new Set()
+          x[0][item1.acronym].add(set.id)
+
+          let foundItem2 = false
+          for (const item2 of item1.variables) {
+            if (item2.name.indexOf(set2Filter) >= 0) {
+              if (!x[1][item2.name]) x[1][item2.name] = new Set()
+              x[1][item2.name].add(set.id)
+              foundItem2 = true
+            }
+          }
+
+          if (!foundItem2) x[0][item1.acronym].delete(set.id)
         }
       }
     }
 
-    const sets = [
-      {
-        name: 'Networks',
-        dataset: Object.entries(data1)
-          .map(([name, set]) => ({ name, value: set.size, selected: false }))
-          .sort((a, b) => (a.value >= b.value ? -1 : 1))
-      },
-      {
-        name: 'Variables',
-        dataset: Object.entries(data2)
-          .map(([name, set]) => ({ name, value: set.size, selected: false }))
-          .sort((a, b) => (a.value >= b.value ? -1 : 1))
-      }
-    ]
+    return Object.entries(x[i])
+      .map(([name, set]) => ({ name, value: set.size, selected: name === filters[i] ? true : false }))
+      .filter(({ value }) => value > 0)
+      .sort((a, b) => (a.value >= b.value ? -1 : 1))
+  }
 
+  setOption = ({ deviceSize }) => {
     return {
       tooltip: {
         trigger: 'item',
@@ -63,16 +66,16 @@ export default class extends PureComponent {
         x: 'left'
       },
 
-      series: sets.map((set, i) => ({
-        id: set.name,
-        name: set.name,
+      series: this.props.sets.map((set, i) => ({
+        id: set,
+        name: set,
         selectedMode: 'single',
         type: 'pie',
         roseType: 'area',
         minShowLabelAngle: 5,
         radius: [`${i * 40}%`, `${i * 40 + 10}%`],
         center: [deviceSize.mobile ? '50%' : '65%', '50%'],
-        data: this.filterDataset(set),
+        data: this.filterDataset(i),
         itemStyle: {
           emphasis: {
             shadowBlur: 10,
@@ -105,7 +108,7 @@ export default class extends PureComponent {
       <ECharts
         style={{ height: '100%' }}
         notMerge={true}
-        lazyUpdate={true}
+        lazyUpdate={false}
         theme={theme}
         onEvents={{
           pieselectchanged: this.onPieSelectChange

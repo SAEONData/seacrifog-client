@@ -22,6 +22,7 @@ export default ({ feature, close }) => (
                 (v, k) => ['mobile', 'tablet', 'desktop'].includes(k),
                 NavigationDrawer.getCurrentMedia()
               )}
+              sets={['Networks', 'Variables']}
               data={sites}
             />
           </CardText>
