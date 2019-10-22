@@ -59,13 +59,6 @@ export default [
     icon: 'dashboard'
   },
   {
-    keyval: 'nav-item-data-selector',
-    exact: true,
-    label: 'Finder',
-    to: '/graph',
-    icon: 'search'
-  },
-  {
     keyval: 'nav-item-atlas',
     exact: true,
     label: 'Atlas',

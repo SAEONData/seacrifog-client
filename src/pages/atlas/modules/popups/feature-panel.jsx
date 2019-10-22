@@ -10,12 +10,25 @@ export default ({ feature, close }) => (
     {({ sites }) => {
       return (
         <Card style={{ height: '100%' }} className="better-box-shadow">
-          <Toolbar colored title={feature.get('features').length + ' Sites selected'}>
-            <Button onClick={close} style={{ position: 'absolute', top: 10, right: 10 }} icon>
-              close
-            </Button>
-          </Toolbar>
-          <CardText style={{ height: 'calc(100% - 64px)' }}>
+          <Toolbar
+            colored
+            title={feature.get('features').length + ' Sites selected'}
+            actions={[
+              <Button onClick={() => alert('TODO')} icon>
+                share
+              </Button>,
+              <Button onClick={() => alert('TODO')} icon>
+                picture_as_pdf
+              </Button>,
+              <Button onClick={() => alert('TODO')} icon>
+                save_alt
+              </Button>,
+              <Button onClick={close} icon>
+                close
+              </Button>
+            ]}
+          />
+          <CardText style={{ height: 'calc(100% - 94px)' }}>
             <PieChart
               a={'Sites'}
               deviceSize={pickBy(
@@ -26,6 +39,11 @@ export default ({ feature, close }) => (
               data={sites}
             />
           </CardText>
+          <Toolbar
+            style={{ height: '32px' }}
+            actions={<div style={{ margin: 0, lineHeight: '32px' }}>Apache ECharts v4.3</div>}
+            colored
+          />
         </Card>
       )
     }}

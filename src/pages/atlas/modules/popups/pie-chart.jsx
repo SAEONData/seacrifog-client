@@ -70,6 +70,7 @@ export default class extends PureComponent {
         id: set,
         name: set,
         selectedMode: 'single',
+        selectedOffset: 0,
         type: 'pie',
         roseType: 'area',
         minShowLabelAngle: 5,

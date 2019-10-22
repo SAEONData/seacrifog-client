@@ -15,7 +15,6 @@ import DataproductEditor from './pages/editor-dataproducts'
 import navItems from './nav-items'
 import Test from './pages/test'
 import Form from './modules/form'
-import Graph from './pages/graph'
 
 // TODO: Each page navigation should scroll to top of page
 // https://stackoverflow.com/a/44438949/3114742
@@ -112,7 +111,6 @@ const App = () => (
             )}
           />
           <Route key={'atlas-tool'} path={'/atlas'} exact={true} component={Atlas} />
-          <Route key={'graph-tool'} path={'/graph'} exact={true} component={Graph} />
         </Navigation>
       </BrowserRouter>
     )}
