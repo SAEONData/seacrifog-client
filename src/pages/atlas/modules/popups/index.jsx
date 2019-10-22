@@ -9,6 +9,22 @@ const MultipleFeaturesDescription = ({ features, close }) => {
   return (
     <DataQuery query={SITES} variables={{ ids: features.map(feature => feature.get('id')) }}>
       {({ sites }) => {
+        const n = {}
+        const v = {}
+        for (const site of sites) {
+          for (const network of site.networks) {
+            if (!n[network.acronym]) n[network.acronym] = new Set()
+            n[network.acronym].add(site.id)
+
+            for (const variable of network.variables) {
+              if (!v[variable.class]) v[variable.class] = new Set()
+              v[variable.class].add(site.id)
+            }
+          }
+        }
+
+        console.log(n, v)
+
         const networks = {}
         const variablesAtSites = {}
         sites.forEach(s => {
