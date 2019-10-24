@@ -28,7 +28,7 @@ export default ({ feature, close }) => (
               </Button>
             ]}
           />
-          <CardText style={{ height: 'calc(100% - 94px)' }}>
+          <CardText style={{ height: 'calc(100% - 86px)' }}>
             <PieChart
               a={'Sites'}
               deviceSize={pickBy(
@@ -40,8 +40,8 @@ export default ({ feature, close }) => (
             />
           </CardText>
           <Toolbar
-            style={{ height: '32px' }}
-            actions={<div style={{ margin: 0, lineHeight: '32px' }}>Apache ECharts v4.3</div>}
+            style={{ fontSize: '12px', height: '24px' }}
+            actions={<div style={{ margin: 0, lineHeight: '24px' }}>Apache ECharts v4.3</div>}
             colored
           />
         </Card>
