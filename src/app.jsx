@@ -15,8 +15,6 @@ import DataproductEditor from './pages/editor-dataproducts'
 import navItems from './nav-items'
 import Test from './pages/test'
 import Form from './modules/form'
-import DataQuery from './modules/data-query'
-import { ENTIRE_GRAPH } from './graphql/queries'
 
 // TODO: Each page navigation should scroll to top of page
 // https://stackoverflow.com/a/44438949/3114742
@@ -112,16 +110,7 @@ const App = () => (
               />
             )}
           />
-          <Route
-            key={'atlas-tool'}
-            path={'/atlas'}
-            exact={true}
-            render={props => (
-              <DataQuery query={ENTIRE_GRAPH} variables={{}}>
-                {data => <Atlas data={data} />}
-              </DataQuery>
-            )}
-          />
+          <Route key={'atlas-tool'} path={'/atlas'} exact={true} render={props => <Atlas />} />
         </Navigation>
       </BrowserRouter>
     )}

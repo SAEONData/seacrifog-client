@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import debounce from '../../../../lib/debounce'
+import debounce from '../../../../../lib/debounce'
 import { TextField, FontIcon, DropdownMenu, ListItemControl, SelectionControl, List, ListItem } from 'react-md'
 import sift from 'sift'
 

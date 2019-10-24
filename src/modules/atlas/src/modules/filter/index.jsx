@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { clusterSource } from '../../open-layers'
+import { clusterSource } from '../../../lib/open-layers'
 import { mergeLeft } from 'ramda'
 import SideMenu from '../../ui/side-menu'
 import SelectListFilter from './select-list-filter'

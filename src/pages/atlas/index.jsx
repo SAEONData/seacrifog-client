@@ -1,77 +1,41 @@
 import React, { PureComponent } from 'react'
-import { OpenLayers, clusterLayer, clusterSource, openStreetLayers, ahocevarBaseMap } from './open-layers'
-import Filter from './modules/filter'
-import Reporting from './modules/reporting'
-import Info from './modules/info'
-import Popups from './modules/popups'
+import DataQuery from '../../modules/data-query'
+import { ENTIRE_GRAPH } from '../../graphql/queries'
+import { Map } from '../../modules/atlas'
 import sift from 'sift'
 
-export default class extends PureComponent {
+class AtlasController extends PureComponent {
   constructor(props) {
     super(props)
+    const data = {}
 
-    // Get the data
-    this.sites = props.data.sites
-    this.xrefSitesNetworks = props.data.xrefSitesNetworks
-    this.networks = props.data.networks.filter(sift({ id: { $in: this.xrefSitesNetworks.map(x => x.network_id) } }))
-    this.xrefNetworksVariables = props.data.xrefNetworksVariables.filter(
-      sift({ network_id: { $in: this.networks.map(x => x.id) } })
+    // Specify the data
+    data.sites = props.data.sites
+    data.xrefSitesNetworks = props.data.xrefSitesNetworks
+    data.networks = props.data.networks.filter(sift({ id: { $in: data.xrefSitesNetworks.map(x => x.network_id) } }))
+    data.xrefNetworksVariables = props.data.xrefNetworksVariables.filter(
+      sift({ network_id: { $in: data.networks.map(x => x.id) } })
     )
-    this.variables = props.data.variables.filter(
-      sift({ id: { $in: this.xrefNetworksVariables.map(x => x.variable_id) } })
+    data.variables = props.data.variables.filter(
+      sift({ id: { $in: data.xrefNetworksVariables.map(x => x.variable_id) } })
     )
-    this.xrefProtocolsVariables = props.data.xrefProtocolsVariables.filter(
-      sift({ variable_id: { $in: this.variables.map(v => v.id) } })
+    data.xrefProtocolsVariables = props.data.xrefProtocolsVariables.filter(
+      sift({ variable_id: { $in: data.variables.map(v => v.id) } })
     )
-    this.protocols = props.data.protocols.filter(
-      sift({ id: { $in: this.xrefProtocolsVariables.map(x => x.protocol_id) } })
+    data.protocols = props.data.protocols.filter(
+      sift({ id: { $in: data.xrefProtocolsVariables.map(x => x.protocol_id) } })
     )
-
-    // Create layers
-    this.clusteredSites = clusterSource(this.sites)
-    this.clusteredSitesLayer = clusterLayer(this.clusteredSites)
-    this.ahocevarBaseMap = ahocevarBaseMap
-    this.openStreetLayers = openStreetLayers
-  }
-
-  updateMapLayer = ({ source }) => {
-    this.clusteredSitesLayer.setSource(source)
+    this.data = data
   }
 
   render() {
-    const { clusteredSitesLayer, updateMapLayer, ahocevarBaseMap } = this
-
-    return (
-      <OpenLayers
-        viewOptions={{
-          zoom: 3
-        }}
-        layers={[ahocevarBaseMap, clusteredSitesLayer]}
-        render={({ map }) => (
-          <>
-            {/* Side menus */}
-            <Info position={1} />
-            <Filter
-              position={2}
-              map={map}
-              updateMapLayer={updateMapLayer}
-              data={{
-                sites: this.sites,
-                xrefSitesNetworks: this.xrefSitesNetworks,
-                networks: this.networks,
-                xrefNetworksVariables: this.xrefNetworksVariables,
-                variables: this.variables,
-                xrefProtocolsVariables: this.xrefProtocolsVariables,
-                protocols: this.protocols
-              }}
-            />
-            <Reporting position={3} />
-
-            {/* No UI */}
-            <Popups map={map} />
-          </>
-        )}
-      />
-    )
+    const { data } = this
+    return <Map data={data}></Map>
   }
 }
+
+export default () => (
+  <DataQuery query={ENTIRE_GRAPH} variables={{}}>
+    {data => <AtlasController data={data} />}
+  </DataQuery>
+)
