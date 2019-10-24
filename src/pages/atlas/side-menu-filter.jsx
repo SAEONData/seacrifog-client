@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react'
-import { clusterSource } from '../../../lib/open-layers'
+import { SideMenu, DropdownSelect, clusterSource } from '../../modules/atlas'
 import { mergeLeft } from 'ramda'
-import SideMenu from '../../ui/side-menu'
-import DropdownSelect from '../../ui/dropdown-select'
 import { Button } from 'react-md'
 
 export default class extends PureComponent {

@@ -1,13 +1,15 @@
 import React, { PureComponent } from 'react'
 import DataQuery from '../../modules/data-query'
 import { ENTIRE_GRAPH } from '../../graphql/queries'
-import { Map } from '../../modules/atlas'
+import SideMenuFilter from './side-menu-filter'
+import { Map, clusterSource, clusterLayer, ahocevarBaseMap } from '../../modules/atlas'
 import sift from 'sift'
 
 class AtlasController extends PureComponent {
   constructor(props) {
     super(props)
     const data = {}
+    this.data = data
 
     // Specify the data
     data.sites = props.data.sites
@@ -25,12 +27,29 @@ class AtlasController extends PureComponent {
     data.protocols = props.data.protocols.filter(
       sift({ id: { $in: data.xrefProtocolsVariables.map(x => x.protocol_id) } })
     )
-    this.data = data
+
+    // Create layers
+    this.clusteredSites = clusterSource(data.sites)
+    this.clusteredSitesLayer = clusterLayer(this.clusteredSites)
+    this.layers = [ahocevarBaseMap, this.clusteredSitesLayer]
+  }
+
+  updateMapLayer = ({ source }) => {
+    this.clusteredSitesLayer.setSource(source)
   }
 
   render() {
-    const { data } = this
-    return <Map data={data}></Map>
+    const { data, layers } = this
+
+    return (
+      <Map layers={layers} data={data}>
+        {({ map }) => (
+          <>
+            <SideMenuFilter position={1} map={map} updateMapLayer={this.updateMapLayer} data={data} />
+          </>
+        )}
+      </Map>
+    )
   }
 }
 

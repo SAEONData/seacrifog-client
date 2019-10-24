@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import debounce from '../../../../../lib/debounce'
+import debounce from '../../../../lib/debounce'
 import { TextField, FontIcon, DropdownMenu, ListItemControl, SelectionControl, List, ListItem } from 'react-md'
 import sift from 'sift'
 
@@ -37,9 +37,9 @@ export default class extends PureComponent {
     this.setState({ searchTerm: searchTerm.toUpperCase(), visible: true }, debounce(() => this.updateItems()))
 
   toggleItemSelect = item => {
-    const { id, selectedItems, updateFilters } = this.props
+    const { id, selectedItems, onItemToggle } = this.props
 
-    updateFilters({
+    onItemToggle({
       id,
       selectedItems: selectedItems.includes(item.id)
         ? [...selectedItems].filter(id => (id === item.id ? false : true))
