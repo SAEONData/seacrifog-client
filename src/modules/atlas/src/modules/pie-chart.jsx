@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import ECharts from 'echarts-for-react'
-import theme from './echarts-theme'
 
 export default class extends PureComponent {
   state = {}
@@ -110,7 +109,7 @@ export default class extends PureComponent {
         style={{ height: '100%' }}
         notMerge={true}
         lazyUpdate={false}
-        theme={theme}
+        theme={this.props.theme || ''}
         onEvents={{
           pieselectchanged: this.onPieSelectChange
         }}

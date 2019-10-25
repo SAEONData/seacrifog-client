@@ -1,11 +1,8 @@
 import React, { PureComponent } from 'react'
-import { clusterStyle, clusterStyle2 } from '../../../lib/open-layers'
-import FeaturePanel from './feature-panel'
+import { clusterStyle, clusterStyle2 } from '../../lib/open-layers'
 
 export default class extends PureComponent {
-  state = {
-    selectedFeature: null
-  }
+  state = { selectedFeature: null }
 
   constructor(props) {
     super(props)
@@ -44,25 +41,7 @@ export default class extends PureComponent {
 
   render() {
     const { selectedFeature } = this.state
-
-    return selectedFeature ? (
-      <div
-        style={{
-          zIndex: 1,
-          position: 'absolute',
-          margin: '12px 0 12px 12px',
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 64,
-          display: selectedFeature ? 'inherit' : 'none',
-          opacity: 0.8
-        }}
-      >
-        <FeaturePanel close={this.closePanel} feature={selectedFeature} />
-      </div>
-    ) : (
-      ''
-    )
+    const { closePanel } = this
+    return <>{this.props.children({ selectedFeature, closePanel })}</>
   }
 }

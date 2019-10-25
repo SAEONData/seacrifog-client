@@ -47,7 +47,7 @@ export default class extends PureComponent {
   render() {
     return (
       <>
-        {this.props.render({ map: this.map })}
+        {this.props.children({ map: this.map })}
         <div
           className="md-toolbar-relative"
           style={{ width: '100%', height: '100%', position: 'fixed', top: 0, bottom: 0 }}
