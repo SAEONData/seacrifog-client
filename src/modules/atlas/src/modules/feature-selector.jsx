@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import { clusterStyle, clusterStyle2 } from '../../lib/open-layers'
 
-export default class extends PureComponent {
+export default class extends Component {
   state = { selectedFeature: null }
 
   constructor(props) {

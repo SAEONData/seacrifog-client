@@ -2,49 +2,51 @@ import React, { PureComponent } from 'react'
 import ECharts from 'echarts-for-react'
 
 export default class extends PureComponent {
-  state = {}
-  constructor(props) {
-    super(props)
-
-    // State contains information on what has been clicked
-    this.state.filters = this.props.sets.map(name => '')
+  state = {
+    filters: ['', '']
   }
 
   onPieSelectChange = e => {
+    const { sets } = this.props
     const filters = [...this.state.filters]
-    const i = this.props.sets.indexOf(e.seriesId)
+    const i = sets.map(s => s.name).indexOf(e.seriesId)
     const selectedName = e.name && e.selected[e.name] ? e.name : ''
     filters[i] = selectedName
     this.setState({ filters })
   }
 
   filterDataset = i => {
-    const filters = this.state.filters
+    const { filters } = this.state
+    const { data, sets } = this.props
+
+    const set1Name = sets[0].name
+    const set1Field = sets[0].field
     const set1Filter = filters[0]
+
+    const set2Name = sets[1].name
+    const set2Field = sets[1].field
     const set2Filter = filters[1]
 
-    const x = [{}, {}]
-    for (const set of this.props.data) {
-      for (const item1 of set.networks) {
-        if (item1.acronym.indexOf(set1Filter) >= 0) {
-          if (!x[0][item1.acronym]) x[0][item1.acronym] = new Set()
-          x[0][item1.acronym].add(set.id)
-
+    const series = [{}, {}]
+    for (const row of data) {
+      for (const item1 of row[set1Name]) {
+        if (item1[set1Field].indexOf(set1Filter) >= 0) {
+          if (!series[0][item1[set1Field]]) series[0][item1[set1Field]] = new Set()
+          series[0][item1[set1Field]].add(row.id)
           let foundItem2 = false
-          for (const item2 of item1.variables) {
-            if (item2.name.indexOf(set2Filter) >= 0) {
-              if (!x[1][item2.name]) x[1][item2.name] = new Set()
-              x[1][item2.name].add(set.id)
+          for (const item2 of item1[set2Name]) {
+            if (item2[set2Field].indexOf(set2Filter) >= 0) {
+              if (!series[1][item2[set2Field]]) series[1][item2[set2Field]] = new Set()
+              series[1][item2[set2Field]].add(row.id)
               foundItem2 = true
             }
           }
-
-          if (!foundItem2) x[0][item1.acronym].delete(set.id)
+          if (!foundItem2) series[0][item1[set1Field]].delete(row.id)
         }
       }
     }
 
-    return Object.entries(x[i])
+    return Object.entries(series[i])
       .map(([name, set]) => ({ name, value: set.size, selected: name === filters[i] ? true : false }))
       .filter(({ value }) => value > 0)
       .sort((a, b) => (a.value >= b.value ? -1 : 1))
@@ -65,9 +67,9 @@ export default class extends PureComponent {
         x: 'left'
       },
 
-      series: this.props.sets.map((set, i) => ({
-        id: set,
-        name: set,
+      series: this.props.sets.map(({ name }, i) => ({
+        id: name,
+        name: name,
         selectedMode: 'single',
         selectedOffset: 0,
         type: 'pie',
@@ -110,9 +112,7 @@ export default class extends PureComponent {
         notMerge={true}
         lazyUpdate={false}
         theme={this.props.theme || ''}
-        onEvents={{
-          pieselectchanged: this.onPieSelectChange
-        }}
+        onEvents={{ pieselectchanged: this.onPieSelectChange }}
         option={this.setOption(this.props)}
       />
     )

@@ -4,6 +4,7 @@ import TileWMS from 'ol/source/TileWMS'
 import { clusterStyle } from './styles'
 
 export const ahocevarBaseMap = new TileLayer({
+  id: 'ahocevarBaseMap',
   source: new TileWMS({
     url: 'https://ahocevar.com/geoserver/wms',
     params: {
@@ -14,11 +15,13 @@ export const ahocevarBaseMap = new TileLayer({
 })
 
 export const openStreetLayers = new TileLayer({
+  id: 'openStreetLayers',
   source: new OSM({})
 })
 
-export const clusterLayer = source =>
+export const clusterLayer = (source, id = Math.random.toString()) =>
   new VectorLayer({
+    id,
     source,
     style: clusterStyle
   })

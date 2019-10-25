@@ -1,28 +1,22 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import DataQuery from '../../modules/data-query'
 import { ENTIRE_GRAPH, SITES } from '../../graphql/queries'
 import { pickBy } from 'ramda'
-import SideMenuFilter from './side-menu-filter'
-import {
-  Map,
-  clusterSource,
-  clusterLayer,
-  ahocevarBaseMap,
-  FeatureSelector,
-  FeaturePanel,
-  PieChart
-} from '../../modules/atlas'
-import sift from 'sift'
+import FeatureFilter from './feature-filter'
+import FeatureInfo from './feature-info'
+import PieChart from './pie-chart'
 import echartsTheme from '../../lib/echarts-theme'
+import { Map, clusterSource, clusterLayer, ahocevarBaseMap, FeatureSelector, FeaturePanel } from '../../modules/atlas'
+import sift from 'sift'
 import { Button, NavigationDrawer } from 'react-md'
 
-class AtlasController extends PureComponent {
+class AtlasController extends Component {
   constructor(props) {
     super(props)
-    const data = {}
-    this.data = data
 
     // Specify the data
+    const data = {}
+    this.data = data
     data.sites = props.data.sites
     data.xrefSitesNetworks = props.data.xrefSitesNetworks
     data.networks = props.data.networks.filter(sift({ id: { $in: data.xrefSitesNetworks.map(x => x.network_id) } }))
@@ -41,7 +35,7 @@ class AtlasController extends PureComponent {
 
     // Create layers
     this.clusteredSites = clusterSource(data.sites)
-    this.clusteredSitesLayer = clusterLayer(this.clusteredSites)
+    this.clusteredSitesLayer = clusterLayer(this.clusteredSites, 'sites')
     this.layers = [ahocevarBaseMap, this.clusteredSitesLayer]
   }
 
@@ -53,10 +47,16 @@ class AtlasController extends PureComponent {
     const { data, layers } = this
 
     return (
-      <Map className={'md-toolbar-relative'} viewOptions={this.viewOptions} layers={layers}>
+      <Map
+        style={{ display: 'flex', flexDirection: 'column', margin: 0, float: 'right' }}
+        className={'md-toolbar-relative'}
+        viewOptions={this.viewOptions}
+        layers={layers}
+      >
         {({ map }) => (
           <>
-            <SideMenuFilter position={1} map={map} updateMapLayer={this.updateMapLayer} data={data} />
+            <FeatureFilter map={map} updateMapLayer={this.updateMapLayer} data={data} />
+            <FeatureInfo map={map} />
             <FeatureSelector map={map}>
               {({ selectedFeature, closePanel }) =>
                 selectedFeature ? (
@@ -103,7 +103,16 @@ class AtlasController extends PureComponent {
                               (v, k) => ['mobile', 'tablet', 'desktop'].includes(k),
                               NavigationDrawer.getCurrentMedia()
                             )}
-                            sets={['Networks', 'Variables']}
+                            sets={[
+                              {
+                                name: 'networks',
+                                field: 'acronym'
+                              },
+                              {
+                                name: 'variables',
+                                field: 'name'
+                              }
+                            ]}
                             data={sites}
                           />
                         </FeaturePanel>

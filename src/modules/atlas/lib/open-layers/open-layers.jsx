@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import Map from 'ol/Map'
 import View from 'ol/View'
 import { mergeLeft } from 'ramda'
 import { defaults as defaultControls } from 'ol/control.js'
 
-export default class extends PureComponent {
+export default class extends Component {
   constructor(props) {
     super(props)
 
