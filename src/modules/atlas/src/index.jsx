@@ -1,6 +1,12 @@
 import React from 'react'
 import { OpenLayers } from '../lib/open-layers'
 
-export default ({ layers, children, viewOptions }) => (
-  <OpenLayers viewOptions={viewOptions} layers={layers} children={({ map }) => children({ map })} />
+export default ({ layers, children, viewOptions, style, className }) => (
+  <OpenLayers
+    style={style}
+    className={className}
+    viewOptions={viewOptions}
+    layers={layers}
+    children={children ? ({ map }) => children({ map }) : null}
+  />
 )

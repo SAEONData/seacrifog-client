@@ -13,7 +13,7 @@ import {
   PieChart
 } from '../../modules/atlas'
 import sift from 'sift'
-import echartsTheme from './echarts-theme'
+import echartsTheme from '../../lib/echarts-theme'
 import { Button, NavigationDrawer } from 'react-md'
 
 class AtlasController extends PureComponent {
@@ -43,11 +43,6 @@ class AtlasController extends PureComponent {
     this.clusteredSites = clusterSource(data.sites)
     this.clusteredSitesLayer = clusterLayer(this.clusteredSites)
     this.layers = [ahocevarBaseMap, this.clusteredSitesLayer]
-
-    // OpenLayers options
-    this.viewOptions = {
-      zoom: 3
-    }
   }
 
   updateMapLayer = ({ source }) => {
@@ -58,7 +53,7 @@ class AtlasController extends PureComponent {
     const { data, layers } = this
 
     return (
-      <Map viewOptions={this.viewOptions} layers={layers}>
+      <Map className={'md-toolbar-relative'} viewOptions={this.viewOptions} layers={layers}>
         {({ map }) => (
           <>
             <SideMenuFilter position={1} map={map} updateMapLayer={this.updateMapLayer} data={data} />

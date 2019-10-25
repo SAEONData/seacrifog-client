@@ -1,5 +1,5 @@
 import React from 'react'
-import { OpenLayers } from '../../modules/map'
+import { Map } from '../../modules/atlas'
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js'
 import { Vector as VectorSource } from 'ol/source'
 import TileWMS from 'ol/source/TileWMS'
@@ -33,12 +33,5 @@ export default ({ geoJson }) => {
       })
     })
   ]
-  return (
-    <OpenLayers
-      viewOptions={{
-        zoom: 2
-      }}
-      layers={layers}
-    />
-  )
+  return <Map layers={layers} />
 }

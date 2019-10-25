@@ -45,15 +45,13 @@ export default class extends PureComponent {
   }
 
   render() {
+    const { children, style, className } = this.props
+    const { map, mapRef } = this
     return (
-      <>
-        {this.props.children({ map: this.map })}
-        <div
-          className="md-toolbar-relative"
-          style={{ width: '100%', height: '100%', position: 'fixed', top: 0, bottom: 0 }}
-          ref={this.mapRef}
-        />
-      </>
+      <div className={className} style={style}>
+        {children ? children({ map }) : null}
+        <div ref={mapRef} style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }} />
+      </div>
     )
   }
 }
