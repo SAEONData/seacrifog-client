@@ -36,6 +36,7 @@ const App = () => (
           <Route key={'home'} path={'/'} exact={true} component={Home} />
           <Route key={'home-2'} path={'/home'} exact={true} component={Home} />
           <Route key={'contact'} path={'/contact'} exact={true} component={Contact} />
+          <Route key={'dashboard-tool'} path={'/inventory'} exact={true} component={Dashboard} />
 
           <Route key={'test'} path={'/test'} exact={false} component={Test} />
 
@@ -96,7 +97,6 @@ const App = () => (
           />
 
           {/* Tools */}
-          <Route key={'dashboard-tool'} path={'/dashboard'} exact={true} component={Dashboard} />
           <Route
             key={'selector-tool'}
             path={'/selector'}

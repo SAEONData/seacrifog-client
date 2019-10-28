@@ -18,6 +18,13 @@ export default [
     to: '/contact',
     icon: 'call'
   },
+  {
+    keyval: 'nav-item-dashboard',
+    exact: true,
+    label: 'Inventory',
+    to: '/inventory',
+    icon: 'dashboard'
+  },
   { keyval: 'nav-divider-explore', divider: true, style: {} },
   {
     keyval: 'nav-drawer-subheader-explore',
@@ -44,19 +51,6 @@ export default [
     label: 'Data Products',
     to: '/dataproducts',
     icon: 'shopping_cart'
-  },
-  { keyval: 'nav-divider-tools', divider: true, style: {} },
-  {
-    keyval: 'nav-drawer-subheader-tools',
-    subheader: true,
-    primaryText: 'Tools'
-  },
-  {
-    keyval: 'nav-item-dashboard',
-    exact: true,
-    label: 'Dashboard',
-    to: '/dashboard',
-    icon: 'dashboard'
   },
   {
     keyval: 'nav-item-atlas',

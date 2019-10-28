@@ -40,6 +40,14 @@ export default class extends Component {
     this.map.setTarget(this.mapRef.current)
   }
 
+  shouldComponentUpdate = async () =>
+    await new Promise(res =>
+      setTimeout(() => {
+        this.map.updateSize()
+        res(false)
+      }, 350)
+    )
+
   componentWillUnmount() {
     this.map.dispose()
   }

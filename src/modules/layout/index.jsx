@@ -26,7 +26,7 @@ class Navigation extends PureComponent {
   render() {
     const { currentPath } = this.state
     const { location, navItems } = this.props
-    const hideMenu = ['', '/', 'HOME', 'ABOUT', 'ABOUT/', 'CONTACT', 'CONTACT/'].includes(currentPath.toUpperCase())
+    const hideMenu = ['', 'HOME', 'ABOUT', 'CONTACT', 'ATLAS'].includes(currentPath.replace('/', '').toUpperCase())
     const currentMedia = NavigationDrawer.getCurrentMedia()
     return (
       <NavigationDrawer
@@ -50,7 +50,8 @@ class Navigation extends PureComponent {
         miniDrawerClassName="sf-drawer"
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
-        desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
+        desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT}
+        drawerTransitionDuration={500}
         toolbarActions={[
           <h3
             style={{
@@ -78,7 +79,7 @@ class Navigation extends PureComponent {
             alt="SEACRIFOG logo"
           />
         ]}
-        // toolbarTitle={currentPath.capitalize() || 'Home'}
+        toolbarTitle={currentPath.capitalize() || 'Home'}
         defaultVisible={currentMedia.desktop && !hideMenu ? true : false}
       >
         <Switch key={location.pathname || '/'}>{this.props.children}</Switch>
