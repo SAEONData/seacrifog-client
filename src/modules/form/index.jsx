@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 
 export default class Form extends Component {
   state = {}
@@ -13,14 +13,12 @@ export default class Form extends Component {
 
   updateForm = (obj, cb = null) => this.setState(obj, cb)
 
+  // saveForm
+
   render() {
-    return (
-      <>
-        {this.props.children({
-          updateForm: this.updateForm,
-          ...this.state
-        })}
-      </>
-    )
+    return this.props.children({
+      updateForm: this.updateForm,
+      ...this.state
+    })
   }
 }
