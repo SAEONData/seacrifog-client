@@ -19,7 +19,7 @@ export const openStreetLayers = new TileLayer({
   source: new OSM({})
 })
 
-export const clusterLayer = (source, id = Math.random.toString()) =>
+export const clusterLayer = (source, id = 'cluster-layer') =>
   new VectorLayer({
     id,
     source,
