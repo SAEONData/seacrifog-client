@@ -79,7 +79,7 @@ class Navigation extends PureComponent {
             alt="SEACRIFOG logo"
           />
         ]}
-        toolbarTitle={currentPath.capitalize() || 'Home'}
+        toolbarTitle={currentPath.capitalize() || 'Home' + ' test'}
         defaultVisible={currentMedia.desktop && !hideMenu ? true : false}
       >
         <Switch key={location.pathname || '/'}>{this.props.children}</Switch>
