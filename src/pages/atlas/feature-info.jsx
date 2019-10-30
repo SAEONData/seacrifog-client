@@ -17,6 +17,7 @@ const FilteredFeatureSummary = ({ map }) => {
     .map(feature => feature.get('features'))
     .flat()
     .map(feature => feature.get('id'))
+
   return (
     <DataQuery query={SITES} variables={{ ids }}>
       {({ sites }) => (
@@ -63,7 +64,6 @@ const FilteredFeatureSummary = ({ map }) => {
 export default props => {
   return (
     <SideMenu
-      transitionDuration={4000}
       style={{ minWidth: '100%', overflowY: 'auto', zIndex: 999 }}
       itemsStyle={{ padding: 0, height: 'calc(100% - 67px)' }}
       icon={'pie_chart'}

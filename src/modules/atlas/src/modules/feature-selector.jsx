@@ -42,6 +42,6 @@ export default class extends Component {
   render() {
     const { selectedFeature } = this.state
     const { closePanel } = this
-    return <>{this.props.children({ selectedFeature, closePanel })}</>
+    return this.props.children({ selectedFeature, closePanel })
   }
 }
