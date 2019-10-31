@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { clusterStyle, clusterStyle2 } from '../../lib/open-layers'
+import { clusterStyle, clusterStyle2 } from '../open-layers'
 
 export default class extends Component {
   state = { selectedFeature: null }

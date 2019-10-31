@@ -1,5 +1,5 @@
 import React from 'react'
-import { OpenLayers } from '../lib/open-layers'
+import { OpenLayers } from './open-layers'
 
 export default ({ layers, children, viewOptions, style, className }) => (
   <OpenLayers

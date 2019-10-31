@@ -1,5 +1,5 @@
 // Export the OpenLayers API
-export * from './lib/open-layers'
+export * from './src/open-layers'
 
 // The Map API
 export { default as Map } from './src'
