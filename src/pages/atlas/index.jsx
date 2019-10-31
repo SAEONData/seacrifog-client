@@ -83,7 +83,24 @@ class AtlasController extends Component {
                 {/* Feature click panel */}
                 <SideMenu style={{ minWidth: '100%', overflowY: 'auto', zIndex: 999 }} icon={'bar_chart'}>
                   <div style={{ padding: 0, height: 'calc(100% - 67px)' }}>
-                    <FeatureDetail map={map} />
+                    <FeatureDetail
+                      toolbarActions={[
+                        <Button onClick={() => alert('TODO')} icon>
+                          save_alt
+                        </Button>
+                      ]}
+                      getFeatureIds={() => {
+                        let layer = null
+                        map.getLayers().forEach(l => (layer = l.get('id') === 'sites' ? l : layer))
+                        return layer
+                          .getSource()
+                          .getFeatures()
+                          .map(feature => feature.get('features'))
+                          .flat()
+                          .map(feature => feature.get('id'))
+                      }}
+                      map={map}
+                    />
                   </div>
                 </SideMenu>
 
@@ -107,19 +124,13 @@ class AtlasController extends Component {
                         <FeatureDetail
                           toolbarActions={[
                             <Button onClick={() => alert('TODO')} icon>
-                              share
-                            </Button>,
-                            <Button onClick={() => alert('TODO')} icon>
-                              picture_as_pdf
-                            </Button>,
-                            <Button onClick={() => alert('TODO')} icon>
                               save_alt
                             </Button>,
                             <Button onClick={closePanel} icon>
                               close
                             </Button>
                           ]}
-                          feature={selectedFeature}
+                          getFeatureIds={() => selectedFeature.get('features').map(feature => feature.get('id'))}
                         />
                       </div>
                     ) : (
