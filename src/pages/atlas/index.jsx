@@ -1,14 +1,21 @@
 import React, { Component } from 'react'
 import DataQuery from '../../modules/data-query'
-import { ENTIRE_GRAPH, SITES } from '../../graphql/queries'
-import { pickBy } from 'ramda'
-import FeatureFilter from './feature-filter'
-import FeatureInfo from './feature-info'
-import PieChart from './pie-chart'
-import echartsTheme from '../../lib/echarts-theme'
-import { Map, clusterSource, clusterLayer, ahocevarBaseMap, FeatureSelector, FeaturePanel } from '../../modules/atlas'
+import { ENTIRE_GRAPH } from '../../graphql/queries'
+import FilterState from './filter-state'
+import FeatureDetail from './feature-detail'
+import {
+  Map,
+  clusterSource,
+  clusterLayer,
+  ahocevarBaseMap,
+  FeatureSelector,
+  SideMenu,
+  DropdownSelect
+} from '../../modules/atlas'
 import sift from 'sift'
-import { Button, NavigationDrawer } from 'react-md'
+import { Button } from 'react-md'
+
+const sideMenuContentStyle = { paddingLeft: '24px', paddingRight: '24px' }
 
 class AtlasController extends Component {
   constructor(props) {
@@ -54,33 +61,50 @@ class AtlasController extends Component {
         layers={layers}
       >
         {({ map }) => (
-          <>
-            <FeatureFilter map={map} updateMapLayer={this.updateMapLayer} data={data} />
-            <FeatureInfo map={map} />
-            <FeatureSelector map={map}>
-              {({ selectedFeature, closePanel }) =>
-                selectedFeature ? (
-                  <div
-                    style={{
-                      zIndex: 1,
-                      position: 'absolute',
-                      margin: '12px 0 12px 12px',
-                      top: 0,
-                      bottom: 0,
-                      left: 0,
-                      right: 64,
-                      display: selectedFeature ? 'inherit' : 'none',
-                      opacity: 0.8
-                    }}
-                  >
-                    <DataQuery
-                      query={SITES}
-                      variables={{ ids: selectedFeature.get('features').map(feature => feature.get('id')) }}
-                    >
-                      {({ sites }) => (
-                        <FeaturePanel
-                          title={selectedFeature.get('features').length + ' Sites selected'}
-                          footerActions={<div style={{ margin: 0, lineHeight: '24px' }}>Apache ECharts v4.3</div>}
+          <FilterState map={map} updateMapLayer={this.updateMapLayer} data={data}>
+            {({ updateFilters, refreshFilters, filters, anyActiveFilters }) => (
+              <>
+                {/* Side Filter */}
+                <SideMenu
+                  icon={'search'}
+                  toolbarActions={[
+                    <Button disabled={anyActiveFilters ? false : true} primary onClick={refreshFilters} icon>
+                      refresh
+                    </Button>
+                  ]}
+                >
+                  <div style={sideMenuContentStyle}>
+                    {filters.map(filter => (
+                      <DropdownSelect key={filter.id} {...filter} onItemToggle={updateFilters} />
+                    ))}
+                  </div>
+                </SideMenu>
+
+                {/* Feature click panel */}
+                <SideMenu style={{ minWidth: '100%', overflowY: 'auto', zIndex: 999 }} icon={'bar_chart'}>
+                  <div style={{ padding: 0, height: 'calc(100% - 67px)' }}>
+                    <FeatureDetail map={map} />
+                  </div>
+                </SideMenu>
+
+                {/* Feature click panel */}
+                <FeatureSelector map={map}>
+                  {({ selectedFeature, closePanel }) =>
+                    selectedFeature ? (
+                      <div
+                        style={{
+                          zIndex: 1,
+                          position: 'absolute',
+                          margin: '12px 0 12px 12px',
+                          top: 0,
+                          bottom: 0,
+                          left: 0,
+                          right: 64,
+                          display: selectedFeature ? 'inherit' : 'none',
+                          opacity: 0.8
+                        }}
+                      >
+                        <FeatureDetail
                           toolbarActions={[
                             <Button onClick={() => alert('TODO')} icon>
                               share
@@ -95,36 +119,17 @@ class AtlasController extends Component {
                               close
                             </Button>
                           ]}
-                        >
-                          <PieChart
-                            a={'Sites'}
-                            theme={echartsTheme}
-                            deviceSize={pickBy(
-                              (v, k) => ['mobile', 'tablet', 'desktop'].includes(k),
-                              NavigationDrawer.getCurrentMedia()
-                            )}
-                            sets={[
-                              {
-                                name: 'networks',
-                                field: 'acronym'
-                              },
-                              {
-                                name: 'variables',
-                                field: 'name'
-                              }
-                            ]}
-                            data={sites}
-                          />
-                        </FeaturePanel>
-                      )}
-                    </DataQuery>
-                  </div>
-                ) : (
-                  ''
-                )
-              }
-            </FeatureSelector>
-          </>
+                          feature={selectedFeature}
+                        />
+                      </div>
+                    ) : (
+                      ''
+                    )
+                  }
+                </FeatureSelector>
+              </>
+            )}
+          </FilterState>
         )}
       </Map>
     )

@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react'
 import ECharts from 'echarts-for-react'
+import echartsTheme from '../../lib/echarts-theme'
 
-export default class extends PureComponent {
+class SitesChart extends PureComponent {
   state = {
     filters: ['', '']
   }
@@ -52,7 +53,7 @@ export default class extends PureComponent {
       .sort((a, b) => (a.value >= b.value ? -1 : 1))
   }
 
-  setOption = ({ deviceSize }) => {
+  setOption = () => {
     return {
       tooltip: {
         trigger: 'item',
@@ -60,7 +61,7 @@ export default class extends PureComponent {
       },
 
       legend: {
-        show: deviceSize.mobile ? false : true,
+        show: true,
         type: 'scroll',
         icon: 'circle',
         orient: 'vertical',
@@ -76,7 +77,7 @@ export default class extends PureComponent {
         roseType: 'area',
         minShowLabelAngle: 5,
         radius: [`${i * 40}%`, `${i * 40 + 10}%`],
-        center: [deviceSize.mobile ? '50%' : '65%', '50%'],
+        center: ['65%', '50%'],
         data: this.filterDataset(i),
         itemStyle: {
           emphasis: {
@@ -86,7 +87,7 @@ export default class extends PureComponent {
           }
         },
         labelLine: {
-          show: deviceSize.mobile ? false : true,
+          show: true,
           smooth: true,
           lineStyle: {
             type: 'dotted',
@@ -94,7 +95,7 @@ export default class extends PureComponent {
           }
         },
         label: {
-          show: deviceSize.mobile ? false : true,
+          show: true,
           align: 'right',
           fontWeight: 'lighter',
           fontSize: 12,
@@ -118,3 +119,21 @@ export default class extends PureComponent {
     )
   }
 }
+
+export default ({ sites }) => (
+  <SitesChart
+    a={'Sites'}
+    theme={echartsTheme}
+    sets={[
+      {
+        name: 'networks',
+        field: 'acronym'
+      },
+      {
+        name: 'variables',
+        field: 'name'
+      }
+    ]}
+    data={sites}
+  />
+)

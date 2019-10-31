@@ -1,7 +1,6 @@
-import React, { PureComponent } from 'react'
-import { SideMenu, DropdownSelect, clusterSource } from '../../modules/atlas'
+import { PureComponent } from 'react'
+import { clusterSource } from '../../modules/atlas'
 import { mergeLeft } from 'ramda'
-import { Button } from 'react-md'
 
 export default class extends PureComponent {
   state = {
@@ -76,7 +75,6 @@ export default class extends PureComponent {
         // Next, if a network search exists, filter on that
         if (selectedNetworks.length) {
           const ids = this.xrefSitesNetworks.filter(x => selectedNetworks.includes(x.network_id)).map(x => x.site_id)
-
           sites = ids.length ? sites.filter(s => ids.includes(s.id)) : sites
         }
 
@@ -112,19 +110,7 @@ export default class extends PureComponent {
   render() {
     const { updateFilters, refreshFilters } = this
     const { filters } = this.state
-    const filtersActive = filters.map(f => f.selectedItems).flat().length > 0 ? true : false
-    return (
-      <SideMenu
-        icon={'search'}
-        toolbarActions={
-          <Button disabled={filtersActive ? false : true} primary onClick={refreshFilters} icon>
-            refresh
-          </Button>
-        }
-        items={filters.map(filter => (
-          <DropdownSelect key={filter.id} {...filter} onItemToggle={updateFilters} />
-        ))}
-      />
-    )
+    const anyActiveFilters = filters.map(f => f.selectedItems).flat().length > 0 ? true : false
+    return this.props.children({ updateFilters, refreshFilters, filters, anyActiveFilters })
   }
 }

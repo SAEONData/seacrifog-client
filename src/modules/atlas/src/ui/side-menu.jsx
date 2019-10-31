@@ -1,11 +1,8 @@
 import React, { PureComponent } from 'react'
-import { Button, Drawer, Toolbar, LinearProgress } from 'react-md'
-import { mergeLeft } from 'ramda'
+import { Button, Drawer, Toolbar } from 'react-md'
 
 const menuButtonStyle = { display: 'flex', float: 'right', margin: '10px', zIndex: 1 }
-const LinearProgressStyle = { height: '1px', margin: 0 }
 const drawerStyle = { minWidth: '400px', overflowY: 'auto' }
-const drawerItemsStyle = { paddingLeft: '24px', paddingRight: '24px' }
 
 export default class extends PureComponent {
   state = { menuOpen: false }
@@ -17,7 +14,7 @@ export default class extends PureComponent {
   render() {
     const { menuOpen } = this.state
     const { openMenu, closeMenu, onVizChange } = this
-    const { items, thinking, icon, toolbarActions, menuPosition, buttonSytle, itemsStyle, style } = this.props
+    const { icon, toolbarActions, menuPosition, buttonSytle, style } = this.props
 
     return (
       <>
@@ -41,12 +38,7 @@ export default class extends PureComponent {
             />
           }
         >
-          <LinearProgress
-            id="map-calculation-progress"
-            key="map-calc-progress"
-            style={thinking ? LinearProgressStyle : mergeLeft({ visibility: 'hidden' }, LinearProgressStyle)}
-          />
-          <div style={itemsStyle || drawerItemsStyle}>{items}</div>
+          {this.props.children}
         </Drawer>
         <Button swapTheming primary style={buttonSytle || menuButtonStyle} icon onClick={openMenu}>
           {icon}
