@@ -1,5 +1,5 @@
 import { PureComponent } from 'react'
-import { clusterSource } from '../../modules/atlas'
+import { clusterSource } from '@saeon/atlas'
 import { mergeLeft } from 'ramda'
 
 export default class extends PureComponent {

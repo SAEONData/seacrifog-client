@@ -2,7 +2,7 @@ import React from 'react'
 import DataQuery from '../../modules/data-query'
 import { SITES } from '../../graphql/queries'
 import PieChart from './pie-chart'
-import { FeaturePanel } from '../../modules/atlas'
+import { FeaturePanel } from '@saeon/atlas'
 
 export default ({ getFeatureIds, toolbarActions = [] }) => (
   <DataQuery query={SITES} variables={{ ids: getFeatureIds() }}>

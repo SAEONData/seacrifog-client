@@ -1,5 +1,5 @@
 import React from 'react'
-import { Map } from '../../modules/atlas'
+import { Map } from '@saeon/atlas'
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js'
 import { Vector as VectorSource } from 'ol/source'
 import TileWMS from 'ol/source/TileWMS'

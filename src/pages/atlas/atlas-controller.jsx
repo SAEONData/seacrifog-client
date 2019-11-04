@@ -9,7 +9,7 @@ import {
   FeatureSelector,
   SideMenu,
   DropdownSelect
-} from '../../modules/atlas'
+} from '@saeon/atlas'
 import sift from 'sift'
 import { Button } from 'react-md'
 
