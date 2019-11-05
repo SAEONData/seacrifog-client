@@ -52,7 +52,7 @@ export default class extends PureComponent {
 
   refreshFilters = () =>
     this.setState({ filters: [...this.state.filters].map(f => mergeLeft({ selectedItems: [] }, f)) }, () => {
-      this.props.updateMapLayer({ source: clusterSource(this.sites) })
+      this.props.updateMapLayer({ source: clusterSource({ data: this.sites, locAttribute: 'xyz' }) })
     })
 
   updateFilters = ({ id, selectedItems }) =>
@@ -103,7 +103,7 @@ export default class extends PureComponent {
         }
 
         // Set the new clustered data source
-        this.props.updateMapLayer({ source: clusterSource(sites) })
+        this.props.updateMapLayer({ source: clusterSource({ data: sites, locAttribute: 'xyz' }) })
       }
     )
 
