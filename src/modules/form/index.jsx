@@ -13,8 +13,6 @@ export default class Form extends Component {
 
   updateForm = (obj, cb = null) => this.setState(obj, cb)
 
-  // saveForm
-
   render() {
     return this.props.children({
       updateForm: this.updateForm,
