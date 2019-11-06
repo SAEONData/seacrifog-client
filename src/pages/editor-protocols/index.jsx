@@ -5,8 +5,28 @@ import DataMutation from '../../modules/data-mutation'
 import Form from '../../modules/form'
 import { PROTOCOL } from '../../graphql/queries'
 import { UPDATE_PROTOCOLS } from '../../graphql/mutations'
+//EDITOR PROTOCOLS
 
-const simpleTextFields = ['AUTHOR', 'PUBLISHER', 'TITLE']
+const editableFields = [
+  'AUTHOR',
+  'PUBLISHER',
+  'TITLE',
+  'PUBLISHER',
+  'TITLE',
+  'COVERAGE_TYPE',
+  'CATEGORY',
+  'DOMAIN',
+  'PURPOSE',
+  'ABSTRACT',
+  'LICENSE',
+  'LANGUAGE',
+  'FORMAT',
+  'SUSTAINABILITY',
+  'VERSION',
+  'RESOLUTION',
+  'COST',
+  'SOURCE'
+]
 
 export default ({ id }) => (
   <DataQuery query={PROTOCOL} variables={{ id: parseInt(id) }}>
@@ -23,7 +43,7 @@ export default ({ id }) => (
                       <Cell phoneSize={4} tabletSize={8} size={6}>
                         <CardText>
                           {Object.entries(fields)
-                            .filter(([fieldName]) => simpleTextFields.includes(fieldName.toUpperCase()))
+                            .filter(([field]) => editableFields.includes(field.toUpperCase()))
                             .map(([label, value], i) => (
                               <TextField
                                 id={'update-form-protocol' + i}
@@ -42,7 +62,7 @@ export default ({ id }) => (
                                       id: fields.id,
                                       ...Object.fromEntries(
                                         Object.entries(fields).filter(field =>
-                                          simpleTextFields.includes(field[0].toUpperCase())
+                                          editableFields.includes(field[0].toUpperCase())
                                         )
                                       )
                                     }
