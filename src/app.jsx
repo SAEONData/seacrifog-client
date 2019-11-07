@@ -5,10 +5,11 @@ import Home from './pages/home'
 import Contact from './pages/contact'
 import Dashboard from './pages/dashboard'
 import SelectorTool from './pages/selector-tool'
-import Atlas from './pages/atlas'
+import SitesExplorer from './pages/explorer-sites'
 import ProtocolsExplorer from './pages/explorer-protocols'
 import VariablesExplorer from './pages/explorer-variables'
 import DataproductsExplorer from './pages/explorer-dataproducts'
+import NetworksExplorer from './pages/explorer-networks'
 import VariableEditor from './pages/editor-variables'
 import ProtocolEditor from './pages/editor-protocols'
 import DataproductEditor from './pages/editor-dataproducts'
@@ -68,6 +69,12 @@ const App = () => (
             )}
           />
           <Route
+            key={'explorer-networks'}
+            path={'/networks'}
+            exact={true}
+            render={props => <NetworksExplorer updateForm={updateForm} {...props} />}
+          />
+          <Route
             key={'explorer-dataproducts'}
             path={'/dataproducts'}
             exact={true}
@@ -110,7 +117,7 @@ const App = () => (
               />
             )}
           />
-          <Route key={'atlas-tool'} path={'/atlas'} exact={true} render={props => <Atlas />} />
+          <Route key={'sites-explorer'} path={'/sites'} exact={true} render={props => <SitesExplorer />} />
         </Navigation>
       </BrowserRouter>
     )}

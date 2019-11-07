@@ -34,7 +34,7 @@ export default class extends PureComponent {
     // Create layers
     this.clusteredSites = clusterSource({ data: data.sites, locAttribute: 'xyz' })
     this.clusteredSitesLayer = clusterLayer(this.clusteredSites, 'sites')
-    this.layers = [ahocevarBaseMap, this.clusteredSitesLayer]
+    this.layers = [ahocevarBaseMap(), this.clusteredSitesLayer]
   }
 
   render() {
