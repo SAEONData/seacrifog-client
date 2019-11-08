@@ -3,8 +3,6 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import Navigation from './modules/layout'
 import Home from './pages/home'
 import Contact from './pages/contact'
-import Dashboard from './pages/dashboard'
-import SelectorTool from './pages/selector-tool'
 import SitesExplorer from './pages/explorer-sites'
 import ProtocolsExplorer from './pages/explorer-protocols'
 import VariablesExplorer from './pages/explorer-variables'
@@ -23,25 +21,52 @@ import Form from './modules/form'
 // SPA wrapper
 const App = () => (
   <Form
-    hoveredProtocol={null}
-    selectedProtocol={null}
-    hoveredDP={null}
-    selectedDP={null}
-    hoveredVariable={null}
+    selectedNetwork={null}
     selectedVariable={null}
+    selectedProtocol={null}
+    selectedDP={null}
+    hoveredNetwork={null}
+    hoveredVariable={null}
+    hoveredProtocol={null}
+    hoveredDP={null}
   >
-    {({ updateForm, hoveredProtocol, selectedProtocol, hoveredDP, selectedDP, hoveredVariable, selectedVariable }) => (
+    {({
+      updateForm,
+      selectedNetwork,
+      selectedVariable,
+      selectedProtocol,
+      selectedDP,
+      hoveredNetwork,
+      hoveredVariable,
+      hoveredProtocol,
+      hoveredDP
+    }) => (
       <BrowserRouter>
         <Navigation navItems={navItems}>
+          {/* This is a route for testing things */}
+          <Route key={'test'} path={'/test'} exact={false} component={Test} />
+
           {/* Basic navigation */}
           <Route key={'home'} path={'/'} exact={true} component={Home} />
           <Route key={'home-2'} path={'/home'} exact={true} component={Home} />
           <Route key={'contact'} path={'/contact'} exact={true} component={Contact} />
-          <Route key={'dashboard-tool'} path={'/inventory'} exact={true} component={Dashboard} />
 
-          <Route key={'test'} path={'/test'} exact={false} component={Test} />
+          {/* Sites */}
+          <Route
+            key={'sites-explorer'}
+            path={'/sites'}
+            exact={true}
+            render={props => (
+              <SitesExplorer
+                selectedNetwork={selectedNetwork}
+                selectedVariable={selectedVariable}
+                selectedProtocol={selectedProtocol}
+                {...props}
+              />
+            )}
+          />
 
-          {/* Explorer data */}
+          {/* Variables */}
           <Route
             key={'explorer-variables'}
             path={'/variables'}
@@ -49,12 +74,20 @@ const App = () => (
             render={props => (
               <VariablesExplorer
                 updateForm={updateForm}
-                hoveredVariable={hoveredVariable}
                 selectedVariable={selectedVariable}
+                hoveredVariable={hoveredVariable}
                 {...props}
               />
             )}
           />
+          <Route
+            key={'edit-variables'}
+            path={'/variables/:id'}
+            exact={false}
+            render={props => <VariableEditor id={props.match.params.id} {...props} />}
+          />
+
+          {/* Protocols */}
           <Route
             key={'explorer-protocols'}
             path={'/protocols'}
@@ -69,11 +102,21 @@ const App = () => (
             )}
           />
           <Route
+            key={'edit-protocols'}
+            path={'/protocols/:id'}
+            exact={false}
+            render={props => <ProtocolEditor id={props.match.params.id} {...props} />}
+          />
+
+          {/* Networks */}
+          <Route
             key={'explorer-networks'}
             path={'/networks'}
             exact={true}
             render={props => <NetworksExplorer updateForm={updateForm} {...props} />}
           />
+
+          {/* Dataproducts */}
           <Route
             key={'explorer-dataproducts'}
             path={'/dataproducts'}
@@ -82,42 +125,12 @@ const App = () => (
               <DataproductsExplorer updateForm={updateForm} hoveredDP={hoveredDP} selectedDP={selectedDP} {...props} />
             )}
           />
-
-          {/* Edit data */}
-          <Route
-            key={'edit-variables'}
-            path={'/variables/:id'}
-            exact={false}
-            render={props => <VariableEditor id={props.match.params.id} {...props} />}
-          />
-          <Route
-            key={'edit-protocols'}
-            path={'/protocols/:id'}
-            exact={false}
-            render={props => <ProtocolEditor id={props.match.params.id} {...props} />}
-          />
           <Route
             key={'edit-dataproducts'}
             path={'/dataproducts/:id'}
             exact={false}
             render={props => <DataproductEditor id={props.match.params.id} {...props} />}
           />
-
-          {/* Tools */}
-          <Route
-            key={'selector-tool'}
-            path={'/selector'}
-            exact={true}
-            render={props => (
-              <SelectorTool
-                updateForm={updateForm}
-                selectedProtocol={selectedProtocol}
-                selectedVariable={selectedVariable}
-                {...props}
-              />
-            )}
-          />
-          <Route key={'sites-explorer'} path={'/sites'} exact={true} render={props => <SitesExplorer />} />
         </Navigation>
       </BrowserRouter>
     )}
