@@ -117,15 +117,34 @@ export default class extends PureComponent {
   refreshFilters = () =>
     this.setState({ filters: [...this.state.filters].map(f => mergeLeft({ selectedItems: [] }, f)) }, () => {
       this.props.updateMapLayer({ source: clusterSource({ data: this.sites, locAttribute: 'xyz' }) })
+      this.props.updateForm({
+        selectedNetwork: null,
+        selectedProtocol: null,
+        selectedVariable: null
+      })
     })
 
-  updateFilters = ({ id, selectedItems }) =>
+  updateFilters = ({ id, selectedItems }) => {
+    const { selectedProtocol, selectedVariable, updateForm } = this.props
+
+    // Check if selectedVariable is removed
+    if (id === 'selectedVariables') {
+      const vId = selectedVariable ? selectedVariable.id : null
+      if (!selectedItems.includes(vId)) updateForm({ selectedVariable: null })
+    }
+    // Check if selectedProtocol is removed
+    if (id === 'selectedProtocols') {
+      const vId = selectedProtocol ? selectedProtocol.id : null
+      if (!selectedItems.includes(vId)) updateForm({ selectedProtocol: null })
+    }
+
     this.setState(
       {
         filters: [...this.state.filters].map(f => (f.id === id ? mergeLeft({ selectedItems }, f) : f))
       },
       this.applySiteFilter
     )
+  }
 
   render() {
     const { updateFilters, refreshFilters } = this

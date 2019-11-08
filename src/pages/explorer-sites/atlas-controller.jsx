@@ -39,7 +39,7 @@ export default class extends PureComponent {
 
   render() {
     const { data, layers } = this
-    const { selectedNetwork, selectedProtocol, selectedVariable } = this.props
+    const { selectedNetwork, selectedProtocol, selectedVariable, updateForm } = this.props
 
     return (
       <Map style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }} layers={layers}>
@@ -48,6 +48,7 @@ export default class extends PureComponent {
             map={map}
             updateMapLayer={({ source }) => this.clusteredSitesLayer.setSource(source)}
             data={data}
+            updateForm={updateForm}
             selectedNetwork={selectedNetwork}
             selectedVariable={selectedVariable}
             selectedProtocol={selectedProtocol}

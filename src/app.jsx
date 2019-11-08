@@ -58,6 +58,7 @@ const App = () => (
             exact={true}
             render={props => (
               <SitesExplorer
+                updateForm={updateForm}
                 selectedNetwork={selectedNetwork}
                 selectedVariable={selectedVariable}
                 selectedProtocol={selectedProtocol}
