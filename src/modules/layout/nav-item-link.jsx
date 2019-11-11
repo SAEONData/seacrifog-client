@@ -20,7 +20,12 @@ export default ({ label, to, icon, exact, href, avatar }) => (
           icon ? (
             <FontIcon>{icon}</FontIcon>
           ) : avatar ? (
-            <Avatar style={{ backgroundColor: 'transparent', border: 'none' }} {...avatar} iconSized />
+            <Avatar
+              style={avatar.style ? {} : { backgroundColor: 'transparent', border: 'none' }}
+              {...avatar}
+              contentStyle={avatar.style}
+              iconSized
+            />
           ) : null
         }
       />
