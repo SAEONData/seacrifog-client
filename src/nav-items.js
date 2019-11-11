@@ -1,9 +1,8 @@
 import reactLogo from './svgs/react-logo.svg'
-import reactMdLogo from './svgs/react-md-logo.svg'
 import googleLogo from './svgs/google-logo.svg'
 import gitlabLogo from './svgs/gitlab-logo.svg'
 
-const avatarStyle = { fontSize: '14px' }
+const avatarStyle = { fontSize: '11px' }
 
 export default [
   {
@@ -77,7 +76,11 @@ export default [
   {
     keyval: 'react-md-logo',
     href: 'https://react-md.mlaursen.com/',
-    avatar: { src: reactMdLogo, alt: 'React-md Logo' },
+    avatar: {
+      children: 'MD',
+      suffix: 'deep-orange',
+      style: Object.assign({ ...avatarStyle }, { color: 'white', fontSize: '9px' })
+    },
     label: 'React-md'
   },
   {
