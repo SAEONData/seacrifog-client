@@ -34,11 +34,12 @@ export default class extends PureComponent {
     // Create layers
     this.clusteredSites = clusterSource({ data: data.sites, locAttribute: 'xyz' })
     this.clusteredSitesLayer = clusterLayer(this.clusteredSites, 'sites')
-    this.layers = [ahocevarBaseMap, this.clusteredSitesLayer]
+    this.layers = [ahocevarBaseMap(), this.clusteredSitesLayer]
   }
 
   render() {
     const { data, layers } = this
+    const { selectedNetwork, selectedProtocol, selectedVariable, updateForm } = this.props
 
     return (
       <Map style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }} layers={layers}>
@@ -47,6 +48,10 @@ export default class extends PureComponent {
             map={map}
             updateMapLayer={({ source }) => this.clusteredSitesLayer.setSource(source)}
             data={data}
+            updateForm={updateForm}
+            selectedNetwork={selectedNetwork}
+            selectedVariable={selectedVariable}
+            selectedProtocol={selectedProtocol}
           >
             {({ updateFilters, refreshFilters, filters, anyActiveFilters }) => (
               <>

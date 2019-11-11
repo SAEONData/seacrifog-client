@@ -18,46 +18,46 @@ export default [
     to: '/contact',
     icon: 'call'
   },
-  {
-    keyval: 'nav-item-dashboard',
-    exact: true,
-    label: 'Inventory',
-    to: '/inventory',
-    icon: 'dashboard'
-  },
   { keyval: 'nav-divider-explore', divider: true, style: {} },
-  {
-    keyval: 'nav-drawer-subheader-explore',
-    subheader: true,
-    primaryText: 'Explore'
-  },
+  // {
+  //   keyval: 'nav-drawer-subheader-explore',
+  //   subheader: true,
+  //   primaryText: 'Explore'
+  // },
   {
     keyval: 'nav-item-explorer-variables',
     exact: false,
     label: 'Variables',
-    to: '/variables',
-    icon: 'code'
+    to: '/variables'
+    // icon: 'code'
   },
   {
     keyval: 'nav-item-explorer-protocols',
     exact: false,
     label: 'Protocols',
-    to: '/protocols',
-    icon: 'scatter_plot'
+    to: '/protocols'
+    // icon: 'scatter_plot'
+  },
+  {
+    keyval: 'nav-item-explorer-networks',
+    exact: false,
+    label: 'Networks',
+    to: '/networks'
+    // icon: 'scatter_plot'
   },
   {
     keyval: 'nav-item-explorer-dataproducts',
     exact: false,
     label: 'Data Products',
-    to: '/dataproducts',
-    icon: 'shopping_cart'
+    to: '/dataproducts'
+    // icon: 'shopping_cart'
   },
   {
     keyval: 'nav-item-atlas',
     exact: true,
-    label: 'Atlas',
-    to: '/atlas',
-    icon: 'location_searching'
+    label: 'Sites',
+    to: '/sites'
+    // icon: 'location_searching'
   },
   { keyval: 'nav-divider-tools', divider: true, style: {} },
   {

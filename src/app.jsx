@@ -3,12 +3,11 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import Navigation from './modules/layout'
 import Home from './pages/home'
 import Contact from './pages/contact'
-import Dashboard from './pages/dashboard'
-import SelectorTool from './pages/selector-tool'
-import Atlas from './pages/atlas'
+import SitesExplorer from './pages/explorer-sites'
 import ProtocolsExplorer from './pages/explorer-protocols'
 import VariablesExplorer from './pages/explorer-variables'
 import DataproductsExplorer from './pages/explorer-dataproducts'
+import NetworksExplorer from './pages/explorer-networks'
 import VariableEditor from './pages/editor-variables'
 import ProtocolEditor from './pages/editor-protocols'
 import DataproductEditor from './pages/editor-dataproducts'
@@ -22,25 +21,53 @@ import Form from './modules/form'
 // SPA wrapper
 const App = () => (
   <Form
-    hoveredProtocol={null}
-    selectedProtocol={null}
-    hoveredDP={null}
-    selectedDP={null}
-    hoveredVariable={null}
+    selectedNetwork={null}
     selectedVariable={null}
+    selectedProtocol={null}
+    selectedDP={null}
+    hoveredNetwork={null}
+    hoveredVariable={null}
+    hoveredProtocol={null}
+    hoveredDP={null}
   >
-    {({ updateForm, hoveredProtocol, selectedProtocol, hoveredDP, selectedDP, hoveredVariable, selectedVariable }) => (
+    {({
+      updateForm,
+      selectedNetwork,
+      selectedVariable,
+      selectedProtocol,
+      selectedDP,
+      hoveredNetwork,
+      hoveredVariable,
+      hoveredProtocol,
+      hoveredDP
+    }) => (
       <BrowserRouter>
         <Navigation navItems={navItems}>
+          {/* This is a route for testing things */}
+          <Route key={'test'} path={'/test'} exact={false} component={Test} />
+
           {/* Basic navigation */}
           <Route key={'home'} path={'/'} exact={true} component={Home} />
           <Route key={'home-2'} path={'/home'} exact={true} component={Home} />
           <Route key={'contact'} path={'/contact'} exact={true} component={Contact} />
-          <Route key={'dashboard-tool'} path={'/inventory'} exact={true} component={Dashboard} />
 
-          <Route key={'test'} path={'/test'} exact={false} component={Test} />
+          {/* Sites */}
+          <Route
+            key={'sites-explorer'}
+            path={'/sites'}
+            exact={true}
+            render={props => (
+              <SitesExplorer
+                updateForm={updateForm}
+                selectedNetwork={selectedNetwork}
+                selectedVariable={selectedVariable}
+                selectedProtocol={selectedProtocol}
+                {...props}
+              />
+            )}
+          />
 
-          {/* Explorer data */}
+          {/* Variables */}
           <Route
             key={'explorer-variables'}
             path={'/variables'}
@@ -48,12 +75,20 @@ const App = () => (
             render={props => (
               <VariablesExplorer
                 updateForm={updateForm}
-                hoveredVariable={hoveredVariable}
                 selectedVariable={selectedVariable}
+                hoveredVariable={hoveredVariable}
                 {...props}
               />
             )}
           />
+          <Route
+            key={'edit-variables'}
+            path={'/variables/:id'}
+            exact={false}
+            render={props => <VariableEditor id={props.match.params.id} {...props} />}
+          />
+
+          {/* Protocols */}
           <Route
             key={'explorer-protocols'}
             path={'/protocols'}
@@ -89,6 +124,8 @@ const App = () => (
             exact={false}
             render={props => <ProtocolEditor id={props.match.params.id} {...props} />}
           />
+
+          {/* Networks */}
           <Route
             key={'edit-dataproducts'}
             path={'/dataproducts/:id'}
@@ -96,21 +133,21 @@ const App = () => (
             render={props => <DataproductEditor id={props.match.params.id} {...props} />} //edited by steven: using EntityEditor class instead of VariableEditor
           />
 
-          {/* Tools */}
+          {/* Dataproducts */}
           <Route
-            key={'selector-tool'}
-            path={'/selector'}
+            key={'explorer-dataproducts'}
+            path={'/dataproducts'}
             exact={true}
             render={props => (
-              <SelectorTool
-                updateForm={updateForm}
-                selectedProtocol={selectedProtocol}
-                selectedVariable={selectedVariable}
-                {...props}
-              />
+              <DataproductsExplorer updateForm={updateForm} hoveredDP={hoveredDP} selectedDP={selectedDP} {...props} />
             )}
           />
-          <Route key={'atlas-tool'} path={'/atlas'} exact={true} render={props => <Atlas />} />
+          <Route
+            key={'edit-dataproducts'}
+            path={'/dataproducts/:id'}
+            exact={false}
+            render={props => <DataproductEditor id={props.match.params.id} {...props} />}
+          />
         </Navigation>
       </BrowserRouter>
     )}

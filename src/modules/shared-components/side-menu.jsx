@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Button, Drawer, Toolbar } from 'react-md'
 
-const drawerStyle = { minWidth: '400px', overflowY: 'auto' }
+const drawerStyle = { minWidth: '400px', overflowY: 'auto', zIndex: 20 }
 
 export class SideMenu extends PureComponent {
   state = { menuOpen: false }
@@ -18,7 +18,6 @@ export class SideMenu extends PureComponent {
     return (
       <>
         <Drawer
-          id="atlas-ui"
           style={style || drawerStyle}
           visible={menuOpen}
           mobileType={Drawer.DrawerTypes.TEMPORARY}

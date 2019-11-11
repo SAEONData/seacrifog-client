@@ -1,22 +1,13 @@
 import React from 'react'
-import { Map } from '@saeon/atlas'
-import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js'
+import { Map, ahocevarBaseMap } from '@saeon/atlas'
+import { Vector as VectorLayer } from 'ol/layer.js'
 import { Vector as VectorSource } from 'ol/source'
-import TileWMS from 'ol/source/TileWMS'
 import GeoJSON from 'ol/format/GeoJSON.js'
 import { Fill, Stroke, Style } from 'ol/style.js'
 
 export default ({ geoJson }) => {
   const layers = [
-    new TileLayer({
-      source: new TileWMS({
-        url: 'https://ahocevar.com/geoserver/wms',
-        params: {
-          LAYERS: 'ne:NE1_HR_LC_SR_W_DR',
-          TILED: true
-        }
-      })
-    }),
+    ahocevarBaseMap(),
     new VectorLayer({
       source: new VectorSource({
         features: new GeoJSON().readFeatures(geoJson)
@@ -33,5 +24,5 @@ export default ({ geoJson }) => {
       })
     })
   ]
-  return <Map layers={layers} />
+  return <Map style={{ height: '100%' }} layers={layers} />
 }
