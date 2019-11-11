@@ -1,15 +1,8 @@
 import React, { PureComponent } from 'react'
 import FilterState from './filter-state'
 import FeatureDetail from './feature-detail'
-import {
-  Map,
-  clusterSource,
-  clusterLayer,
-  ahocevarBaseMap,
-  FeatureSelector,
-  SideMenu,
-  DropdownSelect
-} from '@saeon/atlas'
+import { Map, clusterSource, clusterLayer, ahocevarBaseMap, SingleFeatureSelector } from '@saeon/atlas'
+import { SideMenu, DropdownSelect } from '../../modules/shared-components'
 import sift from 'sift'
 import { Button } from 'react-md'
 
@@ -39,37 +32,42 @@ export default class extends PureComponent {
     )
 
     // Create layers
-    this.clusteredSites = clusterSource(data.sites)
+    this.clusteredSites = clusterSource({ data: data.sites, locAttribute: 'xyz' })
     this.clusteredSitesLayer = clusterLayer(this.clusteredSites, 'sites')
     this.layers = [ahocevarBaseMap, this.clusteredSitesLayer]
-  }
-
-  updateMapLayer = ({ source }) => {
-    this.clusteredSitesLayer.setSource(source)
   }
 
   render() {
     const { data, layers } = this
 
     return (
-      <Map
-        style={{ display: 'flex', flexDirection: 'column', margin: 0, float: 'right' }}
-        className={'md-toolbar-relative'}
-        viewOptions={this.viewOptions}
-        layers={layers}
-      >
+      <Map style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }} layers={layers}>
         {({ map }) => (
-          <FilterState map={map} updateMapLayer={this.updateMapLayer} data={data}>
+          <FilterState
+            map={map}
+            updateMapLayer={({ source }) => this.clusteredSitesLayer.setSource(source)}
+            data={data}
+          >
             {({ updateFilters, refreshFilters, filters, anyActiveFilters }) => (
               <>
                 {/* Side Filter */}
                 <SideMenu
-                  icon={'search'}
                   toolbarActions={[
                     <Button disabled={anyActiveFilters ? false : true} primary onClick={refreshFilters} icon>
                       refresh
                     </Button>
                   ]}
+                  control={({ toggleMenu }) => (
+                    <Button
+                      style={{ position: 'absolute', top: 0, right: 0, margin: '10px', zIndex: 1 }}
+                      swapTheming
+                      primary
+                      icon
+                      onClick={toggleMenu}
+                    >
+                      search
+                    </Button>
+                  )}
                 >
                   <div style={sideMenuContentStyle}>
                     {filters.map(filter => (
@@ -79,7 +77,20 @@ export default class extends PureComponent {
                 </SideMenu>
 
                 {/* Feature click panel */}
-                <SideMenu style={{ minWidth: '100%', overflowY: 'auto', zIndex: 999 }} icon={'bar_chart'}>
+                <SideMenu
+                  style={{ minWidth: '100%', overflowY: 'auto', zIndex: 999 }}
+                  control={({ toggleMenu }) => (
+                    <Button
+                      swapTheming
+                      primary
+                      style={{ position: 'absolute', top: 50, right: 0, margin: '10px', zIndex: 1 }}
+                      icon
+                      onClick={toggleMenu}
+                    >
+                      bar_chart
+                    </Button>
+                  )}
+                >
                   <div style={{ padding: 0, height: 'calc(100% - 67px)' }}>
                     <FeatureDetail
                       toolbarActions={[
@@ -103,8 +114,8 @@ export default class extends PureComponent {
                 </SideMenu>
 
                 {/* Feature click panel */}
-                <FeatureSelector map={map}>
-                  {({ selectedFeature, closePanel }) =>
+                <SingleFeatureSelector map={map}>
+                  {({ selectedFeature, unselectFeature }) =>
                     selectedFeature ? (
                       <div
                         style={{
@@ -124,7 +135,7 @@ export default class extends PureComponent {
                             <Button onClick={() => alert('TODO')} icon>
                               save_alt
                             </Button>,
-                            <Button onClick={closePanel} icon>
+                            <Button onClick={unselectFeature} icon>
                               close
                             </Button>
                           ]}
@@ -135,7 +146,7 @@ export default class extends PureComponent {
                       ''
                     )
                   }
-                </FeatureSelector>
+                </SingleFeatureSelector>
               </>
             )}
           </FilterState>
