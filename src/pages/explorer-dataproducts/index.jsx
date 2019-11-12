@@ -39,66 +39,62 @@ export default ({ updateForm, hoveredDP, selectedDP, ...props }) => (
               resetForm={() => updateForm({ selectedDP: null })}
             />
           </Card>
-        </Cell>
 
-        <Cell size={12}>
           {/* Display information about selected row */}
           {selectedDP ? (
             <DataQuery query={DATAPRODUCT} variables={{ id: selectedDP.id }}>
               {({ dataproduct }) => (
-                <Grid noSpacing>
-                  <Cell size={12}>
-                    <ExpansionList>
-                      <ExpansionPanel label="Overview" defaultExpanded footer={false}>
-                        {
-                          <FormattedInfo
-                            object={pickBy((val, key) => {
-                              if (['title', 'provider', 'publish_year', 'abstract'].includes(key)) return true
-                              else return false
-                            }, dataproduct)}
-                          />
-                        }
-                      </ExpansionPanel>
-                      <ExpansionPanel label="Additional Information" footer={false}>
-                        {
-                          <FormattedInfo
-                            object={pickBy((val, key) => {
-                              if (['abstract', '__typename'].includes(key)) return false
-                              if (typeof val === 'object') return false
-                              return true
-                            }, dataproduct)}
-                          />
-                        }
-                      </ExpansionPanel>
-                      <ExpansionPanel className="fix-panel-content-style" label="Spatial Coverage" footer={false}>
-                        <div style={{ height: '400px', width: '100%', position: 'relative' }}>
-                          <CoverageMap geoJson={dataproduct.coverage_spatial} />
-                        </div>
-                      </ExpansionPanel>
-                    </ExpansionList>
-                  </Cell>
-                  <Cell size={12}>
-                    <h3 style={{ marginTop: '100px' }}>Essential Variables</h3>
-                    {dataproduct.variables[0] ? (
-                      <Card tableCard>
-                        <Table
-                          onRowClick={row =>
-                            updateForm({ selectedVariable: row }, () =>
-                              props.history.push(`/variables?searchTerm=${row.name}`)
-                            )
-                          }
-                          headers={Object.keys(dataproduct.variables[0])
-                            .filter(col => col !== '__typename' && col !== 'id')
-                            .concat('relationship')}
-                          data={dataproduct.variables.map(v => mergeLeft({ relationship: 'direct' }, v))}
-                          hideToolbar
+                <>
+                  <ExpansionList>
+                    <ExpansionPanel label="Overview" defaultExpanded footer={false}>
+                      {
+                        <FormattedInfo
+                          object={pickBy((val, key) => {
+                            if (['title', 'provider', 'publish_year', 'abstract'].includes(key)) return true
+                            else return false
+                          }, dataproduct)}
                         />
-                      </Card>
-                    ) : (
-                      <NoneMessage />
-                    )}
-                  </Cell>
-                </Grid>
+                      }
+                    </ExpansionPanel>
+                    <ExpansionPanel label="Additional Information" footer={false}>
+                      {
+                        <FormattedInfo
+                          object={pickBy((val, key) => {
+                            if (['abstract', '__typename'].includes(key)) return false
+                            if (typeof val === 'object') return false
+                            return true
+                          }, dataproduct)}
+                        />
+                      }
+                    </ExpansionPanel>
+                    <ExpansionPanel className="fix-panel-content-style" label="Spatial Coverage" footer={false}>
+                      <div style={{ height: '400px', width: '100%', position: 'relative' }}>
+                        <CoverageMap geoJson={dataproduct.coverage_spatial} />
+                      </div>
+                    </ExpansionPanel>
+                  </ExpansionList>
+
+                  {/* Essential Variables */}
+                  <h3 style={{ marginTop: '100px' }}>Essential Variables</h3>
+                  {dataproduct.variables[0] ? (
+                    <Card tableCard>
+                      <Table
+                        onRowClick={row =>
+                          updateForm({ selectedVariable: row }, () =>
+                            props.history.push(`/variables?searchTerm=${row.name}`)
+                          )
+                        }
+                        headers={Object.keys(dataproduct.variables[0])
+                          .filter(col => col !== '__typename' && col !== 'id')
+                          .concat('relationship')}
+                        data={dataproduct.variables.map(v => mergeLeft({ relationship: 'direct' }, v))}
+                        hideToolbar
+                      />
+                    </Card>
+                  ) : (
+                    <NoneMessage />
+                  )}
+                </>
               )}
             </DataQuery>
           ) : (
