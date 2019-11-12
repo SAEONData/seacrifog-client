@@ -67,6 +67,9 @@ const App = () => (
             )}
           />
 
+          {/* Network Explorer */}
+          <Route key={'networks-explorer'} path={'/networks'} exact={true} render={props => <NetworksExplorer />} />
+
           {/* Variables */}
           <Route
             key={'explorer-variables'}

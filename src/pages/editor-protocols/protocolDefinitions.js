@@ -1,26 +1,5 @@
 const validate = (arg1, arg2) => 'todo'
 
-const editableFields = [
-  'AUTHOR',
-  'PUBLISHER',
-  'TITLE',
-  'PUBLISHER',
-  'TITLE',
-  'COVERAGE_TYPE',
-  'CATEGORY',
-  'DOMAIN',
-  'PURPOSE',
-  'ABSTRACT',
-  'LICENSE',
-  'LANGUAGE',
-  'FORMAT',
-  'SUSTAINABILITY',
-  'VERSION',
-  'RESOLUTION',
-  'COST',
-  'SOURCE'
-]
-
 export const fieldDefinitions = {
   __typename: {
     //consider removing this entry and filtering out __typename from fields instead

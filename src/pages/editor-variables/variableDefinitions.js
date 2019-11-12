@@ -1,23 +1,3 @@
-//The fields to be displayed but as disabled(greyed out)
-const noneditableFields = ['ID', 'UPDATED_BY', 'UPDATED_AT']
-//The fields NOT to be displayed at all
-const hiddenFields = [
-  'INDIRECTLY_RELATED_PROTOCOLS',
-  'DIRECTLY_RELATED_PROTOCOLS',
-  'RFORCINGS',
-  'DATAPRODUCTS',
-  '__TYPENAME'
-]
-
-// const errorFields = [
-//   'INDIRECTLY_RELATED_PROTOCOLS',
-//   'DIRECTLY_RELATED_PROTOCOLS',
-//   'RFORCINGS',
-//   'DATAPRODUCTS',
-//   '__TYPENAME'
-// updated_at
-
-// ]
 const validate = (arg1, arg2) => 'todo'
 
 export const fieldDefinitions = {
