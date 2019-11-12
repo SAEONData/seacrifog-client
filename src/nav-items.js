@@ -79,7 +79,7 @@ export default [
     avatar: {
       children: 'MD',
       suffix: 'deep-orange',
-      style: Object.assign({ ...avatarStyle }, { color: 'white', fontSize: '9px' })
+      style: Object.assign({ ...avatarStyle }, { color: 'white', backgroundColor: '#ff6e40', fontSize: '9px' })
     },
     label: 'React-md'
   },

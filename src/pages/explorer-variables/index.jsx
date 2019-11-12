@@ -2,7 +2,8 @@ import React from 'react'
 import DataQuery from '../../modules/data-query'
 import { VARIABLES_MIN, VARIABLE } from '../../graphql/queries'
 import Table from '../../modules/table'
-import { mergeLeft, pickBy } from 'ramda'
+import { mergeLeft } from 'ramda'
+import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
 import { NoneMessage, FormattedInfo, LinkButton, DownloadButton, EditButton } from '../../modules/shared-components'
 import q from 'query-string'
 import {
@@ -17,6 +18,16 @@ import {
   TableBody,
   Card
 } from 'react-md'
+
+const mappings = {
+  rftype: 'Radiative Forcing',
+  res_value: 'Resolution',
+  res_unit: 'Resolution unit',
+  res_comment: 'Resolution comment',
+  unc_val: 'uncertainty value',
+  unc_unit: 'uncertainty unit',
+  unc_comment: 'Comments re. uncertainty'
+}
 
 export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => (
   <DataQuery query={VARIABLES_MIN}>
@@ -58,39 +69,18 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
                     <ExpansionPanel label="Overview" defaultExpanded footer={false}>
                       {
                         <FormattedInfo
-                          object={pickBy((val, key) => {
-                            if (['name', 'domain', 'class', 'description'].includes(key)) return true
-                            else return false
-                          }, variable)}
+                          object={formatAndFilterObjectKeys(variable, mappings, ([key, val]) =>
+                            ['name', 'domain', 'class', 'description'].includes(key)
+                          )}
                         />
                       }
                     </ExpansionPanel>
                     <ExpansionPanel label="General Information" footer={false}>
                       {
                         <FormattedInfo
-                          object={pickBy((val, key) => {
-                            if (
-                              [
-                                'description',
-                                '__typename',
-                                'frequency_value',
-                                'frequency_unit',
-                                'frequency_comment',
-                                'res_value',
-                                'res_unit',
-                                'rftype',
-                                'res_comment',
-                                'unc_val',
-                                'unc_unit',
-                                'unc_comment',
-                                'req_source',
-                                'req_uri'
-                              ].includes(key)
-                            )
-                              return false
-                            if (typeof val === 'object') return false
-                            return true
-                          }, variable)}
+                          object={formatAndFilterObjectKeys(variable, mappings, ([key, val]) =>
+                            ['description', '__typename'].includes(key) || typeof val === 'object' ? false : true
+                          )}
                         />
                       }
                     </ExpansionPanel>
@@ -118,7 +108,10 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
                         <FormattedInfo
                           object={{
                             'Variable Type': variable.rftype,
-                            'Total RF best est. (Wm-2)': Math.max.apply(Math, variable.rforcings.map(rf => rf.max)),
+                            'Total RF best est. (Wm-2)': Math.max.apply(
+                              Math,
+                              variable.rforcings.map(rf => rf.max)
+                            ),
                             'Total RF uncertainty (absolute, Wm-2)': 'TODO - Get maths calc',
                             'Total RF uncertainty (relative, %)': 'TODO - Get maths calc'
                           }}
@@ -195,29 +188,32 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
             </DataQuery>
           ) : (
             <FormattedInfo
-              object={{
-                name: selectedVariable ? (
-                  selectedVariable.name
-                ) : hoveredVariable ? (
-                  hoveredVariable.name
-                ) : (
-                  <i>Select a row for more detailed information</i>
-                ),
-                domain: selectedVariable ? (
-                  selectedVariable.domain
-                ) : hoveredVariable ? (
-                  hoveredVariable.domain
-                ) : (
-                  <i>Select a row for more detailed information</i>
-                ),
-                class: selectedVariable ? (
-                  selectedVariable.class
-                ) : hoveredVariable ? (
-                  hoveredVariable.class
-                ) : (
-                  <i>Select a row for more detailed information</i>
-                )
-              }}
+              object={formatAndFilterObjectKeys(
+                {
+                  name: selectedVariable ? (
+                    selectedVariable.name
+                  ) : hoveredVariable ? (
+                    hoveredVariable.name
+                  ) : (
+                    <i>Select a row for more detailed information</i>
+                  ),
+                  domain: selectedVariable ? (
+                    selectedVariable.domain
+                  ) : hoveredVariable ? (
+                    hoveredVariable.domain
+                  ) : (
+                    <i>Select a row for more detailed information</i>
+                  ),
+                  class: selectedVariable ? (
+                    selectedVariable.class
+                  ) : hoveredVariable ? (
+                    hoveredVariable.class
+                  ) : (
+                    <i>Select a row for more detailed information</i>
+                  )
+                },
+                mappings
+              )}
             />
           )}
         </Cell>
