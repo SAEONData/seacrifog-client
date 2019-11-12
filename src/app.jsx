@@ -103,6 +103,22 @@ const App = () => (
             )}
           />
           <Route
+            key={'explorer-dataproducts'}
+            path={'/dataproducts'}
+            exact={true}
+            render={props => (
+              <DataproductsExplorer updateForm={updateForm} hoveredDP={hoveredDP} selectedDP={selectedDP} {...props} />
+            )}
+          />
+
+          {/* Edit data */}
+          <Route
+            key={'edit-variables'}
+            path={'/variables/:id'}
+            exact={false}
+            render={props => <VariableEditor id={props.match.params.id} {...props} />} //edited by steven: using EntityEditor class instead of VariableEditor
+          />
+          <Route
             key={'edit-protocols'}
             path={'/protocols/:id'}
             exact={false}
@@ -111,10 +127,10 @@ const App = () => (
 
           {/* Networks */}
           <Route
-            key={'explorer-networks'}
-            path={'/networks'}
-            exact={true}
-            render={props => <NetworksExplorer updateForm={updateForm} {...props} />}
+            key={'edit-dataproducts'}
+            path={'/dataproducts/:id'}
+            exact={false}
+            render={props => <DataproductEditor id={props.match.params.id} {...props} />} //edited by steven: using EntityEditor class instead of VariableEditor
           />
 
           {/* Dataproducts */}
