@@ -102,3 +102,8 @@ body {
     background-color: #efefef;
   }
 }
+
+// Overrides
+#selectable-table-toggle-all + label {
+  display: none;
+}
