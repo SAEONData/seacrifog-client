@@ -32,7 +32,7 @@ export default ({ mutation, fieldDefinitions, entityProp, updateForm, ...fields 
                         label={fieldDefinitions[key].label}
                         rows={1}
                         disabled={!fieldDefinitions[key].editable}
-                        value={value != null ? value.toString() : ''} //NOTE: This can cause null values to be saved as "null" if editor is opened and saved
+                        value={value != null ? value.toString() : ''} //NOTE: This can cause null values to be saved as "" if editor is opened and saved
                         onChange={val => updateForm({ [key]: val })}
                       />
                     ))}
