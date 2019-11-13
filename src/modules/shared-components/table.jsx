@@ -6,11 +6,11 @@ const getSortFromInts = (a, b) => (a > b ? 1 : a < b ? -1 : 0)
 export default class extends PureComponent {
   rowToIdMap = {}
   render() {
-    const { props, state, rowToIdMap } = this
-    const { data, dataDefinitions, toggleSelect } = props
+    const { props, rowToIdMap } = this
+    const { data, dataDefinitions, toggleSelect, selectedIds } = props
     return (
       <>
-        <Toolbar style={{ display: 'flex', alignItems: 'center' }} themed zDepth={0}>
+        <Toolbar style={{ display: 'flex', alignItems: 'center' }} zDepth={0}>
           <TextField
             id="table-search"
             style={{ marginLeft: '20px', display: 'flex' }}
@@ -23,6 +23,7 @@ export default class extends PureComponent {
           />
         </Toolbar>
         <DataTable
+          style={{ fontSize: '12px' }}
           onRowToggle={(rowNum, checked, selectedCount, e) => {
             const id = rowToIdMap[rowNum]
             toggleSelect({ id, selected: checked })
@@ -31,6 +32,9 @@ export default class extends PureComponent {
           responsive={true}
           fullWidth
           baseId="selectable-table"
+          defaultSelectedRows={(() => {
+            return data.map(({ id }, i) => (selectedIds.includes(id) ? true : false))
+          })()}
         >
           <TableHeader>
             <TableRow>
@@ -49,27 +53,25 @@ export default class extends PureComponent {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data
-              .filter(row => true) // Apply text filter
-              .map((row, i) => {
-                rowToIdMap[i + 1] = row.id // Keep track of which IDs are in whic rows
-                return (
-                  <TableRow key={i}>
-                    {Object.entries(row)
-                      .filter(([field]) => dataDefinitions[field] && dataDefinitions[field].show)
-                      .sort(([fieldNameA], [fieldNameB]) => {
-                        const aOrder = dataDefinitions[fieldNameA].order || -9
-                        const bOrder = dataDefinitions[fieldNameB].order || -8
-                        return getSortFromInts(aOrder, bOrder)
-                      })
-                      .map(([field, value], i) => (
-                        <TableColumn key={i} plain={true}>
-                          {value.truncate ? value.truncate(140) : value}
-                        </TableColumn>
-                      ))}
-                  </TableRow>
-                )
-              })}
+            {data.map((row, i) => {
+              rowToIdMap[i + 1] = row.id // Keep track of which IDs are in whic rows
+              return (
+                <TableRow key={i}>
+                  {Object.entries(row)
+                    .filter(([field]) => dataDefinitions[field] && dataDefinitions[field].show)
+                    .sort(([fieldNameA], [fieldNameB]) => {
+                      const aOrder = dataDefinitions[fieldNameA].order || -9
+                      const bOrder = dataDefinitions[fieldNameB].order || -8
+                      return getSortFromInts(aOrder, bOrder)
+                    })
+                    .map(([field, value], i) => (
+                      <TableColumn key={i} plain={true}>
+                        {value.truncate ? value.truncate(140) : value}
+                      </TableColumn>
+                    ))}
+                </TableRow>
+              )
+            })}
           </TableBody>
         </DataTable>
       </>
