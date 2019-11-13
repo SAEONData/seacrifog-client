@@ -1,7 +1,8 @@
 import reactLogo from './svgs/react-logo.svg'
-import reactMdLogo from './svgs/react-md-logo.svg'
 import googleLogo from './svgs/google-logo.svg'
 import gitlabLogo from './svgs/gitlab-logo.svg'
+
+const avatarStyle = { fontSize: '11px' }
 
 export default [
   {
@@ -16,48 +17,43 @@ export default [
     exact: true,
     label: 'Contact',
     to: '/contact',
-    icon: 'call'
+    icon: 'contact_support'
   },
   { keyval: 'nav-divider-explore', divider: true, style: {} },
-  // {
-  //   keyval: 'nav-drawer-subheader-explore',
-  //   subheader: true,
-  //   primaryText: 'Explore'
-  // },
   {
     keyval: 'nav-item-explorer-variables',
     exact: false,
     label: 'Variables',
-    to: '/variables'
-    // icon: 'code'
+    to: '/variables',
+    avatar: { children: 'V', suffix: 'light-blue', style: avatarStyle }
   },
   {
     keyval: 'nav-item-explorer-protocols',
     exact: false,
     label: 'Protocols',
-    to: '/protocols'
-    // icon: 'scatter_plot'
+    to: '/protocols',
+    avatar: { children: 'P', suffix: 'cyan', style: avatarStyle }
   },
   {
     keyval: 'nav-item-explorer-networks',
     exact: false,
     label: 'Networks',
-    to: '/networks'
-    // icon: 'scatter_plot'
+    to: '/networks',
+    avatar: { children: 'N', suffix: 'teal', style: avatarStyle }
   },
   {
     keyval: 'nav-item-explorer-dataproducts',
     exact: false,
     label: 'Data Products',
-    to: '/dataproducts'
-    // icon: 'shopping_cart'
+    to: '/dataproducts',
+    avatar: { children: 'D', suffix: 'light-green', style: avatarStyle }
   },
   {
     keyval: 'nav-item-atlas',
     exact: true,
     label: 'Sites',
-    to: '/sites'
-    // icon: 'location_searching'
+    to: '/sites',
+    avatar: { children: 'S', suffix: 'lime', style: avatarStyle }
   },
   { keyval: 'nav-divider-tools', divider: true, style: {} },
   {
@@ -80,7 +76,11 @@ export default [
   {
     keyval: 'react-md-logo',
     href: 'https://react-md.mlaursen.com/',
-    avatar: { src: reactMdLogo, alt: 'React-md Logo' },
+    avatar: {
+      children: 'MD',
+      suffix: 'deep-orange',
+      style: Object.assign({ ...avatarStyle }, { color: 'white', backgroundColor: '#ff6e40', fontSize: '9px' })
+    },
     label: 'React-md'
   },
   {

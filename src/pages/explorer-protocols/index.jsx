@@ -2,10 +2,13 @@ import React from 'react'
 import DataQuery from '../../modules/data-query'
 import { PROTOCOLS_MIN, PROTOCOL } from '../../graphql/queries'
 import Table from '../../modules/table'
-import { mergeLeft, pickBy } from 'ramda'
+import { mergeLeft } from 'ramda'
+import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
 import { NoneMessage, FormattedInfo, LinkButton, DownloadButton, EditButton } from '../../modules/shared-components'
 import q from 'query-string'
 import { Grid, Cell, ExpansionList, ExpansionPanel, Card } from 'react-md'
+
+const mappings = {}
 
 export default ({ updateForm, hoveredProtocol, selectedProtocol, ...props }) => (
   <DataQuery query={PROTOCOLS_MIN}>
@@ -48,21 +51,18 @@ export default ({ updateForm, hoveredProtocol, selectedProtocol, ...props }) => 
                       <ExpansionPanel label="Overview" defaultExpanded footer={false}>
                         {
                           <FormattedInfo
-                            object={pickBy((val, key) => {
-                              if (['title', 'author', 'domain', 'abstract'].includes(key)) return true
-                              else return false
-                            }, protocol)}
+                            object={formatAndFilterObjectKeys(protocol, mappings, ([key, val]) =>
+                              ['title', 'author', 'domain', 'abstract'].includes(key)
+                            )}
                           />
                         }
                       </ExpansionPanel>
                       <ExpansionPanel label="Additional Information" footer={false}>
                         {
                           <FormattedInfo
-                            object={pickBy((val, key) => {
-                              if (['abstract', '__typename'].includes(key)) return false
-                              if (typeof val === 'object') return false
-                              return true
-                            }, protocol)}
+                            object={formatAndFilterObjectKeys(protocol, mappings, ([key, val]) =>
+                              ['abstract', '__typename'].includes(key) || typeof val === 'object' ? false : true
+                            )}
                           />
                         }
                       </ExpansionPanel>
@@ -96,29 +96,32 @@ export default ({ updateForm, hoveredProtocol, selectedProtocol, ...props }) => 
               </DataQuery>
             ) : (
               <FormattedInfo
-                object={{
-                  title: selectedProtocol ? (
-                    selectedProtocol.title
-                  ) : hoveredProtocol ? (
-                    hoveredProtocol.title
-                  ) : (
-                    <i>Select a row for more detailed information</i>
-                  ),
-                  author: selectedProtocol ? (
-                    selectedProtocol.author
-                  ) : hoveredProtocol ? (
-                    hoveredProtocol.author
-                  ) : (
-                    <i>Select a row for more detailed information</i>
-                  ),
-                  domain: selectedProtocol ? (
-                    selectedProtocol.domain
-                  ) : hoveredProtocol ? (
-                    hoveredProtocol.domain
-                  ) : (
-                    <i>Select a row for more detailed information</i>
-                  )
-                }}
+                object={formatAndFilterObjectKeys(
+                  {
+                    title: selectedProtocol ? (
+                      selectedProtocol.title
+                    ) : hoveredProtocol ? (
+                      hoveredProtocol.title
+                    ) : (
+                      <i>Select a row for more detailed information</i>
+                    ),
+                    author: selectedProtocol ? (
+                      selectedProtocol.author
+                    ) : hoveredProtocol ? (
+                      hoveredProtocol.author
+                    ) : (
+                      <i>Select a row for more detailed information</i>
+                    ),
+                    domain: selectedProtocol ? (
+                      selectedProtocol.domain
+                    ) : hoveredProtocol ? (
+                      hoveredProtocol.domain
+                    ) : (
+                      <i>Select a row for more detailed information</i>
+                    )
+                  },
+                  mappings
+                )}
               />
             )}
           </Cell>

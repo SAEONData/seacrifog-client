@@ -6,8 +6,6 @@ import DataMutation from '../../modules/data-mutation'
 import Form from '../../modules/form'
 import { LinkError } from 'apollo-link/lib/linkUtils'
 
-var bar = <QueryIndeterminate />
-const url = window.location.href
 //TO-DO:
 //->Move DataQuery from entity-editor to editor-variables, editor-protocol, editor-dataproducts so that DataQuery can have 2 children trees(entity editor and relationship editor)
 //Relationship Editor will be very explicit unlike entity-editor so its best have them as separate components.

@@ -7,6 +7,16 @@ import Form from '../../modules/form'
 import { fieldDefinitions } from './variable-definitions'
 //VARIABLES EDITOR
 
+//errorFields are never used. All of these(except for typename) hold Object arrays which cause an error on useMutation().
+//Look into what the best way to handle these is. Currently these fields are ignored in useMutation
+// const errorFields = [
+//   'INDIRECTLY_RELATED_PROTOCOLS',
+//   'DIRECTLY_RELATED_PROTOCOLS',
+//   'RFORCINGS',
+//   'DATAPRODUCTS',
+//   '__TYPENAME'
+// ]
+
 export default ({ id }) => (
   <DataQuery query={VARIABLE} variables={{ id: parseInt(id) }}>
     {(

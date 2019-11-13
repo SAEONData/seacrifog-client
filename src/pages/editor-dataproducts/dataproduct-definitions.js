@@ -1,19 +1,5 @@
 const validate = (arg1, arg2) => 'todo'
 
-/* These are the fields known to give errors (datatype issue most likely)
-'COVERAGE_SPATIAL',
-'__TYPENAME',
-'VARIABLES',
-'CREATED_AT',
-'MODIFIED_AT', //ERROR
-'FILE_SIZE', //ERROR
-'RES_TEMPERATURE', //ERROR
-'UNCERTAINTY', //ERROR
-'COVERAGE_TEMP_START',
-'COVERAGE_TEMP_END', //ERROR
-'PUBLISH_DATE' //ERROR
-*/
-
 export const fieldDefinitions = {
   __typename: {
     //consider removing this entry and filtering out __typename from fields instead
