@@ -20,10 +20,8 @@ export default ({ mutation, fieldDefinitions, entityProp, updateForm, ...fields 
   <DataMutation mutation={mutation}>
     {({ executeMutation }) => (
       <Grid>
-        {/* <div id="progress-bar holder"> */}
-        {/* {bar} */}
+        <QueryIndeterminate />
         <LinearProgress show={false} />
-        {/* </div> */}
         <Cell phoneSize={4} tabletSize={8} size={12}>
           <Card>
             <Grid>
@@ -47,7 +45,7 @@ export default ({ mutation, fieldDefinitions, entityProp, updateForm, ...fields 
                   <div id="progress-bar holder"></div>
                   <Button
                     onClick={() => {
-                      bar.endDisplay()
+                      //bar.endDisplay()
                       //progressBar.value = 50
                       const editableFields = Object.entries(fields).filter(field => {
                         return fieldDefinitions[field[0]].display && fieldDefinitions[field[0]].editable
