@@ -108,10 +108,7 @@ export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => 
                         <FormattedInfo
                           object={{
                             'Variable Type': variable.rftype,
-                            'Total RF best est. (Wm-2)': Math.max.apply(
-                              Math,
-                              variable.rforcings.map(rf => rf.max)
-                            ),
+                            'Total RF best est. (Wm-2)': Math.max.apply(Math, variable.rforcings.map(rf => rf.max)),
                             'Total RF uncertainty (absolute, Wm-2)': 'TODO - Get maths calc',
                             'Total RF uncertainty (relative, %)': 'TODO - Get maths calc'
                           }}
