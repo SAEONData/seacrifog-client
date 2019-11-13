@@ -1,10 +1,7 @@
 import React from 'react'
-import { Grid, Cell, Card, CardText, TextField, Button, LinearProgress } from 'react-md'
-import QueryIndeterminate from '../../modules/shared-components/progress-bar'
-import DataQuery from '../../modules/data-query'
+import { Grid, Cell, Card, CardText, TextField } from 'react-md'
+import SaveButton from '../../modules/shared-components/save-button'
 import DataMutation from '../../modules/data-mutation'
-import Form from '../../modules/form'
-import { LinkError } from 'apollo-link/lib/linkUtils'
 
 //TO-DO:
 //->Move DataQuery from entity-editor to editor-variables, editor-protocol, editor-dataproducts so that DataQuery can have 2 children trees(entity editor and relationship editor)
@@ -13,13 +10,12 @@ import { LinkError } from 'apollo-link/lib/linkUtils'
 //create a popup alert / admin alert system to notify a dev to add the definition to fieldDefinitions and ignore that field for the sake of the user
 //->Make Save Button more responsive. Maybe a swipe on save, scroll to top, progress bar
 //->Read up on IIFE((immediately invoking function expression)
+//->Check in with Zach if Save Button needs any unmount functionality
 
 export default ({ mutation, fieldDefinitions, entityProp, updateForm, ...fields }) => (
   <DataMutation mutation={mutation}>
     {({ executeMutation }) => (
       <Grid>
-        <QueryIndeterminate />
-        <LinearProgress show={false} />
         <Cell phoneSize={4} tabletSize={8} size={12}>
           <Card>
             <Grid>
@@ -40,32 +36,13 @@ export default ({ mutation, fieldDefinitions, entityProp, updateForm, ...fields 
                         onChange={val => updateForm({ [key]: val })}
                       />
                     ))}
-                  <div id="progress-bar holder"></div>
-                  <Button
-                    onClick={() => {
-                      //bar.endDisplay()
-                      //progressBar.value = 50
-                      const editableFields = Object.entries(fields).filter(field => {
-                        return fieldDefinitions[field[0]].display && fieldDefinitions[field[0]].editable
-                      })
-                      executeMutation({
-                        variables: {
-                          input: [
-                            {
-                              id: fields.id,
-                              ...Object.fromEntries(editableFields)
-                            }
-                          ]
-                        }
-                      })
-                    }}
-                    style={{ marginTop: '20px' }}
-                    swapTheming
-                    primary
-                    flat
-                  >
-                    save
-                  </Button>
+                  <SaveButton
+                    onClick={executeMutation}
+                    fields={fields}
+                    fieldDefinitions={fieldDefinitions}
+                    linear={false}
+                    circular={true}
+                  />
                 </CardText>
               </Cell>
             </Grid>
