@@ -36,8 +36,8 @@ export const fieldDefinitions = {
   },
   publish_date: {
     type: Date,
-    editable: true,
-    display: false,
+    editable: false,
+    display: true,
     label: 'Date Published',
     pristine: true,
     validate

@@ -1,7 +1,6 @@
 import React from 'react'
-import { Grid, Cell, Card, CardText, TextField } from 'react-md'
+import { CardText, TextField /* DatePicker*/ } from 'react-md'
 import SaveButton from '../../modules/shared-components/save-button'
-import DataMutation from '../../modules/data-mutation'
 
 //TO-DO:
 //->Move DataQuery from entity-editor to editor-variables, editor-protocol, editor-dataproducts so that DataQuery can have 2 children trees(entity editor and relationship editor)
@@ -12,43 +11,51 @@ import DataMutation from '../../modules/data-mutation'
 //->Read up on IIFE((immediately invoking function expression)
 //->Check in with Zach if Save Button needs any unmount functionality
 
-export default ({ mutation, fieldDefinitions, entityProp, updateForm, ...fields }) => (
-  <DataMutation mutation={mutation}>
-    {({ executeMutation }) => (
-      <Grid>
-        <Cell phoneSize={4} tabletSize={8} size={12}>
-          <Card>
-            <Grid>
-              <Cell phoneSize={4} tabletSize={8} size={6}>
-                <CardText>
-                  {Object.entries(fields)
-                    .filter(([field]) => {
-                      return fieldDefinitions[field].display
-                    }) //removing any unwanted columns
-                    .map(([key, value], i) => (
-                      <TextField
-                        id={'update-form-entity' + i}
-                        key={i}
-                        label={fieldDefinitions[key].label}
-                        rows={1}
-                        disabled={!fieldDefinitions[key].editable}
-                        value={value != null ? value.toString() : ''} //NOTE: This can cause null values to be saved as "" if editor is opened and saved
-                        onChange={val => updateForm({ [key]: val })}
-                      />
-                    ))}
-                  <SaveButton
-                    onClick={executeMutation}
-                    fields={fields}
-                    fieldDefinitions={fieldDefinitions}
-                    linear={false}
-                    circular={true}
-                  />
-                </CardText>
-              </Cell>
-            </Grid>
-          </Card>
-        </Cell>
-      </Grid>
-    )}
-  </DataMutation>
+//--->Data Type Handling Changes:
+//->Date : DatePicker
+//->Number : TextField with error checker
+//->Text : Simple TextField
+
+export default ({ mutation, executeMutation, fieldDefinitions, entityProp, updateForm, ...fields }) => (
+  <CardText>
+    {Object.entries(fields)
+      .filter(([field]) => {
+        return fieldDefinitions[field].display
+      }) //removing any unwanted columns
+      .map(([key, value], i) => {
+        //if (fieldDefinitions[key].type === String)
+        return (
+          <TextField
+            id={'update-form-entity' + i}
+            key={i}
+            label={fieldDefinitions[key].label}
+            disabled={!fieldDefinitions[key].editable}
+            value={value != null ? value.toString() : ''} //NOTE: This can cause null values to be saved as "" if editor is opened and saved
+            onChange={val => updateForm({ [key]: val })}
+          />
+        )
+        /*else if (fieldDefinitions[key].type === Date) {
+                        return (
+                          <DatePicker
+                            id={'update-form-entity' + i}
+                            key={i}
+                            label={fieldDefinitions[key].label}
+                            value={value}
+                            disabled={!fieldDefinitions[key].editable}
+                            onChange={val => updateForm({ [key]: val })}
+                          />
+                        )
+                      } else {
+                        return ''
+                      }*/
+      })}
+    <SaveButton
+      onClick={executeMutation}
+      onClickProps
+      fields={fields}
+      fieldDefinitions={fieldDefinitions}
+      linear={false}
+      circular={true}
+    />
+  </CardText>
 )
