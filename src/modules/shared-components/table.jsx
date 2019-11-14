@@ -16,17 +16,19 @@ const sortResult = (a, b, reverse = false) => (reverse ? (a > b ? -1 : a < b ? 1
 
 export default class extends PureComponent {
   rowToIdMap = {}
-  defaultRowsPerPage = 30
-  state = {
-    search: '',
-    paginationSlice: [0, this.defaultRowsPerPage],
-    headers: {},
-    filteredData: null
-  }
 
   constructor(props) {
     super(props)
-    const { dataDefinitions } = props
+    const { dataDefinitions, defaultPaginationRows } = props
+
+    // Defaults
+    this.defaultPaginationRows = defaultPaginationRows || 30
+    this.state = {
+      search: '',
+      paginationSlice: [0, this.defaultPaginationRows],
+      headers: {},
+      filteredData: null
+    }
 
     // Set stateful headers
     Object.entries(dataDefinitions)
@@ -53,16 +55,18 @@ export default class extends PureComponent {
   }
 
   render() {
-    const { props, rowToIdMap, state, applySorting, defaultRowsPerPage } = this
+    const { props, rowToIdMap, state, applySorting, defaultPaginationRows } = this
     const { headers, search, paginationSlice } = state
-    const { data, dataDefinitions, toggleSelect, selectedIds } = props
+    const { data, dataDefinitions, toggleSelect, selectedIds, baseId } = props
+
+    console.log(toggleSelect)
 
     // Get filtered data
     const searchTerm = search.toUpperCase()
     let filteredData = data.filter(row => {
       let include = false
       Object.entries(row).forEach(([field, value]) => {
-        if (dataDefinitions[field].show) {
+        if ((dataDefinitions[field] || {}).show) {
           if (value.toUpperCase && value.toUpperCase().indexOf(searchTerm) >= 0) {
             include = true
           }
@@ -76,7 +80,6 @@ export default class extends PureComponent {
     const sortField = Object.entries(headers).find(([, { sorted }]) => sorted) || null
     if (sortField) {
       const [sFieldName, { sortAscending }] = sortField
-      console.log(sFieldName, sortAscending)
       filteredData.sort((a, b) => {
         const valA = a[sFieldName]
         const valB = b[sFieldName]
@@ -86,18 +89,22 @@ export default class extends PureComponent {
 
     return (
       <>
-        <Toolbar style={{ display: 'flex', alignItems: 'center' }} zDepth={0}>
-          <TextField
-            id="table-search"
-            style={{ marginLeft: '20px', display: 'flex' }}
-            block={true}
-            autoComplete={'off'}
-            value={search}
-            onChange={search => this.setState({ search })}
-            placeholder="Search by table fields..."
-            leftIcon={<FontIcon>search</FontIcon>}
-          />
-        </Toolbar>
+        {this.props.searchbar ? (
+          <Toolbar style={{ display: 'flex', alignItems: 'center' }} zDepth={0}>
+            <TextField
+              id={`Table-search-${baseId}`}
+              style={{ marginLeft: '20px', display: 'flex' }}
+              block={true}
+              autoComplete={'off'}
+              value={search}
+              onChange={search => this.setState({ search })}
+              placeholder="Search by table fields..."
+              leftIcon={<FontIcon>search</FontIcon>}
+            />
+          </Toolbar>
+        ) : (
+          ''
+        )}
         <DataTable
           style={{ fontSize: '12px' }}
           onRowToggle={(rowNum, checked, selectedCount, e) => {
@@ -107,7 +114,7 @@ export default class extends PureComponent {
           }}
           responsive={true}
           fullWidth
-          baseId="selectable-table"
+          baseId={baseId}
           defaultSelectedRows={(() => {
             return data.map(({ id }, i) => (selectedIds.includes(id) ? true : false))
           })()}
@@ -154,7 +161,8 @@ export default class extends PureComponent {
             })}
           </TableBody>
           <TablePagination
-            defaultRowsPerPage={defaultRowsPerPage}
+            simplifiedMenu
+            defaultRowsPerPage={defaultPaginationRows}
             rowsPerPageItems={[5, 10, 25, 50]}
             rows={filteredData.length}
             rowsPerPageLabel={'Rows'}

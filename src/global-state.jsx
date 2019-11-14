@@ -4,20 +4,21 @@ export const GlobalStateContext = React.createContext()
 
 export default class extends PureComponent {
   state = {
-    selectedProtocols: []
+    selectedProtocols: [],
+    selectedVariables: []
   }
 
-  updateSelectedProtocols = (selectedProtocols, cb = null) => {
-    this.setState({ selectedProtocols }, cb)
-  }
+  updateSelectedProtocols = (selectedProtocols, cb = null) => this.setState({ selectedProtocols }, cb)
+  updateSelectedVariables = (selectedVariables, cb = null) => this.setState({ selectedVariables }, cb)
 
   render() {
-    const { updateSelectedProtocols, state, props } = this
+    const { updateSelectedProtocols, updateSelectedVariables, state, props } = this
 
     return (
       <GlobalStateContext.Provider
         value={{
           updateSelectedProtocols,
+          updateSelectedVariables,
           ...state
         }}
       >
