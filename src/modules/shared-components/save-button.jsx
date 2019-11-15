@@ -9,6 +9,11 @@ The progress indicator is visible for the duration of the passed function AND mi
 If props.linear is true, a LinearProgress Component is displayed
 If props.Circular is true, a LinearCircular Component is displayed
 */
+
+//Possible Changes:
+//->Have the setTimeout actually be an indicator that the operation is done by having the indicator colour change to green within the setTimout()
+//LinearProgress is fairly ugly so it can just be removed
+//Either grey out the save button or completely hide it while the progress Indicator is going
 class saveButton extends React.Component {
   constructor(props) {
     super(props)
@@ -28,7 +33,7 @@ class saveButton extends React.Component {
                 //move this back to entity-editor as part of props.onClick()
                 return this.props.fieldDefinitions[field[0]].display && this.props.fieldDefinitions[field[0]].editable
               })
-              console.log(editableFields)
+              // console.log(editableFields)
               this.props.onClick(
                 {
                   variables: {
