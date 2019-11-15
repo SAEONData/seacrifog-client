@@ -15,7 +15,8 @@ import {
   ExpansionList,
   ExpansionPanel,
   Toolbar,
-  Button
+  Button,
+  Avatar
 } from 'react-md'
 import { mergeLeft } from 'ramda'
 import { Table } from '../../modules/shared-components'
@@ -60,125 +61,124 @@ export default props => (
               <Tab icon={<FontIcon>search</FontIcon>}>
                 <Grid noSpacing>
                   <Cell tabletSize={8} size={6}>
-                    <Grid noSpacing>
-                      <Cell size={12}>
-                        <Card tableCard>
-                          <Table
-                            baseId={'protocols-table'}
-                            searchbar={true}
-                            defaultPaginationRows={20}
-                            selectedIds={selectedProtocols}
-                            toggleSelect={({ id, selected }) =>
-                              updateSelectedProtocols(
-                                selected
-                                  ? [...new Set([...selectedProtocols, id])]
-                                  : [...selectedProtocols].filter(i => i !== id)
-                              )
-                            }
-                            dataDefinitions={protocolsDataDefinitions}
-                            data={protocols}
-                          />
-                        </Card>
-                      </Cell>
-                    </Grid>
+                    <Card tableCard>
+                      <Table
+                        baseId={'protocols-table'}
+                        searchbar={true}
+                        defaultPaginationRows={20}
+                        selectedIds={selectedProtocols}
+                        toggleSelect={({ id, selected }) =>
+                          updateSelectedProtocols(
+                            selected
+                              ? [...new Set([...selectedProtocols, id])]
+                              : [...selectedProtocols].filter(i => i !== id)
+                          )
+                        }
+                        dataDefinitions={protocolsDataDefinitions}
+                        data={protocols}
+                      />
+                    </Card>
                   </Cell>
                   <Cell tabletSize={8} size={6}>
-                    <Grid>
-                      <Cell size={12}>
-                        <TabsContainer colored>
-                          <Tabs style={{ overflowX: 'auto' }} component={'div'} tabId="sub-tabs">
-                            {selectedProtocols.length > 0 ? (
-                              selectedProtocols.map((id, i) => (
-                                <Tab key={i} label={`ID ${id}`}>
-                                  <Grid noSpacing>
-                                    <Cell size={12}>
-                                      <DataQuery query={PROTOCOL} variables={{ id: id }}>
-                                        {({ protocol }) => (
-                                          <>
-                                            <Button style={{ marginLeft: '10px', float: 'right' }} icon>
-                                              close
-                                            </Button>
-                                            <Button style={{ marginLeft: '10px', float: 'right' }} icon>
-                                              link
-                                            </Button>
-                                            <Button style={{ marginLeft: '10px', float: 'right' }} icon>
-                                              save_alt
-                                            </Button>
-                                            <Button style={{ marginLeft: '10px', float: 'right' }} icon>
-                                              edit
-                                            </Button>
-                                            <div style={{ clear: 'both' }} />
+                    <TabsContainer colored>
+                      <Tabs style={{ overflowX: 'auto' }} component={'div'} tabId="sub-tabs">
+                        {selectedProtocols.length > 0 ? (
+                          selectedProtocols.map((id, i) => (
+                            <Tab
+                              key={i}
+                              icon={
+                                <Avatar
+                                  key={'blue'}
+                                  suffix={'blue'}
+                                  children={id}
+                                  contentStyle={{ fontSize: '10px' }}
+                                  iconSized
+                                />
+                              }
+                            >
+                              <Grid>
+                                <Cell size={12}>
+                                  <DataQuery query={PROTOCOL} variables={{ id: id }}>
+                                    {({ protocol }) => (
+                                      <>
+                                        <Button style={{ marginLeft: '10px', float: 'right' }} icon>
+                                          close
+                                        </Button>
+                                        <Button style={{ marginLeft: '10px', float: 'right' }} icon>
+                                          link
+                                        </Button>
+                                        <Button style={{ marginLeft: '10px', float: 'right' }} icon>
+                                          save_alt
+                                        </Button>
+                                        <Button style={{ marginLeft: '10px', float: 'right' }} icon>
+                                          edit
+                                        </Button>
+                                        <div style={{ clear: 'both' }} />
+                                        {
+                                          <FormattedInfo
+                                            object={formatAndFilterObjectKeys(protocol, mappings, ([key, val]) =>
+                                              ['title', 'author', 'domain', 'abstract'].includes(key)
+                                            )}
+                                          />
+                                        }
+                                        <ExpansionList>
+                                          <ExpansionPanel label="Additional Information" footer={false}>
                                             {
                                               <FormattedInfo
                                                 object={formatAndFilterObjectKeys(protocol, mappings, ([key, val]) =>
-                                                  ['title', 'author', 'domain', 'abstract'].includes(key)
+                                                  ['abstract', '__typename'].includes(key) || typeof val === 'object'
+                                                    ? false
+                                                    : true
                                                 )}
                                               />
                                             }
-                                            <ExpansionList>
-                                              <ExpansionPanel label="Additional Information" footer={false}>
-                                                {
-                                                  <FormattedInfo
-                                                    object={formatAndFilterObjectKeys(
-                                                      protocol,
-                                                      mappings,
-                                                      ([key, val]) =>
-                                                        ['abstract', '__typename'].includes(key) ||
-                                                        typeof val === 'object'
-                                                          ? false
-                                                          : true
-                                                    )}
-                                                  />
-                                                }
-                                              </ExpansionPanel>
-                                            </ExpansionList>
-                                            <h3 style={{ marginTop: '100px' }}>Related Variables</h3>
-                                            {protocol.directly_related_variables[0] ||
-                                            protocol.indirectly_related_variables[0] ? (
-                                              <Table
-                                                baseId={`protocols-variables-table-${protocol.id}`}
-                                                searchbar={false}
-                                                defaultPaginationRows={2}
-                                                selectedIds={selectedVariables}
-                                                toggleSelect={({ id, selected }) =>
-                                                  updateSelectedVariables(
-                                                    selected
-                                                      ? [...new Set([...selectedVariables, id])]
-                                                      : [...selectedVariables].filter(i => i !== id)
-                                                  )
-                                                }
-                                                dataDefinitions={variablesDataDefinitions}
-                                                data={protocol.directly_related_variables
-                                                  .map(v => mergeLeft({ relationship: 'direct' }, v))
-                                                  .concat(
-                                                    protocol.indirectly_related_variables.map(v =>
-                                                      mergeLeft({ relationship: 'indirect' }, v)
-                                                    )
-                                                  )}
-                                              />
-                                            ) : (
-                                              <NoneMessage />
-                                            )}
-                                          </>
+                                          </ExpansionPanel>
+                                        </ExpansionList>
+                                        <h3 style={{ marginTop: '100px' }}>Related Variables</h3>
+                                        {protocol.directly_related_variables[0] ||
+                                        protocol.indirectly_related_variables[0] ? (
+                                          <Table
+                                            baseId={`protocols-variables-table-${protocol.id}`}
+                                            searchbar={false}
+                                            defaultPaginationRows={2}
+                                            selectedIds={selectedVariables}
+                                            toggleSelect={({ id, selected }) =>
+                                              updateSelectedVariables(
+                                                selected
+                                                  ? [...new Set([...selectedVariables, id])]
+                                                  : [...selectedVariables].filter(i => i !== id)
+                                              )
+                                            }
+                                            dataDefinitions={variablesDataDefinitions}
+                                            data={protocol.directly_related_variables
+                                              .map(v => mergeLeft({ relationship: 'direct' }, v))
+                                              .concat(
+                                                protocol.indirectly_related_variables.map(v =>
+                                                  mergeLeft({ relationship: 'indirect' }, v)
+                                                )
+                                              )}
+                                          />
+                                        ) : (
+                                          <NoneMessage />
                                         )}
-                                      </DataQuery>
-                                    </Cell>
-                                  </Grid>
-                                </Tab>
-                              ))
-                            ) : (
-                              <Tab label="...">
-                                <Grid>
-                                  <Cell size={12}>
-                                    <i>Select rows in the table</i>
-                                  </Cell>
-                                </Grid>
-                              </Tab>
-                            )}
-                          </Tabs>
-                        </TabsContainer>
-                      </Cell>
-                    </Grid>
+                                      </>
+                                    )}
+                                  </DataQuery>
+                                </Cell>
+                              </Grid>
+                            </Tab>
+                          ))
+                        ) : (
+                          <Tab label="...">
+                            <Grid>
+                              <Cell size={12}>
+                                <i>Select rows in the table</i>
+                              </Cell>
+                            </Grid>
+                          </Tab>
+                        )}
+                      </Tabs>
+                    </TabsContainer>
                   </Cell>
                 </Grid>
               </Tab>
