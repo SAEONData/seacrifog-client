@@ -15,7 +15,7 @@ export default [
   {
     keyval: 'nav-item-contact',
     exact: true,
-    label: 'Contact',
+    label: 'Maintainer',
     to: '/contact',
     icon: 'contact_support'
   },

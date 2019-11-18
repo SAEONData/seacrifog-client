@@ -46,6 +46,7 @@ class Navigation extends PureComponent {
         drawerZDepth={0}
         drawerStyle={{ borderRight: '1px solid rgba(0, 0, 0, 0.1)' }}
         drawerClassName="sf-drawer"
+        miniDrawerStyle={{ borderRight: '1px solid rgba(0, 0, 0, 0.1)' }}
         miniDrawerClassName="sf-drawer"
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY_MINI}

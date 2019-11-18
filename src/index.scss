@@ -2,10 +2,12 @@
 $md-colors-warn-md: false;
 
 // Theme builder: https://react-md.mlaursen.com/customization/theme-builder
-$md-blue-400: #007bff;
+// $md-blue-400: #007bff;
+$md-blue-400: #76abd8;
 $md-linear-progress-fallback-color: $md-blue-300;
 
-$md-orange-400: #f5a623;
+// $md-orange-400: #f5a623;
+$md-orange-400: #dd2c00;
 $md-switch-ball-fallback-color: $md-orange-300;
 $md-data-table-contextual-fallback-color: $md-orange-300;
 
@@ -101,4 +103,19 @@ body {
   &:hover {
     background-color: #efefef;
   }
+}
+
+// Overrides
+#protocols-table-toggle-all + label,
+#protocols-variables-table-1-toggle-all + label,
+#protocols-variables-table-2-toggle-all + label,
+#protocols-variables-table-3-toggle-all + label,
+#protocols-variables-table-4-toggle-all + label,
+#protocols-variables-table-5-toggle-all + label,
+#protocols-variables-table-6-toggle-all + label,
+#protocols-variables-table-7-toggle-all + label,
+#protocols-variables-table-8-toggle-all + label,
+#protocols-variables-table-9-toggle-all + label,
+#protocols-variables-table-10-toggle-all + label {
+  display: none;
 }
