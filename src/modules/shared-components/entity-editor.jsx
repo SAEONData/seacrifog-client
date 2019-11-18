@@ -4,22 +4,20 @@ import { CardText, TextField, DatePicker } from 'react-md'
 //TO-DO:
 
 ///Consult with Zach/Other:
-//--> Weird Float bug where 1111111111111111 becomes 1111110000000000 even though parseFloat(1111111111111111) is 1111111111111111.
-//seems to be a forced rounding off for Floats. e.g. 2511239 becomes 2511240 after mutation. Only allows for 6 digit precision
-//This seems to change from 1111111111111111 to 1111110000000000 during the mutation. Possibly a mutation bug. This input in Graphiql Interface shows the undesired change as well
-//--> int input 21111111111 cannot be saved(apollo error 500)
-//mutation bug, same issue occurs through graphiql
-//--> Graphiql (localhost://3000) shows updateDataproduct input for publish date as being a string. seacrifog-api shows it as being a Date.
-//I cant get any form of input to not throw an apollo error 500 when mutating this date.
+//-->Postgres DB uses float4 and int4 data types. This means a precision of 8 digits. GraphQL seems to allow a precision of 6 digits.
 
 //Done alone:
+//--> Graphiql (localhost://3000) shows updateDataproduct input for publish date as being a string. seacrifog-api shows it as being a Date.
+//strugglig to get any form of input to not throw an apollo error 500 when mutating this date.
 //-->if a new column(e.g. author, date published, title, etc) is added to the DB, an error will be thrown by the filters. This is because the entry is not found in our explicit fieldDefinitions.
 //create a popup alert / admin alert system to notify a dev to add the definition to fieldDefinitions and ignore that field for the sake of the user
 //-->Read up on IIFE((immediately invoking function expression)
 //-->Comment throughout fieldDefinitions and save-button
 //--> confirm if user windows date format impacts react-md date picker value format
 //-->Add toast/snackbar to save button
-//-->
+//-->ProgresIndicator turning Green on completion
+//-->Read Protocols paper https://www.seacrifog.eu/fileadmin/seacrifog/Deliverables/Lopez-Ballesteros_et_al._2019_SEACRIFOG_D4.3_doi.pdf
+//-->Look into if it possible to use GraphQL to query the postgres DB in order to fill out some fieldDefinitions properties dynamically(like type)
 
 export default ({ mutation, executeMutation, fieldDefinitions, entityProp, updateForm, ...fields }) => (
   <CardText>
@@ -71,7 +69,7 @@ export default ({ mutation, executeMutation, fieldDefinitions, entityProp, updat
               }
               value={value != null ? value : undefined} //NOTE: This can cause null values to be saved as "" if editor is opened and saved
               onChange={val => {
-                const validationResult = fieldDefinitions[key].validate(val)
+                const validationResult = fieldDefinitions[key].validate(val, fieldDefinitions[key].precision)
                 if (validationResult[0] === true) updateForm({ [key]: validationResult[1] })
                 else {
                   //do nothing

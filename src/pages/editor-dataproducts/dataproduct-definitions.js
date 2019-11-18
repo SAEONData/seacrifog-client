@@ -5,6 +5,7 @@ export const fieldDefinitions = {
     //consider removing this entry and filtering out __typename from fields instead
     type: Number, //int
     isFloat: false,
+    precision: 8,
     editable: false,
     display: false,
     label: '__typename',
@@ -14,6 +15,7 @@ export const fieldDefinitions = {
   id: {
     type: Number, //int
     isFloat: false,
+    precision: 8,
     editable: false,
     display: true,
     label: 'Dataproduct ID',
@@ -31,6 +33,7 @@ export const fieldDefinitions = {
   publish_year: {
     type: Number, //int
     isFloat: false,
+    precision: 8,
     editable: true,
     display: true,
     label: 'Year Published',
@@ -112,6 +115,7 @@ export const fieldDefinitions = {
   res_spatial: {
     type: Number, //Float
     isFloat: true,
+    precision: 8,
     editable: true,
     display: true,
     label: 'Spatial Resolution',
@@ -129,6 +133,7 @@ export const fieldDefinitions = {
   res_temperature: {
     type: Number, //Float
     isFloat: true,
+    precision: 8,
     editable: false,
     display: false,
     label: ' Temperature Resolution',
@@ -146,6 +151,7 @@ export const fieldDefinitions = {
   uncertainty: {
     type: Number, //Float
     isFloat: true,
+    precision: 8,
     editable: false,
     display: false,
     label: 'Uncertainty',
@@ -195,6 +201,7 @@ export const fieldDefinitions = {
   file_size: {
     type: Number, //Float
     isFloat: true,
+    precision: 8,
     editable: false,
     display: false,
     label: 'File Size',

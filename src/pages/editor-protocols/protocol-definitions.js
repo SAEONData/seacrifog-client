@@ -5,6 +5,7 @@ export const fieldDefinitions = {
     //consider removing this entry and filtering out __typename from fields instead
     type: Number, //int
     isFloat: false,
+    precision: 8,
     editable: false,
     display: false,
     label: '__typename',
@@ -13,6 +14,7 @@ export const fieldDefinitions = {
   },
   id: {
     type: Number, //int
+    precision: 8,
     isFloat: false,
     editable: false,
     display: true,

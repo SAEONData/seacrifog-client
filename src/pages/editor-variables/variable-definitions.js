@@ -12,6 +12,7 @@ export const fieldDefinitions = {
   },
   id: {
     type: Number, //int
+    precision: 8,
     isFloat: false,
     editable: false,
     display: false,
@@ -85,6 +86,7 @@ export const fieldDefinitions = {
   },
   score: {
     type: Number, //int
+    precision: 8,
     isFloat: false,
     editable: false,
     display: false,
@@ -94,6 +96,7 @@ export const fieldDefinitions = {
   },
   rating: {
     type: Number, //int
+    precision: 8,
     isFloat: false,
     editable: true,
     display: true,
@@ -103,6 +106,7 @@ export const fieldDefinitions = {
   },
   relevance: {
     type: Number, //Float
+    precision: 8,
     isFloat: true,
     editable: true,
     display: true,
@@ -112,6 +116,7 @@ export const fieldDefinitions = {
   },
   feasibility: {
     type: Number, //Float
+    precision: 8,
     isFloat: true,
     editable: true,
     display: true,
@@ -121,6 +126,7 @@ export const fieldDefinitions = {
   },
   cost: {
     type: Number, //Float
+    precision: 8,
     isFloat: true,
     editable: true,
     display: false,
@@ -146,6 +152,7 @@ export const fieldDefinitions = {
   },
   frequency_value: {
     type: Number, //Float
+    precision: 8,
     isFloat: true,
     editable: true,
     display: false,
@@ -171,6 +178,7 @@ export const fieldDefinitions = {
   },
   res_value: {
     type: Number, //Float
+    precision: 8,
     isFloat: true,
     editable: true,
     display: false,
@@ -196,6 +204,7 @@ export const fieldDefinitions = {
   },
   unc_val: {
     type: Number, //Float
+    precision: 8,
     isFloat: true,
     editable: true,
     display: false,
