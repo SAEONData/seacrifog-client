@@ -1,22 +1,24 @@
-const validate = (arg1, arg2) => 'todo'
+import { validate, validateInt, validateFloat } from '../../lib/validations'
 
 export const fieldDefinitions = {
   __typename: {
     //consider removing this entry and filtering out __typename from fields instead
     type: Number, //int
+    isFloat: false,
     editable: false,
     display: false,
     label: '__typename',
     pristine: false,
-    validate
+    validate: validateInt
   },
   id: {
     type: Number, //int
+    isFloat: false,
     editable: false,
     display: true,
     label: 'Dataproduct ID',
     pristine: true,
-    validate
+    validate: validateInt
   },
   title: {
     type: String,
@@ -28,11 +30,12 @@ export const fieldDefinitions = {
   },
   publish_year: {
     type: Number, //int
+    isFloat: false,
     editable: true,
     display: true,
     label: 'Year Published',
     pristine: true,
-    validate
+    validate: validateInt
   },
   publish_date: {
     type: Date,
@@ -93,7 +96,7 @@ export const fieldDefinitions = {
   coverage_temp_start: {
     type: Date,
     editable: false,
-    display: false,
+    display: true,
     label: 'Temperature Coverage Start Date',
     pristine: true,
     validate
@@ -101,18 +104,19 @@ export const fieldDefinitions = {
   coverage_temp_end: {
     type: Date,
     editable: false,
-    display: false,
+    display: true,
     label: 'Temperature Coverage End Date',
     pristine: true,
     validate
   },
   res_spatial: {
     type: Number, //Float
-    editable: false,
-    display: false,
+    isFloat: true,
+    editable: true,
+    display: true,
     label: 'Spatial Resolution',
     pristine: true,
-    validate
+    validate: validateFloat
   },
   res_spatial_unit: {
     type: String,
@@ -124,11 +128,12 @@ export const fieldDefinitions = {
   },
   res_temperature: {
     type: Number, //Float
+    isFloat: true,
     editable: false,
     display: false,
     label: ' Temperature Resolution',
     pristine: true,
-    validate
+    validate: validateFloat
   },
   res_temperature_unit: {
     type: String,
@@ -140,11 +145,12 @@ export const fieldDefinitions = {
   },
   uncertainty: {
     type: Number, //Float
+    isFloat: true,
     editable: false,
     display: false,
     label: 'Uncertainty',
     pristine: true,
-    validate
+    validate: validateFloat
   },
   uncertainty_unit: {
     type: String,
@@ -188,11 +194,12 @@ export const fieldDefinitions = {
   },
   file_size: {
     type: Number, //Float
+    isFloat: true,
     editable: false,
     display: false,
     label: 'File Size',
     pristine: true,
-    validate
+    validate: validateFloat
   },
   file_size_unit: {
     type: String,

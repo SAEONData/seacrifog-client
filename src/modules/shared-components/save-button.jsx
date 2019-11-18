@@ -1,65 +1,50 @@
 import React from 'react'
-import { Button, LinearProgress, CircularProgress } from 'react-md'
-
-const minimumProgressDisplayTimeMS = 1000
+import { Button, CircularProgress /*Snackbar*/ } from 'react-md'
+const minimumProgressDisplayTimeMS = 1500
 
 /*
 This Class renders a save Button and a progress indicator. 
 The progress indicator is visible for the duration of the passed function AND minimumProgressDisplayTimeMS
-If props.linear is true, a LinearProgress Component is displayed
-If props.Circular is true, a LinearCircular Component is displayed
 */
 
 //Possible Changes:
 //->Have the setTimeout actually be an indicator that the operation is done by having the indicator colour change to green within the setTimout()
-//LinearProgress is fairly ugly so it can just be removed
-//Either grey out the save button or completely hide it while the progress Indicator is going
 class saveButton extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { displayProgress: false }
+    this.state = {
+      displayProgress: false, //displayProgress indicates if the save button has been clicked but the onClick event hasn't finished yet
+      progressSuccess: false //progressSuccess indicates if the save was successful. This is to be implemented still
+    }
   }
 
   render() {
     return (
-      <div className="saveButton">
-        {this.state.displayProgress && this.props.linear ? <LinearProgress id="progress-bar" /> : undefined}
-
-        <div className="flexItems" style={{ display: 'flex', float: 'left' }}>
-          <Button
-            onClick={() => {
-              this.setState({ displayProgress: true })
-              const editableFields = Object.entries(this.props.fields).filter(field => {
-                //move this back to entity-editor as part of props.onClick()
-                return this.props.fieldDefinitions[field[0]].display && this.props.fieldDefinitions[field[0]].editable
-              })
-              // console.log(editableFields)
-              this.props.onClick(
-                {
-                  variables: {
-                    input: [
-                      {
-                        id: this.props.fields.id,
-                        ...Object.fromEntries(editableFields)
-                      }
-                    ]
-                  }
-                },
-                setTimeout(() => {
-                  this.setState({ displayProgress: false }) //this is only reached once the minimum time has passed AND the callback has fired
-                }, minimumProgressDisplayTimeMS)
-              )
-            }}
-            style={{ marginTop: '10px', marginRight: '5px', marginBottom: '10px' }}
-            swapTheming
-            primary
-            flat
-            iconChildren="save"
-          >
-            save
-          </Button>
-          {this.state.displayProgress && this.props.circular ? <CircularProgress id="progress-circle" /> : undefined}
-        </div>
+      <div className="saveButton" style={this.props.containerStyle}>
+        <Button
+          style={this.props.buttonStyle}
+          swapTheming={!this.state.displayProgress} //swap theming interferes with greying out the button so it is set to false during onClick()
+          primary
+          flat
+          disabled={this.state.displayProgress} //greying out the button while the progress par is displayed
+          iconChildren="save"
+          onClick={() => {
+            this.setState({ displayProgress: true })
+            this.props.onClick(
+              1,
+              setTimeout(() => {
+                this.setState({ displayProgress: false }) //this is only reached once the minimum time has passed AND the callback has fired
+              }, minimumProgressDisplayTimeMS)
+            )
+          }}
+        >
+          save
+        </Button>
+        {this.state.displayProgress ? (
+          <CircularProgress id="progress-circle" style={this.props.progressStyle} /> //This ProgressIndicator is only rendered while the save operation is in action
+        ) : (
+          undefined
+        )}
       </div>
     )
   }

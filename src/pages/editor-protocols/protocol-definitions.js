@@ -1,22 +1,24 @@
-const validate = (arg1, arg2) => 'todo'
+import { validate, validateInt } from '../../lib/validations'
 
 export const fieldDefinitions = {
   __typename: {
     //consider removing this entry and filtering out __typename from fields instead
     type: Number, //int
+    isFloat: false,
     editable: false,
     display: false,
     label: '__typename',
     pristine: false,
-    validate
+    validate: validateInt
   },
   id: {
     type: Number, //int
+    isFloat: false,
     editable: false,
     display: true,
     label: 'Dataproduct ID',
     pristine: true,
-    validate
+    validate: validateInt
   },
   doi: {
     type: String,
@@ -38,7 +40,7 @@ export const fieldDefinitions = {
     type: String,
     editable: true,
     display: true,
-    label: 'Piblisher',
+    label: 'Publisher',
     pristine: true,
     validate
   },

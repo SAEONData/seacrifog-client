@@ -1,4 +1,4 @@
-const validate = (arg1, arg2) => 'todo'
+import { validate, validateInt, validateFloat } from '../../lib/validations'
 
 export const fieldDefinitions = {
   __typename: {
@@ -12,11 +12,12 @@ export const fieldDefinitions = {
   },
   id: {
     type: Number, //int
+    isFloat: false,
     editable: false,
     display: false,
     label: 'Variable ID',
     pristine: true,
-    validate
+    validate: validateInt
   },
   name: {
     type: String,
@@ -84,43 +85,48 @@ export const fieldDefinitions = {
   },
   score: {
     type: Number, //int
+    isFloat: false,
     editable: false,
     display: false,
     label: 'Score',
     pristine: true,
-    validate
+    validate: validateInt
   },
   rating: {
     type: Number, //int
-    editable: false,
-    display: false,
+    isFloat: false,
+    editable: true,
+    display: true,
     label: 'Rating',
     pristine: true,
-    validate
+    validate: validateInt
   },
   relevance: {
     type: Number, //Float
-    editable: false,
-    display: false,
+    isFloat: true,
+    editable: true,
+    display: true,
     label: 'Relevance',
     pristine: true,
-    validate
+    validate: validateFloat
   },
   feasibility: {
     type: Number, //Float
-    editable: false,
-    display: false,
+    isFloat: true,
+    editable: true,
+    display: true,
     label: 'Feasibility',
     pristine: true,
-    validate
+    validate: validateFloat
   },
   cost: {
     type: Number, //Float
-    editable: false,
+    isFloat: true,
+    editable: true,
     display: false,
     label: 'Cost',
     pristine: true,
-    validate
+    validate: validateFloat
   },
   updated_by: {
     type: String,
@@ -140,11 +146,12 @@ export const fieldDefinitions = {
   },
   frequency_value: {
     type: Number, //Float
-    editable: false,
+    isFloat: true,
+    editable: true,
     display: false,
     label: 'Frequency Value',
     pristine: true,
-    validate
+    validate: validateFloat
   },
   frequency_unit: {
     type: String,
@@ -164,11 +171,12 @@ export const fieldDefinitions = {
   },
   res_value: {
     type: Number, //Float
-    editable: false,
+    isFloat: true,
+    editable: true,
     display: false,
     label: 'Resolution Value',
     pristine: true,
-    validate
+    validate: validateFloat
   },
   res_unit: {
     type: String,
@@ -188,11 +196,12 @@ export const fieldDefinitions = {
   },
   unc_val: {
     type: Number, //Float
+    isFloat: true,
     editable: true,
     display: false,
     label: 'Uncertainty Value',
     pristine: true,
-    validate
+    validate: validateFloat
   },
   unc_unit: {
     type: String,
