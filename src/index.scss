@@ -119,3 +119,11 @@ body {
 #protocols-variables-table-10-toggle-all + label {
   display: none;
 }
+
+// .fixed-table {
+//   @include react-md-make-fixed-table(320px);
+// }
+
+.add-on-hover:hover {
+  background-color: #eee;
+}

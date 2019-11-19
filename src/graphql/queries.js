@@ -45,6 +45,8 @@ export const PROTOCOLS_MIN = gql`
       author
       title
       domain
+      publisher
+      format
     }
   }
 `

@@ -22,7 +22,7 @@ export default class extends PureComponent {
     const { dataDefinitions, defaultPaginationRows } = props
 
     // Defaults
-    this.defaultPaginationRows = defaultPaginationRows || 30
+    this.defaultPaginationRows = defaultPaginationRows || 5
     this.state = {
       search: '',
       paginationSlice: [0, this.defaultPaginationRows],
@@ -57,9 +57,7 @@ export default class extends PureComponent {
   render() {
     const { props, rowToIdMap, state, applySorting, defaultPaginationRows } = this
     const { headers, search, paginationSlice } = state
-    const { data, dataDefinitions, toggleSelect, selectedIds, baseId } = props
-
-    console.log(toggleSelect)
+    const { data, dataDefinitions, toggleSelect, selectedIds, baseId, className } = props
 
     // Get filtered data
     const searchTerm = search.toUpperCase()
@@ -101,23 +99,21 @@ export default class extends PureComponent {
               placeholder="Search by table fields..."
               leftIcon={<FontIcon>search</FontIcon>}
             />
+            {this.props.actions}
           </Toolbar>
         ) : (
           ''
         )}
         <DataTable
+          className={className}
+          baseId={baseId}
           style={{ fontSize: '12px' }}
-          onRowToggle={(rowNum, checked, selectedCount, e) => {
-            const id = rowToIdMap[rowNum]
-            toggleSelect({ id, selected: checked })
-            // const datum = data.find(({ id }) => id === dataId)
-          }}
+          onRowToggle={(rowNum, checked, selectedCount, e) =>
+            toggleSelect({ id: rowToIdMap[rowNum], selected: checked })
+          }
           responsive={true}
           fullWidth
-          baseId={baseId}
-          defaultSelectedRows={(() => {
-            return data.map(({ id }, i) => (selectedIds.includes(id) ? true : false))
-          })()}
+          defaultSelectedRows={data.map(({ id }, i) => (selectedIds.includes(id) ? true : false))}
         >
           <TableHeader>
             <TableRow>
@@ -161,7 +157,6 @@ export default class extends PureComponent {
             })}
           </TableBody>
           <TablePagination
-            simplifiedMenu
             defaultRowsPerPage={defaultPaginationRows}
             rowsPerPageItems={[5, 10, 25, 50]}
             rows={filteredData.length}
