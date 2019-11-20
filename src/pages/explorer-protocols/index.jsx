@@ -38,11 +38,11 @@ export default props => {
   const history = useHistory()
   return (
     <GlobalStateContext.Consumer>
-      {({ selectedProtocols, updateSelectedProtocols, selectedVariables, updateSelectedVariables }) => (
+      {({ updateGlobalState, selectedProtocols, selectedVariables }) => (
         <DataQuery query={PROTOCOLS_MIN}>
           {({ protocols }) => (
             <ExplorerLayout>
-              <ExplorerHeader />
+              <ExplorerHeader resetFn={() => updateGlobalState({ selectedProtocols: [] })} />
               <ExplorerTableLayout>
                 <Table
                   actions={[
@@ -64,9 +64,11 @@ export default props => {
                   defaultPaginationRows={5}
                   selectedIds={selectedProtocols}
                   toggleSelect={({ id, selected }) =>
-                    updateSelectedProtocols(
-                      selected ? [...new Set([...selectedProtocols, id])] : [...selectedProtocols].filter(i => i !== id)
-                    )
+                    updateGlobalState({
+                      selectedProtocols: selected
+                        ? [...new Set([...selectedProtocols, id])]
+                        : [...selectedProtocols].filter(i => i !== id)
+                    })
                   }
                   dataDefinitions={protocolsDataDefinitions}
                   data={protocols}
@@ -80,7 +82,9 @@ export default props => {
                         title={protocol.title}
                         authors={protocol.author}
                         abstract={protocol.abstract}
-                        clickClose={() => updateSelectedProtocols(selectedProtocols.filter(sId => sId !== protocol.id))}
+                        clickClose={() =>
+                          updateGlobalState({ selectedProtocols: selectedProtocols.filter(sId => sId !== protocol.id) })
+                        }
                         clickDownload={() => alert('todo')}
                         clickEdit={() => history.push(`/protocols/${protocol.id}`)}
                       >
@@ -116,8 +120,9 @@ export default props => {
                                         .map((variable, i) => (
                                           <ListItem
                                             onClick={() =>
-                                              updateSelectedVariables([...new Set([selectedVariables, id])], () =>
-                                                history.push('/variables')
+                                              updateGlobalState(
+                                                { selectedVariables: [...new Set([selectedVariables, id])] },
+                                                () => history.push('/variables')
                                               )
                                             }
                                             className="add-on-hover"
