@@ -26,6 +26,8 @@ import { Table } from '../../modules/shared-components'
 
 const variableIcon = <Avatar contentStyle={{ fontSize: '11px' }} iconSized suffix={'light-blue'} children="V" />
 
+const CardTextStyle = { height: '350px', overflow: 'auto' }
+
 const VariableIconLink = <FontIcon>link</FontIcon>
 
 const protocolsDataDefinitions = {
@@ -60,7 +62,7 @@ export default props => {
             <Grid noSpacing>
               <Cell size={12}>
                 <Toolbar
-                  title={'Notifications, link controls, etc'}
+                  title={'Notifications, link controls, MetaData explorer, etc.'}
                   style={{ backgroundColor: '#005fb3' }}
                   actions={[
                     <Button style={mainMenuIconStyle} icon>
@@ -171,6 +173,8 @@ export default props => {
                                               </div>
                                             </Cell>
                                           </Grid>
+
+                                          {/* Information */}
                                           <Grid>
                                             <Cell phoneSize={4} tabletSize={8} size={6}>
                                               <Card style={{ boxShadow: 'none' }}>
@@ -179,17 +183,19 @@ export default props => {
                                                   subtitle={'General protocol protperties'}
                                                 />
                                                 <CardText>
-                                                  <FormattedInfo
-                                                    object={formatAndFilterObjectKeys(
-                                                      protocol,
-                                                      mappings,
-                                                      ([key, val]) =>
-                                                        ['abstract', '__typename'].includes(key) ||
-                                                        typeof val === 'object'
-                                                          ? false
-                                                          : true
-                                                    )}
-                                                  />
+                                                  <div style={CardTextStyle}>
+                                                    <FormattedInfo
+                                                      object={formatAndFilterObjectKeys(
+                                                        protocol,
+                                                        mappings,
+                                                        ([key, val]) =>
+                                                          ['abstract', '__typename'].includes(key) ||
+                                                          typeof val === 'object'
+                                                            ? false
+                                                            : true
+                                                      )}
+                                                    />
+                                                  </div>
                                                 </CardText>
                                               </Card>
                                             </Cell>
@@ -202,44 +208,53 @@ export default props => {
                                                   subtitle={'Directly or Indirectly'}
                                                 />
                                                 <CardText>
-                                                  {protocol.directly_related_variables[0] ||
-                                                  protocol.indirectly_related_variables[0] ? (
-                                                    <div style={{ maxHeight: '620px', overflow: 'auto' }}>
-                                                      <List>
-                                                        {protocol.directly_related_variables
-                                                          .map(v => mergeLeft({ relationship: 'direct' }, v))
-                                                          .concat(
-                                                            protocol.indirectly_related_variables.map(v =>
-                                                              mergeLeft({ relationship: 'indirect' }, v)
+                                                  <div style={CardTextStyle}>
+                                                    {protocol.directly_related_variables[0] ||
+                                                    protocol.indirectly_related_variables[0] ? (
+                                                      <div>
+                                                        <List>
+                                                          {protocol.directly_related_variables
+                                                            .map(v => mergeLeft({ relationship: 'direct' }, v))
+                                                            .concat(
+                                                              protocol.indirectly_related_variables.map(v =>
+                                                                mergeLeft({ relationship: 'indirect' }, v)
+                                                              )
                                                             )
-                                                          )
-                                                          .sort((a, b) =>
-                                                            a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                                                          )
-                                                          .map((variable, i) => (
-                                                            <ListItem
-                                                              onClick={() =>
-                                                                updateSelectedVariables(
-                                                                  [...new Set([selectedVariables, id])],
-                                                                  () => history.push('/variables')
-                                                                )
-                                                              }
-                                                              className="add-on-hover"
-                                                              key={i}
-                                                              rightIcon={variableIcon}
-                                                              leftIcon={VariableIconLink}
-                                                              primaryText={`${variable.relationship.toUpperCase()} - ${
-                                                                variable.name
-                                                              }`}
-                                                            />
-                                                          ))}
-                                                      </List>
-                                                    </div>
-                                                  ) : (
-                                                    <NoneMessage />
-                                                  )}
+                                                            .sort((a, b) =>
+                                                              a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+                                                            )
+                                                            .map((variable, i) => (
+                                                              <ListItem
+                                                                onClick={() =>
+                                                                  updateSelectedVariables(
+                                                                    [...new Set([selectedVariables, id])],
+                                                                    () => history.push('/variables')
+                                                                  )
+                                                                }
+                                                                className="add-on-hover"
+                                                                key={i}
+                                                                rightIcon={variableIcon}
+                                                                leftIcon={VariableIconLink}
+                                                                primaryText={`${variable.relationship.toUpperCase()} - ${
+                                                                  variable.name
+                                                                }`}
+                                                              />
+                                                            ))}
+                                                        </List>
+                                                      </div>
+                                                    ) : (
+                                                      <NoneMessage />
+                                                    )}
+                                                  </div>
                                                 </CardText>
                                               </Card>
+                                            </Cell>
+                                          </Grid>
+
+                                          {/* Scroll past end hack */}
+                                          <Grid>
+                                            <Cell size={12}>
+                                              <div style={{ margin: '200px' }} />
                                             </Cell>
                                           </Grid>
                                         </>
