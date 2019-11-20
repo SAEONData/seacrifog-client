@@ -97,7 +97,7 @@ export default props => {
                         searchbar={true}
                         className={'fixed-table'}
                         defaultPaginationRows={5}
-                        selectedIds={[selectedProtocols]}
+                        selectedIds={selectedProtocols}
                         toggleSelect={({ id, selected }) =>
                           updateSelectedProtocols(
                             selected

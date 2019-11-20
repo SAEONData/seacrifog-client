@@ -113,7 +113,6 @@ export default class extends PureComponent {
           }
           responsive={true}
           fullWidth
-          defaultSelectedRows={data.map(({ id }, i) => (selectedIds.includes(id) ? true : false))}
         >
           <TableHeader>
             <TableRow>
@@ -141,7 +140,7 @@ export default class extends PureComponent {
 
               // Return a <TableRow />
               return (
-                <TableRow key={i}>
+                <TableRow key={i} selected={selectedIds.includes(row.id) ? true : false}>
                   {Object.entries(row)
                     .filter(([field]) => dataDefinitions[field] && dataDefinitions[field].show)
                     .sort(([fieldNameA], [fieldNameB]) =>
