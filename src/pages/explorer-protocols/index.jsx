@@ -11,24 +11,23 @@ import {
   ExplorerTableLayout,
   ExplorerTabsLayout,
   ExplorerEntityLayout,
-  ExplorerAttributeLayout
+  ExplorerAttributeLayout,
+  ScrollButton,
+  variableIcon,
+  VariableIconLink
 } from '../../modules/shared-components'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
-import { FontIcon, Button, Avatar, List, ListItem } from 'react-md'
+import { List, ListItem } from 'react-md'
 import { mergeLeft } from 'ramda'
 import { Table } from '../../modules/shared-components'
-
-const variableIcon = <Avatar contentStyle={{ fontSize: '11px' }} iconSized suffix={'light-blue'} children="V" />
-
-const VariableIconLink = <FontIcon>link</FontIcon>
 
 const protocolsDataDefinitions = {
   id: { order: 0, show: true, label: 'ID' },
   title: { order: 1, show: true, label: 'Protocol' },
-  author: { order: 2, show: true, grow: false, label: 'Author' },
+  author: { order: 2, show: true, label: 'Author' },
   domain: { order: 3, show: true, label: 'Domain' },
   publisher: { order: 4, show: true, label: 'Publisher' },
-  format: { order: 9, show: true, label: 'Format' },
+  format: { order: 5, show: true, label: 'Format' },
   __typename: { show: false }
 }
 
@@ -46,23 +45,19 @@ export default props => {
               <ExplorerTableLayout>
                 <Table
                   actions={[
-                    <Button
-                      key={'reset-form-button'}
-                      primary
+                    <ScrollButton
+                      key={1}
                       disabled={selectedProtocols.length > 0 ? false : true}
-                      tooltipPosition={'left'}
-                      style={{ display: 'flex', marginRight: '20px' }}
-                      icon
-                      onClick={() => alert('This will make the page scroll down')}
-                    >
-                      arrow_downward
-                    </Button>
+                      click={() => alert('This will make the page scroll down')}
+                    />
                   ]}
                   baseId={'protocols-table'}
                   searchbar={true}
                   className={'fixed-table'}
                   defaultPaginationRows={5}
                   selectedIds={selectedProtocols}
+                  dataDefinitions={protocolsDataDefinitions}
+                  data={protocols}
                   toggleSelect={({ id, selected }) =>
                     updateGlobalState({
                       selectedProtocols: selected
@@ -70,8 +65,6 @@ export default props => {
                         : [...selectedProtocols].filter(i => i !== id)
                     })
                   }
-                  dataDefinitions={protocolsDataDefinitions}
-                  data={protocols}
                 />
               </ExplorerTableLayout>
               <ExplorerTabsLayout id="selected-protocols-tabs" selectedIds={selectedProtocols}>
@@ -92,8 +85,8 @@ export default props => {
                         <ExplorerAttributeLayout
                           sections={[
                             {
-                              title: 'Protocol Attributes',
-                              subTitle: 'List of Fields',
+                              title: 'Additional Information',
+                              subTitle: 'All Available Fields',
                               component: (
                                 <FormattedInfo
                                   object={formatAndFilterObjectKeys(protocol, mappings, ([key, val]) =>

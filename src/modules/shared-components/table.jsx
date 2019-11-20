@@ -65,7 +65,7 @@ export default class extends PureComponent {
       let include = false
       Object.entries(row).forEach(([field, value]) => {
         if ((dataDefinitions[field] || {}).show) {
-          if (value.toUpperCase && value.toUpperCase().indexOf(searchTerm) >= 0) {
+          if (value && value.toUpperCase && value.toUpperCase().indexOf(searchTerm) >= 0) {
             include = true
           }
         }
@@ -148,7 +148,7 @@ export default class extends PureComponent {
                     )
                     .map(([field, value], i) => (
                       <TableColumn key={i} plain={true}>
-                        {value.truncate ? value.truncate(140) : value}
+                        {value && value.truncate ? value.truncate(140) : value}
                       </TableColumn>
                     ))}
                 </TableRow>

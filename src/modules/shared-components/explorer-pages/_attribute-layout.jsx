@@ -6,8 +6,13 @@ const CardTextStyle = { height: '350px', overflow: 'auto' }
 
 export default ({ sections }) => (
   <Grid>
-    {sections.map(({ title, subTitle, component }, i) => (
-      <Cell key={i} phoneSize={4} tabletSize={8} size={6}>
+    {sections.map(({ title, subTitle, component, grid = {} }, i) => (
+      <Cell
+        key={i}
+        phoneSize={grid.phoneSize || grid.tabletSize || grid.size || 4}
+        tabletSize={grid.tabletSize || grid.size || 8}
+        size={grid.size || 6}
+      >
         <Card style={cardStyle}>
           <CardTitle title={title} subtitle={subTitle} />
           <CardText>

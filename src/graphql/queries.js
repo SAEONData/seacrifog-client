@@ -69,6 +69,8 @@ export const DATAPRODUCTS_MIN = gql`
       title
       publish_year
       provider
+      author
+      keywords
     }
   }
 `
