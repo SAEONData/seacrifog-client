@@ -21,6 +21,20 @@ export default [
   },
   { keyval: 'nav-divider-explore', divider: true, style: {} },
   {
+    keyval: 'nav-item-atlas',
+    exact: true,
+    label: 'Sites',
+    to: '/sites',
+    avatar: { children: 'S', suffix: 'lime', style: avatarStyle }
+  },
+  {
+    keyval: 'nav-item-explorer-networks',
+    exact: false,
+    label: 'Networks',
+    to: '/networks',
+    avatar: { children: 'N', suffix: 'teal', style: avatarStyle }
+  },
+  {
     keyval: 'nav-item-explorer-variables',
     exact: false,
     label: 'Variables',
@@ -34,13 +48,7 @@ export default [
     to: '/protocols',
     avatar: { children: 'P', suffix: 'cyan', style: avatarStyle }
   },
-  {
-    keyval: 'nav-item-explorer-networks',
-    exact: false,
-    label: 'Networks',
-    to: '/networks',
-    avatar: { children: 'N', suffix: 'teal', style: avatarStyle }
-  },
+
   {
     keyval: 'nav-item-explorer-dataproducts',
     exact: false,
@@ -48,13 +56,7 @@ export default [
     to: '/dataproducts',
     avatar: { children: 'D', suffix: 'light-green', style: avatarStyle }
   },
-  {
-    keyval: 'nav-item-atlas',
-    exact: true,
-    label: 'Sites',
-    to: '/sites',
-    avatar: { children: 'S', suffix: 'lime', style: avatarStyle }
-  },
+
   { keyval: 'nav-divider-tools', divider: true, style: {} },
   {
     keyval: 'nav-drawer-subheader-source',

@@ -44,13 +44,6 @@ export default ({ clickClose, clickDownload, clickEdit, title, authors, abstract
 
       {/* Main content */}
       {children}
-
-      {/* Scroll past end hack */}
-      <Grid>
-        <Cell size={12}>
-          <div style={{ margin: '200px' }} />
-        </Cell>
-      </Grid>
     </Cell>
   </Grid>
 )

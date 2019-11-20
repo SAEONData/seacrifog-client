@@ -53,7 +53,7 @@ class Navigation extends PureComponent {
         desktopDrawerType={
           ['', 'HOME', 'ABOUT', 'CONTACT'].includes(currentPath.replace('/', '').toUpperCase())
             ? NavigationDrawer.DrawerTypes.TEMPORARY
-            : NavigationDrawer.DrawerTypes.TEMPORARY_MINI
+            : NavigationDrawer.DrawerTypes.PERSISTENT_MINI
         }
         drawerTransitionDuration={500}
         toolbarActions={[

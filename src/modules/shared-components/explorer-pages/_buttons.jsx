@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from 'react-md'
 
-export const ScrollButton = ({ disabled, click }) => (
+export const ScrollButton = ({ disabled }) => (
   <Button
     key={'reset-form-button'}
     primary
@@ -9,7 +9,7 @@ export const ScrollButton = ({ disabled, click }) => (
     tooltipPosition={'left'}
     style={{ display: 'flex', marginRight: '20px' }}
     icon
-    onClick={click}
+    onClick={() => alert('This will make the page scroll down')}
   >
     arrow_downward
   </Button>

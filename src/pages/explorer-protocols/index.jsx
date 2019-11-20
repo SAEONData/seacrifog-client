@@ -11,10 +11,10 @@ import {
   ExplorerTableLayout,
   ExplorerTabsLayout,
   ExplorerEntityLayout,
-  ExplorerAttributeLayout,
+  ExplorerSectionLayout,
   ScrollButton,
   variableIcon,
-  VariableIconLink
+  iconLink
 } from '../../modules/shared-components'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
 import { List, ListItem } from 'react-md'
@@ -44,13 +44,7 @@ export default props => {
               <ExplorerHeader resetFn={() => updateGlobalState({ selectedProtocols: [] })} />
               <ExplorerTableLayout>
                 <Table
-                  actions={[
-                    <ScrollButton
-                      key={1}
-                      disabled={selectedProtocols.length > 0 ? false : true}
-                      click={() => alert('This will make the page scroll down')}
-                    />
-                  ]}
+                  actions={[<ScrollButton key={1} disabled={selectedProtocols.length > 0 ? false : true} />]}
                   baseId={'protocols-table'}
                   searchbar={true}
                   className={'fixed-table'}
@@ -82,7 +76,7 @@ export default props => {
                         clickEdit={() => history.push(`/protocols/${protocol.id}`)}
                       >
                         {/* All Entity Attributes */}
-                        <ExplorerAttributeLayout
+                        <ExplorerSectionLayout
                           sections={[
                             {
                               title: 'Additional Information',
@@ -96,8 +90,8 @@ export default props => {
                               )
                             },
                             {
-                              title: 'Related Variables',
-                              subTitle: 'Directly / Indirectly',
+                              title: 'Variables',
+                              subTitle: 'Measured by this protocol',
                               component:
                                 protocol.directly_related_variables[0] || protocol.indirectly_related_variables[0] ? (
                                   <div>
@@ -121,7 +115,7 @@ export default props => {
                                             className="add-on-hover"
                                             key={i}
                                             rightIcon={variableIcon}
-                                            leftIcon={VariableIconLink}
+                                            leftIcon={iconLink}
                                             primaryText={`${variable.relationship.toUpperCase()} - ${variable.name}`}
                                           />
                                         ))}

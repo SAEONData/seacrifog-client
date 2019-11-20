@@ -58,6 +58,9 @@ export const VARIABLES_MIN = gql`
       name
       class
       domain
+      set
+      relevance
+      rftype
     }
   }
 `

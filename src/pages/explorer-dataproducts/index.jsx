@@ -11,10 +11,10 @@ import {
   ExplorerTableLayout,
   ExplorerTabsLayout,
   ExplorerEntityLayout,
-  ExplorerAttributeLayout,
+  ExplorerSectionLayout,
   ScrollButton,
   variableIcon,
-  VariableIconLink
+  iconLink
 } from '../../modules/shared-components'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
 import CoverageMap from './coverage-map'
@@ -43,13 +43,7 @@ export default props => {
               <ExplorerHeader resetFn={() => updateGlobalState({ selectedDataproducts: [] })} />
               <ExplorerTableLayout>
                 <Table
-                  actions={[
-                    <ScrollButton
-                      key={1}
-                      disabled={selectedDataproducts.length > 0 ? false : true}
-                      click={() => alert('This will make the page scroll down')}
-                    />
-                  ]}
+                  actions={[<ScrollButton key={1} disabled={selectedDataproducts.length > 0 ? false : true} />]}
                   baseId={'dataproducts-table'}
                   searchbar={true}
                   className={'fixed-table'}
@@ -83,7 +77,7 @@ export default props => {
                         clickEdit={() => history.push(`/dataproducts/${dataproduct.id}`)}
                       >
                         {/* All Entity Attributes */}
-                        <ExplorerAttributeLayout
+                        <ExplorerSectionLayout
                           sections={[
                             {
                               title: 'Additional Information',
@@ -103,7 +97,7 @@ export default props => {
                                 <div>
                                   <List>
                                     {dataproduct.variables
-                                      .sort((a, b) => (a.title > b.title ? 1 : b.title > a.title ? -1 : 0))
+                                      .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
                                       .map((variable, i) => (
                                         <ListItem
                                           onClick={() =>
@@ -115,7 +109,7 @@ export default props => {
                                           className="add-on-hover"
                                           key={i}
                                           rightIcon={variableIcon}
-                                          leftIcon={VariableIconLink}
+                                          leftIcon={iconLink}
                                           primaryText={`${variable.name}`}
                                         />
                                       ))}
@@ -127,8 +121,9 @@ export default props => {
                             },
                             {
                               title: 'Spatial Coverage',
-                              subTitle: 'By bounding box',
+                              subTitle: 'Of this data product',
                               component: <CoverageMap geoJson={dataproduct.coverage_spatial} />,
+                              style: { height: '500px' },
                               grid: {
                                 size: 12
                               }
