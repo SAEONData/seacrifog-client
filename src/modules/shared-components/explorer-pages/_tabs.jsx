@@ -8,7 +8,7 @@ const avatarStyle = {
   fontSize: '10px'
 }
 
-const getTabIndex = (currentIndex, maxIndex) => (currentIndex >= maxIndex ? maxIndex : currentIndex)
+const getTabIndex = (currentIndex, maxIndex) => (currentIndex > maxIndex ? maxIndex : currentIndex)
 
 export default ({ selectedIds, id, children }) => {
   const [tabIndex, setTabIndex] = useState(0)
@@ -21,16 +21,14 @@ export default ({ selectedIds, id, children }) => {
             onTabChange={newTabIndex => setTabIndex(newTabIndex)}
             colored
           >
-            <Tabs tabId={id}>
-              {selectedIds
-                .sort((a, b) => (a > b ? 1 : a < b ? -1 : 0))
-                .map((id, i) => (
-                  <Tab key={i} icon={<Avatar key={i} children={id} contentStyle={avatarStyle} iconSized />}>
-                    <Grid>
-                      <Cell size={12}>{children({ id })}</Cell>
-                    </Grid>
-                  </Tab>
-                ))}
+            <Tabs activeTabIndex tabId={id}>
+              {selectedIds.map((id, i) => (
+                <Tab key={i} icon={<Avatar key={i} children={id} contentStyle={avatarStyle} iconSized />}>
+                  <Grid>
+                    <Cell size={12}>{children({ id })}</Cell>
+                  </Grid>
+                </Tab>
+              ))}
             </Tabs>
           </TabsContainer>
         ) : (
