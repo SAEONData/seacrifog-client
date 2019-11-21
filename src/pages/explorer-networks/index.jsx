@@ -107,7 +107,7 @@ export default props => {
                                               {
                                                 selectedVariables: [...new Set([...selectedVariables, variable.id])]
                                               },
-                                              () => history.push('/protocols')
+                                              () => history.push('/variables')
                                             )
                                           }
                                           className="add-on-hover"
