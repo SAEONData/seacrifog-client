@@ -145,7 +145,7 @@ export const fieldDefinitions = {
   updated_at: {
     type: Date,
     editable: true,
-    display: false,
+    display: true,
     label: 'Updated At',
     pristine: true,
     validate

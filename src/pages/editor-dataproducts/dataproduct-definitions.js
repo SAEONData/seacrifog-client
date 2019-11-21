@@ -42,7 +42,7 @@ export const fieldDefinitions = {
   },
   publish_date: {
     type: Date,
-    editable: false,
+    editable: true,
     display: true,
     label: 'Date Published',
     pristine: true,
@@ -98,7 +98,7 @@ export const fieldDefinitions = {
   },
   coverage_temp_start: {
     type: Date,
-    editable: false,
+    editable: true,
     display: true,
     label: 'Temperature Coverage Start Date',
     pristine: true,
@@ -106,16 +106,17 @@ export const fieldDefinitions = {
   },
   coverage_temp_end: {
     type: Date,
-    editable: false,
+    editable: true,
     display: true,
     label: 'Temperature Coverage End Date',
     pristine: true,
     validate
   },
   res_spatial: {
+    //NaN
     type: Number, //Float
     isFloat: true,
-    precision: 8,
+    precision: 15,
     editable: true,
     display: true,
     label: 'Spatial Resolution',
@@ -134,8 +135,8 @@ export const fieldDefinitions = {
     type: Number, //Float
     isFloat: true,
     precision: 8,
-    editable: false,
-    display: false,
+    editable: true,
+    display: true,
     label: ' Temperature Resolution',
     pristine: true,
     validate: validateFloat
@@ -152,8 +153,8 @@ export const fieldDefinitions = {
     type: Number, //Float
     isFloat: true,
     precision: 8,
-    editable: false,
-    display: false,
+    editable: true,
+    display: true,
     label: 'Uncertainty',
     pristine: true,
     validate: validateFloat
@@ -202,8 +203,8 @@ export const fieldDefinitions = {
     type: Number, //Float
     isFloat: true,
     precision: 8,
-    editable: false,
-    display: false,
+    editable: true,
+    display: true,
     label: 'File Size',
     pristine: true,
     validate: validateFloat
@@ -234,8 +235,8 @@ export const fieldDefinitions = {
   },
   created_at: {
     type: Date,
-    editable: false,
-    display: false,
+    editable: true,
+    display: true,
     label: 'Date Created',
     pristine: true,
     validate
@@ -250,8 +251,8 @@ export const fieldDefinitions = {
   },
   modified_at: {
     type: Date,
-    editable: false,
-    display: false,
+    editable: true,
+    display: true,
     label: 'Date Modified',
     pristine: true,
     validate

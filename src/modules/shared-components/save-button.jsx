@@ -31,7 +31,7 @@ class saveButton extends React.Component {
           onClick={() => {
             this.setState({ displayProgress: true })
             this.props.onClick(
-              1,
+              1, //meaningless value to allow for the callback below. Look into how to avoid needing this
               setTimeout(() => {
                 this.setState({ displayProgress: false }) //this is only reached once the minimum time has passed AND the callback has fired
               }, minimumProgressDisplayTimeMS)

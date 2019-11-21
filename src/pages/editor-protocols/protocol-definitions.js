@@ -187,7 +187,7 @@ export const fieldDefinitions = {
   created_at: {
     type: Date,
     editable: true,
-    display: false,
+    display: true,
     label: 'Created At',
     pristine: true,
     validate
@@ -203,7 +203,7 @@ export const fieldDefinitions = {
   updated_at: {
     type: Date,
     editable: true,
-    display: false,
+    display: true,
     label: 'Updated At',
     pristine: true,
     validate

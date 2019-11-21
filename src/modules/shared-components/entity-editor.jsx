@@ -4,9 +4,16 @@ import { CardText, TextField, DatePicker } from 'react-md'
 //TO-DO:
 
 ///Consult with Zach/Other:
-//-->Postgres DB uses float4 and int4 data types. This means a precision of 8 digits. GraphQL seems to allow a precision of 6 digits.
 
 //Done alone:
+//-->Single quotes ' within a String input of the edit form cause an error unless 2 single quotes are provided ''. This might mean that SQL Injection is possible. Confirm it is not!
+//-->visual bug where TextField divider isn't being shown sometimes. Caused by flex-box styling
+//-->protocols paper first paragraph speaks about charts. Look into how to use apache eChart
+//-->Change seacrifog-api Date.js back to returning a Date instead of a String AND change environment timezone: https://dev.to/kelkes/running-node-in-utc-instead-of-local-timezone-3gki
+//-->Empty Dates are getting a value of "Thu Jan 01 1970" if save clicked
+//-->Seacrifog-api rebuilds postgres db from seacrifog-old.
+//Within seacrifog-api/src/db/sql/migration/schema.sql is the datatypes(float4, float8, etc) of each entity property.
+//These can be changed to increase/decrease precision. Float4=8 digits. Float8=15 digits
 //--> Graphiql (localhost://3000) shows updateDataproduct input for publish date as being a string. seacrifog-api shows it as being a Date.
 //strugglig to get any form of input to not throw an apollo error 500 when mutating this date.
 //-->if a new column(e.g. author, date published, title, etc) is added to the DB, an error will be thrown by the filters. This is because the entry is not found in our explicit fieldDefinitions.
@@ -48,7 +55,8 @@ export default ({ mutation, executeMutation, fieldDefinitions, entityProp, updat
               key={i}
               style={{ marginBottom: '7px' }}
               label={fieldDefinitions[key].label}
-              value={value != null ? value.substring(0, 10) : ''}
+              formatOptions={{ year: 'numeric', month: 'numeric', day: 'numeric' }}
+              value={value != null ? value : ''}
               disabled={!fieldDefinitions[key].editable}
               onChange={val => {
                 updateForm({ [key]: val })
@@ -67,9 +75,10 @@ export default ({ mutation, executeMutation, fieldDefinitions, entityProp, updat
               helpText={
                 fieldDefinitions[key].editable ? (fieldDefinitions[key].isFloat ? 'Rational Number' : 'Integer') : ''
               }
-              value={value != null ? value : undefined} //NOTE: This can cause null values to be saved as "" if editor is opened and saved
+              value={value != null ? value : ''} //NOTE: This could cause null values to be saved as "" if editor is opened and saved and these values are not handled
               onChange={val => {
                 const validationResult = fieldDefinitions[key].validate(val, fieldDefinitions[key].precision)
+                console.log(validationResult)
                 if (validationResult[0] === true) updateForm({ [key]: validationResult[1] })
                 else {
                   //do nothing
