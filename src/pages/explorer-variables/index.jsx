@@ -15,10 +15,11 @@ import {
   ScrollButton,
   dataproductIcon,
   protocolsIcon,
-  iconLink
+  iconLink,
+  ExplorerCoverageMap
 } from '../../modules/shared-components'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
-import { List, ListItem } from 'react-md'
+import { List, ListItem, DataTable, TableHeader, TableRow, TableColumn, TableBody } from 'react-md'
 import { mergeLeft } from 'ramda'
 import { Table } from '../../modules/shared-components'
 
@@ -42,6 +43,11 @@ const variablesDataDefinitions = {
   relevance: { show: true, order: 6, label: 'Relevance' },
   __typename: { show: false }
 }
+
+const getGeoJson = dps => ({
+  type: 'GeometryCollection',
+  geometries: dps.map(dp => dp.coverage_spatial)
+})
 
 export default props => {
   const history = useHistory()
@@ -91,7 +97,7 @@ export default props => {
                             // General information
                             {
                               title: 'Additional Information',
-                              subTitle: 'All Available Fields',
+                              subTitle: 'All available fields',
                               component: (
                                 <ExplorerFormattedObject
                                   object={formatAndFilterObjectKeys(variable, mappings, ([key, val]) =>
@@ -100,6 +106,69 @@ export default props => {
                                       : true
                                   )}
                                 />
+                              )
+                            },
+
+                            // Variable requirements
+                            {
+                              title: 'Requirements',
+                              subTitle: 'For observation & data products',
+                              component: (
+                                <ExplorerFormattedObject
+                                  object={{
+                                    'Observation Frequency': `${variable.frequency_value} ${variable.frequency_unit} (${variable.frequency_comment})`,
+                                    'Spatial Resolution': `${variable.res_value} ${variable.res_unit} (${variable.res_comment})`,
+                                    'Maximum Uncertainty': `${variable.unc_val} ${variable.unc_unit} (${variable.unc_comment})`,
+                                    'Requirement defined by': `${variable.req_source}`,
+                                    'Further information': `${variable.req_uri}`
+                                  }}
+                                />
+                              )
+                            },
+
+                            // Radiative forcing
+                            {
+                              title: 'Radiative Forcing',
+                              subTitle: 'The role this variable plays',
+                              component: (
+                                <>
+                                  <p>
+                                    Below figures are simple aggregates of global figures from the IPCC 5th Assessment
+                                    Report and are only meant to provide a very coarse guidance with regards to sign and
+                                    magnitude of uncertainty of the variable's contribution to radiative forcing on the
+                                    African continent. Also shown are related RF components (Global Values)
+                                  </p>
+                                  <ExplorerFormattedObject
+                                    object={{
+                                      'Variable Type': variable.rftype,
+                                      'Total RF best est. (Wm-2)': Math.max.apply(
+                                        Math,
+                                        variable.rforcings.map(rf => rf.max)
+                                      ),
+                                      'Total RF uncertainty (absolute, Wm-2)': 'TODO - Get maths calc',
+                                      'Total RF uncertainty (relative, %)': 'TODO - Get maths calc'
+                                    }}
+                                  />
+
+                                  <DataTable fullWidth={false} plain>
+                                    <TableHeader>
+                                      <TableRow>
+                                        <TableColumn style={{ textAlign: 'center' }}>Category</TableColumn>
+                                        <TableColumn style={{ textAlign: 'center' }}>Compound</TableColumn>
+                                        <TableColumn style={{ textAlign: 'center' }}>Best Estimate (Wm-2)</TableColumn>
+                                      </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                      {variable.rforcings.map(rf => (
+                                        <TableRow key={rf.compound}>
+                                          <TableColumn>{rf.category}</TableColumn>
+                                          <TableColumn>{rf.compound}</TableColumn>
+                                          <TableColumn>{rf.best}</TableColumn>
+                                        </TableRow>
+                                      ))}
+                                    </TableBody>
+                                  </DataTable>
+                                </>
                               )
                             },
 
@@ -176,9 +245,18 @@ export default props => {
                               ) : (
                                 <NoneMessage />
                               )
-                            }
+                            },
 
                             // Dataproduct bounding boxes
+                            {
+                              title: 'Data Products',
+                              subTitle: 'Spatial bounding',
+                              component: variable.dataproducts[0] ? (
+                                <ExplorerCoverageMap geoJson={getGeoJson(variable.dataproducts)} />
+                              ) : (
+                                <NoneMessage />
+                              )
+                            }
                           ]}
                         />
                       </ExplorerEntityLayout>

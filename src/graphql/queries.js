@@ -206,6 +206,7 @@ export const VARIABLE = gql`
         url_download
         file_format
         file_size
+        coverage_spatial
       }
       rforcings {
         id

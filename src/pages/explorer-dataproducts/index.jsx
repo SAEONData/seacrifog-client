@@ -14,10 +14,10 @@ import {
   ExplorerSectionLayout,
   ScrollButton,
   variableIcon,
-  iconLink
+  iconLink,
+  ExplorerCoverageMap
 } from '../../modules/shared-components'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
-import CoverageMap from './coverage-map'
 import { List, ListItem } from 'react-md'
 import { Table } from '../../modules/shared-components'
 
@@ -81,7 +81,7 @@ export default props => {
                           sections={[
                             {
                               title: 'Additional Information',
-                              subTitle: 'All Available Fields',
+                              subTitle: 'All available fields',
                               component: (
                                 <ExplorerFormattedObject
                                   object={formatAndFilterObjectKeys(dataproduct, mappings, ([key, val]) =>
@@ -122,7 +122,7 @@ export default props => {
                             {
                               title: 'Spatial Coverage',
                               subTitle: 'Of this data product',
-                              component: <CoverageMap geoJson={dataproduct.coverage_spatial} />,
+                              component: <ExplorerCoverageMap geoJson={dataproduct.coverage_spatial} />,
                               style: { height: '500px' },
                               grid: {
                                 size: 12

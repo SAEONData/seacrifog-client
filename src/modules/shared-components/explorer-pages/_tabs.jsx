@@ -21,7 +21,7 @@ export default ({ selectedIds, id, children }) => {
             onTabChange={newTabIndex => setTabIndex(newTabIndex)}
             colored
           >
-            <Tabs activeTabIndex tabId={id}>
+            <Tabs tabId={id}>
               {selectedIds.map((id, i) => (
                 <Tab key={i} icon={<Avatar key={i} children={id} contentStyle={avatarStyle} iconSized />}>
                   <Grid>
