@@ -4,7 +4,7 @@ const pStyle = {
   wordBreak: 'break-all'
 }
 
-export const FormattedInfo = ({ object }) => (
+export default ({ object }) => (
   <>
     {Object.keys(object).map(key => (
       <p key={key} style={pStyle}>

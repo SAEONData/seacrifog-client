@@ -5,7 +5,7 @@ import DataQuery from '../../modules/data-query'
 import { VARIABLES_MIN, VARIABLE } from '../../graphql/queries'
 import {
   NoneMessage,
-  FormattedInfo,
+  ExplorerFormattedObject,
   ExplorerHeader,
   ExplorerLayout,
   ExplorerTableLayout,
@@ -93,7 +93,7 @@ export default props => {
                               title: 'Additional Information',
                               subTitle: 'All Available Fields',
                               component: (
-                                <FormattedInfo
+                                <ExplorerFormattedObject
                                   object={formatAndFilterObjectKeys(variable, mappings, ([key, val]) =>
                                     ['description', '__typename'].includes(key) || typeof val === 'object'
                                       ? false

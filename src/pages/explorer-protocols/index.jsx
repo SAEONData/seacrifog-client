@@ -5,7 +5,7 @@ import DataQuery from '../../modules/data-query'
 import { PROTOCOLS_MIN, PROTOCOL } from '../../graphql/queries'
 import {
   NoneMessage,
-  FormattedInfo,
+  ExplorerFormattedObject,
   ExplorerHeader,
   ExplorerLayout,
   ExplorerTableLayout,
@@ -82,7 +82,7 @@ export default props => {
                               title: 'Additional Information',
                               subTitle: 'All Available Fields',
                               component: (
-                                <FormattedInfo
+                                <ExplorerFormattedObject
                                   object={formatAndFilterObjectKeys(protocol, mappings, ([key, val]) =>
                                     ['abstract', '__typename'].includes(key) || typeof val === 'object' ? false : true
                                   )}
