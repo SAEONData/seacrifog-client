@@ -45,6 +45,8 @@ export const PROTOCOLS_MIN = gql`
       author
       title
       domain
+      publisher
+      format
     }
   }
 `
@@ -56,6 +58,9 @@ export const VARIABLES_MIN = gql`
       name
       class
       domain
+      set
+      relevance
+      rftype
     }
   }
 `
@@ -67,6 +72,8 @@ export const DATAPRODUCTS_MIN = gql`
       title
       publish_year
       provider
+      author
+      keywords
     }
   }
 `
@@ -199,6 +206,7 @@ export const VARIABLE = gql`
         url_download
         file_format
         file_size
+        coverage_spatial
       }
       rforcings {
         id

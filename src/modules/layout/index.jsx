@@ -46,14 +46,14 @@ class Navigation extends PureComponent {
         drawerZDepth={0}
         drawerStyle={{ borderRight: '1px solid rgba(0, 0, 0, 0.1)' }}
         drawerClassName="sf-drawer"
-        miniDrawerStyle={{ borderRight: '1px solid rgba(0, 0, 0, 0.1)' }}
+        miniDrawerStyle={{ borderRight: '1px solid rgba(0, 0, 0, 0.1)', boxShadow: 'none' }}
         miniDrawerClassName="sf-drawer"
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY_MINI}
         desktopDrawerType={
           ['', 'HOME', 'ABOUT', 'CONTACT'].includes(currentPath.replace('/', '').toUpperCase())
             ? NavigationDrawer.DrawerTypes.TEMPORARY
-            : NavigationDrawer.DrawerTypes.TEMPORARY_MINI
+            : NavigationDrawer.DrawerTypes.PERSISTENT_MINI
         }
         drawerTransitionDuration={500}
         toolbarActions={[

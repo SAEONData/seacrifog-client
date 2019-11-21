@@ -1,23 +1,27 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
+import { GlobalStateContext } from '../../global-state'
 import DataQuery from '../../modules/data-query'
 import { VARIABLES_MIN, VARIABLE } from '../../graphql/queries'
-import Table from '../../modules/table'
-import { mergeLeft } from 'ramda'
-import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
-import { NoneMessage, FormattedInfo, LinkButton, DownloadButton, EditButton } from '../../modules/shared-components'
-import q from 'query-string'
 import {
-  Grid,
-  Cell,
-  ExpansionList,
-  ExpansionPanel,
-  DataTable,
-  TableHeader,
-  TableRow,
-  TableColumn,
-  TableBody,
-  Card
-} from 'react-md'
+  NoneMessage,
+  ExplorerFormattedObject,
+  ExplorerHeader,
+  ExplorerLayout,
+  ExplorerTableLayout,
+  ExplorerTabsLayout,
+  ExplorerEntityLayout,
+  ExplorerSectionLayout,
+  ScrollButton,
+  dataproductIcon,
+  protocolsIcon,
+  iconLink,
+  ExplorerCoverageMap
+} from '../../modules/shared-components'
+import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
+import { List, ListItem, DataTable, TableHeader, TableRow, TableColumn, TableBody } from 'react-md'
+import { mergeLeft } from 'ramda'
+import { Table } from '../../modules/shared-components'
 
 const mappings = {
   rftype: 'Radiative Forcing',
@@ -29,192 +33,241 @@ const mappings = {
   unc_comment: 'Comments re. uncertainty'
 }
 
-export default ({ updateForm, hoveredVariable, selectedVariable, ...props }) => (
-  <DataQuery query={VARIABLES_MIN}>
-    {({ variables }) => (
-      <Grid>
-        <Cell size={12}>
-          {/* Main Table (selectable) */}
-          <Card tableCard>
-            <Table
-              invisibleHeaders={['EDIT']}
-              unlickableCols={['EDIT']}
-              headers={Object.keys(variables[0])
-                .filter(col => col && col !== '__typename' && col !== 'id')
-                .concat('EDIT')}
-              data={variables.map(v => mergeLeft({ EDIT: <EditButton to={`/variables/${v.id}`} /> }, v))}
-              initialSearch={
-                props.history.location.search
-                  ? q.parse(props.history.location.search, { ignoreQueryPrefix: true }).searchTerm
-                  : selectedVariable
-                  ? selectedVariable.name
-                  : ''
-              }
-              onRowClick={row => updateForm({ selectedVariable: row })}
-              onRowHover={row => updateForm({ hoveredVariable: row })}
-              selectedRow={selectedVariable}
-              toolbarButtons={[
-                <LinkButton key={'url-button'} active={selectedVariable ? false : true} />,
-                <DownloadButton key={'download-button'} active={selectedVariable ? false : true} />
-              ]}
-              resetForm={() => updateForm({ selectedVariable: null })}
-            />
-          </Card>
-          {/* Display information about selected row */}
-          {selectedVariable ? (
-            <DataQuery query={VARIABLE} variables={{ id: selectedVariable.id }}>
-              {({ variable }) => (
-                <>
-                  <ExpansionList>
-                    <ExpansionPanel label="Overview" defaultExpanded footer={false}>
-                      {
-                        <FormattedInfo
-                          object={formatAndFilterObjectKeys(variable, mappings, ([key, val]) =>
-                            ['name', 'domain', 'class', 'description'].includes(key)
-                          )}
-                        />
-                      }
-                    </ExpansionPanel>
-                    <ExpansionPanel label="General Information" footer={false}>
-                      {
-                        <FormattedInfo
-                          object={formatAndFilterObjectKeys(variable, mappings, ([key, val]) =>
-                            ['description', '__typename'].includes(key) || typeof val === 'object' ? false : true
-                          )}
-                        />
-                      }
-                    </ExpansionPanel>
-                    <ExpansionPanel label="Requirements for Variable Observation and Data Products" footer={false}>
-                      {
-                        <FormattedInfo
-                          object={{
-                            'Observation Frequency': `${variable.frequency_value} ${variable.frequency_unit} (${variable.frequency_comment})`,
-                            'Spatial Resolution': `${variable.res_value} ${variable.res_unit} (${variable.res_comment})`,
-                            'Maximum Uncertainty': `${variable.unc_val} ${variable.unc_unit} (${variable.unc_comment})`,
-                            'Requirement defined by': `${variable.req_source}`,
-                            'Further information': `${variable.req_uri}`
-                          }}
-                        />
-                      }
-                    </ExpansionPanel>
-                    <ExpansionPanel label="Role of variable in Radiative Forcing" footer={false}>
-                      <p>
-                        Below figures are simple aggregates of global figures from the IPCC 5th Assessment Report and
-                        are only meant to provide a very coarse guidance with regards to sign and magnitude of
-                        uncertainty of the variable's contribution to radiative forcing on the African continent. Also
-                        shown are related RF components (Global Values)
-                      </p>
-                      {
-                        <FormattedInfo
-                          object={{
-                            'Variable Type': variable.rftype,
-                            'Total RF best est. (Wm-2)': Math.max.apply(Math, variable.rforcings.map(rf => rf.max)),
-                            'Total RF uncertainty (absolute, Wm-2)': 'TODO - Get maths calc',
-                            'Total RF uncertainty (relative, %)': 'TODO - Get maths calc'
-                          }}
-                        />
-                      }
-                      <DataTable fullWidth={false} plain>
-                        <TableHeader>
-                          <TableRow>
-                            <TableColumn style={{ textAlign: 'center' }}>Category</TableColumn>
-                            <TableColumn style={{ textAlign: 'center' }}>Compound</TableColumn>
-                            <TableColumn style={{ textAlign: 'center' }}>Best Estimate (Wm-2)</TableColumn>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {variable.rforcings.map(rf => (
-                            <TableRow key={rf.compound}>
-                              <TableColumn>{rf.category}</TableColumn>
-                              <TableColumn>{rf.compound}</TableColumn>
-                              <TableColumn>{rf.best}</TableColumn>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </DataTable>
-                    </ExpansionPanel>
-                  </ExpansionList>
+const variablesDataDefinitions = {
+  id: { show: true, order: 0, label: 'ID' },
+  name: { show: true, order: 1, label: 'Name' },
+  class: { show: true, order: 2, label: 'Class' },
+  domain: { show: true, order: 3, label: 'Domain' },
+  set: { show: true, order: 4, label: 'Set' },
+  rftype: { show: true, order: 5, label: 'RF' },
+  relevance: { show: true, order: 6, label: 'Relevance' },
+  __typename: { show: false }
+}
 
-                  {/* Related Data Products */}
-                  <h3 style={{ marginTop: '100px' }}>Related Data Products</h3>
-                  {variable.dataproducts[0] ? (
-                    <Card tableCard>
-                      <Table
-                        onRowClick={row =>
-                          updateForm({ selectedDP: row }, () =>
-                            props.history.push(`/dataproducts?searchTerm=${row.title}`)
-                          )
-                        }
-                        headers={Object.keys(variable.dataproducts[0]).filter(
-                          col => col && col !== '__typename' && col !== 'id'
-                        )}
-                        data={variable.dataproducts.map(d => mergeLeft({}, d))}
-                        hideToolbar
-                      />
-                    </Card>
-                  ) : (
-                    <NoneMessage />
-                  )}
+const getGeoJson = dps => ({
+  type: 'GeometryCollection',
+  geometries: dps.map(dp => dp.coverage_spatial)
+})
 
-                  {/* Related Protocols */}
-                  <h3 style={{ marginTop: '100px' }}>Related Protocols</h3>
-                  {variable.directly_related_protocols[0] ? (
-                    <Card tableCard>
-                      <Table
-                        onRowClick={row =>
-                          updateForm({ selectedProtocol: row }, () =>
-                            props.history.push(`/protocols?searchTerm=${row.title}`)
-                          )
+export default props => {
+  const history = useHistory()
+  return (
+    <GlobalStateContext.Consumer>
+      {({ updateGlobalState, selectedVariables, selectedDataproducts, selectedProtocols }) => (
+        <DataQuery query={VARIABLES_MIN}>
+          {({ variables }) => (
+            <ExplorerLayout>
+              <ExplorerHeader resetFn={() => updateGlobalState({ selectedVariables: [] })} />
+              <ExplorerTableLayout>
+                <Table
+                  actions={[<ScrollButton key={1} disabled={selectedVariables.length > 0 ? false : true} />]}
+                  baseId={'variables-table'}
+                  searchbar={true}
+                  className={'fixed-table'}
+                  defaultPaginationRows={5}
+                  selectedIds={selectedVariables}
+                  dataDefinitions={variablesDataDefinitions}
+                  data={variables}
+                  toggleSelect={({ id, selected }) =>
+                    updateGlobalState({
+                      selectedVariables: selected
+                        ? [...new Set([...selectedVariables, id])]
+                        : [...selectedVariables].filter(i => i !== id)
+                    })
+                  }
+                />
+              </ExplorerTableLayout>
+              <ExplorerTabsLayout id="selected-variables-tabs" selectedIds={selectedVariables}>
+                {({ id }) => (
+                  <DataQuery query={VARIABLE} variables={{ id: id }}>
+                    {({ variable }) => (
+                      <ExplorerEntityLayout
+                        title={variable.name}
+                        authors={variable.domain}
+                        abstract={variable.description}
+                        clickClose={() =>
+                          updateGlobalState({ selectedVariables: selectedVariables.filter(sId => sId !== variable.id) })
                         }
-                        headers={Object.keys(variable.directly_related_protocols[0])
-                          .filter(col => col && col !== '__typename' && col !== 'id')
-                          .concat('relationship')}
-                        data={variable.directly_related_protocols
-                          .map(p => mergeLeft({ relationship: 'direct' }, p))
-                          .concat(
-                            variable.indirectly_related_protocols.map(p => mergeLeft({ relationship: 'indirect' }, p))
-                          )}
-                        hideToolbar
-                      />
-                    </Card>
-                  ) : (
-                    <NoneMessage />
-                  )}
-                </>
-              )}
-            </DataQuery>
-          ) : (
-            <FormattedInfo
-              object={formatAndFilterObjectKeys(
-                {
-                  name: selectedVariable ? (
-                    selectedVariable.name
-                  ) : hoveredVariable ? (
-                    hoveredVariable.name
-                  ) : (
-                    <i>Select a row for more detailed information</i>
-                  ),
-                  domain: selectedVariable ? (
-                    selectedVariable.domain
-                  ) : hoveredVariable ? (
-                    hoveredVariable.domain
-                  ) : (
-                    <i>Select a row for more detailed information</i>
-                  ),
-                  class: selectedVariable ? (
-                    selectedVariable.class
-                  ) : hoveredVariable ? (
-                    hoveredVariable.class
-                  ) : (
-                    <i>Select a row for more detailed information</i>
-                  )
-                },
-                mappings
-              )}
-            />
+                        clickDownload={() => alert('todo')}
+                        clickEdit={() => history.push(`/variable/${variable.id}`)}
+                      >
+                        {/* All Entity Attributes */}
+                        <ExplorerSectionLayout
+                          sections={[
+                            // General information
+                            {
+                              title: 'Additional Information',
+                              subTitle: 'All available fields',
+                              component: (
+                                <ExplorerFormattedObject
+                                  object={formatAndFilterObjectKeys(variable, mappings, ([key, val]) =>
+                                    ['description', '__typename'].includes(key) || typeof val === 'object'
+                                      ? false
+                                      : true
+                                  )}
+                                />
+                              )
+                            },
+
+                            // Variable requirements
+                            {
+                              title: 'Requirements',
+                              subTitle: 'For observation & data products',
+                              component: (
+                                <ExplorerFormattedObject
+                                  object={{
+                                    'Observation Frequency': `${variable.frequency_value} ${variable.frequency_unit} (${variable.frequency_comment})`,
+                                    'Spatial Resolution': `${variable.res_value} ${variable.res_unit} (${variable.res_comment})`,
+                                    'Maximum Uncertainty': `${variable.unc_val} ${variable.unc_unit} (${variable.unc_comment})`,
+                                    'Requirement defined by': `${variable.req_source}`,
+                                    'Further information': `${variable.req_uri}`
+                                  }}
+                                />
+                              )
+                            },
+
+                            // Radiative forcing
+                            {
+                              title: 'Radiative Forcing',
+                              subTitle: 'The role this variable plays',
+                              component: (
+                                <>
+                                  <p>
+                                    Below figures are simple aggregates of global figures from the IPCC 5th Assessment
+                                    Report and are only meant to provide a very coarse guidance with regards to sign and
+                                    magnitude of uncertainty of the variable's contribution to radiative forcing on the
+                                    African continent. Also shown are related RF components (Global Values)
+                                  </p>
+                                  <ExplorerFormattedObject
+                                    object={{
+                                      'Variable Type': variable.rftype,
+                                      'Total RF best est. (Wm-2)': Math.max.apply(
+                                        Math,
+                                        variable.rforcings.map(rf => rf.max)
+                                      ),
+                                      'Total RF uncertainty (absolute, Wm-2)': 'TODO - Get maths calc',
+                                      'Total RF uncertainty (relative, %)': 'TODO - Get maths calc'
+                                    }}
+                                  />
+
+                                  <DataTable fullWidth={false} plain>
+                                    <TableHeader>
+                                      <TableRow>
+                                        <TableColumn style={{ textAlign: 'center' }}>Category</TableColumn>
+                                        <TableColumn style={{ textAlign: 'center' }}>Compound</TableColumn>
+                                        <TableColumn style={{ textAlign: 'center' }}>Best Estimate (Wm-2)</TableColumn>
+                                      </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                      {variable.rforcings.map(rf => (
+                                        <TableRow key={rf.compound}>
+                                          <TableColumn>{rf.category}</TableColumn>
+                                          <TableColumn>{rf.compound}</TableColumn>
+                                          <TableColumn>{rf.best}</TableColumn>
+                                        </TableRow>
+                                      ))}
+                                    </TableBody>
+                                  </DataTable>
+                                </>
+                              )
+                            },
+
+                            // Related protocols
+                            {
+                              title: 'Protocols',
+                              subTitle: 'Used for this variable',
+                              component:
+                                variable.directly_related_protocols[0] || variable.indirectly_related_protocols[0] ? (
+                                  <div>
+                                    <List>
+                                      {variable.directly_related_protocols
+                                        .map(v => mergeLeft({ relationship: 'direct' }, v))
+                                        .concat(
+                                          variable.indirectly_related_protocols.map(v =>
+                                            mergeLeft({ relationship: 'indirect' }, v)
+                                          )
+                                        )
+                                        .sort((a, b) => (a.title > b.title ? 1 : b.title > a.title ? -1 : 0))
+                                        .map((protocol, i) => (
+                                          <ListItem
+                                            onClick={() =>
+                                              updateGlobalState(
+                                                {
+                                                  selectedProtocols: [...new Set([...selectedProtocols, protocol.id])]
+                                                },
+                                                () => history.push('/protocols')
+                                              )
+                                            }
+                                            className="add-on-hover"
+                                            key={i}
+                                            rightIcon={protocolsIcon}
+                                            leftIcon={iconLink}
+                                            primaryText={`${protocol.title}`}
+                                          />
+                                        ))}
+                                    </List>
+                                  </div>
+                                ) : (
+                                  <NoneMessage />
+                                )
+                            },
+
+                            // Related Data Products
+                            {
+                              title: 'Data Products',
+                              subTitle: 'Using this variable',
+                              component: variable.dataproducts[0] ? (
+                                <div>
+                                  <List>
+                                    {variable.dataproducts
+                                      .sort((a, b) => (a.title > b.title ? 1 : b.title > a.title ? -1 : 0))
+                                      .map((dataproduct, i) => (
+                                        <ListItem
+                                          onClick={() =>
+                                            updateGlobalState(
+                                              {
+                                                selectedDataproducts: [
+                                                  ...new Set([...selectedDataproducts, dataproduct.id])
+                                                ]
+                                              },
+                                              () => history.push('/dataproducts')
+                                            )
+                                          }
+                                          className="add-on-hover"
+                                          key={i}
+                                          rightIcon={dataproductIcon}
+                                          leftIcon={iconLink}
+                                          primaryText={`${dataproduct.title}`}
+                                        />
+                                      ))}
+                                  </List>
+                                </div>
+                              ) : (
+                                <NoneMessage />
+                              )
+                            },
+
+                            // Dataproduct bounding boxes
+                            {
+                              title: 'Data Products',
+                              subTitle: 'Spatial bounding',
+                              component: variable.dataproducts[0] ? (
+                                <ExplorerCoverageMap geoJson={getGeoJson(variable.dataproducts)} />
+                              ) : (
+                                <NoneMessage />
+                              )
+                            }
+                          ]}
+                        />
+                      </ExplorerEntityLayout>
+                    )}
+                  </DataQuery>
+                )}
+              </ExplorerTabsLayout>
+            </ExplorerLayout>
           )}
-        </Cell>
-      </Grid>
-    )}
-  </DataQuery>
-)
+        </DataQuery>
+      )}
+    </GlobalStateContext.Consumer>
+  )
+}

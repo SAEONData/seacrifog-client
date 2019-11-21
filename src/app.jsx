@@ -69,14 +69,7 @@ const App = () => (
               key={'explorer-variables'}
               path={'/variables'}
               exact={true}
-              render={props => (
-                <VariablesExplorer
-                  updateForm={updateForm}
-                  selectedVariable={selectedVariable}
-                  hoveredVariable={hoveredVariable}
-                  {...props}
-                />
-              )}
+              render={props => <VariablesExplorer />}
             />
             <Route
               key={'edit-variables'}
@@ -90,27 +83,13 @@ const App = () => (
               key={'explorer-protocols'}
               path={'/protocols'}
               exact={true}
-              render={props => (
-                <ProtocolsExplorer
-                  updateForm={updateForm}
-                  hoveredProtocol={hoveredProtocol}
-                  selectedProtocol={selectedProtocol}
-                  {...props}
-                />
-              )}
+              render={props => <ProtocolsExplorer />}
             />
             <Route
               key={'explorer-dataproducts'}
               path={'/dataproducts'}
               exact={true}
-              render={props => (
-                <DataproductsExplorer
-                  updateForm={updateForm}
-                  hoveredDP={hoveredDP}
-                  selectedDP={selectedDP}
-                  {...props}
-                />
-              )}
+              render={props => <DataproductsExplorer />}
             />
 
             {/* Edit data */}
@@ -140,14 +119,7 @@ const App = () => (
               key={'explorer-dataproducts'}
               path={'/dataproducts'}
               exact={true}
-              render={props => (
-                <DataproductsExplorer
-                  updateForm={updateForm}
-                  hoveredDP={hoveredDP}
-                  selectedDP={selectedDP}
-                  {...props}
-                />
-              )}
+              render={props => <DataproductsExplorer />}
             />
             <Route
               key={'edit-dataproducts'}

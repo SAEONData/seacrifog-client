@@ -1,9 +1,13 @@
 import React from 'react'
 
-export const FormattedInfo = ({ object }) => (
+const pStyle = {
+  wordBreak: 'break-all'
+}
+
+export default ({ object }) => (
   <>
     {Object.keys(object).map(key => (
-      <p key={key}>
+      <p key={key} style={pStyle}>
         <b>{key}</b> {object[key]}
       </p>
     ))}

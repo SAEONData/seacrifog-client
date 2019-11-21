@@ -107,15 +107,15 @@ body {
 
 // Overrides
 #protocols-table-toggle-all + label,
-#protocols-variables-table-1-toggle-all + label,
-#protocols-variables-table-2-toggle-all + label,
-#protocols-variables-table-3-toggle-all + label,
-#protocols-variables-table-4-toggle-all + label,
-#protocols-variables-table-5-toggle-all + label,
-#protocols-variables-table-6-toggle-all + label,
-#protocols-variables-table-7-toggle-all + label,
-#protocols-variables-table-8-toggle-all + label,
-#protocols-variables-table-9-toggle-all + label,
-#protocols-variables-table-10-toggle-all + label {
+#dataproducts-table-toggle-all + label,
+#variables-table-toggle-all + label {
   display: none;
+}
+
+// .fixed-table {
+//   @include react-md-make-fixed-table(320px);
+// }
+
+.add-on-hover:hover {
+  background-color: #eee;
 }

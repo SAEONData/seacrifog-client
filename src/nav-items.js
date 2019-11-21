@@ -1,6 +1,7 @@
 import reactLogo from './svgs/react-logo.svg'
 import googleLogo from './svgs/google-logo.svg'
-import gitlabLogo from './svgs/gitlab-logo.svg'
+import githubLogo from './svgs/github-logo.svg'
+import githubLogo2 from './svgs/github-logo-2.svg'
 
 const avatarStyle = { fontSize: '11px' }
 
@@ -21,6 +22,20 @@ export default [
   },
   { keyval: 'nav-divider-explore', divider: true, style: {} },
   {
+    keyval: 'nav-item-atlas',
+    exact: true,
+    label: 'Sites',
+    to: '/sites',
+    avatar: { children: 'S', suffix: 'lime', style: avatarStyle }
+  },
+  {
+    keyval: 'nav-item-explorer-networks',
+    exact: false,
+    label: 'Networks',
+    to: '/networks',
+    avatar: { children: 'N', suffix: 'teal', style: avatarStyle }
+  },
+  {
     keyval: 'nav-item-explorer-variables',
     exact: false,
     label: 'Variables',
@@ -34,13 +49,7 @@ export default [
     to: '/protocols',
     avatar: { children: 'P', suffix: 'cyan', style: avatarStyle }
   },
-  {
-    keyval: 'nav-item-explorer-networks',
-    exact: false,
-    label: 'Networks',
-    to: '/networks',
-    avatar: { children: 'N', suffix: 'teal', style: avatarStyle }
-  },
+
   {
     keyval: 'nav-item-explorer-dataproducts',
     exact: false,
@@ -48,13 +57,7 @@ export default [
     to: '/dataproducts',
     avatar: { children: 'D', suffix: 'light-green', style: avatarStyle }
   },
-  {
-    keyval: 'nav-item-atlas',
-    exact: true,
-    label: 'Sites',
-    to: '/sites',
-    avatar: { children: 'S', suffix: 'lime', style: avatarStyle }
-  },
+
   { keyval: 'nav-divider-tools', divider: true, style: {} },
   {
     keyval: 'nav-drawer-subheader-source',
@@ -62,15 +65,21 @@ export default [
     primaryText: 'References'
   },
   {
-    keyval: 'source-code',
-    href: 'https://gitlab.com/saeon/seacrifog',
-    avatar: { src: gitlabLogo, alt: 'React Logo' },
-    label: 'Source Code'
+    keyval: 'source-code-api',
+    href: 'https://github.com/SAEONData/seacrifog-api',
+    avatar: { src: githubLogo, alt: 'GitHub Logo' },
+    label: 'API Source'
+  },
+  {
+    keyval: 'source-code-client',
+    href: 'https://github.com/SAEONData/seacrifog-client',
+    avatar: { src: githubLogo2, alt: 'GitHub Logo' },
+    label: 'Client Source'
   },
   {
     keyval: 'react-logo',
     href: 'https://facebook.github.io/react/',
-    avatar: { src: reactLogo, alt: 'GitLab Logo' },
+    avatar: { src: reactLogo, alt: 'React Logo' },
     label: 'React'
   },
   {

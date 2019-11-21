@@ -14,7 +14,7 @@ export default ({ geoJson }) => {
       }),
       style: new Style({
         stroke: new Stroke({
-          color: 'rgba(243, 117, 31)',
+          color: 'rgba(243, 117, 31, 1)',
           lineDash: [0],
           width: 1
         }),
