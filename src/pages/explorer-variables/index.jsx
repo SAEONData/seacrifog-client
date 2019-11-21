@@ -79,7 +79,7 @@ export default props => {
               </ExplorerTableLayout>
               <ExplorerTabsLayout id="selected-variables-tabs" selectedIds={selectedVariables}>
                 {({ id }) => (
-                  <DataQuery query={VARIABLE} variables={{ id: id }}>
+                  <DataQuery query={VARIABLE} variables={{ id }}>
                     {({ variable }) => (
                       <ExplorerEntityLayout
                         title={variable.name}
@@ -91,7 +91,6 @@ export default props => {
                         clickDownload={() => alert('todo')}
                         clickEdit={() => history.push(`/variable/${variable.id}`)}
                       >
-                        {/* All Entity Attributes */}
                         <ExplorerSectionLayout
                           sections={[
                             // General information
