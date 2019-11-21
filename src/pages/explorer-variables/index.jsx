@@ -114,7 +114,7 @@ export default props => {
                                       {variable.directly_related_protocols
                                         .map(v => mergeLeft({ relationship: 'direct' }, v))
                                         .concat(
-                                          variable.directly_related_protocols.map(v =>
+                                          variable.indirectly_related_protocols.map(v =>
                                             mergeLeft({ relationship: 'indirect' }, v)
                                           )
                                         )
@@ -123,7 +123,7 @@ export default props => {
                                           <ListItem
                                             onClick={() =>
                                               updateGlobalState(
-                                                { selectedProtocols: [...new Set([selectedProtocols, id])] },
+                                                { selectedProtocols: [...new Set([...selectedProtocols, id])] },
                                                 () => history.push('/protocols')
                                               )
                                             }
@@ -154,7 +154,7 @@ export default props => {
                                         <ListItem
                                           onClick={() =>
                                             updateGlobalState(
-                                              { selectedDataproducts: [...new Set([selectedDataproducts, id])] },
+                                              { selectedDataproducts: [...new Set([...selectedDataproducts, id])] },
                                               () => history.push('/dataproducts')
                                             )
                                           }
