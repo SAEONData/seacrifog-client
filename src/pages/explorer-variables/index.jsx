@@ -89,7 +89,7 @@ export default props => {
                           updateGlobalState({ selectedVariables: selectedVariables.filter(sId => sId !== variable.id) })
                         }
                         clickDownload={() => alert('todo')}
-                        clickEdit={() => history.push(`/variable/${variable.id}`)}
+                        clickEdit={() => history.push(`/variables/${variable.id}`)}
                       >
                         <ExplorerSectionLayout
                           sections={[
