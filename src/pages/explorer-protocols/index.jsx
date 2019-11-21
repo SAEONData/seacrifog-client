@@ -108,7 +108,9 @@ export default props => {
                                           <ListItem
                                             onClick={() =>
                                               updateGlobalState(
-                                                { selectedVariables: [...new Set([...selectedVariables, id])] },
+                                                {
+                                                  selectedVariables: [...new Set([...selectedVariables, variable.id])]
+                                                },
                                                 () => history.push('/variables')
                                               )
                                             }

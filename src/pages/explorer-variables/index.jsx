@@ -123,7 +123,9 @@ export default props => {
                                           <ListItem
                                             onClick={() =>
                                               updateGlobalState(
-                                                { selectedProtocols: [...new Set([...selectedProtocols, id])] },
+                                                {
+                                                  selectedProtocols: [...new Set([...selectedProtocols, protocol.id])]
+                                                },
                                                 () => history.push('/protocols')
                                               )
                                             }
@@ -154,7 +156,11 @@ export default props => {
                                         <ListItem
                                           onClick={() =>
                                             updateGlobalState(
-                                              { selectedDataproducts: [...new Set([...selectedDataproducts, id])] },
+                                              {
+                                                selectedDataproducts: [
+                                                  ...new Set([...selectedDataproducts, dataproduct.id])
+                                                ]
+                                              },
                                               () => history.push('/dataproducts')
                                             )
                                           }
