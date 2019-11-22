@@ -1,5 +1,3 @@
-import { validate, validateInt, validateFloat } from '../../lib/validations'
-
 export const fieldDefinitions = {
   __typename: {
     //consider removing this entry and filtering out __typename from fields instead
@@ -7,102 +5,87 @@ export const fieldDefinitions = {
     editable: false,
     display: false,
     label: '__typename',
-    pristine: false,
-    validate
+    pristine: true
   },
   id: {
     type: 'Integer',
     precision: 8,
-    isFloat: false,
     editable: false,
     display: false,
     label: 'Variable ID',
-    pristine: true,
-    validate: validateInt
+    pristine: true
   },
   name: {
     type: 'String',
     editable: true,
     display: true,
     label: 'Name',
-    pristine: true,
-    validate
+    pristine: true
   },
   class: {
     type: 'String',
     editable: true,
     display: true,
     label: 'Class',
-    pristine: true,
-    validate
+    pristine: true
   },
   domain: {
     type: 'String',
     editable: true,
     display: true,
     label: 'Domain',
-    pristine: true,
-    validate
+    pristine: true
   },
   set: {
     type: 'String',
     editable: true,
     display: true,
     label: 'Set',
-    pristine: true,
-    validate
+    pristine: true
   },
   description: {
     type: 'String',
     editable: true,
     display: true,
     label: 'Description',
-    pristine: true,
-    validate
+    pristine: true
   },
   method: {
     type: 'String',
     editable: true,
     display: true,
     label: 'Method',
-    pristine: true,
-    validate
+    pristine: true
   },
   uri: {
     type: 'String',
     editable: true,
     display: true,
     label: 'Uniform Resource Identifier (URI)',
-    pristine: true,
-    validate
+    pristine: true
   },
   rftype: {
     type: 'String',
     editable: true,
     display: true,
     label: 'RF Type',
-    pristine: true,
-    validate
+    pristine: true
   },
   score: {
     type: 'Integer',
     precision: 8,
-    isFloat: false,
     editable: false,
     display: false,
     label: 'Score',
-    pristine: true,
-    validate: validateInt
+    pristine: true
   },
   rating: {
     type: 'Integer',
     precision: 8,
-    isFloat: false,
     editable: true,
     display: true,
     label: 'Rating',
-    pristine: true,
-    validate: validateInt
+    pristine: true
   },
   relevance: {
     type: 'Float',
@@ -111,8 +94,7 @@ export const fieldDefinitions = {
     editable: true,
     display: true,
     label: 'Relevance',
-    pristine: true,
-    validate: validateFloat
+    pristine: true
   },
   feasibility: {
     type: 'Float',
@@ -121,8 +103,7 @@ export const fieldDefinitions = {
     editable: true,
     display: true,
     label: 'Feasibility',
-    pristine: true,
-    validate: validateFloat
+    pristine: true
   },
   cost: {
     type: 'Float',
@@ -131,24 +112,21 @@ export const fieldDefinitions = {
     editable: true,
     display: false,
     label: 'Cost',
-    pristine: true,
-    validate: validateFloat
+    pristine: true
   },
   updated_by: {
     type: 'String',
     editable: true,
     display: true,
     label: 'Updated By',
-    pristine: true,
-    validate
+    pristine: true
   },
   updated_at: {
     type: 'Date',
     editable: true,
     display: true,
     label: 'Updated At',
-    pristine: true,
-    validate
+    pristine: true
   },
   frequency_value: {
     type: 'Float',
@@ -157,24 +135,21 @@ export const fieldDefinitions = {
     editable: true,
     display: false,
     label: 'Frequency Value',
-    pristine: true,
-    validate: validateFloat
+    pristine: true
   },
   frequency_unit: {
     type: 'String',
     editable: true,
     display: true,
     label: 'Frequency Unit',
-    pristine: true,
-    validate
+    pristine: true
   },
   frequency_comment: {
     type: 'String',
     editable: true,
     display: true,
     label: 'Frequency Comment',
-    pristine: true,
-    validate
+    pristine: true
   },
   res_value: {
     type: 'Float',
@@ -183,24 +158,21 @@ export const fieldDefinitions = {
     editable: true,
     display: false,
     label: 'Resolution Value',
-    pristine: true,
-    validate: validateFloat
+    pristine: true
   },
   res_unit: {
     type: 'String',
     editable: true,
     display: true,
     label: 'Resolution Unit',
-    pristine: true,
-    validate
+    pristine: true
   },
   res_comment: {
     type: 'String',
     editable: true,
     display: true,
     label: 'Resolution Comment',
-    pristine: true,
-    validate
+    pristine: true
   },
   unc_val: {
     type: 'Float',
@@ -209,79 +181,41 @@ export const fieldDefinitions = {
     editable: true,
     display: false,
     label: 'Uncertainty Value',
-    pristine: true,
-    validate: validateFloat
+    pristine: true
   },
   unc_unit: {
     type: 'String',
     editable: true,
     display: true,
     label: 'Uncertainty Unit',
-    pristine: true,
-    validate
+    pristine: true
   },
   unc_comment: {
     type: 'String',
     editable: true,
     display: true,
     label: 'Uncertainty Comment',
-    pristine: true,
-    validate
+    pristine: true
   },
   req_source: {
     type: 'String',
     editable: true,
     display: true,
     label: '***req=Request?*** Source',
-    pristine: true,
-    validate
+    pristine: true
   },
   req_uri: {
     type: 'String',
     editable: true,
     display: true,
     label: '***req=Request?*** Uniform Resource Identifier (URI)',
-    pristine: true,
-    validate
+    pristine: true
   },
   technology_type: {
     type: 'String',
     editable: true,
     display: true,
     label: 'Technology Type',
-    pristine: true,
-    validate
-  },
-  dataproducts: {
-    type: [], //[Dataproduct]
-    editable: false,
-    display: false,
-    label: 'Dataproducts',
-    pristine: true,
-    validate
-  },
-  directly_related_protocols: {
-    type: [], //[Protocol]
-    editable: false,
-    display: false,
-    label: 'Directly Related Protocols',
-    pristine: true,
-    validate
-  },
-  indirectly_related_protocols: {
-    type: [], //[Protocol]
-    editable: false,
-    display: false,
-    label: 'Indirectly Related Protocols',
-    pristine: true,
-    validate
-  },
-  rforcings: {
-    type: [], //[RadiativeForcing]
-    editable: false,
-    display: false,
-    label: 'Radiative Forcings',
-    pristine: true,
-    validate
+    pristine: true
   }
 }

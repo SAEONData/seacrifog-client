@@ -22,31 +22,22 @@ export default ({ id }) => (
                   {/* Save button */}
                   <Cell size={12}>
                     <EditorSaveButton
-                      saveEntity={() => {
-                        const editedFields = Object.entries(fields).filter(([key, val]) => {
-                          if (!fieldDefinitions[key].display) return false
-                          if (!fieldDefinitions[key].editable) return false
-                          if (
-                            fieldDefinitions[key].type in ['Integer', 'Float'] ||
-                            fieldDefinitions[key].type === 'Date'
-                          ) {
-                            if (val === null || val === undefined || val === '') return false
-                          }
-                          return true
-                        })
-
-                        // Update the database
+                      saveEntity={() =>
                         executeMutation({
                           variables: {
                             input: [
                               {
                                 id: fields.id,
-                                ...Object.fromEntries(editedFields)
+                                ...Object.fromEntries(
+                                  Object.entries(fields).filter(([key]) =>
+                                    fieldDefinitions[key] ? !fieldDefinitions[key].pristine : false
+                                  )
+                                )
                               }
                             ]
                           }
                         })
-                      }}
+                      }
                     />
                   </Cell>
 
