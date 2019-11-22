@@ -1,5 +1,5 @@
 import React from 'react'
-import { CardText, TextField, DatePicker } from 'react-md'
+import { TextField, DatePicker } from 'react-md'
 
 //TO-DO:
 
@@ -28,69 +28,77 @@ import { CardText, TextField, DatePicker } from 'react-md'
 //-->Read Protocols paper https://www.seacrifog.eu/fileadmin/seacrifog/Deliverables/Lopez-Ballesteros_et_al._2019_SEACRIFOG_D4.3_doi.pdf
 //-->Look into if it possible to use GraphQL to query the postgres DB in order to fill out some fieldDefinitions properties dynamically(like type)
 
+const fieldStyle = {
+  marginBottom: '7px'
+}
+
 export default ({ mutation, executeMutation, fieldDefinitions, entityProp, updateForm, ...fields }) => (
-  <CardText>
+  <>
     {Object.entries(fields)
       .filter(([field]) => {
         return fieldDefinitions[field].display
-      }) //removing any unwanted columns
-      .map(([key, value], i) => {
-        if (fieldDefinitions[key].type === String)
-          return (
-            <TextField
-              id={'update-form-entity' + i}
-              key={i}
-              rows={1}
-              maxRows={15}
-              floating
-              style={{ marginBottom: '7px' }}
-              label={fieldDefinitions[key].label}
-              disabled={!fieldDefinitions[key].editable}
-              value={value != null ? value : ''} //NOTE: This can cause null values to be saved as "" if editor is opened and saved
-              onChange={val => updateForm({ [key]: val })} //no validation needed
-            />
-          )
-        else if (fieldDefinitions[key].type === Date) {
-          return (
-            <DatePicker
-              id={'update-form-entity' + i}
-              key={i}
-              style={{ marginBottom: '7px' }}
-              label={fieldDefinitions[key].label}
-              formatOptions={{ year: 'numeric', month: 'numeric', day: 'numeric' }}
-              value={value != null ? value : ''}
-              disabled={!fieldDefinitions[key].editable}
-              onChange={val => {
-                updateForm({ [key]: val })
-              }}
-            />
-          )
-        } else if (fieldDefinitions[key].type === Number)
-          return (
-            <TextField
-              id={'update-form-entity' + i}
-              key={i}
-              floating
-              style={{ marginBottom: '7px' }}
-              label={fieldDefinitions[key].label}
-              disabled={!fieldDefinitions[key].editable}
-              helpText={
-                fieldDefinitions[key].editable ? (fieldDefinitions[key].isFloat ? 'Rational Number' : 'Integer') : ''
-              }
-              value={value != null ? value : ''} //NOTE: This could cause null values to be saved as "" if editor is opened and saved and these values are not handled
-              onChange={val => {
-                const validationResult = fieldDefinitions[key].validate(val, fieldDefinitions[key].precision)
-                console.log(validationResult)
-                if (validationResult[0] === true) updateForm({ [key]: validationResult[1] })
-                else {
-                  //do nothing
-                }
-              }}
-            />
-          )
-        else {
-          return <p style={{ marginTop: '15px', color: 'red' }}>{key} data type not supported!</p>
-        }
-      })}
-  </CardText>
+      })
+      .map(([key, value], i) =>
+        fieldDefinitions[key].type === 'String' ? (
+          <TextField
+            id={'update-form-entity' + i}
+            key={i}
+            rows={1}
+            maxRows={15}
+            floating
+            style={fieldStyle}
+            label={fieldDefinitions[key].label}
+            disabled={!fieldDefinitions[key].editable}
+            value={value != null ? value : ''}
+            onChange={val => updateForm({ [key]: val })}
+          />
+        ) : fieldDefinitions[key].type === 'Date' ? (
+          <DatePicker
+            id={'update-form-entity' + i}
+            key={i}
+            style={fieldStyle}
+            label={fieldDefinitions[key].label}
+            formatOptions={{ year: 'numeric', month: 'numeric', day: 'numeric' }}
+            value={value != null ? value : ''}
+            disabled={!fieldDefinitions[key].editable}
+            onChange={val => {
+              updateForm({ [key]: val })
+            }}
+          />
+        ) : fieldDefinitions[key].type === 'Integer' ? (
+          <TextField
+            id={'update-form-entity' + i}
+            key={i}
+            floating
+            type={'number'}
+            style={fieldStyle}
+            label={fieldDefinitions[key].label}
+            disabled={!fieldDefinitions[key].editable}
+            helpText={
+              fieldDefinitions[key].editable ? (fieldDefinitions[key].isFloat ? 'Rational Number' : 'Integer') : ''
+            }
+            value={value != null ? value : 0}
+            onChange={val => updateForm({ [key]: parseInt(val) })}
+          />
+        ) : fieldDefinitions[key].type === 'Float' ? (
+          <TextField
+            id={'update-form-entity' + i}
+            key={i}
+            floating
+            type={'number'}
+            step={'.000000000000001'}
+            style={fieldStyle}
+            label={fieldDefinitions[key].label}
+            disabled={!fieldDefinitions[key].editable}
+            helpText={
+              fieldDefinitions[key].editable ? (fieldDefinitions[key].isFloat ? 'Rational Number' : 'Integer') : ''
+            }
+            value={value != null ? value : 0}
+            onChange={val => updateForm({ [key]: parseFloat(val) })}
+          />
+        ) : (
+          <p style={{ marginTop: '15px', color: 'red' }}>{key} data type not supported!</p>
+        )
+      )}
+  </>
 )

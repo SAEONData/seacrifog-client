@@ -3,7 +3,7 @@ import { validate, validateInt, validateFloat } from '../../lib/validations'
 export const fieldDefinitions = {
   __typename: {
     //consider removing this entry and filtering out __typename from fields instead
-    type: String,
+    type: 'String',
     editable: false,
     display: false,
     label: '__typename',
@@ -11,7 +11,7 @@ export const fieldDefinitions = {
     validate
   },
   id: {
-    type: Number, //int
+    type: 'Integer',
     precision: 8,
     isFloat: false,
     editable: false,
@@ -21,7 +21,7 @@ export const fieldDefinitions = {
     validate: validateInt
   },
   name: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Name',
@@ -29,7 +29,7 @@ export const fieldDefinitions = {
     validate
   },
   class: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Class',
@@ -37,7 +37,7 @@ export const fieldDefinitions = {
     validate
   },
   domain: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Domain',
@@ -45,7 +45,7 @@ export const fieldDefinitions = {
     validate
   },
   set: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Set',
@@ -53,7 +53,7 @@ export const fieldDefinitions = {
     validate
   },
   description: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Description',
@@ -61,7 +61,7 @@ export const fieldDefinitions = {
     validate
   },
   method: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Method',
@@ -69,7 +69,7 @@ export const fieldDefinitions = {
     validate
   },
   uri: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Uniform Resource Identifier (URI)',
@@ -77,7 +77,7 @@ export const fieldDefinitions = {
     validate
   },
   rftype: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'RF Type',
@@ -85,7 +85,7 @@ export const fieldDefinitions = {
     validate
   },
   score: {
-    type: Number, //int
+    type: 'Integer',
     precision: 8,
     isFloat: false,
     editable: false,
@@ -95,7 +95,7 @@ export const fieldDefinitions = {
     validate: validateInt
   },
   rating: {
-    type: Number, //int
+    type: 'Integer',
     precision: 8,
     isFloat: false,
     editable: true,
@@ -105,7 +105,7 @@ export const fieldDefinitions = {
     validate: validateInt
   },
   relevance: {
-    type: Number, //Float
+    type: 'Float',
     precision: 8,
     isFloat: true,
     editable: true,
@@ -115,7 +115,7 @@ export const fieldDefinitions = {
     validate: validateFloat
   },
   feasibility: {
-    type: Number, //Float
+    type: 'Float',
     precision: 8,
     isFloat: true,
     editable: true,
@@ -125,7 +125,7 @@ export const fieldDefinitions = {
     validate: validateFloat
   },
   cost: {
-    type: Number, //Float
+    type: 'Float',
     precision: 8,
     isFloat: true,
     editable: true,
@@ -135,7 +135,7 @@ export const fieldDefinitions = {
     validate: validateFloat
   },
   updated_by: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Updated By',
@@ -143,7 +143,7 @@ export const fieldDefinitions = {
     validate
   },
   updated_at: {
-    type: Date,
+    type: 'Date',
     editable: true,
     display: true,
     label: 'Updated At',
@@ -151,7 +151,7 @@ export const fieldDefinitions = {
     validate
   },
   frequency_value: {
-    type: Number, //Float
+    type: 'Float',
     precision: 8,
     isFloat: true,
     editable: true,
@@ -161,7 +161,7 @@ export const fieldDefinitions = {
     validate: validateFloat
   },
   frequency_unit: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Frequency Unit',
@@ -169,7 +169,7 @@ export const fieldDefinitions = {
     validate
   },
   frequency_comment: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Frequency Comment',
@@ -177,7 +177,7 @@ export const fieldDefinitions = {
     validate
   },
   res_value: {
-    type: Number, //Float
+    type: 'Float',
     precision: 8,
     isFloat: true,
     editable: true,
@@ -187,7 +187,7 @@ export const fieldDefinitions = {
     validate: validateFloat
   },
   res_unit: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Resolution Unit',
@@ -195,7 +195,7 @@ export const fieldDefinitions = {
     validate
   },
   res_comment: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Resolution Comment',
@@ -203,7 +203,7 @@ export const fieldDefinitions = {
     validate
   },
   unc_val: {
-    type: Number, //Float
+    type: 'Float',
     precision: 8,
     isFloat: true,
     editable: true,
@@ -213,7 +213,7 @@ export const fieldDefinitions = {
     validate: validateFloat
   },
   unc_unit: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Uncertainty Unit',
@@ -221,7 +221,7 @@ export const fieldDefinitions = {
     validate
   },
   unc_comment: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Uncertainty Comment',
@@ -229,7 +229,7 @@ export const fieldDefinitions = {
     validate
   },
   req_source: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: '***req=Request?*** Source',
@@ -237,7 +237,7 @@ export const fieldDefinitions = {
     validate
   },
   req_uri: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: '***req=Request?*** Uniform Resource Identifier (URI)',
@@ -245,7 +245,7 @@ export const fieldDefinitions = {
     validate
   },
   technology_type: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Technology Type',
