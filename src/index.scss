@@ -70,11 +70,6 @@ body {
   }
 }
 
-/* unsure of where this is used */
-.selected-row {
-  background-color: #cce6d6 !important; // !important overrides the hover event on other rows
-}
-
 .link {
   color: $md-primary-color;
   display: inline-block;
