@@ -38,6 +38,37 @@ export const ENTIRE_GRAPH = gql`
   }
 `
 
+export const NETWORK = gql`
+  query network($id: Int!) {
+    network(id: $id) {
+      id
+      title
+      acronym
+      type
+      status
+      start_year
+      end_year
+      abstract
+      coverage_spatial
+      variables ${VARIABLE_FRAGMENT}
+    }
+  }
+`
+
+export const NETWORKS_MIN = gql`
+  query networksMin {
+    networks {
+      id
+      title
+      acronym
+      type
+      status
+      start_year
+      end_year
+    }
+  }
+`
+
 export const PROTOCOLS_MIN = gql`
   query protocolsMin {
     protocols {

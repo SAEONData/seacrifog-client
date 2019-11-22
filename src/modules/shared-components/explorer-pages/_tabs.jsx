@@ -34,7 +34,7 @@ export default ({ selectedIds, id, children }) => {
         ) : (
           <Grid>
             <Cell size={12}>
-              <p>Select multiple protocols in the table above</p>
+              <p>No rows selected</p>
             </Cell>
           </Grid>
         )}

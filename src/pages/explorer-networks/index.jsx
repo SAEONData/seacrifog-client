@@ -1,3 +1,156 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
+import { GlobalStateContext } from '../../global-state'
+import DataQuery from '../../modules/data-query'
+import { NETWORKS_MIN, NETWORK } from '../../graphql/queries'
+import {
+  NoneMessage,
+  ExplorerFormattedObject,
+  ExplorerHeader,
+  ExplorerLayout,
+  ExplorerTableLayout,
+  ExplorerTabsLayout,
+  ExplorerEntityLayout,
+  ExplorerSectionLayout,
+  ScrollButton,
+  iconLink,
+  ExplorerCoverageMap,
+  variableIcon
+} from '../../modules/shared-components'
+import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
+import { List, ListItem } from 'react-md'
+import { Table } from '../../modules/shared-components'
 
-export default ({ updateForm, ...props }) => <div>Coming soon</div>
+const mappings = {}
+
+const networksDataDefinitions = {
+  id: { show: true, order: 0, label: 'ID' },
+  title: { show: true, order: 1, label: 'Title' },
+  acronym: { show: true, order: 2, label: 'Acronym' },
+  type: { show: true, order: 3, label: 'Type' },
+  status: { show: true, order: 4, label: 'Status' },
+  start_year: { show: true, order: 5, label: 'Start Year' },
+  end_year: { show: true, order: 6, label: 'End Year' },
+  __typename: { show: false }
+}
+
+export default props => {
+  const history = useHistory()
+  return (
+    <GlobalStateContext.Consumer>
+      {({ updateGlobalState, selectedNetworks, selectedVariables }) => (
+        <DataQuery query={NETWORKS_MIN}>
+          {({ networks }) => (
+            <ExplorerLayout>
+              <ExplorerHeader resetFn={() => updateGlobalState({ selectedNetworks: [] })} />
+              <ExplorerTableLayout>
+                <Table
+                  actions={[<ScrollButton key={1} disabled={selectedNetworks.length > 0 ? false : true} />]}
+                  baseId={'networks-table'}
+                  searchbar={true}
+                  className={'fixed-table'}
+                  defaultPaginationRows={5}
+                  selectedIds={selectedNetworks}
+                  dataDefinitions={networksDataDefinitions}
+                  data={networks}
+                  toggleSelect={({ id, selected }) =>
+                    updateGlobalState({
+                      selectedNetworks: selected
+                        ? [...new Set([...selectedNetworks, id])]
+                        : [...selectedNetworks].filter(i => i !== id)
+                    })
+                  }
+                />
+              </ExplorerTableLayout>
+              <ExplorerTabsLayout id="selected-variables-tabs" selectedIds={selectedNetworks}>
+                {({ id }) => (
+                  <DataQuery query={NETWORK} variables={{ id }}>
+                    {({ network }) => (
+                      <ExplorerEntityLayout
+                        title={network.title}
+                        authors={network.acronym}
+                        abstract={network.abstract}
+                        clickClose={() =>
+                          updateGlobalState({ selectedNetworks: selectedNetworks.filter(sId => sId !== network.id) })
+                        }
+                        clickDownload={() => alert('todo')}
+                        clickEdit={() => history.push(`/networks/${network.id}`)}
+                      >
+                        <ExplorerSectionLayout
+                          sections={[
+                            // General information
+                            {
+                              title: 'Additional Information',
+                              subTitle: 'All available fields',
+                              component: (
+                                <ExplorerFormattedObject
+                                  object={formatAndFilterObjectKeys(network, mappings, ([key, val]) =>
+                                    ['abstract', '__typename'].includes(key) || typeof val === 'object' ? false : true
+                                  )}
+                                />
+                              )
+                            },
+
+                            // Related variables
+                            {
+                              title: 'Variables',
+                              subTitle: 'Measured by this network',
+                              component: network.variables[0] ? (
+                                <div>
+                                  <List>
+                                    {network.variables
+                                      .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
+                                      .map((variable, i) => (
+                                        <ListItem
+                                          onClick={() =>
+                                            updateGlobalState(
+                                              {
+                                                selectedVariables: [...new Set([...selectedVariables, variable.id])]
+                                              },
+                                              () => history.push('/variables')
+                                            )
+                                          }
+                                          className="add-on-hover"
+                                          key={i}
+                                          rightIcon={variableIcon}
+                                          leftIcon={iconLink}
+                                          primaryText={`${variable.name}`}
+                                        />
+                                      ))}
+                                  </List>
+                                </div>
+                              ) : (
+                                <NoneMessage />
+                              )
+                            },
+
+                            // Coverage map
+                            {
+                              title: 'Spatial Coverage',
+                              subTitle: 'Of this network',
+                              component: network.coverage_spatial ? (
+                                <ExplorerCoverageMap geoJson={network.coverage_spatial} />
+                              ) : (
+                                <NoneMessage />
+                              ),
+                              style: { height: '500px' },
+                              grid: network.coverage_spatial
+                                ? {
+                                    size: 12
+                                  }
+                                : {}
+                            }
+                          ]}
+                        />
+                      </ExplorerEntityLayout>
+                    )}
+                  </DataQuery>
+                )}
+              </ExplorerTabsLayout>
+            </ExplorerLayout>
+          )}
+        </DataQuery>
+      )}
+    </GlobalStateContext.Consumer>
+  )
+}

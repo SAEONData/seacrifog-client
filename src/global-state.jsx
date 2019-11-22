@@ -4,8 +4,9 @@ export const GlobalStateContext = React.createContext()
 
 export default class extends PureComponent {
   state = {
-    selectedProtocols: [],
+    selectedNetworks: [],
     selectedVariables: [],
+    selectedProtocols: [],
     selectedDataproducts: []
   }
 
