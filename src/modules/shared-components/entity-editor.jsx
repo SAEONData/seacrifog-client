@@ -6,6 +6,8 @@ import { CardText, TextField, DatePicker } from 'react-md'
 ///Consult with Zach/Other:
 
 //Done alone:
+//--->Implement a Network editor page. Requires Mutation as well
+//-->Navigating seacrifog throws several serialize errors in the API console. Check if this is caused by my Date.js changes
 //-->Single quotes ' within a String input of the edit form cause an error unless 2 single quotes are provided ''. This might mean that SQL Injection is possible. Confirm it is not!
 //-->visual bug where TextField divider isn't being shown sometimes. Caused by flex-box styling
 //-->protocols paper first paragraph speaks about charts. Look into how to use apache eChart
