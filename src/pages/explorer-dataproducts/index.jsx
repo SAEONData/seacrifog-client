@@ -51,11 +51,11 @@ export default props => {
                   selectedIds={selectedDataproducts}
                   dataDefinitions={dataproductsDataDefinitions}
                   data={dataproducts}
-                  toggleSelect={({ id, selected }) =>
+                  toggleSelect={({ id }) =>
                     updateGlobalState({
-                      selectedDataproducts: selected
-                        ? [...new Set([...selectedDataproducts, id])]
-                        : [...selectedDataproducts].filter(i => i !== id)
+                      selectedDataproducts: selectedDataproducts.includes(id)
+                        ? [...selectedDataproducts].filter(vId => vId !== id)
+                        : [...new Set([...selectedDataproducts, id])]
                     })
                   }
                 />

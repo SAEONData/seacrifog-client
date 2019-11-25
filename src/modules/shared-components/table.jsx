@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'
-import { mergeLeft } from 'ramda'
 import {
   DataTable,
   TableHeader,
@@ -11,12 +10,12 @@ import {
   TextField,
   FontIcon
 } from 'react-md'
+import debounce from '../../lib/debounce'
+import { mergeLeft } from 'ramda'
 
 const sortResult = (a, b, reverse = false) => (reverse ? (a > b ? -1 : a < b ? 1 : 0) : a > b ? 1 : a < b ? -1 : 0)
 
 export default class extends PureComponent {
-  rowToIdMap = {}
-
   constructor(props) {
     super(props)
     const { dataDefinitions, defaultPaginationRows } = props
@@ -55,7 +54,7 @@ export default class extends PureComponent {
   }
 
   render() {
-    const { props, rowToIdMap, state, applySorting, defaultPaginationRows } = this
+    const { props, state, applySorting, defaultPaginationRows } = this
     const { headers, search, paginationSlice } = state
     const { data, dataDefinitions, toggleSelect, selectedIds, baseId, className } = props
 
@@ -104,16 +103,7 @@ export default class extends PureComponent {
         ) : (
           ''
         )}
-        <DataTable
-          className={className}
-          baseId={baseId}
-          style={{ fontSize: '12px' }}
-          onRowToggle={(rowNum, checked, selectedCount, e) =>
-            toggleSelect({ id: rowToIdMap[rowNum], selected: checked })
-          }
-          responsive={true}
-          fullWidth
-        >
+        <DataTable className={className} baseId={baseId} style={{ fontSize: '12px' }} responsive={true} fullWidth>
           <TableHeader>
             <TableRow>
               {Object.entries(headers)
@@ -135,14 +125,12 @@ export default class extends PureComponent {
           </TableHeader>
           <TableBody>
             {filteredData.slice(paginationSlice[0], paginationSlice[1]).map((row, i) => {
-              // Keep track of which IDs are in which rows
-              rowToIdMap[i + 1] = row.id
-
               // Return a <TableRow />
               return (
                 <TableRow
                   className={'cursor-pointer'}
-                  onClick={() => alert('hi')}
+                  onClick={debounce(() => toggleSelect({ id: row.id }))}
+                  onCheckboxClick={debounce(() => toggleSelect({ id: row.id }))}
                   key={i}
                   selected={selectedIds.includes(row.id) ? true : false}
                 >

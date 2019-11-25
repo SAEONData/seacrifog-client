@@ -53,11 +53,11 @@ export default props => {
                   selectedIds={selectedNetworks}
                   dataDefinitions={networksDataDefinitions}
                   data={networks}
-                  toggleSelect={({ id, selected }) =>
+                  toggleSelect={({ id }) =>
                     updateGlobalState({
-                      selectedNetworks: selected
-                        ? [...new Set([...selectedNetworks, id])]
-                        : [...selectedNetworks].filter(i => i !== id)
+                      selectedNetworks: selectedNetworks.includes(id)
+                        ? [...selectedNetworks].filter(vId => vId !== id)
+                        : [...new Set([...selectedNetworks, id])]
                     })
                   }
                 />

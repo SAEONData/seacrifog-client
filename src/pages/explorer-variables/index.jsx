@@ -68,11 +68,11 @@ export default props => {
                   selectedIds={selectedVariables}
                   dataDefinitions={variablesDataDefinitions}
                   data={variables}
-                  toggleSelect={({ id, selected }) =>
+                  toggleSelect={({ id }) =>
                     updateGlobalState({
-                      selectedVariables: selected
-                        ? [...new Set([...selectedVariables, id])]
-                        : [...selectedVariables].filter(i => i !== id)
+                      selectedVariables: selectedVariables.includes(id)
+                        ? [...selectedVariables].filter(vId => vId !== id)
+                        : [...new Set([...selectedVariables, id])]
                     })
                   }
                 />
