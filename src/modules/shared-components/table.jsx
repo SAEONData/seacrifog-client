@@ -140,7 +140,12 @@ export default class extends PureComponent {
 
               // Return a <TableRow />
               return (
-                <TableRow key={i} selected={selectedIds.includes(row.id) ? true : false}>
+                <TableRow
+                  className={'cursor-pointer'}
+                  onClick={() => alert('hi')}
+                  key={i}
+                  selected={selectedIds.includes(row.id) ? true : false}
+                >
                   {Object.entries(row)
                     .filter(([field]) => dataDefinitions[field] && dataDefinitions[field].show)
                     .sort(([fieldNameA], [fieldNameB]) =>
