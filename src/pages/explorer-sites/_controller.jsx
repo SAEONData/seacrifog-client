@@ -70,15 +70,21 @@ export default class extends PureComponent {
                 <SideMenu
                   toolbarActions={[
                     <Button
-                      disabled={false}
+                      disabled={
+                        selectedSites.length ||
+                        selectedNetworks.length ||
+                        selectedVariables.length ||
+                        selectedProtocols.length
+                          ? false
+                          : true
+                      }
                       primary
                       onClick={() =>
                         updateGlobalState({
                           selectedSites: [],
                           selectedNetworks: [],
                           selectedVariables: [],
-                          selectedProtocols: [],
-                          selectedDataproducts: []
+                          selectedProtocols: []
                         })
                       }
                       icon
@@ -94,7 +100,7 @@ export default class extends PureComponent {
                       icon
                       onClick={toggleMenu}
                     >
-                      search
+                      filter_list
                     </Button>
                   )}
                 >

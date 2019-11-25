@@ -119,3 +119,21 @@ body {
 .cursor-pointer {
   cursor: pointer;
 }
+
+.md-table-pagination--controls {
+  position: absolute;
+  right: 0;
+  margin-right: 10px;
+}
+
+/**
+ * For hiding row pagination 
+ **/
+// .md-table-pagination--controls {
+//   .md-table-pagination__label {
+//     display: none;
+//   }
+//   .md-menu--select-field {
+//     display: none;
+//   }
+// }
