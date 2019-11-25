@@ -33,8 +33,6 @@ export default class extends PureComponent {
     this.xrefNetworksVariables = xrefNetworksVariables
     this.xrefProtocolsVariables = xrefProtocolsVariables
 
-    console.log(selectedNetwork, selectedProtocol, selectedVariable)
-
     // The filters
     this.state.filters = [
       {

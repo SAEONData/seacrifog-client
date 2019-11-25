@@ -75,13 +75,13 @@ export default class extends PureComponent {
                   )}
                 >
                   <div style={sideMenuContentStyle}>
-                    {filters.map(filter => (
-                      <DropdownSelect key={filter.id} {...filter} onItemToggle={updateFilters} />
+                    {filters.map((filter, i) => (
+                      <DropdownSelect key={i} {...filter} onItemToggle={updateFilters} />
                     ))}
                   </div>
                 </SideMenu>
 
-                {/* Feature click panel */}
+                {/* Feature click panel, all shown features, WITH menu */}
                 <SideMenu
                   style={{ minWidth: '100%', overflowY: 'auto', zIndex: 999 }}
                   control={({ toggleMenu }) => (
@@ -118,7 +118,7 @@ export default class extends PureComponent {
                   </div>
                 </SideMenu>
 
-                {/* Feature click panel */}
+                {/* Feature click panel (individual feature, no menu) */}
                 <SingleFeatureSelector map={map}>
                   {({ selectedFeature, unselectFeature }) =>
                     selectedFeature ? (
