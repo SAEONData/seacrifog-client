@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, Toolbar, CardText } from 'react-md'
 import DataQuery from '../../modules/data-query'
 import { SITES } from '../../graphql/queries'
-import PieChart from './pie-chart'
+import PieChart from './_pie-chart'
 
 const FeaturePanel = ({ title, footerActions, toolbarActions, children }) => (
   <Card style={{ height: '100%', width: '100%' }} className="better-box-shadow">

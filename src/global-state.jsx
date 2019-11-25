@@ -4,10 +4,13 @@ export const GlobalStateContext = React.createContext()
 
 export default class extends PureComponent {
   state = {
+    selectedSites: [],
     selectedNetworks: [],
     selectedVariables: [],
     selectedProtocols: [],
     selectedDataproducts: []
+
+    // TODO: Keep track of selected tabs on the list pages
   }
 
   updateGlobalState = (obj, cb = null) => this.setState(obj, cb)

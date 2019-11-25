@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react'
-import FilterState from './filter-state'
-import FeatureDetail from './feature-detail'
-import { Map, clusterSource, clusterLayer, ahocevarBaseMap, SingleFeatureSelector } from '@saeon/atlas'
-import { SideMenu, DropdownSelect } from '../../modules/shared-components'
 import sift from 'sift'
 import { Button } from 'react-md'
+import { Map, clusterSource, clusterLayer, ahocevarBaseMap, SingleFeatureSelector } from '@saeon/atlas'
+import { GlobalStateContext } from '../../global-state'
+import { SideMenu, DropdownSelect } from '../../modules/shared-components'
+import ApplySitesFilter from './_apply-sites-filter'
+import FeatureDetail from './_feature-detail'
 
 const sideMenuContentStyle = { paddingLeft: '24px', paddingRight: '24px' }
 
@@ -38,27 +39,50 @@ export default class extends PureComponent {
   }
 
   render() {
-    const { data, layers } = this
-    const { selectedNetwork, selectedProtocol, selectedVariable, updateForm } = this.props
+    const { layers, data } = this
+    const {
+      sites,
+      networks,
+      variables,
+      protocols,
+      xrefSitesNetworks,
+      xrefNetworksVariables,
+      xrefProtocolsVariables
+    } = data
 
     return (
-      <Map style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }} layers={layers}>
-        {({ map }) => (
-          <FilterState
-            map={map}
-            updateMapLayer={({ source }) => this.clusteredSitesLayer.setSource(source)}
-            data={data}
-            updateForm={updateForm}
-            selectedNetwork={selectedNetwork}
-            selectedVariable={selectedVariable}
-            selectedProtocol={selectedProtocol}
-          >
-            {({ updateFilters, refreshFilters, filters, anyActiveFilters }) => (
-              <>
-                {/* Side Filter */}
+      <GlobalStateContext.Consumer>
+        {({ updateGlobalState, selectedSites, selectedNetworks, selectedVariables, selectedProtocols }) => (
+          <Map style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }} layers={layers}>
+            {({ map }) => (
+              <ApplySitesFilter
+                sites={sites}
+                selectedSites={selectedSites}
+                selectedNetworks={selectedNetworks}
+                selectedVariables={selectedVariables}
+                selectedProtocols={selectedProtocols}
+                xrefSitesNetworks={xrefSitesNetworks}
+                xrefNetworksVariables={xrefNetworksVariables}
+                xrefProtocolsVariables={xrefProtocolsVariables}
+                updateMapLayer={({ source }) => this.clusteredSitesLayer.setSource(source)}
+              >
+                {/* Side Filter menu */}
                 <SideMenu
                   toolbarActions={[
-                    <Button disabled={anyActiveFilters ? false : true} primary onClick={refreshFilters} icon>
+                    <Button
+                      disabled={false}
+                      primary
+                      onClick={() =>
+                        updateGlobalState({
+                          selectedSites: [],
+                          selectedNetworks: [],
+                          selectedVariables: [],
+                          selectedProtocols: [],
+                          selectedDataproducts: []
+                        })
+                      }
+                      icon
+                    >
                       refresh
                     </Button>
                   ]}
@@ -75,9 +99,62 @@ export default class extends PureComponent {
                   )}
                 >
                   <div style={sideMenuContentStyle}>
-                    {filters.map((filter, i) => (
-                      <DropdownSelect key={i} {...filter} onItemToggle={updateFilters} />
-                    ))}
+                    {/* Sites filter */}
+                    <DropdownSelect
+                      id={'dropdown-select-sites'}
+                      label={'Filter sites'}
+                      selectedItems={selectedSites}
+                      items={sites.map(({ id, name: value }) => ({ id, value }))}
+                      onItemToggle={id =>
+                        updateGlobalState({
+                          selectedSites: selectedSites.includes(id)
+                            ? [...selectedSites].filter(sId => sId !== id)
+                            : [...selectedSites, id]
+                        })
+                      }
+                    />
+                    {/* Networks filter */}
+                    <DropdownSelect
+                      id={'dropdown-select-networks'}
+                      label={'Filter networks'}
+                      selectedItems={selectedNetworks}
+                      items={networks.map(({ id, acronym: value }) => ({ id, value }))}
+                      onItemToggle={id =>
+                        updateGlobalState({
+                          selectedNetworks: selectedNetworks.includes(id)
+                            ? [...selectedNetworks].filter(nId => nId !== id)
+                            : [...selectedNetworks, id]
+                        })
+                      }
+                    />
+                    {/* Variables filter */}
+                    <DropdownSelect
+                      id={'dropdown-select-variables'}
+                      label={'Filter variables'}
+                      selectedItems={selectedVariables}
+                      items={variables.map(({ id, name: value }) => ({ id, value }))}
+                      onItemToggle={id =>
+                        updateGlobalState({
+                          selectedVariables: selectedVariables.includes(id)
+                            ? [...selectedVariables].filter(vId => vId !== id)
+                            : [...selectedVariables, id]
+                        })
+                      }
+                    />
+                    {/* Protocols filter */}
+                    <DropdownSelect
+                      id={'dropdown-select-protocols'}
+                      label={'Filter protocols'}
+                      selectedItems={selectedProtocols}
+                      items={protocols.map(({ id, title: value }) => ({ id, value }))}
+                      onItemToggle={id =>
+                        updateGlobalState({
+                          selectedProtocols: selectedProtocols.includes(id)
+                            ? [...selectedProtocols].filter(pId => pId !== id)
+                            : [...selectedProtocols, id]
+                        })
+                      }
+                    />
                   </div>
                 </SideMenu>
 
@@ -152,11 +229,11 @@ export default class extends PureComponent {
                     )
                   }
                 </SingleFeatureSelector>
-              </>
+              </ApplySitesFilter>
             )}
-          </FilterState>
+          </Map>
         )}
-      </Map>
+      </GlobalStateContext.Consumer>
     )
   }
 }

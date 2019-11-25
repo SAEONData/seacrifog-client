@@ -13,124 +13,78 @@ import VariableEditor from './pages/editor-variables'
 import ProtocolEditor from './pages/editor-protocols'
 import DataproductEditor from './pages/editor-dataproducts'
 import navItems from './nav-items'
-import Form from './modules/form'
 
 // SPA wrapper
 const App = () => (
   <GlobalState>
-    <Form
-      selectedNetwork={null}
-      selectedVariable={null}
-      selectedProtocol={null}
-      selectedDP={null}
-      hoveredNetwork={null}
-      hoveredVariable={null}
-      hoveredProtocol={null}
-      hoveredDP={null}
-    >
-      {({
-        updateForm,
-        selectedNetwork,
-        selectedVariable,
-        selectedProtocol,
-        selectedDP,
-        hoveredVariable,
-        hoveredProtocol,
-        hoveredDP
-      }) => (
-        <BrowserRouter>
-          <Navigation navItems={navItems}>
-            {/* Basic navigation */}
-            <Route key={'home'} path={'/'} exact={true} component={Home} />
-            <Route key={'home-2'} path={'/home'} exact={true} component={Home} />
-            <Route key={'contact'} path={'/contact'} exact={true} component={Contact} />
+    <BrowserRouter>
+      <Navigation navItems={navItems}>
+        {/* Basic navigation */}
+        <Route key={'home'} path={'/'} exact={true} component={Home} />
+        <Route key={'home-2'} path={'/home'} exact={true} component={Home} />
+        <Route key={'contact'} path={'/contact'} exact={true} component={Contact} />
 
-            {/* Sites */}
-            <Route
-              key={'sites-explorer'}
-              path={'/sites'}
-              exact={true}
-              render={props => (
-                <SitesExplorer
-                  updateForm={updateForm}
-                  selectedNetwork={selectedNetwork}
-                  selectedVariable={selectedVariable}
-                  selectedProtocol={selectedProtocol}
-                  {...props}
-                />
-              )}
-            />
+        {/* Sites */}
+        <Route key={'sites-explorer'} path={'/sites'} exact={true} render={props => <SitesExplorer />} />
 
-            {/* Network Explorer */}
-            <Route key={'networks-explorer'} path={'/networks'} exact={true} render={props => <NetworksExplorer />} />
+        {/* Network Explorer */}
+        <Route key={'networks-explorer'} path={'/networks'} exact={true} render={props => <NetworksExplorer />} />
 
-            {/* Variables */}
-            <Route
-              key={'explorer-variables'}
-              path={'/variables'}
-              exact={true}
-              render={props => <VariablesExplorer />}
-            />
-            <Route
-              key={'edit-variables'}
-              path={'/variables/:id'}
-              exact={false}
-              render={props => <VariableEditor id={props.match.params.id} {...props} />}
-            />
+        {/* Variables */}
+        <Route key={'explorer-variables'} path={'/variables'} exact={true} render={props => <VariablesExplorer />} />
+        <Route
+          key={'edit-variables'}
+          path={'/variables/:id'}
+          exact={false}
+          render={props => <VariableEditor id={props.match.params.id} {...props} />}
+        />
 
-            {/* Protocols */}
-            <Route
-              key={'explorer-protocols'}
-              path={'/protocols'}
-              exact={true}
-              render={props => <ProtocolsExplorer />}
-            />
-            <Route
-              key={'explorer-dataproducts'}
-              path={'/dataproducts'}
-              exact={true}
-              render={props => <DataproductsExplorer />}
-            />
+        {/* Protocols */}
+        <Route key={'explorer-protocols'} path={'/protocols'} exact={true} render={props => <ProtocolsExplorer />} />
+        <Route
+          key={'explorer-dataproducts'}
+          path={'/dataproducts'}
+          exact={true}
+          render={props => <DataproductsExplorer />}
+        />
 
-            {/* Edit data */}
-            <Route
-              key={'edit-variables'}
-              path={'/variables/:id'}
-              exact={false}
-              render={props => <VariableEditor id={props.match.params.id} {...props} />} //edited by steven: using EntityEditor class instead of VariableEditor
-            />
-            <Route
-              key={'edit-protocols'}
-              path={'/protocols/:id'}
-              exact={false}
-              render={props => <ProtocolEditor id={props.match.params.id} {...props} />}
-            />
+        {/* Edit data */}
+        <Route
+          key={'edit-variables'}
+          path={'/variables/:id'}
+          exact={false}
+          render={props => <VariableEditor id={props.match.params.id} {...props} />} //edited by steven: using EntityEditor class instead of VariableEditor
+        />
+        <Route
+          key={'edit-protocols'}
+          path={'/protocols/:id'}
+          exact={false}
+          render={props => <ProtocolEditor id={props.match.params.id} {...props} />}
+        />
 
-            {/* Networks */}
-            <Route
-              key={'edit-dataproducts'}
-              path={'/dataproducts/:id'}
-              exact={false}
-              render={props => <DataproductEditor id={props.match.params.id} {...props} />} //edited by steven: using EntityEditor class instead of VariableEditor
-            />
+        {/* Networks */}
+        <Route
+          key={'edit-dataproducts'}
+          path={'/dataproducts/:id'}
+          exact={false}
+          render={props => <DataproductEditor id={props.match.params.id} {...props} />} //edited by steven: using EntityEditor class instead of VariableEditor
+        />
 
-            {/* Dataproducts */}
-            <Route
-              key={'explorer-dataproducts'}
-              path={'/dataproducts'}
-              exact={true}
-              render={props => <DataproductsExplorer />}
-            />
-            <Route
-              key={'edit-dataproducts'}
-              path={'/dataproducts/:id'}
-              exact={false}
-              render={props => <DataproductEditor id={props.match.params.id} {...props} />}
-            />
-          </Navigation>
-        </BrowserRouter>
-      )}
-    </Form>
+        {/* Dataproducts */}
+        <Route
+          key={'explorer-dataproducts'}
+          path={'/dataproducts'}
+          exact={true}
+          render={props => <DataproductsExplorer />}
+        />
+        <Route
+          key={'edit-dataproducts'}
+          path={'/dataproducts/:id'}
+          exact={false}
+          render={props => <DataproductEditor id={props.match.params.id} {...props} />}
+        />
+      </Navigation>
+    </BrowserRouter>
   </GlobalState>
 )
 
