@@ -2,9 +2,6 @@ import React, { useState } from 'react'
 import { Grid, Cell, TabsContainer, Tabs, Tab, Avatar } from 'react-md'
 
 const avatarStyle = {
-  backgroundColor: 'white',
-  color: 'black',
-  border: 'none',
   fontSize: '10px'
 }
 
@@ -23,7 +20,10 @@ export default ({ selectedIds, id, children }) => {
           >
             <Tabs tabId={id}>
               {selectedIds.map((id, i) => (
-                <Tab key={i} icon={<Avatar key={i} children={id} contentStyle={avatarStyle} iconSized />}>
+                <Tab
+                  key={i}
+                  icon={<Avatar key={i} children={id} contentStyle={avatarStyle} suffix="blue-grey" iconSized />}
+                >
                   <Grid>
                     <Cell size={12}>{children({ id })}</Cell>
                   </Grid>
