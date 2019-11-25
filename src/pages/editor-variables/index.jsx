@@ -1,13 +1,13 @@
 import React from 'react'
-import EntityEditor from '../../modules/shared-components/entity-editor'
 import { Grid, Cell, Card, TextField, CardText, CardTitle } from 'react-md'
-import { VARIABLE } from '../../graphql/queries'
-import { UPDATE_VARIABLES } from '../../graphql/mutations'
+import Form from '../../modules/form'
+import EntityEditor from '../../modules/shared-components/entity-editor'
 import DataQuery from '../../modules/data-query'
 import DataMutation from '../../modules/data-mutation'
-import Form from '../../modules/form'
 import { fieldDefinitions } from './variable-definitions'
 import { EditorSaveButton, EditorLayout } from '../../modules/shared-components/editor-pages'
+import { VARIABLE } from '../../graphql/queries'
+import { UPDATE_VARIABLES } from '../../graphql/mutations'
 //VARIABLES EDITOR
 
 export default ({ id }) => (
@@ -41,7 +41,7 @@ export default ({ id }) => (
                     />
                   </Cell>
 
-                  {/* Attributes */}
+                  {/* Properties */}
                   <Cell phoneSize={4} tabletSize={8} size={6}>
                     <Card>
                       <CardTitle title={'Properties'} subtitle={'Edit fields below'} />
