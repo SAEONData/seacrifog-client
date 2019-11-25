@@ -32,8 +32,7 @@ export default ({ mutation, executeMutation, fieldDefinitions, entityProp, updat
             key={i}
             style={fieldStyle}
             label={label}
-            formatOptions={{ year: 'numeric', month: 'numeric', day: 'numeric' }}
-            value={fields[fieldName] || ''}
+            value={fields[fieldName] == null ? '' : fields[fieldName].substring(0, 10).replace(/-/g, '/')}
             disabled={!editable}
             onChange={val => updateFormHelper({ fieldDefinitions, fieldName, val, updateForm })}
           />

@@ -1,227 +1,172 @@
-import { validate, validateInt } from '../../lib/validations'
-
 export const fieldDefinitions = {
-  __typename: {
-    //consider removing this entry and filtering out __typename from fields instead
-    type: Number, //int
-    isFloat: false,
-    precision: 8,
-    editable: false,
-    display: false,
-    label: '__typename',
-    pristine: false,
-    validate: validateInt
-  },
   id: {
-    type: Number, //int
-    precision: 8,
-    isFloat: false,
+    type: 'Integer',
     editable: false,
     display: true,
     label: 'Dataproduct ID',
-    pristine: true,
-    validate: validateInt
+    pristine: true
   },
   doi: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Digital Object Identifier',
-    pristine: true,
-    validate
+    pristine: true
   },
   author: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Author',
-    pristine: true,
-    validate
+    pristine: true
   },
   publisher: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Publisher',
-    pristine: true,
-    validate
+    pristine: true
   },
   title: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Title',
-    pristine: true,
-    validate
+    pristine: true
   },
   publish_date: {
     //should be date?
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Date Published',
-    pristine: true,
-    validate
+    pristine: true
   },
   publish_year: {
     //should be int?
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Year Published',
-    pristine: true,
-    validate
+    pristine: true
   },
   coverage_type: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Type of Coverage',
-    pristine: true,
-    validate
+    pristine: true
   },
   category: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Category',
-    pristine: true,
-    validate
+    pristine: true
   },
   domain: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Domain',
-    pristine: true,
-    validate
+    pristine: true
   },
   purpose: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Purpose',
-    pristine: true,
-    validate
+    pristine: true
   },
   abstract: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Abstract',
-    pristine: true,
-    validate
+    pristine: true
   },
   license: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'License',
-    pristine: true,
-    validate
+    pristine: true
   },
   language: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Language',
-    pristine: true,
-    validate
+    pristine: true
   },
   format: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Format',
-    pristine: true,
-    validate
+    pristine: true
   },
   sustainability: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Sustainability',
-    pristine: true,
-    validate
+    pristine: true
   },
   version: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Version',
-    pristine: true,
-    validate
+    pristine: true
   },
   resolution: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Resolution',
-    pristine: true,
-    validate
+    pristine: true
   },
   cost: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Cost',
-    pristine: true,
-    validate
+    pristine: true
   },
   source: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Source',
-    pristine: true,
-    validate
+    pristine: true
   },
   created_by: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Created By',
-    pristine: true,
-    validate
+    pristine: true
   },
   created_at: {
-    type: Date,
+    type: 'Date',
     editable: true,
     display: true,
     label: 'Created At',
-    pristine: true,
-    validate
+    pristine: true
   },
   edited_by: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Edited By',
-    pristine: true,
-    validate
+    pristine: true
   },
   updated_at: {
-    type: Date,
+    type: 'Date',
     editable: true,
     display: true,
     label: 'Updated At',
-    pristine: true,
-    validate
-  },
-  directly_related_variables: {
-    type: [], //[Variable]
-    editable: true,
-    display: false,
-    label: 'Author',
-    pristine: true,
-    validate
-  },
-  indirectly_related_variables: {
-    type: [], //[Variable]
-    editable: true,
-    display: false,
-    label: 'Author',
-    pristine: true,
-    validate
+    pristine: true
   }
 }

@@ -4,18 +4,18 @@ import Form from '../../modules/form'
 import EntityEditor from '../../modules/shared-components/entity-editor'
 import DataQuery from '../../modules/data-query'
 import DataMutation from '../../modules/data-mutation'
-import { fieldDefinitions } from './protocol-definitions'
+import { fieldDefinitions } from './network-definitions'
 import { EditorSaveButton, EditorLayout } from '../../modules/shared-components/editor-pages'
-import { PROTOCOL } from '../../graphql/queries'
-import { UPDATE_PROTOCOLS } from '../../graphql/mutations'
-//EDITOR PROTOCOLS
+import { NETWORK } from '../../graphql/queries'
+import { UPDATE_NETWORKS } from '../../graphql/mutations'
+//NETWORKS EDITOR
 
 export default ({ id }) => (
-  <DataQuery query={PROTOCOL} variables={{ id: parseInt(id) }}>
-    {({ protocol }) => (
-      <Form {...protocol}>
+  <DataQuery query={NETWORK} variables={{ id: parseInt(id) }}>
+    {({ network }) => (
+      <Form {...network}>
         {({ updateForm, ...fields }) => (
-          <DataMutation mutation={UPDATE_PROTOCOLS}>
+          <DataMutation mutation={UPDATE_NETWORKS}>
             {({ executeMutation, mutationLoading, mutationError }) => (
               <EditorLayout loading={mutationLoading}>
                 <Grid>
@@ -49,7 +49,7 @@ export default ({ id }) => (
                         <EntityEditor
                           executeMutation={executeMutation}
                           fieldDefinitions={fieldDefinitions}
-                          entityProp={protocol}
+                          entityProp={network}
                           updateForm={updateForm}
                           {...fields}
                         />

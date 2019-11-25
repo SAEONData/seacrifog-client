@@ -9,6 +9,7 @@ import ProtocolsExplorer from './pages/explorer-protocols'
 import VariablesExplorer from './pages/explorer-variables'
 import DataproductsExplorer from './pages/explorer-dataproducts'
 import NetworksExplorer from './pages/explorer-networks'
+import NetworkEditor from './pages/editor-networks'
 import VariableEditor from './pages/editor-variables'
 import ProtocolEditor from './pages/editor-protocols'
 import DataproductEditor from './pages/editor-dataproducts'
@@ -62,12 +63,18 @@ const App = () => (
           render={props => <ProtocolEditor id={props.match.params.id} {...props} />}
         />
 
-        {/* Networks */}
+        {/* Dataproducts */}
         <Route
           key={'edit-dataproducts'}
           path={'/dataproducts/:id'}
           exact={false}
           render={props => <DataproductEditor id={props.match.params.id} {...props} />} //edited by steven: using EntityEditor class instead of VariableEditor
+        />
+        <Route
+          key={'edit-networks'}
+          path={'/networks/:id'}
+          exact={false}
+          render={props => <NetworkEditor id={props.match.params.id} {...props} />}
         />
 
         {/* Dataproducts */}

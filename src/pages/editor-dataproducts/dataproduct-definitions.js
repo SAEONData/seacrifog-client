@@ -1,276 +1,212 @@
-import { validate, validateInt, validateFloat } from '../../lib/validations'
-
 export const fieldDefinitions = {
-  __typename: {
-    //consider removing this entry and filtering out __typename from fields instead
-    type: Number, //int
-    isFloat: false,
-    precision: 8,
+  id: {
+    type: 'Integer',
     editable: false,
     display: false,
-    label: '__typename',
-    pristine: false,
-    validate: validateInt
-  },
-  id: {
-    type: Number, //int
-    isFloat: false,
-    precision: 8,
-    editable: false,
-    display: true,
     label: 'Dataproduct ID',
-    pristine: true,
-    validate: validateInt
+    pristine: true
   },
   title: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Title',
-    pristine: true,
-    validate
+    pristine: true
   },
   publish_year: {
-    type: Number, //int
-    isFloat: false,
-    precision: 8,
+    type: 'Integer',
     editable: true,
     display: true,
     label: 'Year Published',
-    pristine: true,
-    validate: validateInt
+    pristine: true
   },
   publish_date: {
-    type: Date,
+    type: 'Date',
     editable: true,
     display: true,
     label: 'Date Published',
-    pristine: true,
-    validate
+    pristine: true
   },
   keywords: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Keywords',
-    pristine: true,
-    validate
+    pristine: true
   },
   abstract: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Abstract',
-    pristine: true,
-    validate
+    pristine: true
   },
   provider: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Provider',
-    pristine: true,
-    validate
+    pristine: true
   },
   author: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Author',
-    pristine: true,
-    validate
+    pristine: true
   },
   contact: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Contact',
-    pristine: true,
-    validate
+    pristine: true
   },
   coverage_spatial: {
-    type: JSON,
+    type: 'JSON',
     editable: false,
     display: false,
     label: 'Spatial Coverage',
-    pristine: true,
-    validate
+    pristine: true
   },
   coverage_temp_start: {
-    type: Date,
+    type: 'Date',
     editable: true,
     display: true,
     label: 'Temperature Coverage Start Date',
-    pristine: true,
-    validate
+    pristine: true
   },
   coverage_temp_end: {
-    type: Date,
+    type: 'Date',
     editable: true,
     display: true,
     label: 'Temperature Coverage End Date',
-    pristine: true,
-    validate
+    pristine: true
   },
   res_spatial: {
-    //NaN
-    type: Number, //Float
-    isFloat: true,
-    precision: 15,
+    type: 'Float',
     editable: true,
     display: true,
     label: 'Spatial Resolution',
-    pristine: true,
-    validate: validateFloat
+    pristine: true
   },
   res_spatial_unit: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Spatial Resolution Unit',
-    pristine: true,
-    validate
+    pristine: true
   },
   res_temperature: {
-    type: Number, //Float
-    isFloat: true,
-    precision: 8,
+    type: 'Float',
     editable: true,
     display: true,
     label: ' Temperature Resolution',
-    pristine: true,
-    validate: validateFloat
+    pristine: true
   },
   res_temperature_unit: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Temperature Resolution Unit',
-    pristine: true,
-    validate
+    pristine: true
   },
   uncertainty: {
-    type: Number, //Float
-    isFloat: true,
-    precision: 8,
+    type: 'Float',
     editable: true,
     display: true,
     label: 'Uncertainty',
-    pristine: true,
-    validate: validateFloat
+    pristine: true
   },
   uncertainty_unit: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Uncertainty Unit',
-    pristine: true,
-    validate
+    pristine: true
   },
   doi: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Digital Object Identifier (DOI)',
-    pristine: true,
-    validate
+    pristine: true
   },
   license: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'License',
-    pristine: true,
-    validate
+    pristine: true
   },
   url_download: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Download URL',
-    pristine: true,
-    validate
+    pristine: true
   },
   file_format: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'File Format',
-    pristine: true,
-    validate
+    pristine: true
   },
   file_size: {
-    type: Number, //Float
-    isFloat: true,
-    precision: 8,
+    type: 'Float',
     editable: true,
     display: true,
     label: 'File Size',
-    pristine: true,
-    validate: validateFloat
+    pristine: true
   },
   file_size_unit: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'File Size Unit',
-    pristine: true,
-    validate
+    pristine: true
   },
   url_info: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'URL Information',
-    pristine: true,
-    validate
+    pristine: true
   },
   created_by: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Created By',
-    pristine: true,
-    validate
+    pristine: true
   },
   created_at: {
-    type: Date,
+    type: 'Date',
     editable: true,
     display: true,
     label: 'Date Created',
-    pristine: true,
-    validate
+    pristine: true
   },
   modified_by: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Modified By',
-    pristine: true,
-    validate
+    pristine: true
   },
   modified_at: {
-    type: Date,
+    type: 'Date',
     editable: true,
     display: true,
     label: 'Date Modified',
-    pristine: true,
-    validate
+    pristine: true
   },
   present: {
-    type: String,
+    type: 'String',
     editable: true,
     display: true,
     label: 'Present',
-    pristine: true,
-    validate
-  },
-  variables: {
-    type: [], //[Variable]
-    editable: false,
-    display: false,
-    label: 'Variables',
-    pristine: true,
-    validate
+    pristine: true
   }
 }

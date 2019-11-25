@@ -1,19 +1,10 @@
 export const fieldDefinitions = {
-  __typename: {
-    //consider removing this entry and filtering out __typename from fields instead
-    type: 'String',
-    editable: false,
-    display: false,
-    label: '__typename',
-    pristine: true
-  },
   id: {
     type: 'Integer',
-    precision: 8,
     editable: false,
     display: false,
     label: 'Variable ID',
-    pristine: true
+    pristine: true //whether or not the field is still untouched by the edit page. False means the field has been edited and will be passed to the mutation
   },
   name: {
     type: 'String',
@@ -73,15 +64,13 @@ export const fieldDefinitions = {
   },
   score: {
     type: 'Integer',
-    precision: 8,
-    editable: false,
-    display: false,
+    editable: true,
+    display: true,
     label: 'Score',
     pristine: true
   },
   rating: {
     type: 'Integer',
-    precision: 8,
     editable: true,
     display: true,
     label: 'Rating',
@@ -89,8 +78,6 @@ export const fieldDefinitions = {
   },
   relevance: {
     type: 'Float',
-    precision: 8,
-    isFloat: true,
     editable: true,
     display: true,
     label: 'Relevance',
@@ -98,8 +85,6 @@ export const fieldDefinitions = {
   },
   feasibility: {
     type: 'Float',
-    precision: 8,
-    isFloat: true,
     editable: true,
     display: true,
     label: 'Feasibility',
@@ -107,10 +92,8 @@ export const fieldDefinitions = {
   },
   cost: {
     type: 'Float',
-    precision: 8,
-    isFloat: true,
     editable: true,
-    display: false,
+    display: true,
     label: 'Cost',
     pristine: true
   },
@@ -130,10 +113,8 @@ export const fieldDefinitions = {
   },
   frequency_value: {
     type: 'Float',
-    precision: 8,
-    isFloat: true,
     editable: true,
-    display: false,
+    display: true,
     label: 'Frequency Value',
     pristine: true
   },
@@ -153,10 +134,8 @@ export const fieldDefinitions = {
   },
   res_value: {
     type: 'Float',
-    precision: 8,
-    isFloat: true,
     editable: true,
-    display: false,
+    display: true,
     label: 'Resolution Value',
     pristine: true
   },
@@ -176,10 +155,8 @@ export const fieldDefinitions = {
   },
   unc_val: {
     type: 'Float',
-    precision: 8,
-    isFloat: true,
     editable: true,
-    display: false,
+    display: true,
     label: 'Uncertainty Value',
     pristine: true
   },
