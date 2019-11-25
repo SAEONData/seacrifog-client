@@ -9,6 +9,7 @@ import ProtocolsExplorer from './pages/explorer-protocols'
 import VariablesExplorer from './pages/explorer-variables'
 import DataproductsExplorer from './pages/explorer-dataproducts'
 import NetworksExplorer from './pages/explorer-networks'
+import NetworkEditor from './pages/editor-networks'
 import VariableEditor from './pages/editor-variables'
 import ProtocolEditor from './pages/editor-protocols'
 import DataproductEditor from './pages/editor-dataproducts'
@@ -64,27 +65,21 @@ const App = () => (
             {/* Network Explorer */}
             <Route key={'networks-explorer'} path={'/networks'} exact={true} render={props => <NetworksExplorer />} />
 
-            {/* Variables */}
+            {/* Variables Explorer */}
             <Route
               key={'explorer-variables'}
               path={'/variables'}
               exact={true}
               render={props => <VariablesExplorer />}
             />
-            <Route
-              key={'edit-variables'}
-              path={'/variables/:id'}
-              exact={false}
-              render={props => <VariableEditor id={props.match.params.id} {...props} />}
-            />
-
-            {/* Protocols */}
+            {/* Protocols Explorer */}
             <Route
               key={'explorer-protocols'}
               path={'/protocols'}
               exact={true}
               render={props => <ProtocolsExplorer />}
             />
+            {/* Dataproducts Explorer */}
             <Route
               key={'explorer-dataproducts'}
               path={'/dataproducts'}
@@ -94,32 +89,22 @@ const App = () => (
 
             {/* Edit data */}
             <Route
+              key={'edit-networks'}
+              path={'/networks/:id'}
+              exact={false}
+              render={props => <NetworkEditor id={props.match.params.id} {...props} />}
+            />
+            <Route
               key={'edit-variables'}
               path={'/variables/:id'}
               exact={false}
-              render={props => <VariableEditor id={props.match.params.id} {...props} />} //edited by steven: using EntityEditor class instead of VariableEditor
+              render={props => <VariableEditor id={props.match.params.id} {...props} />}
             />
             <Route
               key={'edit-protocols'}
               path={'/protocols/:id'}
               exact={false}
               render={props => <ProtocolEditor id={props.match.params.id} {...props} />}
-            />
-
-            {/* Networks */}
-            <Route
-              key={'edit-dataproducts'}
-              path={'/dataproducts/:id'}
-              exact={false}
-              render={props => <DataproductEditor id={props.match.params.id} {...props} />} //edited by steven: using EntityEditor class instead of VariableEditor
-            />
-
-            {/* Dataproducts */}
-            <Route
-              key={'explorer-dataproducts'}
-              path={'/dataproducts'}
-              exact={true}
-              render={props => <DataproductsExplorer />}
             />
             <Route
               key={'edit-dataproducts'}

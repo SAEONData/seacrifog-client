@@ -3,7 +3,7 @@ export const fieldDefinitions = {
     type: 'Integer',
     editable: false,
     display: false,
-    label: 'Dataproduct ID',
+    label: 'Network ID',
     pristine: true
   },
   title: {
@@ -13,25 +13,53 @@ export const fieldDefinitions = {
     label: 'Title',
     pristine: true
   },
-  publish_year: {
-    type: 'Integer',
-    editable: true,
-    display: true,
-    label: 'Year Published',
-    pristine: true
-  },
-  publish_date: {
-    type: 'Date',
-    editable: true,
-    display: true,
-    label: 'Date Published',
-    pristine: true
-  },
-  keywords: {
+  acronym: {
     type: 'String',
     editable: true,
     display: true,
-    label: 'Keywords',
+    label: 'Acronym',
+    pristine: true
+  },
+  type: {
+    type: 'String',
+    editable: true,
+    display: true,
+    label: 'Type',
+    pristine: true
+  },
+  status: {
+    type: 'String',
+    editable: true,
+    display: true,
+    label: 'Status',
+    pristine: true
+  },
+  start_year: {
+    type: 'Integer',
+    editable: true,
+    display: true,
+    label: 'Starting Year',
+    pristine: true
+  },
+  end_year: {
+    type: 'Integer',
+    editable: true,
+    display: true,
+    label: 'Ending Year',
+    pristine: true
+  },
+  url_info_id: {
+    type: 'Integer',
+    editable: false,
+    display: true,
+    label: 'URL Info ID',
+    pristine: true
+  },
+  url_date_id: {
+    type: 'Integer',
+    editable: false,
+    display: true,
+    label: 'URL Date ID',
     pristine: true
   },
   abstract: {
@@ -41,137 +69,25 @@ export const fieldDefinitions = {
     label: 'Abstract',
     pristine: true
   },
-  provider: {
-    type: 'String',
-    editable: true,
-    display: true,
-    label: 'Provider',
-    pristine: true
-  },
-  author: {
-    type: 'String',
-    editable: true,
-    display: true,
-    label: 'Author',
-    pristine: true
-  },
-  contact: {
-    type: 'String',
-    editable: true,
-    display: true,
-    label: 'Contact',
-    pristine: true
-  },
   coverage_spatial: {
-    type: 'JSON',
+    type: 'String',
     editable: false,
-    display: false,
+    display: true,
     label: 'Spatial Coverage',
     pristine: true
   },
-  coverage_temp_start: {
-    type: 'Date',
-    editable: true,
+  url_sites_id: {
+    type: 'Integer',
+    editable: false,
     display: true,
-    label: 'Temperature Coverage Start Date',
+    label: 'URL Sites ID',
     pristine: true
   },
-  coverage_temp_end: {
-    type: 'Date',
-    editable: true,
+  parent_id: {
+    type: 'Integer',
+    editable: false,
     display: true,
-    label: 'Temperature Coverage End Date',
-    pristine: true
-  },
-  res_spatial: {
-    type: 'Float',
-    editable: true,
-    display: true,
-    label: 'Spatial Resolution',
-    pristine: true
-  },
-  res_spatial_unit: {
-    type: 'String',
-    editable: true,
-    display: true,
-    label: 'Spatial Resolution Unit',
-    pristine: true
-  },
-  res_temperature: {
-    type: 'Float',
-    editable: true,
-    display: true,
-    label: ' Temperature Resolution',
-    pristine: true
-  },
-  res_temperature_unit: {
-    type: 'String',
-    editable: true,
-    display: true,
-    label: 'Temperature Resolution Unit',
-    pristine: true
-  },
-  uncertainty: {
-    type: 'Float',
-    editable: true,
-    display: true,
-    label: 'Uncertainty',
-    pristine: true
-  },
-  uncertainty_unit: {
-    type: 'String',
-    editable: true,
-    display: true,
-    label: 'Uncertainty Unit',
-    pristine: true
-  },
-  doi: {
-    type: 'String',
-    editable: true,
-    display: true,
-    label: 'Digital Object Identifier (DOI)',
-    pristine: true
-  },
-  license: {
-    type: 'String',
-    editable: true,
-    display: true,
-    label: 'License',
-    pristine: true
-  },
-  url_download: {
-    type: 'String',
-    editable: true,
-    display: true,
-    label: 'Download URL',
-    pristine: true
-  },
-  file_format: {
-    type: 'String',
-    editable: true,
-    display: true,
-    label: 'File Format',
-    pristine: true
-  },
-  file_size: {
-    type: 'Float',
-    editable: true,
-    display: true,
-    label: 'File Size',
-    pristine: true
-  },
-  file_size_unit: {
-    type: 'String',
-    editable: true,
-    display: true,
-    label: 'File Size Unit',
-    pristine: true
-  },
-  url_info: {
-    type: 'String',
-    editable: true,
-    display: true,
-    label: 'URL Information',
+    label: 'Parent ID',
     pristine: true
   },
   created_by: {
@@ -185,7 +101,7 @@ export const fieldDefinitions = {
     type: 'Date',
     editable: true,
     display: true,
-    label: 'Date Created',
+    label: 'Created At',
     pristine: true
   },
   modified_by: {
@@ -199,14 +115,7 @@ export const fieldDefinitions = {
     type: 'Date',
     editable: true,
     display: true,
-    label: 'Date Modified',
-    pristine: true
-  },
-  present: {
-    type: 'String',
-    editable: true,
-    display: true,
-    label: 'Present',
+    label: 'Modified At',
     pristine: true
   }
 }

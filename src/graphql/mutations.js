@@ -100,3 +100,27 @@ export const UPDATE_DATAPRODUCTS = gql`
     }
   }
 `
+
+export const UPDATE_NETWORKS = gql`
+  mutation updateNetworks($input: [NetworkInput!]!) {
+    updateNetworks(input: $input) {
+      id
+      title
+      acronym
+      type
+      status
+      start_year
+      end_year
+      url_info_id
+      url_data_id
+      abstract
+      coverage_spatial
+      url_sites_id
+      parent_id
+      created_by
+      created_at
+      modified_by
+      modified_at
+    }
+  }
+`
