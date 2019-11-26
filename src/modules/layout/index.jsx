@@ -38,6 +38,7 @@ class Navigation extends PureComponent {
     const { location, navItems } = this.props
     return (
       <NavigationDrawer
+        contentClassName={'page-content'}
         id="app-navigation-drawer"
         drawerTitle={'BETA 0.1'}
         toolbarTitle={'Carbon Observation Platform Explorer'}

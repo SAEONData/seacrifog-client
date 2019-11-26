@@ -1,7 +1,6 @@
 export * from './download-button'
 export * from './edit-button'
 export * from './link-button'
-export * from './none-message'
 export * from './side-menu'
 export * from './dropdown-select'
 export * from './explorer-pages'

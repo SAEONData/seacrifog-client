@@ -29,7 +29,7 @@ export class SideMenu extends PureComponent {
             <Toolbar
               actions={toolbarActions}
               nav={
-                <Button icon onClick={closeMenu}>
+                <Button className={'close-button'} icon swapTheming onClick={closeMenu}>
                   close
                 </Button>
               }

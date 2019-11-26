@@ -8,3 +8,25 @@
   border-right: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: none;
 }
+
+.page-content {
+  position: relative;
+}
+
+// This is the notifications bar above the table
+// .sf-content-header {}
+
+.tabs-header {
+  li {
+    border-radius: 10px 10px 0 0;
+    // background-color: $md-primary-color;
+  }
+}
+
+.sf-content-header {
+  .close-button {
+    i {
+      color: $md-primary-color;
+    }
+  }
+}
