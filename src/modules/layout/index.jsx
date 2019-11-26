@@ -4,6 +4,16 @@ import { withRouter } from 'react-router'
 import { Switch } from 'react-router-dom'
 import NavItemLink from './nav-item-link'
 
+const seacrifogLogoStyle = {
+  height: 'auto',
+  width: 'auto',
+  maxWidth: '100%',
+  maxHeight: '100%',
+  float: 'right',
+  margin: 0,
+  padding: '8px 16px'
+}
+
 class Navigation extends PureComponent {
   constructor(props) {
     super(props)
@@ -26,11 +36,11 @@ class Navigation extends PureComponent {
   render() {
     const { currentPath } = this.state
     const { location, navItems } = this.props
-    const currentMedia = NavigationDrawer.getCurrentMedia()
     return (
       <NavigationDrawer
         id="app-navigation-drawer"
         drawerTitle={'BETA 0.1'}
+        toolbarTitle={'Carbon Observation Platform Explorer'}
         navItems={navItems.map(({ divider, subheader, ...navItem }) =>
           divider || subheader ? (
             { divider, subheader, ...navItem }
@@ -38,16 +48,13 @@ class Navigation extends PureComponent {
             <NavItemLink key={'route-' + navItem.keyval} {...navItem} />
           )
         )}
-        contentStyle={{ position: 'relative' }}
-        toolbarZDepth={0}
-        toolbarStyle={{ backgroundColor: '#fff', borderBottom: '1px solid rgba(0,0,0,0.1)' }}
-        toolbarThemeType="themed"
-        toolbarClassName="sf-toolbar"
+        // contentStyle={{ position: 'relative' }}
         drawerZDepth={0}
-        drawerStyle={{ borderRight: '1px solid rgba(0, 0, 0, 0.1)' }}
-        drawerClassName="sf-drawer"
-        miniDrawerStyle={{ borderRight: '1px solid rgba(0, 0, 0, 0.1)', boxShadow: 'none' }}
-        miniDrawerClassName="sf-drawer"
+        toolbarZDepth={0}
+        toolbarThemeType="themed"
+        toolbarClassName="sf-layout-header"
+        drawerClassName="sf-layout-drawer"
+        miniDrawerClassName="sf-layout-drawer-mini"
         mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY}
         tabletDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY_MINI}
         desktopDrawerType={
@@ -55,35 +62,7 @@ class Navigation extends PureComponent {
             ? NavigationDrawer.DrawerTypes.TEMPORARY
             : NavigationDrawer.DrawerTypes.PERSISTENT_MINI
         }
-        drawerTransitionDuration={500}
-        toolbarActions={[
-          <h3
-            style={{
-              position: 'absolute',
-              width: '100%',
-              textAlign: 'center',
-              lineHeight: '64px',
-              margin: 0,
-              display: currentMedia.mobile ? 'none' : 'inherit'
-            }}
-          >
-            Carbon Observation Platform Explorer
-          </h3>,
-          <img
-            style={{
-              height: 'auto',
-              width: 'auto',
-              maxWidth: '100%',
-              maxHeight: '100%',
-              float: 'right',
-              margin: 0,
-              padding: '8px 16px'
-            }}
-            src="/seacrifog-logo.png"
-            alt="SEACRIFOG logo"
-          />
-        ]}
-        toolbarTitle={currentPath.capitalize() || 'Home'}
+        toolbarActions={[<img style={seacrifogLogoStyle} src="/seacrifog-logo.png" alt="SEACRIFOG logo" />]}
         defaultVisible={false}
       >
         <Switch key={location.pathname || '/'}>{this.props.children}</Switch>

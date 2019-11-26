@@ -10,7 +10,7 @@ export default class extends PureComponent {
     const { visible } = this.state
 
     return (
-      <Card onClick={this.toggleVisible} className={'funder-logo'} style={{ height: '100px', cursor: 'pointer' }}>
+      <Card onClick={this.toggleVisible} className={'add-on-hover'} style={{ height: '100px', cursor: 'pointer' }}>
         <CardText style={{ height: '100%', padding: '12px', display: 'flex' }}>
           <img
             style={{

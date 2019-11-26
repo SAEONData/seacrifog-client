@@ -95,7 +95,7 @@ export default [
   {
     keyval: 'google-logo',
     href: 'https://www.google.com/design/spec/material-design/introduction.html',
-    avatar: { src: googleLogo, alt: 'Google Logo', className: 'md-avatar__google-logo' },
+    avatar: { src: googleLogo, alt: 'Google Logo' },
     label: 'Material Design'
   }
 ]

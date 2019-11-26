@@ -1,0 +1,47 @@
+@import '~react-md/src/scss/react-md';
+
+// Theme builder: https://react-md.mlaursen.com/customization/theme-builder
+$md-font-family: 'Open Sans';
+$md-blue-400: #76abd8;
+$md-orange-400: #dd2c00;
+
+$md-light-theme: true;
+$md-primary-color: $md-blue-400;
+$md-secondary-color: $md-orange-400;
+
+$md-linear-progress-fallback-color: $md-blue-300;
+$md-switch-ball-fallback-color: $md-orange-300;
+$md-data-table-contextual-fallback-color: $md-orange-300;
+
+// Suppress warnings
+$md-colors-warn-md: false;
+$md-slider-warn-md: false;
+
+@include react-md-everything;
+
+/**
+ * Overrides
+ * Styles that target react-md classes
+ */
+
+/**
+ * The tables have a selectable column that
+ * includes a toggle select/unselect all that
+ * should be hidden
+ */
+#protocols-table-toggle-all + label,
+#dataproducts-table-toggle-all + label,
+#variables-table-toggle-all + label,
+#networks-table-toggle-all + label {
+  display: none;
+}
+
+/**
+ * Fixes table pagination, otherwise
+ * buttons overflow the page
+ */
+.md-table-pagination--controls {
+  position: absolute;
+  right: 0;
+  margin-right: 10px;
+}
