@@ -57,7 +57,10 @@ export default props => {
         <DataQuery query={VARIABLES_MIN}>
           {({ variables }) => (
             <ExplorerLayout>
-              <ExplorerHeader resetFn={() => updateGlobalState({ selectedVariables: [] })} />
+              <ExplorerHeader
+                selectedIds={selectedVariables}
+                resetFn={() => updateGlobalState({ selectedVariables: [] })}
+              />
               <ExplorerTableLayout>
                 <Table
                   actions={[<ScrollButton key={1} disabled={selectedVariables.length > 0 ? false : true} />]}

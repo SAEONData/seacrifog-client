@@ -41,7 +41,10 @@ export default props => {
         <DataQuery query={PROTOCOLS_MIN}>
           {({ protocols }) => (
             <ExplorerLayout>
-              <ExplorerHeader resetFn={() => updateGlobalState({ selectedProtocols: [] })} />
+              <ExplorerHeader
+                selectedIds={selectedProtocols}
+                resetFn={() => updateGlobalState({ selectedProtocols: [] })}
+              />
               <ExplorerTableLayout>
                 <Table
                   actions={[<ScrollButton key={1} disabled={selectedProtocols.length > 0 ? false : true} />]}

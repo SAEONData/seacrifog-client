@@ -70,7 +70,7 @@ export class DropdownSelect extends PureComponent {
                   ))
                 : 'No search result'
 
-            if (result.length >= 20)
+            if (result.length > 20)
               result.push(
                 <ListItem
                   key={'more-items'}

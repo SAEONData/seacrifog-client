@@ -40,7 +40,10 @@ export default props => {
         <DataQuery query={DATAPRODUCTS_MIN}>
           {({ dataproducts }) => (
             <ExplorerLayout>
-              <ExplorerHeader resetFn={() => updateGlobalState({ selectedDataproducts: [] })} />
+              <ExplorerHeader
+                selectedIds={selectedDataproducts}
+                resetFn={() => updateGlobalState({ selectedDataproducts: [] })}
+              />
               <ExplorerTableLayout>
                 <Table
                   actions={[<ScrollButton key={1} disabled={selectedDataproducts.length > 0 ? false : true} />]}

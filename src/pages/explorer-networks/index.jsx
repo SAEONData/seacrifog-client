@@ -42,7 +42,10 @@ export default props => {
         <DataQuery query={NETWORKS_MIN}>
           {({ networks }) => (
             <ExplorerLayout>
-              <ExplorerHeader resetFn={() => updateGlobalState({ selectedNetworks: [] })} />
+              <ExplorerHeader
+                selectedIds={selectedNetworks}
+                resetFn={() => updateGlobalState({ selectedNetworks: [] })}
+              />
               <ExplorerTableLayout>
                 <Table
                   actions={[<ScrollButton key={1} disabled={selectedNetworks.length > 0 ? false : true} />]}

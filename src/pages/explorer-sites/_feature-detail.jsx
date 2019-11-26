@@ -17,7 +17,7 @@ export default ({ getFeatureIds, toolbarActions = [] }) => (
     {({ sites }) => (
       <FeaturePanel
         title={getFeatureIds().length + ' Sites selected'}
-        footerActions={<div style={{ margin: 0, lineHeight: '24px' }}>Apache ECharts v4.3</div>}
+        footerActions={<div style={{ margin: 0, lineHeight: '24px' }}>Apache ECharts</div>}
         toolbarActions={toolbarActions}
       >
         <PieChart sites={sites} />
