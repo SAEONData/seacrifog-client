@@ -126,11 +126,14 @@ export default class extends PureComponent {
                       selectedItems={selectedNetworks}
                       items={networks.map(({ id, acronym: value }) => ({ id, value }))}
                       onItemToggle={id =>
-                        updateGlobalState({
-                          selectedNetworks: selectedNetworks.includes(id)
-                            ? [...selectedNetworks].filter(nId => nId !== id)
-                            : [...selectedNetworks, id]
-                        })
+                        updateGlobalState(
+                          {
+                            selectedNetworks: selectedNetworks.includes(id)
+                              ? [...selectedNetworks].filter(nId => nId !== id)
+                              : [...selectedNetworks, id]
+                          },
+                          { currentIndex: 'currentNetwork', selectedIds: 'selectedNetworks' }
+                        )
                       }
                     />
                     {/* Variables filter */}
@@ -140,11 +143,14 @@ export default class extends PureComponent {
                       selectedItems={selectedVariables}
                       items={variables.map(({ id, name: value }) => ({ id, value }))}
                       onItemToggle={id =>
-                        updateGlobalState({
-                          selectedVariables: selectedVariables.includes(id)
-                            ? [...selectedVariables].filter(vId => vId !== id)
-                            : [...selectedVariables, id]
-                        })
+                        updateGlobalState(
+                          {
+                            selectedVariables: selectedVariables.includes(id)
+                              ? [...selectedVariables].filter(vId => vId !== id)
+                              : [...selectedVariables, id]
+                          },
+                          { currentIndex: 'currentVariable', selectedIds: 'selectedVariables' }
+                        )
                       }
                     />
                     {/* Protocols filter */}
@@ -154,11 +160,14 @@ export default class extends PureComponent {
                       selectedItems={selectedProtocols}
                       items={protocols.map(({ id, title: value }) => ({ id, value }))}
                       onItemToggle={id =>
-                        updateGlobalState({
-                          selectedProtocols: selectedProtocols.includes(id)
-                            ? [...selectedProtocols].filter(pId => pId !== id)
-                            : [...selectedProtocols, id]
-                        })
+                        updateGlobalState(
+                          {
+                            selectedProtocols: selectedProtocols.includes(id)
+                              ? [...selectedProtocols].filter(pId => pId !== id)
+                              : [...selectedProtocols, id]
+                          },
+                          { currentIndex: 'currentProtocol', selectedIds: 'selectedProtocols' }
+                        )
                       }
                     />
                   </div>

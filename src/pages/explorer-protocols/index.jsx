@@ -37,7 +37,7 @@ export default props => {
   const history = useHistory()
   return (
     <GlobalStateContext.Consumer>
-      {({ updateGlobalState, selectedProtocols, selectedVariables }) => (
+      {({ updateGlobalState, selectedProtocols, selectedVariables, currentProtocol }) => (
         <DataQuery query={PROTOCOLS_MIN}>
           {({ protocols }) => (
             <ExplorerLayout>
@@ -53,15 +53,23 @@ export default props => {
                   dataDefinitions={protocolsDataDefinitions}
                   data={protocols}
                   toggleSelect={({ id }) =>
-                    updateGlobalState({
-                      selectedProtocols: selectedProtocols.includes(id)
-                        ? [...selectedProtocols].filter(pId => pId !== id)
-                        : [...new Set([...selectedProtocols, id])]
-                    })
+                    updateGlobalState(
+                      {
+                        selectedProtocols: selectedProtocols.includes(id)
+                          ? [...selectedProtocols].filter(pId => pId !== id)
+                          : [...new Set([...selectedProtocols, id])]
+                      },
+                      { currentIndex: 'currentProtocol', selectedIds: 'selectedProtocols' }
+                    )
                   }
                 />
               </ExplorerTableLayout>
-              <ExplorerTabsLayout id="selected-protocols-tabs" selectedIds={selectedProtocols}>
+              <ExplorerTabsLayout
+                currentIndex={currentProtocol}
+                updateCurrentIndex={i => updateGlobalState({ currentProtocol: i })}
+                id="selected-protocols-tabs"
+                selectedIds={selectedProtocols}
+              >
                 {({ id }) => (
                   <DataQuery query={PROTOCOL} variables={{ id: id }}>
                     {({ protocol }) => (
@@ -70,7 +78,10 @@ export default props => {
                         authors={protocol.author}
                         abstract={protocol.abstract}
                         clickClose={() =>
-                          updateGlobalState({ selectedProtocols: selectedProtocols.filter(sId => sId !== protocol.id) })
+                          updateGlobalState(
+                            { selectedProtocols: selectedProtocols.filter(sId => sId !== protocol.id) },
+                            { currentIndex: 'currentProtocol', selectedIds: 'selectedProtocols' }
+                          )
                         }
                         clickDownload={() => alert('todo')}
                         clickEdit={() => history.push(`/protocols/${protocol.id}`)}
@@ -111,6 +122,7 @@ export default props => {
                                                 {
                                                   selectedVariables: [...new Set([...selectedVariables, variable.id])]
                                                 },
+                                                {},
                                                 () => history.push('/variables')
                                               )
                                             }

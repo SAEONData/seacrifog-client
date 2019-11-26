@@ -36,7 +36,7 @@ export default props => {
   const history = useHistory()
   return (
     <GlobalStateContext.Consumer>
-      {({ updateGlobalState, selectedDataproducts, selectedVariables }) => (
+      {({ updateGlobalState, selectedDataproducts, currentDataproduct, selectedVariables }) => (
         <DataQuery query={DATAPRODUCTS_MIN}>
           {({ dataproducts }) => (
             <ExplorerLayout>
@@ -52,15 +52,23 @@ export default props => {
                   dataDefinitions={dataproductsDataDefinitions}
                   data={dataproducts}
                   toggleSelect={({ id }) =>
-                    updateGlobalState({
-                      selectedDataproducts: selectedDataproducts.includes(id)
-                        ? [...selectedDataproducts].filter(vId => vId !== id)
-                        : [...new Set([...selectedDataproducts, id])]
-                    })
+                    updateGlobalState(
+                      {
+                        selectedDataproducts: selectedDataproducts.includes(id)
+                          ? [...selectedDataproducts].filter(vId => vId !== id)
+                          : [...new Set([...selectedDataproducts, id])]
+                      },
+                      { currentIndex: 'currentDataproduct', selectedIds: 'selectedDataproducts' }
+                    )
                   }
                 />
               </ExplorerTableLayout>
-              <ExplorerTabsLayout id="selected-dataproducts-tabs" selectedIds={selectedDataproducts}>
+              <ExplorerTabsLayout
+                id="selected-dataproducts-tabs"
+                currentIndex={currentDataproduct}
+                updateCurrentIndex={i => updateGlobalState({ currentDataproduct: i })}
+                selectedIds={selectedDataproducts}
+              >
                 {({ id }) => (
                   <DataQuery query={DATAPRODUCT} variables={{ id: id }}>
                     {({ dataproduct }) => (
@@ -69,9 +77,12 @@ export default props => {
                         authors={dataproduct.author}
                         abstract={dataproduct.abstract}
                         clickClose={() =>
-                          updateGlobalState({
-                            selectedDataproducts: selectedDataproducts.filter(sId => sId !== dataproduct.id)
-                          })
+                          updateGlobalState(
+                            {
+                              selectedDataproducts: selectedDataproducts.filter(sId => sId !== dataproduct.id)
+                            },
+                            { currentIndex: 'currentDataproduct', selectedIds: 'selectedDataproducts' }
+                          )
                         }
                         clickDownload={() => alert('todo')}
                         clickEdit={() => history.push(`/dataproducts/${dataproduct.id}`)}
@@ -102,7 +113,8 @@ export default props => {
                                         <ListItem
                                           onClick={() =>
                                             updateGlobalState(
-                                              { selectedVariables: [...new Set([...selectedVariables, id])] },
+                                              { selectedVariables: [...new Set([...selectedVariables, variable.id])] },
+                                              { currentIndex: 'currentVariable', selectedIds: 'selectedVariables' },
                                               () => history.push('/variables')
                                             )
                                           }

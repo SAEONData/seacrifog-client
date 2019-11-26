@@ -38,7 +38,7 @@ export default props => {
   const history = useHistory()
   return (
     <GlobalStateContext.Consumer>
-      {({ updateGlobalState, selectedNetworks, selectedVariables }) => (
+      {({ updateGlobalState, selectedNetworks, currentNetwork, selectedVariables }) => (
         <DataQuery query={NETWORKS_MIN}>
           {({ networks }) => (
             <ExplorerLayout>
@@ -54,15 +54,23 @@ export default props => {
                   dataDefinitions={networksDataDefinitions}
                   data={networks}
                   toggleSelect={({ id }) =>
-                    updateGlobalState({
-                      selectedNetworks: selectedNetworks.includes(id)
-                        ? [...selectedNetworks].filter(vId => vId !== id)
-                        : [...new Set([...selectedNetworks, id])]
-                    })
+                    updateGlobalState(
+                      {
+                        selectedNetworks: selectedNetworks.includes(id)
+                          ? [...selectedNetworks].filter(vId => vId !== id)
+                          : [...new Set([...selectedNetworks, id])]
+                      },
+                      { currentIndex: 'currentNetwork', selectedIds: 'selectedNetworks' }
+                    )
                   }
                 />
               </ExplorerTableLayout>
-              <ExplorerTabsLayout id="selected-variables-tabs" selectedIds={selectedNetworks}>
+              <ExplorerTabsLayout
+                currentIndex={currentNetwork}
+                updateCurrentIndex={i => updateGlobalState({ currentNetwork: i })}
+                id="selected-variables-tabs"
+                selectedIds={selectedNetworks}
+              >
                 {({ id }) => (
                   <DataQuery query={NETWORK} variables={{ id }}>
                     {({ network }) => (
@@ -71,7 +79,10 @@ export default props => {
                         authors={network.acronym}
                         abstract={network.abstract}
                         clickClose={() =>
-                          updateGlobalState({ selectedNetworks: selectedNetworks.filter(sId => sId !== network.id) })
+                          updateGlobalState(
+                            { selectedNetworks: selectedNetworks.filter(sId => sId !== network.id) },
+                            { currentIndex: 'currentNetwork', selectedIds: 'selectedNetworks' }
+                          )
                         }
                         clickDownload={() => alert('todo')}
                         clickEdit={() => history.push(`/networks/${network.id}`)}
@@ -107,6 +118,7 @@ export default props => {
                                               {
                                                 selectedVariables: [...new Set([...selectedVariables, variable.id])]
                                               },
+                                              { currentIndex: 'currentVariable', selectedIds: 'selectedVariables' },
                                               () => history.push('/variables')
                                             )
                                           }

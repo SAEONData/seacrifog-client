@@ -58,9 +58,20 @@ export default class extends PureComponent {
     const { headers, search, paginationSlice } = state
     const { data, dataDefinitions, toggleSelect, selectedIds, baseId, className } = props
 
-    // Get filtered data
+    /**
+     * Filter data
+     *  => Remove selected rows (and splice them at the end)
+     *  => If the search is is blank don't filter
+     *  => Otherwise filter on the search term
+     */
+    const selectedRows = []
     const searchTerm = search.toUpperCase()
     let filteredData = data.filter(row => {
+      if (selectedIds.includes(row.id)) {
+        selectedRows.push(row)
+        return false
+      }
+      if (searchTerm === '') return true
       let include = false
       Object.entries(row).forEach(([field, value]) => {
         if ((dataDefinitions[field] || {}).show) {
@@ -71,6 +82,7 @@ export default class extends PureComponent {
       })
       return include
     })
+    filteredData.splice(0, 0, ...selectedRows)
 
     // Apply sort if necessary
     // sort() updates the underlying array
