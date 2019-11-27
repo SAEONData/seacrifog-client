@@ -26,13 +26,23 @@ const App = () => (
         <Route key={'contact'} path={'/contact'} exact={true} component={Contact} />
 
         {/* Sites */}
-        <Route key={'sites-explorer'} path={'/sites'} exact={true} render={props => <SitesExplorer />} />
+        <Route key={'sites-explorer'} path={'/sites'} exact={true} render={props => <SitesExplorer {...props} />} />
 
         {/* Network Explorer */}
-        <Route key={'networks-explorer'} path={'/networks'} exact={true} render={props => <NetworksExplorer />} />
+        <Route
+          key={'networks-explorer'}
+          path={'/networks'}
+          exact={true}
+          render={props => <NetworksExplorer {...props} />}
+        />
 
         {/* Variables */}
-        <Route key={'explorer-variables'} path={'/variables'} exact={true} render={props => <VariablesExplorer />} />
+        <Route
+          key={'explorer-variables'}
+          path={'/variables'}
+          exact={true}
+          render={props => <VariablesExplorer {...props} />}
+        />
         <Route
           key={'edit-variables'}
           path={'/variables/:id'}
@@ -41,12 +51,17 @@ const App = () => (
         />
 
         {/* Protocols */}
-        <Route key={'explorer-protocols'} path={'/protocols'} exact={true} render={props => <ProtocolsExplorer />} />
+        <Route
+          key={'explorer-protocols'}
+          path={'/protocols'}
+          exact={true}
+          render={props => <ProtocolsExplorer {...props} />}
+        />
         <Route
           key={'explorer-dataproducts'}
           path={'/dataproducts'}
           exact={true}
-          render={props => <DataproductsExplorer />}
+          render={props => <DataproductsExplorer {...props} />}
         />
 
         {/* Edit data */}

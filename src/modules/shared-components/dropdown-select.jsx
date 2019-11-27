@@ -4,7 +4,6 @@ import { TextField, FontIcon, DropdownMenu, ListItemControl, SelectionControl, L
 import sift from 'sift'
 
 const listItemStyle = {
-  backgroundColor: 'rgba(220, 220, 220, 0.5)',
   margin: '2px 0'
 }
 
@@ -103,6 +102,7 @@ export class DropdownSelect extends PureComponent {
             })
             .map(item => (
               <ListItem
+                className={'filter-menu-selected-item add-on-hover'}
                 style={listItemStyle}
                 key={item.id}
                 onClick={() => toggleItemSelect(item)}

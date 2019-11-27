@@ -9,12 +9,15 @@ const mainMenuIconStyle = disabled => ({
   color: disabled ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,1)'
 })
 
-export default ({ resetFn, selectedIds }) => (
+export default ({ resetFn, selectedIds, ...props }) => (
   <DataQuery query={ENTIRE_GRAPH} variables={{}}>
     {({ sites, networks, variables, protocols }) => (
       <Toolbar
         colored
-        title={'Notifications, link controls, MetaData explorer, etc.'}
+        title={
+          props.location.pathname.replace('/', '').toUpperCase() +
+          ' Notifications, link controls, MetaData explorer, etc.'
+        }
         className={'sf-content-header'}
         actions={[
           <SideMenu

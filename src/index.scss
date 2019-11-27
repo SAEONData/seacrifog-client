@@ -6,15 +6,17 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background: #f5f6f8;
+  background: transparent;
 }
 
 @import './scss/md-config';
+@import './scss/custom-scrollbar';
+@import './scss/links';
+
 @import './scss/sf-variables';
 @import './scss/sf-mixins';
 @import './scss/sf-layout';
-@import './scss/custom-scrollbar';
-@import './scss/links';
+@import './scss/sf-tabs';
 
 // This was layout/style.scss
 // #app-navigation-drawer {
@@ -39,6 +41,10 @@ body {
   cursor: pointer;
 }
 
+.filter-menu-selected-item {
+  background-color: $md-data-table-selected-color;
+}
+
 .add-on-hover:hover {
-  background-color: #eee;
+  background-color: $md-data-table-hover-color;
 }

@@ -60,6 +60,7 @@ export default props => {
               <ExplorerHeader
                 selectedIds={selectedVariables}
                 resetFn={() => updateGlobalState({ selectedVariables: [] })}
+                {...props}
               />
               <ExplorerTableLayout>
                 <Table

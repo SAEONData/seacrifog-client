@@ -44,6 +44,7 @@ export default props => {
               <ExplorerHeader
                 selectedIds={selectedProtocols}
                 resetFn={() => updateGlobalState({ selectedProtocols: [] })}
+                {...props}
               />
               <ExplorerTableLayout>
                 <Table

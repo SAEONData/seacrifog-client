@@ -39,3 +39,15 @@ $md-secondary-color: $md-indigo-a-700;
   right: 0;
   margin-right: 10px;
 }
+
+/**
+ * This adjusts the appearance of selected/unselected tabs
+ * via overwrites
+ */
+.md-tab--active {
+  background-color: $md-data-table-hover-color;
+}
+
+.md-tab--inactive {
+  border-bottom: 1.5px solid $md-data-table-hover-color;
+}
