@@ -52,7 +52,10 @@ export default ({ resetFn, selectedIds, ...props }) => {
               icon
               download
               href={encodeURI(
-                `http://localhost:3000/downloads/${ctx}?filename=${ctx}-${new Date()}.txt&ids=${selectedIds.join(',')}`
+                `${process.env.REACT_APP_DOWNLOADS_ENDPOINT ||
+                  'http://localhost:3000/downloads'}/${ctx}?filename=${ctx}-${new Date()}.txt&ids=${selectedIds.join(
+                  ','
+                )}`
               )}
             >
               save_alt

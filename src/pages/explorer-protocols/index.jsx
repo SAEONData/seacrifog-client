@@ -89,7 +89,8 @@ export default props => {
                           )
                         }
                         href={encodeURI(
-                          `http://localhost:3000/downloads/PROTOCOLS?filename=PROTOCOL-${new Date()}.txt&ids=${[
+                          `${process.env.REACT_APP_DOWNLOADS_ENDPOINT ||
+                            'http://localhost:3000/downloads'}/PROTOCOLS?filename=PROTOCOL-${new Date()}.txt&ids=${[
                             protocol.id
                           ].join(',')}`
                         )}
