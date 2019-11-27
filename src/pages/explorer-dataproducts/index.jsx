@@ -89,7 +89,11 @@ export default props => {
                             { currentIndex: 'currentDataproduct', selectedIds: 'selectedDataproducts' }
                           )
                         }
-                        clickDownload={() => alert('todo')}
+                        href={encodeURI(
+                          `http://localhost:3000/downloads/DATAPRODUCTS?filename=DATAPRODUCT-${new Date()}.txt&ids=${[
+                            dataproduct.id
+                          ].join(',')}`
+                        )}
                         clickEdit={() => history.push(`/dataproducts/${dataproduct.id}`)}
                       >
                         {/* All Entity Attributes */}

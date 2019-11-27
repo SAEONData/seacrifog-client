@@ -11,6 +11,7 @@ const mainMenuIconStyle = disabled => ({
 })
 
 export default ({ resetFn, selectedIds, ...props }) => {
+  const ctx = props.location.pathname.replace('/', '').toUpperCase()
   const history = useHistory()
   return (
     <DataQuery
@@ -21,7 +22,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
       {({ sites, networks, variables, protocols }) => (
         <Toolbar
           colored
-          title={props.location.pathname.replace('/', '').toUpperCase()}
+          title={ctx}
           className={'sf-content-header'}
           actions={[
             <Button
@@ -44,11 +45,15 @@ export default ({ resetFn, selectedIds, ...props }) => {
             </Button>,
 
             <Button
+              component={'a'}
               tooltipLabel={'Download selected overviews'}
               disabled={selectedIds.length > 0 ? false : true}
               style={mainMenuIconStyle(selectedIds.length > 0 ? false : true)}
               icon
-              onClick={() => alert('this will download data for selected rows')}
+              download
+              href={encodeURI(
+                `http://localhost:3000/downloads/${ctx}?filename=${ctx}-${new Date()}.txt&ids=${selectedIds.join(',')}`
+              )}
             >
               save_alt
             </Button>,

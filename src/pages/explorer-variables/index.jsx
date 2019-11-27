@@ -107,7 +107,11 @@ export default props => {
                               { currentIndex: 'currentVariable', selectedIds: 'selectedVariables' }
                             )
                           }
-                          clickDownload={() => alert('todo')}
+                          href={encodeURI(
+                            `http://localhost:3000/downloads/VARIABLES?filename=VARIABLE-${new Date()}.txt&ids=${[
+                              variable.id
+                            ].join(',')}`
+                          )}
                           clickEdit={() => history.push(`/variables/${variable.id}`)}
                         >
                           <ExplorerSectionLayout

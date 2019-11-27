@@ -12,7 +12,7 @@ const titleBlockStyle = {
 
 const abstractStyle = { fontStyle: 'bold', margin: '20px 0 15px' }
 
-export default ({ clickClose, clickDownload, clickEdit, title, authors, abstract, children }) => (
+export default ({ clickClose, href, clickEdit, title, authors, abstract, children }) => (
   <Grid noSpacing>
     <Cell size={12}>
       {/* Menu icons */}
@@ -21,7 +21,7 @@ export default ({ clickClose, clickDownload, clickEdit, title, authors, abstract
           <Button onClick={clickClose} icon style={itemMenuIconStyle}>
             close
           </Button>
-          <Button onClick={clickDownload} style={itemMenuIconStyle} icon>
+          <Button component={'a'} download href={href} style={itemMenuIconStyle} icon>
             save_alt
           </Button>
           <Button onClick={clickEdit} style={itemMenuIconStyle} icon>

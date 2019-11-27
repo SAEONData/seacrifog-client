@@ -89,7 +89,11 @@ export default props => {
                             { currentIndex: 'currentNetwork', selectedIds: 'selectedNetworks' }
                           )
                         }
-                        clickDownload={() => alert('this will download the information for this network')}
+                        href={encodeURI(
+                          `http://localhost:3000/downloads/NETWORKS?filename=NETWORK-${new Date()}.txt&ids=${[
+                            network.id
+                          ].join(',')}`
+                        )}
                         clickEdit={() => history.push(`/networks/${network.id}`)}
                       >
                         <ExplorerSectionLayout

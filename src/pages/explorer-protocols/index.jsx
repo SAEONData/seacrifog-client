@@ -88,7 +88,11 @@ export default props => {
                             { currentIndex: 'currentProtocol', selectedIds: 'selectedProtocols' }
                           )
                         }
-                        clickDownload={() => alert('todo')}
+                        href={encodeURI(
+                          `http://localhost:3000/downloads/PROTOCOLS?filename=PROTOCOL-${new Date()}.txt&ids=${[
+                            protocol.id
+                          ].join(',')}`
+                        )}
                         clickEdit={() => history.push(`/protocols/${protocol.id}`)}
                       >
                         {/* All Entity Attributes */}
