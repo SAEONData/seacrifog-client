@@ -74,6 +74,7 @@ export default props => {
                 updateCurrentIndex={i => updateGlobalState({ currentNetwork: i })}
                 id="selected-variables-tabs"
                 selectedIds={selectedNetworks}
+                {...props}
               >
                 {({ id }) => (
                   <DataQuery query={NETWORK} variables={{ id }}>
@@ -88,7 +89,7 @@ export default props => {
                             { currentIndex: 'currentNetwork', selectedIds: 'selectedNetworks' }
                           )
                         }
-                        clickDownload={() => alert('todo')}
+                        clickDownload={() => alert('this will download the information for this network')}
                         clickEdit={() => history.push(`/networks/${network.id}`)}
                       >
                         <ExplorerSectionLayout

@@ -72,6 +72,7 @@ export default props => {
                 currentIndex={currentDataproduct}
                 updateCurrentIndex={i => updateGlobalState({ currentDataproduct: i })}
                 selectedIds={selectedDataproducts}
+                {...props}
               >
                 {({ id }) => (
                   <DataQuery query={DATAPRODUCT} variables={{ id: id }}>

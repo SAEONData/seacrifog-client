@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid, Cell, TabsContainer, Tabs, Tab, Avatar } from 'react-md'
 
-export default ({ selectedIds, currentIndex, updateCurrentIndex, id, children }) => (
+export default ({ selectedIds, currentIndex, updateCurrentIndex, id, children, ...props }) => (
   <Grid noSpacing>
     <Cell size={12}>
       {selectedIds.length > 0 ? (
@@ -31,7 +31,7 @@ export default ({ selectedIds, currentIndex, updateCurrentIndex, id, children })
       ) : (
         <Grid>
           <Cell size={12}>
-            <p>No rows selected</p>
+            <p>Select one or more {props.location.pathname.replace('/', '')} from the table</p>
           </Cell>
         </Grid>
       )}

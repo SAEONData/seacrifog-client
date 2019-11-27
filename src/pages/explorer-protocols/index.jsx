@@ -73,6 +73,7 @@ export default props => {
                 updateCurrentIndex={i => updateGlobalState({ currentProtocol: i })}
                 id="selected-protocols-tabs"
                 selectedIds={selectedProtocols}
+                {...props}
               >
                 {({ id }) => (
                   <DataQuery query={PROTOCOL} variables={{ id: id }}>

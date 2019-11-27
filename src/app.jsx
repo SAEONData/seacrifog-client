@@ -4,6 +4,7 @@ import GlobalState from './global-state'
 import Navigation from './modules/layout'
 import Home from './pages/home'
 import Contact from './pages/contact'
+import Datasets from './pages/datasets'
 import SitesExplorer from './pages/explorer-sites'
 import ProtocolsExplorer from './pages/explorer-protocols'
 import VariablesExplorer from './pages/explorer-variables'
@@ -27,6 +28,9 @@ const App = () => (
 
         {/* Sites */}
         <Route key={'sites-explorer'} path={'/sites'} exact={true} render={props => <SitesExplorer {...props} />} />
+
+        {/* Datasets */}
+        <Route key={'datasets'} path={'/datasets'} exact={true} render={props => <Datasets {...props} />} />
 
         {/* Network Explorer */}
         <Route

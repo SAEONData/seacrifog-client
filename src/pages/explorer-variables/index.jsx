@@ -89,6 +89,7 @@ export default props => {
                 updateCurrentIndex={i => updateGlobalState({ currentVariable: i })}
                 id="selected-variables-tabs"
                 selectedIds={selectedVariables}
+                {...props}
               >
                 {({ id }) => (
                   <DataQuery query={VARIABLE} variables={{ id }}>

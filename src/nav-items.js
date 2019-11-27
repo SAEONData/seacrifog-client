@@ -57,6 +57,13 @@ export default [
     to: '/dataproducts',
     avatar: { children: 'D', suffix: 'light-green', style: avatarStyle }
   },
+  {
+    keyval: 'nav-item-records',
+    exact: false,
+    label: 'Datasets',
+    to: '/datasets',
+    icon: 'storage'
+  },
 
   { keyval: 'nav-divider-tools', divider: true, style: {} },
   {
