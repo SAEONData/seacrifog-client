@@ -6,6 +6,8 @@ import { GlobalStateContext } from '../../global-state'
 import { SideMenu, ExplorerSideMenuFilter } from '../../modules/shared-components'
 import ApplySitesFilter from './_apply-sites-filter'
 import FeatureDetail from './_feature-detail'
+import downloadMapData from './_download'
+import getFeatureIds from './_feature-ids'
 
 export default class extends PureComponent {
   constructor(props) {
@@ -132,20 +134,22 @@ export default class extends PureComponent {
                           save_alt
                         </Button>
                       ]}
-                      getFeatureIds={() => {
-                        let layer = null
-                        map.getLayers().forEach(l => (layer = l.get('id') === 'sites' ? l : layer))
-                        return layer
-                          .getSource()
-                          .getFeatures()
-                          .map(feature => feature.get('features'))
-                          .flat()
-                          .map(feature => feature.get('id'))
-                      }}
+                      getFeatureIds={() => getFeatureIds({ map })}
                       map={map}
                     />
                   </div>
                 </SideMenu>
+
+                {/* Download button */}
+                <Button
+                  style={{ position: 'absolute', top: '100px', right: 0, margin: '10px', zIndex: 1 }}
+                  swapTheming
+                  primary
+                  icon
+                  onClick={async () => downloadMapData({ ids: getFeatureIds({ map }) })}
+                >
+                  save_alt
+                </Button>
 
                 {/* Feature click panel (individual feature, no menu) */}
                 <SingleFeatureSelector map={map}>
@@ -166,7 +170,14 @@ export default class extends PureComponent {
                       >
                         <FeatureDetail
                           toolbarActions={[
-                            <Button onClick={() => alert('TODO')} icon>
+                            <Button
+                              onClick={async () =>
+                                downloadMapData({
+                                  ids: selectedFeature.get('features').map(feature => feature.get('id'))
+                                })
+                              }
+                              icon
+                            >
                               save_alt
                             </Button>,
                             <Button onClick={unselectFeature} icon>
