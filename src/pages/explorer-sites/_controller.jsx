@@ -128,28 +128,9 @@ export default class extends PureComponent {
                   )}
                 >
                   <div style={{ padding: 0, height: 'calc(100% - 67px)' }}>
-                    <FeatureDetail
-                      toolbarActions={[
-                        <Button onClick={() => alert('TODO')} icon>
-                          save_alt
-                        </Button>
-                      ]}
-                      getFeatureIds={() => getFeatureIds({ map })}
-                      map={map}
-                    />
+                    <FeatureDetail toolbarActions={[]} getFeatureIds={() => getFeatureIds({ map })} map={map} />
                   </div>
                 </SideMenu>
-
-                {/* Download button */}
-                <Button
-                  style={{ position: 'absolute', top: '100px', right: 0, margin: '10px', zIndex: 1 }}
-                  swapTheming
-                  primary
-                  icon
-                  onClick={async () => downloadMapData({ ids: getFeatureIds({ map }) })}
-                >
-                  save_alt
-                </Button>
 
                 {/* Feature click panel (individual feature, no menu) */}
                 <SingleFeatureSelector map={map}>
@@ -171,6 +152,10 @@ export default class extends PureComponent {
                         <FeatureDetail
                           toolbarActions={[
                             <Button
+                              tooltipLabel={'Download data for selected features'}
+                              disabled={selectedFeature
+                                .get('features')
+                                .map(feature => (feature.get('id').length > 500 ? true : false))}
                               onClick={async () =>
                                 downloadMapData({
                                   ids: selectedFeature.get('features').map(feature => feature.get('id'))
