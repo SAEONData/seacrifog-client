@@ -1,9 +1,23 @@
 export const fieldDefinitions = {
-  id: {
-    type: 'Integer',
+  addDataproducts: {
+    type: 'Integer array',
     editable: false,
-    display: false,
-    label: 'Variable ID',
+    display: true,
+    label: 'Add Dataproducts',
+    pristine: true
+  },
+  removeDataproducts: {
+    type: 'Integer array',
+    editable: false,
+    display: true,
+    label: 'Remove Dataproducts',
+    pristine: true
+  },
+  id: {
+    type: 'Integer', //The data type being represented. Determines what type of editable field is displayed (textField, datePicker, etc)
+    editable: false, //Whether or not the field is greyed out
+    display: false, //Whether or not the field is actually rendered
+    label: 'Variable ID', //The cleaner title of the editable field
     pristine: true //whether or not the field is still untouched by the edit page. False means the field has been edited and will be passed to the mutation
   },
   name: {
