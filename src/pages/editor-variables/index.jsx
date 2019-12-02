@@ -32,19 +32,31 @@ export default ({ id }) => {
                         <Cell size={12}>
                           <EditorSaveButton
                             saveEntity={() => {
+                              //variable IDs and fields IDs as int arrays
+                              const variableDataproducts =
+                                Object.entries(variable.dataproducts).map(item => item[1].id) || []
+                              const fieldsDataproducts =
+                                Object.entries(fields.dataproducts).map(item => item[1].id) || []
+
+                              console.log('varData', variable.dataproducts)
+                              console.log('fieldsData', fields.dataproducts)
+
+                              fields.addDataproducts = fieldsDataproducts.filter(id =>
+                                variableDataproducts.includes(id) ? false : true
+                              )
+                              fields.removeDataproducts = variableDataproducts.filter(id =>
+                                fieldsDataproducts.includes(id) ? false : true
+                              )
+                              if (fields.addDataproducts === undefined) fields.addDataproducts = []
+                              if (fields.removeDataproducts === undefined) fields.removeDataproducts = []
+
+                              if (fields.addDataproducts.length > 0) fieldDefinitions.addDataproducts.pristine = false
+                              if (fields.removeDataproducts.length > 0)
+                                fieldDefinitions.removeDataproducts.pristine = false
+
                               console.log('fields.dataproducts', fields.dataproducts)
-                              console.log('Object.entries(fields.dataproducts', Object.entries(fields.dataproducts))
-                              //console.log(({ id, title: value } = fields.dataproducts[0]))
-
-                              //Create a new DataQuery that pulls ALL dataproducts and use this notation below to
-                              //create an array of {id, value} pairs. This will act as the items prop of dropdownSelect
-                              var myVal = fields.dataproducts.map(item => ({ id: item.id, value: item.title }))
-
-                              // console.log('myVal', myVal)
-                              // console.log(
-                              //   'Object.entries(fields.dataproducts).map(item => item.id)',
-                              //   Object.entries(fields.dataproducts).map(item => item[1].id)
-                              // )
+                              console.log('add', fields.addDataproducts)
+                              console.log('remove', fields.removeDataproducts)
                               // fields['addDataproducts'] = [1, 2, 3, 4, 5, 6]
                               // fields['removeDataproducts'] = [3, 4]
                               executeMutation({
@@ -98,7 +110,8 @@ export default ({ id }) => {
                                 //The list of already selected items from items taken as an array of integers(id/key of item)
                                 selectedItems={Object.entries(fields.dataproducts).map(item => item[1].id) || []}
                                 onItemToggle={id => {
-                                  //IF dataproduct ADDED to related dataproducts
+                                  var updatedFields = fields
+                                  //IF dataproduct isn in fields.dataproducts:
                                   if (
                                     Object.entries(fields.dataproducts)
                                       .map(item => item[1].id)
@@ -107,14 +120,14 @@ export default ({ id }) => {
                                     //TOGGLE DESELECT:
                                     for (var i = 0; i < fields.dataproducts.length; i++) {
                                       if (fields.dataproducts[i].id === id) {
-                                        fields.dataproducts = fields.dataproducts.filter(dp => dp.id !== id)
+                                        updatedFields.dataproducts = fields.dataproducts.filter(dp => dp.id !== id)
                                       }
                                     }
                                   } else {
                                     //TOGGLE SELECT:
-                                    fields.dataproducts.push({ id: id })
+                                    updatedFields.dataproducts.push({ id: id })
                                   }
-                                  updateForm({ dataproducts: fields.dataproducts })
+                                  updateForm({ dataproducts: updatedFields.dataproducts })
                                 }}
                               />
                             </Grid>
