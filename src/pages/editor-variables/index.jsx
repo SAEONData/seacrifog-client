@@ -15,9 +15,7 @@ import { DropdownSelect } from '../../modules/shared-components/dropdown-select'
 //directly_related_protocols
 //dataproducts
 //rforcings
-// const relations = ['indirectly_related_protocols', 'dataproducts']
-// var relatedDataproducts = []
-// var unrelatedDataproducts = []
+
 export default ({ id }) => {
   return (
     <DataQuery query={VARIABLE} variables={{ id: parseInt(id) }}>
@@ -34,7 +32,6 @@ export default ({ id }) => {
                         <Cell size={12}>
                           <EditorSaveButton
                             saveEntity={() => {
-                              console.log('dataproducts', dataproducts)
                               console.log('fields.dataproducts', fields.dataproducts)
                               console.log('Object.entries(fields.dataproducts', Object.entries(fields.dataproducts))
                               //console.log(({ id, title: value } = fields.dataproducts[0]))
@@ -43,11 +40,11 @@ export default ({ id }) => {
                               //create an array of {id, value} pairs. This will act as the items prop of dropdownSelect
                               var myVal = fields.dataproducts.map(item => ({ id: item.id, value: item.title }))
 
-                              console.log('myVal', myVal)
-                              console.log(
-                                'Object.entries(fields.dataproducts).map(item => item.id)',
-                                Object.entries(fields.dataproducts).map(item => item[1].id)
-                              )
+                              // console.log('myVal', myVal)
+                              // console.log(
+                              //   'Object.entries(fields.dataproducts).map(item => item.id)',
+                              //   Object.entries(fields.dataproducts).map(item => item[1].id)
+                              // )
                               // fields['addDataproducts'] = [1, 2, 3, 4, 5, 6]
                               // fields['removeDataproducts'] = [3, 4]
                               executeMutation({
@@ -89,42 +86,37 @@ export default ({ id }) => {
                           <Card>
                             <CardTitle title={'Relationships'} subtitle={'Edit associations with other entities'} />
                             <Grid>
-                              <>
-                                <DropdownSelect
-                                  label="Dataproducts"
-                                  id="Dataproduct-relations"
-                                  //The full list of selectable items taken as an array of keyValuePairs [{k1,v1}, {k2,v2}, {k3:v3}]
-                                  //value must be a string(for now)
-                                  items={dataproducts.map(item => ({
-                                    id: item.id,
-                                    value: item.id.toString() + ' - ' + item.title
-                                  }))}
-                                  //The list of already selected items from items taken as an array of integers(id/key of item)
-                                  selectedItems={Object.entries(fields.dataproducts).map(item => item[1].id)}
-                                  // onItemToggle={id => {
-                                  //   const selectedDataproducts = Object.entries(fields.dataproducts).map(item => item[1].id)
-                                  //   if (selectedDataproducts.includes(id))
-                                  //   {
-                                  //     for(d of selectedDataproducts)
-                                  //     {
-                                  //       if(d == id)
-
-                                  //     }
-                                  //     unrelatedDataproducts.
-                                  //     //delete from fields
-                                  //     for(field of fields)
-                                  //     if(field.id === id)
-                                  //     delete field
-                                  //   }
-                                  //   else
-                                  //   {
-                                  //     //add to fields.dataproducts
-
-                                  //     fields.dataproducts.push()
-                                  //   }
-                                  // }}
-                                />
-                              </>
+                              <DropdownSelect
+                                label="Dataproducts"
+                                id="Dataproduct-relations"
+                                //The full list of selectable items taken as an array of keyValuePairs [{k1,v1}, {k2,v2}, {k3:v3}]
+                                //value must be a string(for now)
+                                items={dataproducts.map(item => ({
+                                  id: item.id,
+                                  value: item.id.toString() + ' - ' + item.title
+                                }))}
+                                //The list of already selected items from items taken as an array of integers(id/key of item)
+                                selectedItems={Object.entries(fields.dataproducts).map(item => item[1].id) || []}
+                                onItemToggle={id => {
+                                  //IF dataproduct ADDED to related dataproducts
+                                  if (
+                                    Object.entries(fields.dataproducts)
+                                      .map(item => item[1].id)
+                                      .includes(id)
+                                  ) {
+                                    //TOGGLE DESELECT:
+                                    for (var i = 0; i < fields.dataproducts.length; i++) {
+                                      if (fields.dataproducts[i].id === id) {
+                                        fields.dataproducts = fields.dataproducts.filter(dp => dp.id !== id)
+                                      }
+                                    }
+                                  } else {
+                                    //TOGGLE SELECT:
+                                    fields.dataproducts.push({ id: id })
+                                  }
+                                  updateForm({ dataproducts: fields.dataproducts })
+                                }}
+                              />
                             </Grid>
                           </Card>
                         </Cell>
