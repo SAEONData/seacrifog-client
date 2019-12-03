@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { DialogContainer, Card, CardText } from 'react-md'
+import { DialogContainer, Cell } from 'react-md'
 
 export default class extends PureComponent {
   state = { visible: false }
@@ -10,43 +10,50 @@ export default class extends PureComponent {
     const { visible } = this.state
 
     return (
-      <Card onClick={this.toggleVisible} className={'add-on-hover'} style={{ height: '100px', cursor: 'pointer' }}>
-        <CardText style={{ height: '100%', padding: '12px', display: 'flex' }}>
+      <Cell
+        className="add-on-hover-white"
+        style={{ display: 'flex', padding: '2px' }}
+        phoneSize={2}
+        tabletSize={2}
+        size={2}
+      >
+        <img
+          onClick={this.toggleVisible}
+          style={{
+            alignSelf: 'center',
+            display: 'flex',
+            margin: 'auto',
+            maxWidth: '100%',
+            maxHeight: '100%',
+            width: 'auto',
+            height: 'auto',
+            padding: '0',
+            cursor: 'pointer'
+          }}
+          src={this.props.imgPath}
+          alt={this.props.alt}
+        />
+        <DialogContainer
+          id="funding-acknowledgement"
+          title={'Acknowledgement'}
+          visible={visible}
+          titleStyle={{ textAlign: 'center' }}
+          focusOnMount={false}
+          onHide={this.toggleVisible}
+          contentStyle={{ maxHeight: 'inherit' }}
+        >
           <img
             style={{
-              display: 'flex',
-              margin: 'auto',
-              maxWidth: '100%',
-              maxHeight: '100%',
-              width: 'auto',
-              height: 'auto',
-              padding: '0'
+              width: '100%',
+              display: 'block',
+              margin: '20px auto'
             }}
             src={this.props.imgPath}
             alt={this.props.alt}
           />
-          <DialogContainer
-            id="funding-acknowledgement"
-            title={'Acknowledgement'}
-            visible={visible}
-            titleStyle={{ textAlign: 'center' }}
-            focusOnMount={false}
-            onHide={this.toggleVisible}
-            contentStyle={{ maxHeight: 'inherit' }}
-          >
-            <img
-              style={{
-                width: '100%',
-                display: 'block',
-                margin: '20px auto'
-              }}
-              src={this.props.imgPath}
-              alt={this.props.alt}
-            />
-            {this.props.content}
-          </DialogContainer>
-        </CardText>
-      </Card>
+          {this.props.content}
+        </DialogContainer>
+      </Cell>
     )
   }
 }

@@ -13,13 +13,6 @@ export default [
     to: '/',
     icon: 'home'
   },
-  {
-    keyval: 'nav-item-contact',
-    exact: true,
-    label: 'Maintainer',
-    to: '/contact',
-    icon: 'contact_support'
-  },
   { keyval: 'nav-divider-explore', divider: true, style: {} },
   {
     keyval: 'nav-item-atlas',

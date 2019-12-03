@@ -3,7 +3,6 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import GlobalState from './global-state'
 import Navigation from './modules/layout'
 import Home from './pages/home'
-import Contact from './pages/contact'
 import Datasets from './pages/datasets'
 import SitesExplorer from './pages/explorer-sites'
 import ProtocolsExplorer from './pages/explorer-protocols'
@@ -24,7 +23,6 @@ const App = () => (
         {/* Basic navigation */}
         <Route key={'home'} path={'/'} exact={true} component={Home} />
         <Route key={'home-2'} path={'/home'} exact={true} component={Home} />
-        <Route key={'contact'} path={'/contact'} exact={true} component={Contact} />
 
         {/* Sites */}
         <Route key={'sites-explorer'} path={'/sites'} exact={true} render={props => <SitesExplorer {...props} />} />

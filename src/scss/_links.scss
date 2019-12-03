@@ -3,10 +3,7 @@
   display: inline-block;
   text-decoration: none;
   transition: color $md-transition-time;
-
-  &:visited {
-    color: get-swatch($md-primary-color, 200, true);
-  }
+  cursor: pointer;
 
   &:hover {
     color: get-color('text', $md-light-theme);

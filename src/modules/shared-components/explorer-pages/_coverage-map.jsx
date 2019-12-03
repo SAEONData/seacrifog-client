@@ -6,23 +6,25 @@ import GeoJSON from 'ol/format/GeoJSON.js'
 import { Fill, Stroke, Style } from 'ol/style.js'
 
 export default ({ geoJson }) => {
-  const layers = [
-    ahocevarBaseMap(),
-    new VectorLayer({
-      source: new VectorSource({
-        features: new GeoJSON().readFeatures(geoJson)
-      }),
-      style: new Style({
-        stroke: new Stroke({
-          color: 'rgba(243, 117, 31, 1)',
-          lineDash: [0],
-          width: 1
+  const features = geoJson
+    ? new VectorLayer({
+        source: new VectorSource({
+          features: new GeoJSON().readFeatures(geoJson)
         }),
-        fill: new Fill({
-          color: 'rgba(243, 117, 31, 0.2)'
+        style: new Style({
+          stroke: new Stroke({
+            color: 'rgba(243, 117, 31, 1)',
+            lineDash: [0],
+            width: 1
+          }),
+          fill: new Fill({
+            color: 'rgba(243, 117, 31, 0.2)'
+          })
         })
       })
-    })
-  ]
+    : null
+
+  const layers = [ahocevarBaseMap()]
+  if (features) layers.push(features)
   return <Map style={{ height: '100%' }} layers={layers} />
 }

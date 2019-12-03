@@ -156,6 +156,14 @@ export const DATAPRODUCT = gql`
   }
 `
 
+export const SITES_MIN = gql`
+  query sites {
+    sites {
+      xyz
+    }
+  }
+`
+
 export const SITES = gql`
   query sites($ids: [Int!]) {
     sites(ids: $ids) {
