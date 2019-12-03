@@ -31,12 +31,25 @@ export default () => {
           <Wrapper>
             <Content>
               <h1 className="white">SEACRIFOG INVENTORY TOOL</h1>
-              <Divider style={{ margin: '30px' }} />
+              <Divider style={{ margin: '12px' }} />
+              <h3 className="white link" onClick={() => history.push('/sites')} style={{ margin: 0 }}>
+                Explore Africa's carbon observation platform network
+              </h3>
+            </Content>
+          </Wrapper>
+        </Cell>
+        <Cell style={{ padding: 0 }} size={12} className="sf-container inverse">
+          <Content style={{ margin: 0, padding: 0, textAlign: 'center', height: '400px' }}>
+            <SitesMap />
+          </Content>
+        </Cell>
+        <Cell size={12} className="sf-container primary">
+          <Wrapper>
+            <Content>
               <Button
                 className="white link"
                 onClick={() => history.push('/sites')}
                 flat
-                primary
                 swapTheming
                 iconChildren={<Icon symbol="S" suffix="lime" />}
               >
@@ -46,7 +59,6 @@ export default () => {
                 className="white link"
                 onClick={() => history.push('/networks')}
                 flat
-                primary
                 swapTheming
                 iconChildren={<Icon symbol="N" suffix="teal" />}
               >
@@ -56,7 +68,6 @@ export default () => {
                 className="white link"
                 onClick={() => history.push('/variables')}
                 flat
-                primary
                 swapTheming
                 iconChildren={<Icon symbol="V" suffix="light-blue" />}
               >
@@ -66,7 +77,6 @@ export default () => {
                 className="white link"
                 onClick={() => history.push('/protocols')}
                 flat
-                primary
                 swapTheming
                 iconChildren={<Icon symbol="P" suffix="cyan" />}
               >
@@ -75,27 +85,7 @@ export default () => {
             </Content>
           </Wrapper>
         </Cell>
-        <Cell size={12} className="sf-container primary">
-          <Wrapper>
-            <Content>
-              <h3 className="white link" onClick={() => history.push('/sites')} style={{ margin: 0 }}>
-                Explore Africa's carbon observation platform network
-              </h3>
-            </Content>
-          </Wrapper>
-        </Cell>
         <Cell size={12} className="sf-container inverse">
-          <Grid>
-            <Cell size={12}>
-              <Wrapper>
-                <Content style={{ height: '400px' }}>
-                  <SitesMap />
-                </Content>
-              </Wrapper>
-            </Cell>
-          </Grid>
-        </Cell>
-        <Cell size={12} className="sf-container secondary">
           <Wrapper>
             <Content>
               <Grid>
@@ -109,7 +99,7 @@ export default () => {
                     src={euFunding.logo}
                     alt={euFunding.alt}
                   />
-                  <p style={{ paddingTop: '16px' }}>
+                  <p style={{ paddingTop: '16px', fontSize: '20px', lineHeight: '28px' }}>
                     This project has received funding from the European Union's Horizon 2020 research and innovation
                     programme under grant agreement No 730995
                   </p>
@@ -124,7 +114,7 @@ export default () => {
                     src={sfFunding.logo}
                     alt={sfFunding.alt}
                   />
-                  <p style={{ paddingTop: '16px' }}>
+                  <p style={{ paddingTop: '16px', fontSize: '20px', lineHeight: '28px' }}>
                     Supporting EU-African Cooperation on Research Infrastructures for Food Security and Greenhouse Gas
                     Observations
                   </p>
@@ -133,12 +123,12 @@ export default () => {
             </Content>
           </Wrapper>
         </Cell>
-        <Cell size={12} className="sf-container inverse">
+        <Cell size={12} className="sf-container secondary">
           <Wrapper>
             <Content>
               <Grid>
                 <Cell phoneSize={4} tabletSize={8} size={6}>
-                  <h3>Carbon Observation Platform Explorer</h3>
+                  <h2>Carbon Observation Platform Explorer</h2>
                   <p className={'justify'}>
                     {
                       <a className="link" href="http://www.seacrifog.eu/" target="_blank" rel="noopener noreferrer">
