@@ -10,6 +10,10 @@ const Content = ({ children, style }) => (
   </div>
 )
 
+const footerHeaderStyle = {
+  margin: '48px'
+}
+
 export default () => (
   <Grid noSpacing>
     {/* Copyright */}
@@ -27,7 +31,9 @@ export default () => (
         <Cell phoneSize={4} tabletSize={4} size={4}>
           <Wrapper>
             <Content>
-              <h3 className="white">PARTNERS</h3>
+              <h3 style={footerHeaderStyle} className="white">
+                PARTNERS
+              </h3>
               <Grid noSpacing style={{ textAlign: 'left' }}>
                 <Cell phoneSize={4} tabletSize={4} size={6}>
                   {[...partners].splice(0, Math.floor(partners.length / 2)).map((p, i) => (
@@ -56,7 +62,9 @@ export default () => (
         <Cell phoneSize={4} tabletSize={4} size={4}>
           <Wrapper>
             <Content>
-              <h3 className="white">SITE NAVIGATION</h3>
+              <h3 style={footerHeaderStyle} className="white">
+                SITE NAVIGATION
+              </h3>
               <a className="white link" href="/home">
                 Home
               </a>
@@ -85,7 +93,9 @@ export default () => (
         <Cell phoneSize={4} tabletSize={4} size={4}>
           <Wrapper>
             <Content>
-              <h3 className="white">CONTACT US</h3>
+              <h3 style={footerHeaderStyle} className="white">
+                CONTACT US
+              </h3>
               <address style={{ fontStyle: 'normal' }}>
                 <a className="white link" href="mailto:zach@saeon.ac.za" target="_blank" rel="noopener noreferrer">
                   SAEON Ulwazi

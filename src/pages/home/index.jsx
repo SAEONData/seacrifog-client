@@ -99,10 +99,10 @@ export default () => {
                     src={euFunding.logo}
                     alt={euFunding.alt}
                   />
-                  <p style={{ paddingTop: '16px', fontSize: '20px', lineHeight: '28px' }}>
+                  <h4 style={{ paddingTop: '16px' }}>
                     This project has received funding from the European Union's Horizon 2020 research and innovation
                     programme under grant agreement No 730995
-                  </p>
+                  </h4>
                 </Cell>
                 <Cell phoneSize={4} tabletSize={4} size={6}>
                   <img
@@ -114,10 +114,10 @@ export default () => {
                     src={sfFunding.logo}
                     alt={sfFunding.alt}
                   />
-                  <p style={{ paddingTop: '16px', fontSize: '20px', lineHeight: '28px' }}>
+                  <h4 style={{ paddingTop: '16px' }}>
                     Supporting EU-African Cooperation on Research Infrastructures for Food Security and Greenhouse Gas
                     Observations
-                  </p>
+                  </h4>
                 </Cell>
               </Grid>
             </Content>
