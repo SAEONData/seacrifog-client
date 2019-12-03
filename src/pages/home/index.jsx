@@ -128,7 +128,7 @@ export default () => {
             <Content>
               <Grid>
                 <Cell phoneSize={4} tabletSize={8} size={6}>
-                  <h2>Carbon Observation Platform Explorer</h2>
+                  <h2 style={{ marginBottom: '36px' }}>Carbon Observation Platform Explorer</h2>
                   <p className={'justify'}>
                     {
                       <a className="link" href="http://www.seacrifog.eu/" target="_blank" rel="noopener noreferrer">
@@ -161,7 +161,7 @@ export default () => {
                   </p>
                 </Cell>
                 <Cell phoneSize={4} tabletSize={8} size={6}>
-                  <Grid>
+                  <Grid noSpacing>
                     {partners.slice(2, partners.length).map((item, i) => (
                       <FundingAcknowledgement
                         key={i}

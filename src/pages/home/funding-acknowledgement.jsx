@@ -12,7 +12,7 @@ export default class extends PureComponent {
     return (
       <Cell
         className="add-on-hover-white"
-        style={{ display: 'flex', padding: '2px' }}
+        style={{ display: 'flex', padding: '8px' }}
         phoneSize={2}
         tabletSize={2}
         size={2}
