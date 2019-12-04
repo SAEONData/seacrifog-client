@@ -1,4 +1,4 @@
-import { clusterSource } from '@saeon/atlas'
+import { clusterSource } from '../../modules/atlas/sources'
 
 export default ({
   selectedSites,
