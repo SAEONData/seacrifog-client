@@ -1,6 +1,6 @@
 import React from 'react'
 import { Grid, Cell } from 'react-md'
-import Footer from '../../layout/footer'
+import Footer from '../layout/footer'
 
 export default ({ children }) => (
   <>

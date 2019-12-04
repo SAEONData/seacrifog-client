@@ -16,7 +16,7 @@ import {
   iconLink,
   ExplorerCoverageMap,
   variableIcon
-} from '../../modules/shared-components'
+} from '../../modules/explorer-page'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
 import { List, ListItem } from 'react-md'
 import { Table } from '../../modules/shared-components'

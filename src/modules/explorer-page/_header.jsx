@@ -1,9 +1,10 @@
 import React from 'react'
 import { Toolbar, Button } from 'react-md'
-import DataQuery from '../../data-query'
+import DataQuery from '../data-query'
 import { useHistory } from 'react-router-dom'
-import { ENTIRE_GRAPH } from '../../../graphql/queries'
-import { SideMenu, ExplorerSideMenuFilter } from '../index'
+import { ENTIRE_GRAPH } from '../../graphql/queries'
+import { ExplorerSideMenuFilter } from './index'
+import { SideMenu } from '../shared-components/index'
 
 const mainMenuIconStyle = disabled => ({
   marginLeft: '10px',

@@ -1,11 +1,10 @@
 import React from 'react'
 import { Grid, Cell, Card, TextField, CardText, CardTitle } from 'react-md'
 import Form from '../../modules/form'
-import EntityEditor from '../../modules/shared-components/entity-editor'
 import DataQuery from '../../modules/data-query'
 import DataMutation from '../../modules/data-mutation'
 import { fieldDefinitions } from './network-definitions'
-import { EditorSaveButton, EditorLayout } from '../../modules/shared-components/editor-pages'
+import { EditorSaveButton, EditorLayout, EntityEditor } from '../../modules/shared-components'
 import { NETWORK } from '../../graphql/queries'
 import { UPDATE_NETWORKS } from '../../graphql/mutations'
 //NETWORKS EDITOR

@@ -1,11 +1,10 @@
 import React from 'react'
 import { Grid, Cell, Card, TextField, CardText, CardTitle } from 'react-md'
 import Form from '../../modules/form'
-import EntityEditor from '../../modules/shared-components/entity-editor'
 import DataQuery from '../../modules/data-query'
 import DataMutation from '../../modules/data-mutation'
 import { fieldDefinitions } from './variable-definitions'
-import { EditorSaveButton, EditorLayout } from '../../modules/shared-components/editor-pages'
+import { EditorSaveButton, EditorLayout, EntityEditor } from '../../modules/shared-components'
 import { VARIABLE } from '../../graphql/queries'
 import { UPDATE_VARIABLES } from '../../graphql/mutations'
 //VARIABLES EDITOR

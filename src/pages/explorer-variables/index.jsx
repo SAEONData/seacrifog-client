@@ -17,7 +17,7 @@ import {
   protocolsIcon,
   iconLink,
   ExplorerCoverageMap
-} from '../../modules/shared-components'
+} from '../../modules/explorer-page'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
 import { List, ListItem, DataTable, TableHeader, TableRow, TableColumn, TableBody } from 'react-md'
 import { mergeLeft } from 'ramda'

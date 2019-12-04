@@ -3,7 +3,7 @@ import { Button, Drawer, Toolbar } from 'react-md'
 
 const drawerStyle = { minWidth: '400px', overflowY: 'auto', zIndex: 20 }
 
-export class SideMenu extends PureComponent {
+export default class extends PureComponent {
   state = { menuOpen: false }
 
   toggleMenu = () => this.setState({ menuOpen: !this.state.menuOpen })

@@ -14,6 +14,12 @@ const footerHeaderStyle = {
   margin: '48px'
 }
 
+const Partner = ({ href, name }) => (
+  <a style={{ padding: '4px' }} rel="noopener noreferrer" target="_blank" className="white link" href={href}>
+    {name || '??'}
+  </a>
+)
+
 export default () => (
   <>
     <Grid noSpacing>
@@ -42,11 +48,7 @@ export default () => (
                       .splice(0, Math.ceil(partners.length / 2))
                       .sort((a, b) => (a.name > b.name ? 1 : a.name < b.name ? -1 : 0))
                       .map((p, i) => (
-                        <div key={i}>
-                          <a rel="noopener noreferrer" target="_blank" className="white link" href={p.href}>
-                            {p.name || '??'}
-                          </a>
-                        </div>
+                        <Partner key={i} href={p.href} name={p.name} />
                       ))}
                   </Cell>
                   <Cell phoneSize={4} tabletSize={4} size={6}>
@@ -54,11 +56,7 @@ export default () => (
                       .splice(Math.ceil(partners.length / 2), partners.length)
                       .sort((a, b) => (a.name > b.name ? 1 : a.name < b.name ? -1 : 0))
                       .map((p, i) => (
-                        <div key={i}>
-                          <a rel="noopener noreferrer" target="_blank" className="white link" href={p.href}>
-                            {p.name || '??'}
-                          </a>
-                        </div>
+                        <Partner key={i} href={p.href} name={p.name} />
                       ))}
                   </Cell>
                 </Grid>

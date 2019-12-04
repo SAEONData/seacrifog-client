@@ -15,7 +15,7 @@ import {
   ScrollButton,
   variableIcon,
   iconLink
-} from '../../modules/shared-components'
+} from '../../modules/explorer-page'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
 import { List, ListItem } from 'react-md'
 import { mergeLeft } from 'ramda'

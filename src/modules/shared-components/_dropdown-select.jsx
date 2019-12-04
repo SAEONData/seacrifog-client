@@ -7,7 +7,7 @@ const listItemStyle = {
   margin: '2px 0'
 }
 
-export class DropdownSelect extends PureComponent {
+export default class extends PureComponent {
   state = { searchTerm: '', filteredItems: [], visible: false, listSize: 20 }
 
   updateSearchTerm = searchTerm => this.setState({ searchTerm, visible: true })
