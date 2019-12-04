@@ -36,12 +36,13 @@ class Navigation extends PureComponent {
   render() {
     const { currentPath } = this.state
     const { location, navItems } = this.props
+    console.log(location.pathname)
     return (
       <NavigationDrawer
         contentClassName={'page-content'}
         id="app-navigation-drawer"
         drawerTitle={'BETA 0.1'}
-        toolbarTitle={'Carbon Observation Platform Explorer'}
+        toolbarTitle={['/', '', '/home'].includes(location.pathname) ? '' : 'Carbon Observation Platform Explorer'}
         navItems={navItems.map(({ divider, subheader, ...navItem }) =>
           divider || subheader ? (
             { divider, subheader, ...navItem }

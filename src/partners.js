@@ -1,16 +1,8 @@
 export default [
   {
+    name: 'European Union',
     fixed: true,
     id: 1,
-    logo: '/seacrifog-logo.png',
-    alt: 'SEACRIFOG logo',
-    content:
-      'Supporting EU-African Cooperation on Research Infrastructures for Food Security and Greenhouse Gas Observations',
-    href: 'https://www.seacrifog.eu/'
-  },
-  {
-    fixed: true,
-    id: 2,
     logo: '/eu-funding-achnowledgement.jpg',
     alt: 'EU funding acknowledgement',
     content:
@@ -18,6 +10,17 @@ export default [
     href: 'https://ec.europa.eu/inea/en/horizon-2020'
   },
   {
+    name: 'SEACRIFOG',
+    fixed: true,
+    id: 2,
+    logo: '/seacrifog-logo.png',
+    alt: 'SEACRIFOG logo',
+    content:
+      'Supporting EU-African Cooperation on Research Infrastructures for Food Security and Greenhouse Gas Observations',
+    href: 'https://www.seacrifog.eu/'
+  },
+  {
+    name: 'INDP',
     id: 3,
     logo: 'indp.jpg',
     alt: 'INDP logo',
@@ -25,6 +28,7 @@ export default [
     href: 'http://www.cvoo.de/'
   },
   {
+    name: 'Lund University',
     id: 4,
     logo: 'csm_lu_logo_b95e6f4e46.png',
     alt: 'Lund University logo',
@@ -32,6 +36,7 @@ export default [
     href: 'http://www.natgeo.lu.se/'
   },
   {
+    name: 'Global Change Research Institute',
     id: 5,
     logo: 'csm_Czechglobe-logo-en_eca708c0ac.png',
     alt: 'CzechGlobe logo',
@@ -39,6 +44,7 @@ export default [
     href: 'www.czechglobe.cz'
   },
   {
+    name: 'Norwegian Research Centre',
     id: 6,
     logo: 'norce-logo.png',
     alt: 'NORCE logo',
@@ -47,6 +53,7 @@ export default [
     href: 'https://uni.no/en/'
   },
   {
+    name: 'University of Bergen',
     id: 7,
     logo: 'Uni-Bergen-emblem.png',
     alt: 'University of Bergen logo',
@@ -55,6 +62,7 @@ export default [
     href: 'http://www.uib.no/en/gfi'
   },
   {
+    name: 'Leibniz Institute for Tropospheric Research',
     id: 8,
     logo: 'csm_tropos_logo.png',
     alt: 'Leibniz Institute for Tropospheric Research logo',
@@ -62,6 +70,7 @@ export default [
     href: 'http://www.tropos.de/'
   },
   {
+    name: 'Geomar Helmholtz Centre for Ocean Research Kiel',
     id: 9,
     logo: 'Geomar_logo.png',
     alt: 'Geomar Helmholtz Centre for Ocean Research Kiel logo',
@@ -69,6 +78,7 @@ export default [
     href: 'http://www.geomar.de/en/forschen/fb2/fb2-ch/ueberblick/'
   },
   {
+    name: 'SAEON',
     id: 10,
     logo: 'saeon-logo.png',
     alt: 'SAEON logo',
@@ -76,6 +86,7 @@ export default [
     href: 'http://www.saeon.ac.za'
   },
   {
+    name: 'Trinity College Dublin',
     id: 11,
     logo: 'trinity-dublin-logo.png',
     alt: 'Trinity College Dublin logo',
@@ -83,6 +94,7 @@ export default [
     href: 'http://naturalscience.tcd.ie/'
   },
   {
+    name: 'University of the Witwatersrand Johannesburg',
     id: 12,
     logo: 'wits-logo.png',
     alt: 'WITS logo',
@@ -90,6 +102,7 @@ export default [
     href: 'https://www.wits.ac.za'
   },
   {
+    name: 'Integrated Carbon Observation System',
     id: 13,
     logo: 'icos-logo.png',
     alt: 'ICOS logo',
@@ -97,6 +110,7 @@ export default [
     href: 'https://www.icos-ri.eu/'
   },
   {
+    name: 'International Livestock Research Institute',
     id: 14,
     logo: 'ilir.png',
     alt: 'ilir logo',
@@ -104,6 +118,7 @@ export default [
     href: 'www.ilri.org'
   },
   {
+    name: 'WASCAL',
     id: 15,
     logo: '/wascal-logo.png',
     alt: 'West Africa Science Center on Climate Change and Adapted Land Use logo',
@@ -111,6 +126,7 @@ export default [
     href: 'http://wascal.org/'
   },
   {
+    name: 'Euro-Mediterranean Center on Climate Change',
     id: 16,
     logo: '/csm_CMCCorizzontaleCOLORE_029a50c0fc.gif',
     alt: 'Euro-Mediterranean Center on Climate Change logo',
@@ -119,6 +135,7 @@ export default [
     href: 'https://www.cmcc.it/'
   },
   {
+    name: 'The Thünen Institute',
     id: 17,
     logo: '/thuenen_web_logo_transparent.png',
     alt: 'Thuenen logo',
@@ -126,6 +143,7 @@ export default [
     href: 'https://www.thuenen.de/en/ak/'
   },
   {
+    name: 'SASSCAL',
     id: 18,
     logo: '/sasscal-logo.png',
     alt: 'SASSCAL logo',

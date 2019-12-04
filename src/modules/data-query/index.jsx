@@ -10,7 +10,7 @@ export default ({ query, variables, children, loadingComponent = null }) => {
       loadingComponent
     ) : (
       <Grid>
-        <Cell phoneSize={6} tabletSize={8} size={12}>
+        <Cell style={{ minHeight: '300px' }} phoneSize={6} tabletSize={8} size={12}>
           <p>Loading...</p>
         </Cell>
       </Grid>

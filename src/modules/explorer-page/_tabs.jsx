@@ -30,7 +30,7 @@ export default ({ selectedIds, currentIndex, updateCurrentIndex, id, children, .
         </TabsContainer>
       ) : (
         <Grid>
-          <Cell size={12}>
+          <Cell size={12} style={{ minHeight: '300px' }}>
             <p>Select one or more {props.location.pathname.replace('/', '')} from the table</p>
           </Cell>
         </Grid>

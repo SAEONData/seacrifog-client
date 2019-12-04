@@ -2,6 +2,7 @@
 
 # This is unique per local deployment
 .env.development
+.env.production
 
 # dependencies
 /node_modules

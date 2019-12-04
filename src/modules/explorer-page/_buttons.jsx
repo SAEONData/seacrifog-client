@@ -1,6 +1,13 @@
 // import React from 'react'
 // import { Button } from 'react-md'
 
+/**
+ * TODO
+ * The app could do better at scrolling to page points.
+ * This button would sit next to the search bar and allow
+ * for jumping to the tabs
+ */
+
 // export const ScrollButton = ({ disabled }) => (
 //   <Button
 //     key={'scroll-to-content'}
