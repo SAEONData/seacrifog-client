@@ -16,6 +16,11 @@ import { DropdownSelect } from '../../modules/shared-components/dropdown-select'
 //dataproducts
 //rforcings
 
+//TO DO:
+/*
+-->updateVariables(input:{id:1, addDataproducts:[80]}) throws error in graphiql. addDataproducts probably has a bug.
+-->client page can remove a variable relation but not add one since variable seems to be matching to fields whenever fields gets a new property but not a dataproduct is deleted from fields. Maybe a updateForm issue. 
+*/
 export default ({ id }) => {
   return (
     <DataQuery query={VARIABLE} variables={{ id: parseInt(id) }}>

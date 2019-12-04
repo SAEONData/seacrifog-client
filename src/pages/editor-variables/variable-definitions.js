@@ -1,13 +1,13 @@
 export const fieldDefinitions = {
   addDataproducts: {
-    type: 'Integer array',
+    type: 'Relation mutation',
     editable: false,
     display: true,
     label: 'Add Dataproducts',
     pristine: true
   },
   removeDataproducts: {
-    type: 'Integer array',
+    type: 'Relation mutation',
     editable: false,
     display: true,
     label: 'Remove Dataproducts',
