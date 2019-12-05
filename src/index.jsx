@@ -7,7 +7,6 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import App from './app'
 import WebFontLoader from 'webfontloader'
-import * as serviceWorker from './serviceWorker'
 import './index.scss'
 
 // Use with caution!!
