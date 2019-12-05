@@ -28,37 +28,10 @@
     "react-md": "^1.12.3",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0",
-    "sift": "^9.0.0",
-    "webfontloader": "^1.6.28"
+    "sift": "^9.0.0"
   },
   "scripts": {
-    "start": "npm-run-all -p watch-prettier start:cra",
-    "start:cra": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "watch-prettier": "onchange \"**/!(__generated__)/*.{js,jsx,scss}\" -- prettier --write {{changed}}"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "start": "echo todo"
   },
   "prettier": {
     "singleQuote": true,
@@ -66,15 +39,7 @@
     "semi": false,
     "tabWidth": 2
   },
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write",
-      "git add"
-    ]
-  },
   "devDependencies": {
-    "husky": "^3.1.0",
-    "lint-staged": "^9.5.0",
     "node-sass": "^4.13.0",
     "npm-run-all": "^4.1.5",
     "onchange": "^6.1.0",
