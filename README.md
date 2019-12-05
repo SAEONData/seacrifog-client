@@ -1,7 +1,6 @@
 # SEACRIFOG Client
 TODO
 
-
 ## Dev environment setup
 Install the project dependencies: `npm install`<br>
 Start the dev server: `npm start`
