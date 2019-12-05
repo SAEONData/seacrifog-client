@@ -54,7 +54,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
               download
               href={encodeURI(
                 `${process.env.DOWNLOADS_ENDPOINT ||
-                  'http://localhost:3000/downloads'}/${ctx}?filename=${ctx}-${new Date()}.json&ids=${selectedIds.join(
+                  'https://api.seacrifog.saeon.ac.za/downloads'}/${ctx}?filename=${ctx}-${new Date()}.json&ids=${selectedIds.join(
                   ','
                 )}`
               )}

@@ -15,7 +15,7 @@ nativeExtensions()
 // Configure the Apollo Client
 const cache = new InMemoryCache()
 const link = new HttpLink({
-  uri: process.env.GQL_ENDPOINT || 'http://localhost:3000/graphql'
+  uri: process.env.GQL_ENDPOINT || 'https://api.seacrifog.saeon.ac.za/graphql'
 })
 const client = new ApolloClient({ cache, link })
 

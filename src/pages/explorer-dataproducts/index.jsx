@@ -92,7 +92,7 @@ export default props => {
                         }
                         href={encodeURI(
                           `${process.env.DOWNLOADS_ENDPOINT ||
-                            'http://localhost:3000/downloads'}/DATAPRODUCTS?filename=DATAPRODUCT-${new Date()}.json&ids=${[
+                            'https://api.seacrifog.saeon.ac.za/downloads'}/DATAPRODUCTS?filename=DATAPRODUCT-${new Date()}.json&ids=${[
                             dataproduct.id
                           ].join(',')}`
                         )}
