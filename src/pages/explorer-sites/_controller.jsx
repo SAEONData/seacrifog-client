@@ -1,7 +1,10 @@
 import React, { PureComponent } from 'react'
 import sift from 'sift'
 import { Button } from 'react-md'
-import { Map, clusterSource, clusterLayer, ahocevarBaseMap, SingleFeatureSelector } from '@saeon/atlas'
+import { Map, SingleFeatureSelector } from '@saeon/atlas'
+import { clusterLayer, ahocevarBaseMap } from '../../modules/atlas/layers'
+import { clusterSource } from '../../modules/atlas/sources'
+import { clusterStyle1, clusterStyle2 } from '../../modules/atlas/styles'
 import { GlobalStateContext } from '../../global-state'
 import { SideMenu } from '../../modules/shared-components'
 import { ExplorerSideMenuFilter } from '../../modules/explorer-page'
@@ -35,7 +38,11 @@ export default class extends PureComponent {
 
     // Create layers
     this.clusteredSites = clusterSource({ data: data.sites, locAttribute: 'xyz' })
-    this.clusteredSitesLayer = clusterLayer(this.clusteredSites, 'sites')
+    this.clusteredSitesLayer = clusterLayer({
+      source: this.clusteredSites,
+      id: 'sites',
+      style: clusterStyle1
+    })
     this.layers = [ahocevarBaseMap(), this.clusteredSitesLayer]
   }
 
@@ -134,7 +141,7 @@ export default class extends PureComponent {
                 </SideMenu>
 
                 {/* Feature click panel (individual feature, no menu) */}
-                <SingleFeatureSelector map={map}>
+                <SingleFeatureSelector unselectedStyle={clusterStyle1} selectedStyle={clusterStyle2} map={map}>
                   {({ selectedFeature, unselectFeature }) =>
                     selectedFeature ? (
                       <div
