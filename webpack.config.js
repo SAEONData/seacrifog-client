@@ -3,15 +3,27 @@ const Dotenv = require('dotenv-webpack')
 const path = require('path')
 require('dotenv').config()
 
+const resolveConfig = mode =>
+  mode === 'production'
+    ? {
+        extensions: ['.js', '.jsx']
+      }
+    : {
+        extensions: ['.js', '.jsx'],
+        symlinks: true,
+        alias: {
+          react: path.resolve('./node_modules/react'),
+          'react-dom': path.resolve('./node_modules/react-dom')
+        }
+      }
+
 module.exports = ({ mode }) => ({
   mode,
   entry: './src/index.jsx',
   output: {
     filename: 'index.js'
   },
-  resolve: {
-    extensions: ['.js', '.jsx']
-  },
+  resolve: resolveConfig(mode),
   module: {
     rules: [
       {
