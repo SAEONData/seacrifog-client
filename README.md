@@ -1,5 +1,5 @@
 # SEACRIFOG Client
-TODO
+React.js browser client
 
 # Quickstart (local dev environment)
 You need to have Node.js installed on your machine, and you need to first setup the SEACRIFOG API. Once you have done this, just install project dependencies and then start the development server.
