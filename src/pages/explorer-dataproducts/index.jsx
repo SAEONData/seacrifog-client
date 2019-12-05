@@ -91,7 +91,7 @@ export default props => {
                           )
                         }
                         href={encodeURI(
-                          `${process.env.REACT_APP_DOWNLOADS_ENDPOINT ||
+                          `${process.env.DOWNLOADS_ENDPOINT ||
                             'http://localhost:3000/downloads'}/DATAPRODUCTS?filename=DATAPRODUCT-${new Date()}.json&ids=${[
                             dataproduct.id
                           ].join(',')}`

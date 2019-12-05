@@ -53,7 +53,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
               icon
               download
               href={encodeURI(
-                `${process.env.REACT_APP_DOWNLOADS_ENDPOINT ||
+                `${process.env.DOWNLOADS_ENDPOINT ||
                   'http://localhost:3000/downloads'}/${ctx}?filename=${ctx}-${new Date()}.json&ids=${selectedIds.join(
                   ','
                 )}`

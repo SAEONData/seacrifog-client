@@ -108,7 +108,7 @@ export default props => {
                             )
                           }
                           href={encodeURI(
-                            `${process.env.REACT_APP_DOWNLOADS_ENDPOINT ||
+                            `${process.env.DOWNLOADS_ENDPOINT ||
                               'http://localhost:3000/downloads'}/VARIABLES?filename=VARIABLE-${new Date()}.json&ids=${[
                               variable.id
                             ].join(',')}`
