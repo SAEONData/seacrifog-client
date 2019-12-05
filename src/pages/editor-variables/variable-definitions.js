@@ -1,18 +1,4 @@
 export const fieldDefinitions = {
-  addDataproducts: {
-    type: 'Relation mutation',
-    editable: false,
-    display: true,
-    label: 'Add Dataproducts',
-    pristine: true
-  },
-  removeDataproducts: {
-    type: 'Relation mutation',
-    editable: false,
-    display: true,
-    label: 'Remove Dataproducts',
-    pristine: true
-  },
   id: {
     type: 'Integer', //The data type being represented. Determines what type of editable field is displayed (textField, datePicker, etc)
     editable: false, //Whether or not the field is greyed out
@@ -207,6 +193,27 @@ export const fieldDefinitions = {
     editable: true,
     display: true,
     label: 'Technology Type',
+    pristine: true
+  },
+  //RELATIONS:
+  addDataproducts: {
+    type: 'Relation mutation',
+    pristine: true
+  },
+  removeDataproducts: {
+    type: 'Relation mutation',
+    pristine: true
+  },
+  addDirectlyRelatedProtocols: {
+    type: 'Relation mutation',
+    pristine: true
+  },
+  addIndirectlyRelatedProtocols: {
+    type: 'Relation mutation',
+    pristine: true
+  },
+  removeProtocols: {
+    type: 'Relation mutation',
     pristine: true
   }
 }

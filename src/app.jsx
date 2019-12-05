@@ -71,7 +71,7 @@ const App = () => (
           key={'edit-variables'}
           path={'/variables/:id'}
           exact={false}
-          render={props => <VariableEditor id={props.match.params.id} {...props} />} //edited by steven: using EntityEditor class instead of VariableEditor
+          render={props => <VariableEditor id={props.match.params.id} {...props} />}
         />
         <Route
           key={'edit-protocols'}
@@ -85,7 +85,7 @@ const App = () => (
           key={'edit-dataproducts'}
           path={'/dataproducts/:id'}
           exact={false}
-          render={props => <DataproductEditor id={props.match.params.id} {...props} />} //edited by steven: using EntityEditor class instead of VariableEditor
+          render={props => <DataproductEditor id={props.match.params.id} {...props} />}
         />
         <Route
           key={'edit-networks'}
