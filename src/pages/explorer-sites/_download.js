@@ -1,4 +1,4 @@
-const api = process.env.REACT_APP_DOWNLOADS_ENDPOINT || 'http://localhost:3000/downloads'
+const api = process.env.DOWNLOADS_ENDPOINT || 'https://api.seacrifog.saeon.ac.za/downloads'
 
 export default async ({ ids }) => {
   // First get the result

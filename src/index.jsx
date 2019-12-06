@@ -1,5 +1,3 @@
-import 'react-app-polyfill/ie11'
-import 'react-app-polyfill/stable'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import nativeExtensions from './lib/native-extensions'
@@ -9,7 +7,6 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import App from './app'
 import WebFontLoader from 'webfontloader'
-import * as serviceWorker from './serviceWorker'
 import './index.scss'
 
 // Use with caution!!
@@ -18,7 +15,7 @@ nativeExtensions()
 // Configure the Apollo Client
 const cache = new InMemoryCache()
 const link = new HttpLink({
-  uri: process.env.REACT_APP_GQL_ENDPOINT || 'http://localhost:3000/graphql'
+  uri: process.env.GQL_ENDPOINT || 'https://api.seacrifog.saeon.ac.za/graphql'
 })
 const client = new ApolloClient({ cache, link })
 
@@ -35,8 +32,3 @@ ReactDOM.render(
   </ApolloProvider>,
   document.getElementById('app')
 )
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister()
