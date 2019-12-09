@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.3",
-    "@saeon/atlas": "^5.0.5",
+    "@saeon/atlas": "^5.0.6",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-client": "^2.6.4",
     "apollo-link-http": "^1.5.16",

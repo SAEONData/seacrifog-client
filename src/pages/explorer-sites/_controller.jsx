@@ -13,6 +13,11 @@ import FeatureDetail from './_feature-detail'
 import downloadMapData from './_download'
 import getFeatureIds from './_feature-ids'
 
+const buttonStyle = disabled => ({
+  marginLeft: '10px',
+  color: disabled ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,1)'
+})
+
 export default class extends PureComponent {
   constructor(props) {
     super(props)
@@ -161,15 +166,14 @@ export default class extends PureComponent {
                           toolbarActions={[
                             <Button
                               tooltipLabel={'Download data for selected features'}
-                              disabled={selectedFeature
-                                .get('features')
-                                .map(feature => (feature.get('id').length > 500 ? true : false))}
+                              disabled={selectedFeature.get('features').length > 500 ? true : false}
                               onClick={async () =>
                                 downloadMapData({
                                   ids: selectedFeature.get('features').map(feature => feature.get('id'))
                                 })
                               }
                               icon
+                              style={buttonStyle(selectedFeature.get('features').length > 500 ? true : false)}
                             >
                               save_alt
                             </Button>,
