@@ -57,7 +57,7 @@ module.exports = ({ mode }) => ({
     new Dotenv(),
     new HtmlWebPackPlugin({
       template: './index.html',
-      PUBLIC_PATH: process.env.PUBLIC_PATH
+      PUBLIC_PATH: process.env.PUBLIC_PATH || 'public'
     })
   ],
   devServer: {
