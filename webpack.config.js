@@ -21,6 +21,7 @@ module.exports = ({ mode }) => ({
   mode,
   entry: './src/index.jsx',
   output: {
+    publicPath: '/',
     filename: 'index.js'
   },
   resolve: resolveConfig(mode),
@@ -57,7 +58,7 @@ module.exports = ({ mode }) => ({
     new Dotenv(),
     new HtmlWebPackPlugin({
       template: './index.html',
-      PUBLIC_PATH: process.env.PUBLIC_PATH
+      PUBLIC_PATH: ''
     })
   ],
   devServer: {
