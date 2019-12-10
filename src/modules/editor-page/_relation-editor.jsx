@@ -1,11 +1,11 @@
 import React from 'react'
-import { Divider } from 'react-md'
-import { DropdownSelect } from '../shared-components'
+import { DropdownSelect } from '../../modules/shared-components'
 
 export default ({ label, items, relatedItems, fieldName, displayValue, updateForm, ...fields }) => (
   <>
     <DropdownSelect
       label={label}
+      truncateLength={60}
       //The full list of selectable items taken as an array of keyValuePairs [{k1,v1}, {k2,v2}, {k3:v3}] where value must be a string(for now)
       items={items.map(item => ({
         id: item.id,
@@ -34,6 +34,5 @@ export default ({ label, items, relatedItems, fieldName, displayValue, updateFor
         updateForm({ [fieldName]: fields[fieldName] })
       }}
     />
-    <Divider />
   </>
 )

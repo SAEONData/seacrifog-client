@@ -109,6 +109,19 @@ export const DATAPRODUCTS_MIN = gql`
   }
 `
 
+export const RFORCINGS_MIN = gql`
+  query rforcingsMin {
+    rforcings {
+      id
+      title
+      publish_year
+      provider
+      author
+      keywords
+    }
+  }
+`
+
 export const DATAPRODUCT = gql`
   query dataproduct($id: Int!) {
     dataproduct(id: $id) {
