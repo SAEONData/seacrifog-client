@@ -110,14 +110,11 @@ export const DATAPRODUCTS_MIN = gql`
 `
 
 export const RFORCINGS_MIN = gql`
-  query rforcingsMin {
-    rforcings {
+  query radiativeForcings {
+    radiativeForcings {
       id
-      title
-      publish_year
-      provider
-      author
-      keywords
+      category
+      compound
     }
   }
 `

@@ -215,5 +215,13 @@ export const fieldDefinitions = {
   removeProtocols: {
     type: 'Relation mutation',
     pristine: true
+  },
+  addRForcings: {
+    type: 'Relation mutation',
+    pristine: true
+  },
+  removeRForcings: {
+    type: 'Relation mutation',
+    pristine: true
   }
 }
