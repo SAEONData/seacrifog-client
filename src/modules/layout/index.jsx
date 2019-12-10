@@ -3,6 +3,7 @@ import { NavigationDrawer } from 'react-md'
 import { withRouter } from 'react-router'
 import { Switch } from 'react-router-dom'
 import NavItemLink from './nav-item-link'
+import debounce from '../../lib/debounce'
 
 const seacrifogLogoStyle = {
   height: 'auto',
@@ -63,9 +64,8 @@ class Navigation extends PureComponent {
             ? NavigationDrawer.DrawerTypes.TEMPORARY
             : NavigationDrawer.DrawerTypes.PERSISTENT_MINI
         }
-        toolbarActions={[
-          <img style={seacrifogLogoStyle} src={`${process.env.PUBLIC_PATH}/seacrifog-logo.png`} alt="SEACRIFOG logo" />
-        ]}
+        toolbarActions={[<img style={seacrifogLogoStyle} src={`/seacrifog-logo.png`} alt="SEACRIFOG logo" />]}
+        onVisibilityChange={debounce(() => window.dispatchEvent(new Event('sidenav-resize')))}
         defaultVisible={false}
       >
         <Switch key={location.pathname || '/'}>{this.props.children}</Switch>

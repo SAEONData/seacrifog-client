@@ -1,4 +1,4 @@
-const PATH = process.env.PUBLIC_PATH || 'public'
+const PATH = ''
 
 export default [
   {

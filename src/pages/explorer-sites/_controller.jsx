@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import sift from 'sift'
 import { Button } from 'react-md'
-import { Map, SingleFeatureSelector } from '@saeon/atlas'
+import { OlReact, SingleFeatureSelector } from '@saeon/atlas'
 import { clusterLayer, ahocevarBaseMap } from '../../modules/atlas/layers'
 import { clusterSource } from '../../modules/atlas/sources'
 import { clusterStyle1, clusterStyle2 } from '../../modules/atlas/styles'
@@ -66,7 +66,7 @@ export default class extends PureComponent {
     return (
       <GlobalStateContext.Consumer>
         {({ updateGlobalState, selectedSites, selectedNetworks, selectedVariables, selectedProtocols }) => (
-          <Map style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }} layers={layers}>
+          <OlReact style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }} layers={layers}>
             {({ map }) => (
               <ApplySitesFilter
                 sites={sites}
@@ -191,7 +191,7 @@ export default class extends PureComponent {
                 </SingleFeatureSelector>
               </ApplySitesFilter>
             )}
-          </Map>
+          </OlReact>
         )}
       </GlobalStateContext.Consumer>
     )

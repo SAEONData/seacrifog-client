@@ -1,5 +1,5 @@
 import React from 'react'
-import { Map } from '@saeon/atlas'
+import { OlReact } from '@saeon/atlas'
 import { polygonStyle } from '../atlas/styles'
 import { geoJsonLayer, ahocevarBaseMap } from '../atlas/layers'
 
@@ -8,5 +8,5 @@ export default ({ geoJson }) => {
 
   const layers = [ahocevarBaseMap()]
   if (features) layers.push(features)
-  return <Map style={{ height: '100%' }} layers={layers} />
+  return <OlReact style={{ height: '100%' }} layers={layers} />
 }
