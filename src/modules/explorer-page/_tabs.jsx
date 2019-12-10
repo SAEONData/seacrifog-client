@@ -9,6 +9,7 @@ export default ({ selectedIds, currentIndex, updateCurrentIndex, id, children, .
           <Tabs className="tabs-header" tabId={id}>
             {selectedIds.map((id, i) => (
               <Tab
+                className={'hello-world'}
                 key={i}
                 icon={
                   <Avatar
@@ -21,9 +22,7 @@ export default ({ selectedIds, currentIndex, updateCurrentIndex, id, children, .
                   />
                 }
               >
-                <Grid>
-                  <Cell size={12}>{children({ id })}</Cell>
-                </Grid>
+                {children({ id })}
               </Tab>
             ))}
           </Tabs>

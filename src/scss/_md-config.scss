@@ -49,5 +49,14 @@ $md-secondary-color: $md-blue-grey-500;
 }
 
 .md-tab--inactive {
-  border-bottom: 1.5px solid $md-data-table-hover-color;
+  background-color: $md-data-table-selected-color;
+}
+
+.md-tabs-content {
+  > div {
+    > div {
+      background-color: $md-data-table-hover-color;
+      overflow: hidden !important;
+    }
+  }
 }
