@@ -6,7 +6,7 @@ import DataQuery from '../../modules/data-query'
 import DataMutation from '../../modules/data-mutation'
 import { fieldDefinitions } from './variable-definitions'
 import { EditorSaveButton, EditorLayout, EntityEditor, RelationEditor } from '../../modules/editor-page'
-import { VARIABLE, DATAPRODUCTS_MIN, PROTOCOLS_MIN,/*RFORCINGS_MIN**/ } from '../../graphql/queries'
+import { VARIABLE, DATAPRODUCTS_MIN, PROTOCOLS_MIN /*RFORCINGS_MIN*/ } from '../../graphql/queries'
 import { UPDATE_VARIABLES } from '../../graphql/mutations'
 //VARIABLES EDITOR
 
@@ -31,7 +31,6 @@ export default ({ id }) => {
               <DataQuery query={PROTOCOLS_MIN}>
                 {/*protocols is a simple list of EVERY protocol*/}
                 {({ protocols }) => (
-                   {/*rforcings is a simple list of EVERY rforcing*/} 
                   <DataQuery query={PROTOCOLS_MIN}>
                     {({ rforcings }) => (
                       <Form {...variable}>
