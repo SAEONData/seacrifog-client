@@ -60,3 +60,13 @@ $md-secondary-color: $md-blue-grey-500;
     }
   }
 }
+
+// The default of not wrapping is silly
+.md-display-3,
+.md-display-4,
+h3,
+.md-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

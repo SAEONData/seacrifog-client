@@ -12,8 +12,8 @@ const avatarStyle = { fontSize: '11px', fontFamily: 'Open Sans' }
 const Icon = ({ symbol, suffix }) => <Avatar suffix={suffix} contentStyle={avatarStyle} iconSized children={symbol} />
 
 const Wrapper = ({ children }) => <div className="sf-wrapper">{children}</div>
-const Content = ({ children, style }) => (
-  <div style={style ? style : {}} className="sf-content">
+const Content = ({ children, style, className = '' }) => (
+  <div className={'sf-content ' + className} style={style ? style : {}}>
     {children}
   </div>
 )
@@ -39,7 +39,7 @@ export default () => {
           </Wrapper>
         </Cell>
         <Cell style={{ padding: 0 }} size={12} className="sf-container inverse">
-          <Content style={{ margin: 0, padding: 0, textAlign: 'center', height: '400px' }}>
+          <Content className="homepage-map" style={{ margin: 0, padding: 0, textAlign: 'center' }}>
             <SitesMap />
           </Content>
         </Cell>
@@ -47,7 +47,7 @@ export default () => {
           <Wrapper>
             <Content>
               <Button
-                className="white link"
+                className="white link homepage-button"
                 onClick={() => history.push('/sites')}
                 flat
                 swapTheming
@@ -56,7 +56,7 @@ export default () => {
                 Explore Sites
               </Button>
               <Button
-                className="white link"
+                className="white link homepage-button"
                 onClick={() => history.push('/networks')}
                 flat
                 swapTheming
@@ -65,7 +65,7 @@ export default () => {
                 Explore Networks
               </Button>
               <Button
-                className="white link"
+                className="white link homepage-button"
                 onClick={() => history.push('/variables')}
                 flat
                 swapTheming
@@ -74,7 +74,7 @@ export default () => {
                 Explore Variables
               </Button>
               <Button
-                className="white link"
+                className="white link homepage-button"
                 onClick={() => history.push('/protocols')}
                 flat
                 swapTheming

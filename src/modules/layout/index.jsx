@@ -8,7 +8,6 @@ import debounce from '../../lib/debounce'
 const seacrifogLogoStyle = {
   height: 'auto',
   width: 'auto',
-  maxWidth: '100%',
   maxHeight: '100%',
   float: 'right',
   margin: 0,
