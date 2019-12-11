@@ -38,7 +38,7 @@ export default () => {
             </Content>
           </Wrapper>
         </Cell>
-        <Cell style={{ padding: 0 }} size={12} className="sf-container inverse">
+        <Cell phoneHidden style={{ padding: 0 }} size={12} className="sf-container inverse">
           <Content className="homepage-map" style={{ margin: 0, padding: 0, textAlign: 'center' }}>
             <SitesMap />
           </Content>
