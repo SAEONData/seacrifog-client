@@ -61,8 +61,12 @@ export default ({ mutation, executeMutation, fieldDefinitions, entityProp, updat
             value={fields[fieldName] || 0}
             onChange={val => updateFormHelper({ fieldDefinitions, fieldName, val: parseFloat(val), updateForm })}
           />
+        ) : type === 'Relation mutation' ? (
+          ''
         ) : (
-          <p style={{ marginTop: '15px', color: 'red' }}>{fieldName} data type not supported!</p>
+          <p key={'update-form-entity' + i} style={{ marginTop: '15px', color: 'red' }}>
+            {fieldName} data type not supported!
+          </p>
         )
       )}
   </>

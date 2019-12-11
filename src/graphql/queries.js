@@ -109,6 +109,16 @@ export const DATAPRODUCTS_MIN = gql`
   }
 `
 
+export const RFORCINGS_MIN = gql`
+  query radiativeForcings {
+    radiativeForcings {
+      id
+      category
+      compound
+    }
+  }
+`
+
 export const DATAPRODUCT = gql`
   query dataproduct($id: Int!) {
     dataproduct(id: $id) {

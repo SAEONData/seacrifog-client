@@ -16,7 +16,7 @@ export default class extends PureComponent {
 
   render() {
     const { updateSearchTerm, toggleItemSelect, state, props } = this
-    const { selectedItems, items, id, label } = props
+    const { selectedItems, items, id, label, truncateLength } = props
     const { searchTerm, visible, listSize } = state
     const searchTermUpper = searchTerm.toUpperCase()
 
@@ -60,7 +60,7 @@ export default class extends PureComponent {
                           name={'filter-select-option'}
                           onChange={() => toggleItemSelect(item)}
                           type={'checkbox'}
-                          label={(item.value || '(UNKNOWN)').truncate(25).toUpperCase()}
+                          label={(item.value || '(UNKNOWN)').truncate(truncateLength || 25).toUpperCase()}
                           checked={selectedItems.includes(item.id) ? true : false}
                           labelBefore
                         />
@@ -107,7 +107,7 @@ export default class extends PureComponent {
                 key={item.id}
                 onClick={() => toggleItemSelect(item)}
                 rightIcon={<FontIcon>close</FontIcon>}
-                primaryText={(item.value || '(UNKNOWN)').truncate(25).toUpperCase()}
+                primaryText={(item.value || '(UNKNOWN)').truncate(truncateLength || 25).toUpperCase()}
               />
             ))}
         </List>

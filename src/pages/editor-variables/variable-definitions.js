@@ -1,9 +1,9 @@
 export const fieldDefinitions = {
   id: {
-    type: 'Integer',
-    editable: false,
-    display: false,
-    label: 'Variable ID',
+    type: 'Integer', //The data type being represented. Determines what type of editable field is displayed (textField, datePicker, etc)
+    editable: false, //Whether or not the field is greyed out
+    display: false, //Whether or not the field is actually rendered
+    label: 'Variable ID', //The cleaner title of the editable field
     pristine: true //whether or not the field is still untouched by the edit page. False means the field has been edited and will be passed to the mutation
   },
   name: {
@@ -193,6 +193,35 @@ export const fieldDefinitions = {
     editable: true,
     display: true,
     label: 'Technology Type',
+    pristine: true
+  },
+  //RELATIONS:
+  addDataproducts: {
+    type: 'Relation mutation',
+    pristine: true
+  },
+  removeDataproducts: {
+    type: 'Relation mutation',
+    pristine: true
+  },
+  addDirectlyRelatedProtocols: {
+    type: 'Relation mutation',
+    pristine: true
+  },
+  addIndirectlyRelatedProtocols: {
+    type: 'Relation mutation',
+    pristine: true
+  },
+  removeProtocols: {
+    type: 'Relation mutation',
+    pristine: true
+  },
+  addRForcings: {
+    type: 'Relation mutation',
+    pristine: true
+  },
+  removeRForcings: {
+    type: 'Relation mutation',
     pristine: true
   }
 }
