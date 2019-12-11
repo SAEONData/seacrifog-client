@@ -1,10 +1,6 @@
 import React from 'react'
 import { TextField, DatePicker } from 'react-md'
 
-const fieldStyle = {
-  marginBottom: '7px'
-}
-
 const updateFormHelper = ({ fieldDefinitions, fieldName, val, updateForm }) =>
   updateForm({ [fieldName]: val }, () => (fieldDefinitions[fieldName].pristine = false))
 
@@ -20,7 +16,7 @@ export default ({ mutation, executeMutation, fieldDefinitions, entityProp, updat
             rows={1}
             maxRows={15}
             floating
-            style={fieldStyle}
+            className={'sf-editor-field'}
             label={label}
             disabled={!editable}
             value={fields[fieldName] || ''}
@@ -30,7 +26,7 @@ export default ({ mutation, executeMutation, fieldDefinitions, entityProp, updat
           <DatePicker
             id={'update-form-entity' + i}
             key={i}
-            style={fieldStyle}
+            className={'sf-editor-field'}
             label={label}
             value={fields[fieldName] == null ? '' : fields[fieldName].substring(0, 10).replace(/-/g, '/')}
             disabled={!editable}
@@ -42,7 +38,7 @@ export default ({ mutation, executeMutation, fieldDefinitions, entityProp, updat
             key={i}
             floating
             type={'number'}
-            style={fieldStyle}
+            className={'sf-editor-field'}
             label={label}
             disabled={!editable}
             value={fields[fieldName] || 0}
@@ -55,7 +51,7 @@ export default ({ mutation, executeMutation, fieldDefinitions, entityProp, updat
             floating
             type={'number'}
             step={'.000000000000001'}
-            style={fieldStyle}
+            className={'sf-editor-field'}
             label={label}
             disabled={!editable}
             value={fields[fieldName] || 0}

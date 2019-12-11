@@ -6,7 +6,16 @@ const buttonStyle = {
 }
 
 export default ({ saveEntity }) => (
-  <Button onClick={saveEntity} style={buttonStyle} primary swapTheming flat iconChildren="save">
+  <Button
+    tooltipLabel="Save all changed fields"
+    tooltipPosition="left"
+    onClick={saveEntity}
+    style={buttonStyle}
+    primary
+    swapTheming
+    flat
+    iconChildren="save"
+  >
     Save
   </Button>
 )

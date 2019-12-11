@@ -16,7 +16,7 @@ export default class extends PureComponent {
 
   render() {
     const { updateSearchTerm, toggleItemSelect, state, props } = this
-    const { selectedItems, items, id, label, truncateLength } = props
+    const { selectedItems, items, id, label, truncateLength, className } = props
     const { searchTerm, visible, listSize } = state
     const searchTermUpper = searchTerm.toUpperCase()
 
@@ -34,7 +34,7 @@ export default class extends PureComponent {
       .splice(0, listSize)
 
     return (
-      <>
+      <div className={className}>
         <DropdownMenu
           id={`filter-component-${label}-${id}`}
           style={{ width: '100%' }}
@@ -111,7 +111,7 @@ export default class extends PureComponent {
               />
             ))}
         </List>
-      </>
+      </div>
     )
   }
 }
