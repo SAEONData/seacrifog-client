@@ -1,10 +1,12 @@
 import React from 'react'
 import { TextField, DatePicker } from 'react-md'
+import debounce from '../../lib/debounce'
 
-const updateFormHelper = ({ fieldDefinitions, fieldName, val, updateForm }) =>
+const updateFormHelper = debounce(({ fieldDefinitions, fieldName, val, updateForm }) =>
   updateForm({ [fieldName]: val }, () => (fieldDefinitions[fieldName].pristine = false))
+)
 
-export default ({ mutation, executeMutation, fieldDefinitions, entityProp, updateForm, ...fields }) => (
+export default ({ fieldDefinitions, updateForm, ...fields }) => (
   <>
     {Object.entries(fieldDefinitions)
       .filter(([, { display }]) => display)

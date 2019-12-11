@@ -1,7 +1,7 @@
 import React from 'react'
 import { DropdownSelect } from '../../modules/shared-components'
 
-export default ({ label, items, relatedItems, fieldName, displayValue, updateForm, ...fields }) => (
+export default ({ label, items, selectedItems, fieldName, displayValue, updateForm, ...fields }) => (
   <>
     <DropdownSelect
       className="sf-editor-field"
@@ -12,19 +12,19 @@ export default ({ label, items, relatedItems, fieldName, displayValue, updateFor
         id: item.id,
         value: item.id.toString() + ' - ' + item[displayValue]
       }))}
-      selectedItems={Object.entries(relatedItems).map(item => item[1].id) || []} //The list of already selected items from items taken as an array of integers(id/key of item)
+      selectedItems={Object.entries(selectedItems).map(item => item[1].id) || []} //The list of already selected items from items taken as an array of integers(id/key of item)
       onItemToggle={id => {
         const originalFields = fields //a value to compare the changes to.(Possibly pointless since JS assignment makes a reference not a copy)
-        //IF dataproduct isnt in relatedItems:
+        //IF dataproduct isnt in selectedItems:
         if (
-          Object.entries(relatedItems)
+          Object.entries(selectedItems)
             .map(item => item[1].id)
             .includes(id)
         ) {
           //TOGGLE DESELECT:
-          for (var i = 0; i < relatedItems.length; i++) {
+          for (var i = 0; i < selectedItems.length; i++) {
             //filter out the ID of the item clicked
-            if (relatedItems[i].id === id) {
+            if (selectedItems[i].id === id) {
               fields[fieldName] = originalFields[fieldName].filter(r => r.id !== id)
             }
           }

@@ -1,17 +1,18 @@
 export default ({ originalFields, fields, executeMutation, fieldDefinitions }) => {
-  //related entities IDs: (int arrays)
-  //Related Dataproducts
   const originalDataproducts = Object.entries(originalFields.dataproducts).map(item => item[1].id) || []
   const fieldsDataproducts = Object.entries(fields.dataproducts).map(item => item[1].id) || []
+
   //Related Indirectly Protocols
   const originalIndirectlyRelatedProtocols =
     Object.entries(originalFields.indirectly_related_protocols).map(item => item[1].id) || []
   const fieldsIndirectlyRelatedProtocols =
     Object.entries(fields.indirectly_related_protocols).map(item => item[1].id) || []
+
   //Related directly Protocols
   const originalDirectlyRelatedProtocols =
     Object.entries(originalFields.directly_related_protocols).map(item => item[1].id) || []
   const fieldsDirectlyRelatedProtocols = Object.entries(fields.directly_related_protocols).map(item => item[1].id) || []
+
   //Related Radiative Forcings
   const originalRForcings = Object.entries(originalFields.rforcings).map(item => item[1].id) || []
   const fieldsRForcings = Object.entries(fields.rforcings).map(item => item[1].id) || []

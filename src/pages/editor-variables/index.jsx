@@ -33,7 +33,16 @@ export default ({ id, ...props }) => {
                 {({ protocols }) => (
                   <DataQuery query={RFORCINGS_MIN}>
                     {({ radiativeForcings }) => (
-                      <Form {...variable}>
+                      <Form
+                        {...variable}
+                        addDirectlyRelatedProtocols={[]}
+                        addIndirectlyRelatedProtocols={[]}
+                        addDataproducts={[]}
+                        addRForcings={[]}
+                        removeProtocols={[]}
+                        removeDataproducts={[]}
+                        removeRForcings={[]}
+                      >
                         {({ updateForm, ...fields }) => (
                           <DataMutation mutation={UPDATE_VARIABLES}>
                             {({ executeMutation, mutationLoading, mutationError }) => (
@@ -47,14 +56,27 @@ export default ({ id, ...props }) => {
                                       actions={[
                                         <EditorSaveButton
                                           key={0}
-                                          saveEntity={() =>
-                                            saveFn({
-                                              fieldDefinitions,
-                                              executeMutation,
-                                              originalFields,
-                                              fields
+                                          saveEntity={() => {
+                                            const input = [
+                                              {
+                                                id: fields.id,
+                                                ...Object.fromEntries(
+                                                  Object.entries(fields).filter(([key]) =>
+                                                    fieldDefinitions[key] ? !fieldDefinitions[key].pristine : false
+                                                  )
+                                                )
+                                              }
+                                            ]
+
+                                            // TODO: Log the mutation input
+                                            console.log(input, fieldDefinitions)
+
+                                            executeMutation({
+                                              variables: {
+                                                input
+                                              }
                                             })
-                                          }
+                                          }}
                                         />
                                       ]}
                                     />
@@ -73,9 +95,7 @@ export default ({ id, ...props }) => {
                                         <Cell phoneSize={4} tabletSize={8} size={6}>
                                           <EditorContentWrapperInner>
                                             <EntityEditor
-                                              executeMutation={executeMutation}
                                               fieldDefinitions={fieldDefinitions}
-                                              entityProp={variable}
                                               updateForm={updateForm}
                                               {...fields}
                                             />
@@ -88,8 +108,8 @@ export default ({ id, ...props }) => {
                                             <RelationEditor
                                               label="Directly Related Protocols"
                                               items={protocols}
-                                              relatedItems={fields.directly_related_protocols}
-                                              displayValue="title" //the entity prop to be displayed within the list item text as "{id} - {displayValue}""
+                                              selectedItems={fields.directly_related_protocols}
+                                              displayValue="title"
                                               fieldName={'directly_related_protocols'}
                                               updateForm={updateForm}
                                               {...fields}
@@ -98,7 +118,7 @@ export default ({ id, ...props }) => {
                                             <RelationEditor
                                               label="Indirectly Related Protocols"
                                               items={protocols}
-                                              relatedItems={fields.indirectly_related_protocols}
+                                              selectedItems={fields.indirectly_related_protocols}
                                               displayValue="title"
                                               fieldName={'indirectly_related_protocols'}
                                               updateForm={updateForm}
@@ -107,7 +127,7 @@ export default ({ id, ...props }) => {
                                             <RelationEditor
                                               label="Dataproducts"
                                               items={dataproducts}
-                                              relatedItems={fields.dataproducts}
+                                              selectedItems={fields.dataproducts}
                                               displayValue="title"
                                               fieldName={'dataproducts'}
                                               updateForm={updateForm}
@@ -116,7 +136,7 @@ export default ({ id, ...props }) => {
                                             <RelationEditor
                                               label="Radiative Forcings"
                                               items={radiativeForcings}
-                                              relatedItems={fields.rforcings}
+                                              selectedItems={fields.rforcings}
                                               displayValue="compound"
                                               fieldName={'rforcings'}
                                               updateForm={updateForm}
