@@ -14,7 +14,6 @@ import {
 } from '../../modules/editor-page'
 import { VARIABLE, DATAPRODUCTS_MIN, PROTOCOLS_MIN, RFORCINGS_MIN } from '../../graphql/queries'
 import { UPDATE_VARIABLES } from '../../graphql/mutations'
-import saveFn from './save'
 
 const cardStyle = { boxShadow: 'none' }
 
@@ -35,15 +34,25 @@ export default ({ id, ...props }) => {
                     {({ radiativeForcings }) => (
                       <Form
                         {...variable}
-                        addDirectlyRelatedProtocols={[]}
-                        addIndirectlyRelatedProtocols={[]}
-                        addDataproducts={[]}
-                        addRForcings={[]}
+                        addDirectlyRelatedProtocols={[...variable.directly_related_protocols.map(({ id }) => id)]}
+                        addIndirectlyRelatedProtocols={[...variable.indirectly_related_protocols.map(({ id }) => id)]}
+                        addDataproducts={[...variable.dataproducts.map(({ id }) => id)]}
+                        addRForcings={[...variable.rforcings.map(({ id }) => id)]}
                         removeProtocols={[]}
                         removeDataproducts={[]}
                         removeRForcings={[]}
                       >
-                        {({ updateForm, ...fields }) => (
+                        {({
+                          updateForm,
+                          addDirectlyRelatedProtocols,
+                          addIndirectlyRelatedProtocols,
+                          addDataproducts,
+                          addRForcings,
+                          removeProtocols,
+                          removeDataproducts,
+                          removeRForcings,
+                          ...fields
+                        }) => (
                           <DataMutation mutation={UPDATE_VARIABLES}>
                             {({ executeMutation, mutationLoading, mutationError }) => (
                               <EditorLayout>
@@ -56,27 +65,29 @@ export default ({ id, ...props }) => {
                                       actions={[
                                         <EditorSaveButton
                                           key={0}
-                                          saveEntity={() => {
-                                            const input = [
-                                              {
-                                                id: fields.id,
-                                                ...Object.fromEntries(
-                                                  Object.entries(fields).filter(([key]) =>
-                                                    fieldDefinitions[key] ? !fieldDefinitions[key].pristine : false
-                                                  )
-                                                )
-                                              }
-                                            ]
-
-                                            // TODO: Log the mutation input
-                                            console.log(input, fieldDefinitions)
-
+                                          saveEntity={() =>
                                             executeMutation({
                                               variables: {
-                                                input
+                                                input: [
+                                                  {
+                                                    id: fields.id,
+                                                    addDirectlyRelatedProtocols,
+                                                    addIndirectlyRelatedProtocols,
+                                                    addDataproducts,
+                                                    addRForcings,
+                                                    removeProtocols,
+                                                    removeDataproducts,
+                                                    removeRForcings,
+                                                    ...Object.fromEntries(
+                                                      Object.entries(fields).filter(([key]) =>
+                                                        fieldDefinitions[key] ? !fieldDefinitions[key].pristine : false
+                                                      )
+                                                    )
+                                                  }
+                                                ]
                                               }
                                             })
-                                          }}
+                                          }
                                         />
                                       ]}
                                     />
@@ -105,42 +116,51 @@ export default ({ id, ...props }) => {
                                         {/* Relationship editor */}
                                         <Cell phoneSize={4} tabletSize={8} size={6}>
                                           <EditorContentWrapperInner>
+                                            {/* DIRECTLY RELATED PROTOCOLS */}
                                             <RelationEditor
                                               label="Directly Related Protocols"
-                                              items={protocols}
-                                              selectedItems={fields.directly_related_protocols}
-                                              displayValue="title"
-                                              fieldName={'directly_related_protocols'}
+                                              items={protocols.map(({ id, title: value }) => ({ id, value }))}
+                                              selectedItems={addDirectlyRelatedProtocols}
                                               updateForm={updateForm}
-                                              {...fields}
+                                              removeArray={removeProtocols}
+                                              addFieldName={'addDirectlyRelatedProtocols'}
+                                              removeFieldName={'removeProtocols'}
                                             />
 
+                                            {/* INDIRECTLY RELATED PROTOCOLS */}
                                             <RelationEditor
                                               label="Indirectly Related Protocols"
-                                              items={protocols}
-                                              selectedItems={fields.indirectly_related_protocols}
-                                              displayValue="title"
-                                              fieldName={'indirectly_related_protocols'}
+                                              items={protocols.map(({ id, title: value }) => ({ id, value }))}
+                                              selectedItems={addIndirectlyRelatedProtocols}
                                               updateForm={updateForm}
-                                              {...fields}
+                                              removeArray={removeProtocols}
+                                              addFieldName={'addIndirectlyRelatedProtocols'}
+                                              removeFieldName={'removeProtocols'}
                                             />
+
+                                            {/* RELATED DATAPRODUCTS */}
                                             <RelationEditor
                                               label="Dataproducts"
-                                              items={dataproducts}
-                                              selectedItems={fields.dataproducts}
-                                              displayValue="title"
-                                              fieldName={'dataproducts'}
+                                              items={dataproducts.map(({ id, title: value }) => ({ id, value }))}
+                                              selectedItems={addDataproducts}
                                               updateForm={updateForm}
-                                              {...fields}
+                                              removeArray={removeDataproducts}
+                                              addFieldName={'addDataproducts'}
+                                              removeFieldName={'removeDataproducts'}
                                             />
+
+                                            {/* RELATED RADIATIVE FORCINGS */}
                                             <RelationEditor
                                               label="Radiative Forcings"
-                                              items={radiativeForcings}
-                                              selectedItems={fields.rforcings}
-                                              displayValue="compound"
-                                              fieldName={'rforcings'}
+                                              items={radiativeForcings.map(({ id, compound: value }) => ({
+                                                id,
+                                                value
+                                              }))}
+                                              selectedItems={addRForcings}
                                               updateForm={updateForm}
-                                              {...fields}
+                                              removeArray={removeRForcings}
+                                              addFieldName={'addRForcings'}
+                                              removeFieldName={'removeRForcings'}
                                             />
                                           </EditorContentWrapperInner>
                                         </Cell>
