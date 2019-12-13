@@ -21,8 +21,6 @@ export default ({ id, ...props }) => {
   return (
     <DataQuery query={VARIABLE} variables={{ id: parseInt(id) }}>
       {({ variable }) => {
-        //deep copying variable to be able to access the fields values before any changes
-        let originalFields = JSON.parse(JSON.stringify(variable))
         return (
           <DataQuery query={DATAPRODUCTS_MIN}>
             {/*dataproducts is a simple list of EVERY dataproduct*/}
