@@ -169,9 +169,7 @@ export default props => {
                                         style: dotStyle2()
                                       })
                                     ]}
-                                  >
-                                    {({ map }) => null}
-                                  </OlReact>
+                                  />
                                 ) : (
                                   <NoneMessage />
                                 ),

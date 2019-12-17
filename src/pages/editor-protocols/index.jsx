@@ -23,7 +23,6 @@ export default ({ id, ...props }) => {
       {({ protocol }) => {
         return (
           <DataQuery query={VARIABLES_MIN}>
-            {/*variables is a simple list of EVERY variable*/}
             {({ variables }) => (
               <Form
                 {...protocol}

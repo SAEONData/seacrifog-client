@@ -22,9 +22,4 @@ export default async ({ ids }) => {
   a.download = 'SITES - ' + new Date()
   a.click()
   window.URL.revokeObjectURL(url)
-
-  // const el = document.createElement('a')
-  // el.setAttribute('download', true)
-  // el.setAttribute('href', `${api}/SITES-DENORMALIZED?filename=SITES-${new Date()}.json&ids=${ids.join(',')}`)
-  // el.click()
 }
