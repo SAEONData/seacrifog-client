@@ -52,7 +52,6 @@ export default ({ fieldDefinitions, updateForm, ...fields }) => (
             key={i}
             floating
             type={'number'}
-            step={'.000000000000001'}
             className={'sf-editor-field'}
             label={label}
             disabled={!editable}

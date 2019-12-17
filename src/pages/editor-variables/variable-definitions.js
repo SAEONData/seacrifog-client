@@ -194,34 +194,5 @@ export const fieldDefinitions = {
     display: true,
     label: 'Technology Type',
     pristine: true
-  },
-  //RELATIONS:
-  addDataproducts: {
-    type: 'Relation mutation',
-    pristine: true
-  },
-  removeDataproducts: {
-    type: 'Relation mutation',
-    pristine: true
-  },
-  addDirectlyRelatedProtocols: {
-    type: 'Relation mutation',
-    pristine: true
-  },
-  addIndirectlyRelatedProtocols: {
-    type: 'Relation mutation',
-    pristine: true
-  },
-  removeProtocols: {
-    type: 'Relation mutation',
-    pristine: true
-  },
-  addRForcings: {
-    type: 'Relation mutation',
-    pristine: true
-  },
-  removeRForcings: {
-    type: 'Relation mutation',
-    pristine: true
   }
 }
