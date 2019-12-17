@@ -14,12 +14,14 @@ import {
   ExplorerSectionLayout,
   ScrollButton,
   iconLink,
-  ExplorerCoverageMap,
   variableIcon
 } from '../../modules/explorer-page'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
 import { List, ListItem } from 'react-md'
 import { Table } from '../../modules/shared-components'
+import { OlReact } from '@saeon/atlas'
+import { ahocevarBaseMap, geoJsonLayer } from '../../modules/atlas/layers'
+import { dotStyle2 } from '../../modules/atlas/styles'
 
 const mappings = {}
 
@@ -150,17 +152,31 @@ export default props => {
                             {
                               title: 'Spatial Coverage',
                               subTitle: 'Of this network',
-                              component: network.coverage_spatial ? (
-                                <ExplorerCoverageMap geoJson={network.coverage_spatial} />
-                              ) : (
-                                <NoneMessage />
-                              ),
+                              component:
+                                network.sites.length > 0 ? (
+                                  <OlReact
+                                    style={{ height: '100%', width: '100%' }}
+                                    layers={[
+                                      ahocevarBaseMap(),
+                                      geoJsonLayer({
+                                        geoJson: {
+                                          type: 'GeometryCollection',
+                                          geometries: network.sites.reduce(
+                                            (sites, site) => (site.xyz ? [...sites, JSON.parse(site.xyz)] : [...sites]),
+                                            []
+                                          )
+                                        },
+                                        style: dotStyle2()
+                                      })
+                                    ]}
+                                  >
+                                    {({ map }) => null}
+                                  </OlReact>
+                                ) : (
+                                  <NoneMessage />
+                                ),
                               style: { height: '500px' },
-                              grid: network.coverage_spatial
-                                ? {
-                                    size: 12
-                                  }
-                                : {}
+                              grid: { size: 12 }
                             }
                           ]}
                         />

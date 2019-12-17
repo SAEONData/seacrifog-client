@@ -8,3 +8,12 @@ export const dotStyle1 = () =>
       stroke: null
     })
   })
+
+export const dotStyle2 = () =>
+  new Style({
+    image: new CircleStyle({
+      radius: 2,
+      fill: new Fill({ color: '#212b61' }),
+      stroke: null
+    })
+  })
