@@ -1,6 +1,6 @@
-import { Component } from 'react'
+import { PureComponent } from 'react'
 
-export default class Form extends Component {
+export default class extends PureComponent {
   state = {}
   constructor(props) {
     super(props)

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Grid, Cell, Card, NavigationDrawer } from 'react-md'
-import Form from '../../modules/form'
+import { Form } from '../../modules/shared-components'
 import DataQuery from '../../modules/data-query'
 import DataMutation from '../../modules/data-mutation'
 import { fieldDefinitions } from './protocol-definitions'
