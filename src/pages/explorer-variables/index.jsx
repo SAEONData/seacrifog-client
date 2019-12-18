@@ -95,7 +95,7 @@ export default props => {
                   <DataQuery query={VARIABLE} variables={{ id }}>
                     {({ variable }) =>
                       !variable ? (
-                        <p>Oops. Can't find a variable with an ID of {id}</p>
+                        <p>Oops. Can&apos;t find a variable with an ID of {id}</p>
                       ) : (
                         <ExplorerEntityLayout
                           title={variable.name}
@@ -158,8 +158,9 @@ export default props => {
                                     <p>
                                       Below figures are simple aggregates of global figures from the IPCC 5th Assessment
                                       Report and are only meant to provide a very coarse guidance with regards to sign
-                                      and magnitude of uncertainty of the variable's contribution to radiative forcing
-                                      on the African continent. Also shown are related RF components (Global Values)
+                                      and magnitude of uncertainty of the variable&apos;s contribution to radiative
+                                      forcing on the African continent. Also shown are related RF components (Global
+                                      Values)
                                     </p>
                                     <ExplorerFormattedObject
                                       object={{

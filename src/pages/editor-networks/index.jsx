@@ -34,6 +34,7 @@ export default ({ id, ...props }) => (
           >
             {({ updateForm, addVariables, addSites, removeSites, removeVariables, ...fields }) => (
               <DataMutation mutation={UPDATE_NETWORKS}>
+                {/* eslint-disable-next-line no-unused-vars */}
                 {({ executeMutation, mutationLoading, mutationError }) => (
                   <EditorLayout>
                     {/* Menu bar */}
@@ -44,6 +45,7 @@ export default ({ id, ...props }) => (
                           {...props}
                           actions={[
                             <EditorSaveButton
+                              key={0}
                               saveEntity={() =>
                                 executeMutation({
                                   variables: {

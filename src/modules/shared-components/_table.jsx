@@ -151,7 +151,7 @@ export default class extends PureComponent {
                     .sort(([fieldNameA], [fieldNameB]) =>
                       sortResult(dataDefinitions[fieldNameA].order || -9, dataDefinitions[fieldNameB].order || -8)
                     )
-                    .map(([field, value], i) => (
+                    .map(([, value], i) => (
                       <TableColumn key={i} plain={true}>
                         {value && value.truncate ? value.truncate(140) : value}
                       </TableColumn>

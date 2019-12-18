@@ -5,7 +5,7 @@ export default class extends PureComponent {
   constructor(props) {
     super(props)
     for (const prop in this.props) {
-      if (this.props.hasOwnProperty(prop)) {
+      if (Object.prototype.hasOwnProperty.call(this.props, prop)) {
         if (prop !== 'children') this.state[prop] = this.props[prop]
       }
     }

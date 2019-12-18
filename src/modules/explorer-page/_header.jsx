@@ -27,6 +27,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
           className={'sf-content-header'}
           actions={[
             <Button
+              key={0}
               style={mainMenuIconStyle(selectedIds.length > 0 ? false : true)}
               disabled={selectedIds.length > 0 ? false : true}
               tooltipLabel={'View metadata search results'}
@@ -36,6 +37,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
               storage
             </Button>,
             <Button
+              key={1}
               style={mainMenuIconStyle(selectedIds.length > 0 ? false : true)}
               disabled={selectedIds.length > 0 ? false : true}
               tooltipLabel={'View map'}
@@ -46,6 +48,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
             </Button>,
 
             <Button
+              key={2}
               component={'a'}
               tooltipLabel={'Download selected overviews'}
               disabled={selectedIds.length > 0 ? false : true}
@@ -62,6 +65,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
               save_alt
             </Button>,
             <Button
+              key={3}
               tooltipLabel={'Refresh current page filters'}
               disabled={selectedIds.length > 0 ? false : true}
               onClick={resetFn}
@@ -71,6 +75,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
               refresh
             </Button>,
             <SideMenu
+              key={4}
               toolbarActions={[]}
               control={({ toggleMenu }) => (
                 <Button

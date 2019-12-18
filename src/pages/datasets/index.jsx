@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid, Cell } from 'react-md'
 
-export default props => (
+export default () => (
   <Grid>
     <Cell>TODO?</Cell>
   </Grid>

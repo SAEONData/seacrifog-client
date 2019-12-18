@@ -9,7 +9,11 @@ import Footer from '../../modules/layout/footer'
 
 const avatarStyle = { fontSize: '11px', fontFamily: 'Open Sans' }
 
-const Icon = ({ symbol, suffix }) => <Avatar suffix={suffix} contentStyle={avatarStyle} iconSized children={symbol} />
+const Icon = ({ symbol, suffix }) => (
+  <Avatar suffix={suffix} contentStyle={avatarStyle} iconSized>
+    {symbol}
+  </Avatar>
+)
 
 const Wrapper = ({ children }) => <div className="sf-wrapper">{children}</div>
 const Content = ({ children, style, className = '' }) => (
@@ -33,7 +37,7 @@ export default () => {
               <h1 className="white">SEACRIFOG INVENTORY TOOL</h1>
               <Divider style={{ margin: '12px' }} />
               <h3 className="white link" onClick={() => history.push('/sites')} style={{ margin: 0 }}>
-                Explore Africa's carbon observation platform network
+                Explore Africa&apos;s carbon observation platform network
               </h3>
             </Content>
           </Wrapper>
@@ -100,8 +104,8 @@ export default () => {
                     alt={euFunding.alt}
                   />
                   <h4 style={{ paddingTop: '16px' }}>
-                    This project has received funding from the European Union's Horizon 2020 research and innovation
-                    programme under grant agreement No 730995
+                    This project has received funding from the European Union&apos;s Horizon 2020 research and
+                    innovation programme under grant agreement No 730995
                   </h4>
                 </Cell>
                 <Cell phoneSize={4} tabletSize={4} size={6}>

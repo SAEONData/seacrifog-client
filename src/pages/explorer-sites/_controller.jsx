@@ -83,6 +83,7 @@ export default class extends PureComponent {
                 <SideMenu
                   toolbarActions={[
                     <Button
+                      key={0}
                       disabled={
                         selectedSites.length ||
                         selectedNetworks.length ||
@@ -165,6 +166,7 @@ export default class extends PureComponent {
                         <FeatureDetail
                           toolbarActions={[
                             <Button
+                              key={0}
                               tooltipLabel={'Download data for selected features'}
                               disabled={selectedFeature.get('features').length > 500 ? true : false}
                               onClick={async () =>
@@ -177,7 +179,7 @@ export default class extends PureComponent {
                             >
                               save_alt
                             </Button>,
-                            <Button onClick={unselectFeature} icon>
+                            <Button key={1} onClick={unselectFeature} icon>
                               close
                             </Button>
                           ]}

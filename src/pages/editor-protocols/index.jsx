@@ -38,6 +38,7 @@ export default ({ id, ...props }) => {
                   ...fields
                 }) => (
                   <DataMutation mutation={UPDATE_PROTOCOLS}>
+                    {/* eslint-disable-next-line no-unused-vars */}
                     {({ executeMutation, mutationLoading, mutationError }) => (
                       <EditorLayout>
                         {/* Menu bar */}

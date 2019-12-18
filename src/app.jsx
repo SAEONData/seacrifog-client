@@ -99,7 +99,7 @@ const App = () => (
           key={'explorer-dataproducts'}
           path={'/dataproducts'}
           exact={true}
-          render={props => <DataproductsExplorer />}
+          render={() => <DataproductsExplorer />}
         />
         <Route
           key={'edit-dataproducts'}
