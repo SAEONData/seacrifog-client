@@ -16,7 +16,40 @@ export default class extends PureComponent {
     currentNetwork: 0,
     currentVariable: 0,
     currentProtocol: 0,
-    currentDataproduct: 0
+    currentDataproduct: 0,
+
+    // Loading indicator
+    loadingSearchResults: false
+  }
+
+  /**
+   * If any selected* lists were changed,
+   * update the metadata search in the background
+   */
+  async componentDidUpdate(prevProps, prevState) {
+    const searchFields = ['selectedSites', 'selectedNetworks', 'selectedVariables', 'selectedProtocols']
+    let refresh = false
+    for (const field of searchFields) {
+      const oldF = prevState[field]
+      const newF = this.state[field]
+      if (oldF !== newF) {
+        refresh = true
+        break
+      }
+    }
+
+    if (!refresh) return
+
+    this.setState({ loadingSearchResults: true }, async () => {
+      const query = 'query { searchMetadata { id } }'
+      const { data } = await fetch(process.env.GQL_ENDPOINT || 'http://localhost:3000/graphql', {
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        body: JSON.stringify({ query })
+      }).then(res => res.json())
+      const searchResuts = data.searchMetadata
+      this.setState({ loadingSearchResults: false, searchResuts })
+    })
   }
 
   updateGlobalState = (obj, { currentIndex = null, selectedIds = null } = {}, cb = null) =>
