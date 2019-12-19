@@ -59,7 +59,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
                       tooltipLabel={`${searchErrors.length} error${
                         searchErrors.length === 1 ? '' : 's'
                       } occured searching metadata`}
-                      onClick={() => alert('Please let SEACRIFOG administrators that search errors are occuring')}
+                      onClick={() => alert('Please alert SEACRIFOG administrators that search errors are occuring')}
                       icon
                     >
                       error

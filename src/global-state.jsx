@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react'
 import gql from 'graphql-tag'
 
-const GQL_ENDPOINT = process.env.GQL_ENDPOINT || 'http://localhost:3000/graphql'
-
 export const GlobalStateContext = React.createContext()
 
 export default class extends PureComponent {
