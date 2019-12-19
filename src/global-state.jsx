@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { logError } from './lib/log'
+import gql from 'graphql-tag'
 
 const GQL_ENDPOINT = process.env.GQL_ENDPOINT || 'http://localhost:3000/graphql'
 
@@ -21,16 +21,19 @@ export default class extends PureComponent {
     currentProtocol: 0,
     currentDataproduct: 0,
 
-    // Loading indicator
-    loadingSearchResults: false
+    // Search results
+    loadingSearchResults: false,
+    searchResults: [],
+    searchErrors: []
   }
 
   /**
    * If any selected* lists were changed,
    * update the metadata search in the background
    */
-  componentDidUpdate(prevProps, prevState) {
-    const searchFields = ['selectedSites', 'selectedNetworks', 'selectedVariables', 'selectedProtocols']
+  async componentDidUpdate(prevProps, prevState) {
+    const { gqlClient } = this.props
+    const searchFields = ['selectedNetworks', 'selectedVariables', 'selectedProtocols']
     let refresh = false
     for (const field of searchFields) {
       const oldF = prevState[field]
@@ -44,25 +47,39 @@ export default class extends PureComponent {
     if (!refresh) {
       return
     } else {
-      const query = 'query { searchMetadata { id } }'
+      const {
+        selectedNetworks: byNetworks,
+        selectedVariables: byVariables,
+        selectedProtocols: byProtocols
+      } = this.state
+
       this.setState({ loadingSearchResults: true }, async () => {
         let data
         let errors
         try {
-          const response = await fetch(GQL_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ query })
-          }).then(res => res.json())
-          data = response.data || []
-          errors = response.errors || []
+          const response = await gqlClient.query({
+            query: gql`
+              query search($byNetworks: [Int!], $byProtocols: [Int!], $byVariables: [Int!]) {
+                searchMetadata(byNetworks: $byNetworks, byVariables: $byVariables, byProtocols: $byProtocols) {
+                  id
+                }
+              }
+            `,
+            variables: {
+              byNetworks,
+              byVariables,
+              byProtocols
+            }
+          })
+          data = ((response || {}).data || {}).searchMetadata || []
+          errors = (response || {}).errors || []
         } catch (error) {
           errors = [error].flat()
         } finally {
           this.setState({
             loadingSearchResults: false,
-            searchResults: data,
-            searchErrors: errors
+            searchResults: data || [],
+            searchErrors: errors || []
           })
         }
       })

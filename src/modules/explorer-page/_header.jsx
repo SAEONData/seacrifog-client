@@ -1,5 +1,5 @@
 import React from 'react'
-import { Toolbar, Button, LinearProgress } from 'react-md'
+import { Toolbar, Button, LinearProgress, Badge } from 'react-md'
 import DataQuery from '../data-query'
 import { useHistory } from 'react-router-dom'
 import { ENTIRE_GRAPH } from '../../graphql/queries'
@@ -18,12 +18,16 @@ const mainMenuIconStyle = disabled => ({
   color: disabled ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,1)'
 })
 
+const badgeStyle = disabled => ({
+  color: disabled ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,1)'
+})
+
 export default ({ resetFn, selectedIds, ...props }) => {
   const ctx = props.location.pathname.replace('/', '').toUpperCase()
   const history = useHistory()
   return (
     <GlobalStateContext.Consumer>
-      {({ loadingSearchResults }) => (
+      {({ loadingSearchResults, searchResults, searchErrors }) => (
         <DataQuery
           loadingComponent={
             <>
@@ -42,18 +46,45 @@ export default ({ resetFn, selectedIds, ...props }) => {
                 title={ctx}
                 className={'sf-content-header'}
                 actions={[
-                  <Button
+                  <Badge
+                    style={searchErrors.length > 0 ? {} : { display: 'none' }}
                     key={0}
-                    style={mainMenuIconStyle(selectedIds.length > 0 ? false : true)}
-                    disabled={selectedIds.length > 0 ? false : true}
-                    tooltipLabel={'View metadata search results'}
-                    onClick={() => history.push(`/datasets`)}
-                    icon
+                    badgeStyle={badgeStyle(searchErrors.length > 0 ? false : true)}
+                    badgeContent={searchErrors.length}
+                    badgeId={'search-results-errors'}
                   >
-                    storage
-                  </Button>,
-                  <Button
+                    <Button
+                      style={mainMenuIconStyle(searchErrors.length > 0 ? false : true)}
+                      disabled={searchErrors.length > 0 ? false : true}
+                      tooltipLabel={`${searchErrors.length} error${
+                        searchErrors.length === 1 ? '' : 's'
+                      } occured searching metadata`}
+                      onClick={() => alert('Please let SEACRIFOG administrators that search errors are occuring')}
+                      icon
+                    >
+                      error
+                    </Button>
+                  </Badge>,
+                  <Badge
                     key={1}
+                    badgeStyle={badgeStyle(searchResults.length > 0 ? false : true)}
+                    badgeContent={searchResults.length}
+                    badgeId={'search-results-notification'}
+                  >
+                    <Button
+                      style={mainMenuIconStyle(searchResults.length > 0 ? false : true)}
+                      disabled={searchResults.length > 0 ? false : true}
+                      tooltipLabel={`${searchResults.length} metadata record${
+                        searchResults.length === 1 ? '' : 's'
+                      } found`}
+                      onClick={() => history.push(`/datasets`)}
+                      icon
+                    >
+                      storage
+                    </Button>
+                  </Badge>,
+                  <Button
+                    key={2}
                     style={mainMenuIconStyle(selectedIds.length > 0 ? false : true)}
                     disabled={selectedIds.length > 0 ? false : true}
                     tooltipLabel={'View map'}
@@ -64,7 +95,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
                   </Button>,
 
                   <Button
-                    key={2}
+                    key={3}
                     component={'a'}
                     tooltipLabel={'Download selected overviews'}
                     disabled={selectedIds.length > 0 ? false : true}
@@ -81,7 +112,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
                     save_alt
                   </Button>,
                   <Button
-                    key={3}
+                    key={4}
                     tooltipLabel={'Refresh current page filters'}
                     disabled={selectedIds.length > 0 ? false : true}
                     onClick={resetFn}
@@ -91,7 +122,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
                     refresh
                   </Button>,
                   <SideMenu
-                    key={4}
+                    key={5}
                     toolbarActions={[]}
                     control={({ toggleMenu }) => (
                       <Button
