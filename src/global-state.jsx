@@ -1,4 +1,7 @@
 import React, { PureComponent } from 'react'
+import { logError } from './lib/log'
+
+const GQL_ENDPOINT = process.env.GQL_ENDPOINT || 'http://localhost:3000/graphql'
 
 export const GlobalStateContext = React.createContext()
 
@@ -26,7 +29,7 @@ export default class extends PureComponent {
    * If any selected* lists were changed,
    * update the metadata search in the background
    */
-  async componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     const searchFields = ['selectedSites', 'selectedNetworks', 'selectedVariables', 'selectedProtocols']
     let refresh = false
     for (const field of searchFields) {
@@ -38,18 +41,32 @@ export default class extends PureComponent {
       }
     }
 
-    if (!refresh) return
-
-    this.setState({ loadingSearchResults: true }, async () => {
+    if (!refresh) {
+      return
+    } else {
       const query = 'query { searchMetadata { id } }'
-      const { data } = await fetch(process.env.GQL_ENDPOINT || 'http://localhost:3000/graphql', {
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-        body: JSON.stringify({ query })
-      }).then(res => res.json())
-      const searchResuts = data.searchMetadata
-      this.setState({ loadingSearchResults: false, searchResuts })
-    })
+      this.setState({ loadingSearchResults: true }, async () => {
+        let data
+        let errors
+        try {
+          const response = await fetch(GQL_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query })
+          }).then(res => res.json())
+          data = response.data || []
+          errors = response.errors || []
+        } catch (error) {
+          errors = [error].flat()
+        } finally {
+          this.setState({
+            loadingSearchResults: false,
+            searchResults: data,
+            searchErrors: errors
+          })
+        }
+      })
+    }
   }
 
   updateGlobalState = (obj, { currentIndex = null, selectedIds = null } = {}, cb = null) =>
