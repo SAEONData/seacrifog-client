@@ -41,7 +41,7 @@
     "clean:dist": "rimraf ./dist",
     "copy:public": "copyfiles -u 1 ./public/* dist",
     "pack": "webpack --env.mode=production",
-    "lint": "eslint \"./src/**/*.{js,jsx}\""
+    "lint": "echo \"Runing ESLint\" && eslint \"./src/**/*.{js,jsx}\""
   },
   "pre-commit": [
     "lint"
