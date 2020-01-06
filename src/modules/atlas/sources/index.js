@@ -1,1 +1,2 @@
-export * from './_cluster-source'
+export * from './_cluster'
+export * from './_point'
