@@ -10,7 +10,8 @@ import {
   EntityEditor,
   RelationEditor,
   EditorHeader,
-  EditorContentWrapperInner
+  EditorContentWrapperInner,
+  TestChart
 } from '../../modules/editor-page'
 import { VARIABLE, DATAPRODUCTS_MIN, PROTOCOLS_MIN, RFORCINGS_MIN } from '../../graphql/queries'
 import { UPDATE_VARIABLES } from '../../graphql/mutations'
@@ -93,6 +94,26 @@ export default ({ id, ...props }) => {
                                 </Grid>
 
                                 {/* Page content */}
+                                <TestChart
+                                  data={[
+                                    {
+                                      value: addDirectlyRelatedProtocols.length,
+                                      name: 'Directly Related Protocols'
+                                    },
+                                    {
+                                      value: addIndirectlyRelatedProtocols.length,
+                                      name: 'Indirectly Related Protocols'
+                                    },
+                                    {
+                                      value: addDataproducts.length,
+                                      name: 'Dataproducts'
+                                    },
+                                    {
+                                      value: addRForcings.length,
+                                      name: 'Radiative Forcings'
+                                    }
+                                  ]}
+                                />
                                 <Grid noSpacing>
                                   <Cell size={12}>
                                     <Card style={cardStyle}>

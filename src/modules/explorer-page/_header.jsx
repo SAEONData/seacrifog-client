@@ -27,6 +27,14 @@ export default ({ resetFn, selectedIds, ...props }) => {
           className={'sf-content-header'}
           actions={[
             <Button
+              style={mainMenuIconStyle()}
+              tooltipLabel={'View charts'}
+              onClick={() => console.log('view charts clicked!')}
+              icon
+            >
+              bar_chart
+            </Button>,
+            <Button
               style={mainMenuIconStyle(selectedIds.length > 0 ? false : true)}
               disabled={selectedIds.length > 0 ? false : true}
               tooltipLabel={'View metadata search results'}

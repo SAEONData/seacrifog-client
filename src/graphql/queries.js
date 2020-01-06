@@ -346,3 +346,12 @@ export const VARIABLES = gql`
     }
   }
 `
+export const SITES_AGGREGATION = gql`
+  query sitesAggregation($ids: [Int!]) {
+    sitesAggregation(ids: $ids) {
+      network_id
+      acronym
+      site_count
+    }
+  }
+`

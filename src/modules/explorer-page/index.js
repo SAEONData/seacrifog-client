@@ -1,5 +1,6 @@
 export { default as ExplorerLayout } from './_layout'
 export { default as ExplorerHeader } from './_header'
+export { default as ExplorerHeaderCharts } from './_header-charts'
 export { default as ExplorerTableLayout } from './_table-container'
 export { default as ExplorerTabsLayout } from './_tabs'
 export { default as ExplorerEntityLayout } from './_entity-layout'
