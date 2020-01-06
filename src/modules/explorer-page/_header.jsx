@@ -11,7 +11,7 @@ const mainMenuIconStyle = disabled => ({
   color: disabled ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,1)'
 })
 
-export default ({ resetFn, selectedIds, ...props }) => {
+export default ({ resetFn, selectedIds, toggleCharts = null, ...props }) => {
   const ctx = props.location.pathname.replace('/', '').toUpperCase()
   const history = useHistory()
   return (
@@ -29,7 +29,10 @@ export default ({ resetFn, selectedIds, ...props }) => {
             <Button
               style={mainMenuIconStyle()}
               tooltipLabel={'View charts'}
-              onClick={() => console.log('view charts clicked!')}
+              onClick={() => {
+                console.log('props', props)
+                toggleCharts()
+              }}
               icon
             >
               bar_chart

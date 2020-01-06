@@ -16,12 +16,12 @@ import {
   ScrollButton,
   iconLink,
   ExplorerCoverageMap,
-  variableIcon
+  variableIcon,
+  ExplorerHeaderContainer
 } from '../../modules/explorer-page'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
 import { List, ListItem, CardTitle } from 'react-md'
 import { Table } from '../../modules/shared-components'
-
 const mappings = {}
 
 const networksDataDefinitions = {
@@ -45,28 +45,42 @@ export default props => {
             {({ networks }) => (
               <>
                 <DataQuery
+                  loadingComponent={<></>}
                   query={SITES_AGGREGATION}
                   variables={{
                     ids: selectedNetworks.length > 0 ? selectedNetworks : networks.map(n => n.id)
                   }}
                 >
                   {({ sitesAggregation }) => (
-                    <ExplorerHeaderCharts
-                      data={sitesAggregation.map(s => ({ value: s.site_count, name: s.acronym }))}
-                      text="test"
-                      current={currentNetwork} //int INDEX of the currently focused network out of selectedNetworks array. If selectedNetworks.length is 3 then currentNetwork is 0,1, or 2
-                      selectedVariables={selectedVariables}
-                      networks={networks}
-                      selectedNetworks={selectedNetworks} //int array of the selected network ids
-                      argProps={props}
-                    />
+                    <ExplorerHeaderContainer>
+                      {({ collapsed, toggleCharts }) => (
+                        <>
+                          <ExplorerHeaderCharts
+                            collapsed={collapsed}
+                            toggleCharts={toggleCharts}
+                            data={sitesAggregation.map(s => ({ value: s.site_count, name: s.acronym }))}
+                            current={currentNetwork} //int INDEX of the currently focused network out of selectedNetworks array. If selectedNetworks.length is 3 then currentNetwork is 0,1, or 2
+                            selectedVariables={selectedVariables}
+                            networks={networks}
+                            selectedNetworks={selectedNetworks} //int array of the selected network ids
+                            argProps={props}
+                            setChartsState={parent => {
+                              this.setState(p)
+                            }}
+                          />
+                          <ExplorerHeader
+                            collapsed={collapsed}
+                            toggleCharts={toggleCharts}
+                            selectedIds={selectedNetworks}
+                            resetFn={() => updateGlobalState({ selectedNetworks: [] })}
+                            {...props}
+                          />
+                        </>
+                      )}
+                    </ExplorerHeaderContainer>
                   )}
                 </DataQuery>
-                <ExplorerHeader
-                  selectedIds={selectedNetworks}
-                  resetFn={() => updateGlobalState({ selectedNetworks: [] })}
-                  {...props}
-                />
+
                 <ExplorerLayout>
                   <div style={{}}></div>
                   <ExplorerTableLayout>
