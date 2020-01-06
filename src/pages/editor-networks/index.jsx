@@ -14,9 +14,7 @@ import {
   EditorHeader,
   EditorContentWrapperInner
 } from '../../modules/editor-page'
-import { OlReact } from '@saeon/atlas'
-import { ahocevarBaseMap, geoJsonLayer } from '../../modules/atlas/layers'
-import { dotStyle3 } from '../../modules/atlas/styles'
+import SiteEditor from './map'
 
 const cardStyle = { boxShadow: 'none' }
 
@@ -43,9 +41,8 @@ export default ({ id, ...props }) => (
                         <EditorHeader
                           loading={mutationLoading}
                           {...props}
-                          actions={[
+                          actions={
                             <EditorSaveButton
-                              key={0}
                               saveEntity={() =>
                                 executeMutation({
                                   variables: {
@@ -67,7 +64,7 @@ export default ({ id, ...props }) => (
                                 })
                               }
                             />
-                          ]}
+                          }
                         />
                       </Cell>
                     </Grid>
@@ -102,23 +99,7 @@ export default ({ id, ...props }) => (
                                 />
 
                                 {/* RELATED SITES */}
-                                <p>Click to edit or add sites to this network</p>
-                                <OlReact
-                                  style={{ height: '500px', width: '100%' }}
-                                  layers={[
-                                    ahocevarBaseMap(),
-                                    geoJsonLayer({
-                                      geoJson: {
-                                        type: 'GeometryCollection',
-                                        geometries: network.sites.reduce(
-                                          (sites, site) => (site.xyz ? [...sites, JSON.parse(site.xyz)] : [...sites]),
-                                          []
-                                        )
-                                      },
-                                      style: dotStyle3()
-                                    })
-                                  ]}
-                                />
+                                <SiteEditor network={network} {...props} />
                               </EditorContentWrapperInner>
                             </Cell>
                           </Grid>

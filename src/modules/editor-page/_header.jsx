@@ -7,12 +7,12 @@ const getProgresStyle = loading => ({
   position: 'absolute'
 })
 
-export default ({ actions, loading, ...props }) => (
+export default ({ title = null, actions, loading, ...props }) => (
   <>
     <LinearProgress id={'entity-save-progress-indicator'} style={getProgresStyle(loading)} />
     <Toolbar
       colored
-      title={'EDITOR: ' + props.location.pathname.replace('/', '').toUpperCase()}
+      title={title || 'EDITOR: ' + props.location.pathname.replace('/', '').toUpperCase()}
       className={'sf-content-header'}
       actions={actions}
     />

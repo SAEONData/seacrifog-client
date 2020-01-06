@@ -1,5 +1,13 @@
 import gql from 'graphql-tag'
 
+export const UPDATE_SITES = gql`
+  mutation updateSites($input: [SiteInput!]!) {
+    updateSites(input: $input) {
+      id
+    }
+  }
+`
+
 export const UPDATE_PROTOCOLS = gql`
   mutation updateProtocols($input: [ProtocolInput!]!) {
     updateProtocols(input: $input) {

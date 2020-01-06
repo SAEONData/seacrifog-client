@@ -6,7 +6,7 @@ const updateFormHelper = debounce(({ fieldDefinitions, fieldName, val, updateFor
   updateForm({ [fieldName]: val }, () => (fieldDefinitions[fieldName].pristine = false))
 )
 
-export default ({ fieldDefinitions, updateForm, ...fields }) => (
+export default ({ className = null, fieldDefinitions, updateForm, ...fields }) => (
   <>
     {Object.entries(fieldDefinitions)
       .filter(([, { display }]) => display)
@@ -18,7 +18,7 @@ export default ({ fieldDefinitions, updateForm, ...fields }) => (
             rows={1}
             maxRows={15}
             floating
-            className={'sf-editor-field'}
+            className={className || 'sf-editor-field'}
             label={label}
             disabled={!editable}
             value={fields[fieldName] || ''}
@@ -28,7 +28,7 @@ export default ({ fieldDefinitions, updateForm, ...fields }) => (
           <DatePicker
             id={'update-form-entity' + i}
             key={i}
-            className={'sf-editor-field'}
+            className={className || 'sf-editor-field'}
             label={label}
             value={fields[fieldName] == null ? '' : fields[fieldName].substring(0, 10).replace(/-/g, '/')}
             disabled={!editable}
@@ -40,7 +40,7 @@ export default ({ fieldDefinitions, updateForm, ...fields }) => (
             key={i}
             floating
             type={'number'}
-            className={'sf-editor-field'}
+            className={className || 'sf-editor-field'}
             label={label}
             disabled={!editable}
             value={fields[fieldName] || 0}
@@ -52,7 +52,7 @@ export default ({ fieldDefinitions, updateForm, ...fields }) => (
             key={i}
             floating
             type={'number'}
-            className={'sf-editor-field'}
+            className={className || 'sf-editor-field'}
             label={label}
             disabled={!editable}
             value={fields[fieldName] || 0}
