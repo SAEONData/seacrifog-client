@@ -11,11 +11,7 @@ export default class extends PureComponent {
           lazyUpdate={false}
           theme={echartsTheme}
           onEvents={{
-            click: event => {
-              console.log('Pie has been clicked!')
-              console.log(event)
-              alert(event.data.value + ' ' + event.data.name)
-            }
+            click: () => {}
           }}
           option={{
             series: [

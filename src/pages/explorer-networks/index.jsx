@@ -35,6 +35,10 @@ const networksDataDefinitions = {
   __typename: { show: false }
 }
 
+/*
+DataQuery has the charts as a child. This means they are rerendered every time DataQuery renders(Any time selection changes).
+Instead of using DataQuery, do a graphql fetch without actually creating a component. Do this by making use of ComponentWillRender, ComponentWillUnmount, etc
+*/
 export default props => {
   const history = useHistory()
   return (
@@ -44,42 +48,38 @@ export default props => {
           <DataQuery query={NETWORKS_MIN}>
             {({ networks }) => (
               <>
-                <DataQuery
-                  loadingComponent={<></>}
-                  query={SITES_AGGREGATION}
-                  variables={{
-                    ids: selectedNetworks.length > 0 ? selectedNetworks : networks.map(n => n.id)
-                  }}
-                >
-                  {({ sitesAggregation }) => (
-                    <ExplorerHeaderContainer>
-                      {({ collapsed, toggleCharts }) => (
-                        <>
+                <ExplorerHeaderContainer>
+                  {({ collapsed, toggleCharts }) => (
+                    <>
+                      <ExplorerHeader
+                        collapsed={collapsed}
+                        toggleCharts={toggleCharts}
+                        selectedIds={selectedNetworks}
+                        resetFn={() => updateGlobalState({ selectedNetworks: [] })}
+                        {...props}
+                      />
+                      <DataQuery
+                        loadingComponent={<></>}
+                        query={SITES_AGGREGATION}
+                        variables={{
+                          ids: selectedNetworks.length > 0 ? selectedNetworks : networks.map(n => n.id)
+                        }}
+                      >
+                        {({ sitesAggregation }) => (
                           <ExplorerHeaderCharts
                             collapsed={collapsed}
-                            toggleCharts={toggleCharts}
                             data={sitesAggregation.map(s => ({ value: s.site_count, name: s.acronym }))}
                             current={currentNetwork} //int INDEX of the currently focused network out of selectedNetworks array. If selectedNetworks.length is 3 then currentNetwork is 0,1, or 2
                             selectedVariables={selectedVariables}
                             networks={networks}
                             selectedNetworks={selectedNetworks} //int array of the selected network ids
                             argProps={props}
-                            setChartsState={parent => {
-                              this.setState(p)
-                            }}
                           />
-                          <ExplorerHeader
-                            collapsed={collapsed}
-                            toggleCharts={toggleCharts}
-                            selectedIds={selectedNetworks}
-                            resetFn={() => updateGlobalState({ selectedNetworks: [] })}
-                            {...props}
-                          />
-                        </>
-                      )}
-                    </ExplorerHeaderContainer>
+                        )}
+                      </DataQuery>
+                    </>
                   )}
-                </DataQuery>
+                </ExplorerHeaderContainer>
 
                 <ExplorerLayout>
                   <div style={{}}></div>

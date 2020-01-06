@@ -6,12 +6,13 @@ import { ENTIRE_GRAPH } from '../../graphql/queries'
 import { ExplorerSideMenuFilter } from './index'
 import { SideMenu } from '../shared-components/index'
 
-const mainMenuIconStyle = disabled => ({
+const mainMenuIconStyle = (disabled, toggled) => ({
   marginLeft: '10px',
-  color: disabled ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,1)'
+  color: disabled ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,1)',
+  backgroundColor: toggled ? 'rgba(255,255,255,0.3)' : ''
 })
 
-export default ({ resetFn, selectedIds, toggleCharts = null, ...props }) => {
+export default ({ resetFn, selectedIds, toggleCharts = null, collapsed = null, ...props }) => {
   const ctx = props.location.pathname.replace('/', '').toUpperCase()
   const history = useHistory()
   return (
@@ -27,10 +28,11 @@ export default ({ resetFn, selectedIds, toggleCharts = null, ...props }) => {
           className={'sf-content-header'}
           actions={[
             <Button
-              style={mainMenuIconStyle()}
+              style={mainMenuIconStyle(false, !collapsed)}
+              // floating={!collapsed}
+              // mini={!collapsed}
               tooltipLabel={'View charts'}
               onClick={() => {
-                console.log('props', props)
                 toggleCharts()
               }}
               icon
