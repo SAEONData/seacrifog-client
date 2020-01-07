@@ -50,3 +50,33 @@ body {
 .add-on-hover:hover {
   background-color: $md-data-table-hover-color;
 }
+
+.my-node-enter,
+.my-node-appear {
+  opacity: 0;
+  height: 0;
+}
+
+.my-node-enter-active,
+.my-node-appear-active {
+  opacity: 1;
+  height: calc(100% - 330px);
+  transition: all 1000ms;
+}
+
+.my-node-enter-done,
+.my-node-appear-done {
+  opacity: 1;
+  height: calc(100% - 330px);
+}
+
+.my-node-exit {
+  opacity: 1;
+  height: calc(100% - 330px);
+}
+
+.my-node-exit-active {
+  opacity: 0;
+  height: 0;
+  transition: all 1000ms;
+}

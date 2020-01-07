@@ -12,6 +12,7 @@ import { Form, DropdownSelect } from '../../modules/shared-components'
 import { EditorSaveButton, EntityEditor, EditorHeader } from '../../modules/editor-page'
 import { fieldDefinitions } from './site-definitions'
 import { Draw, Modify } from 'ol/interaction'
+import { CSSTransition } from 'react-transition-group'
 
 const cardStyle = { boxShadow: 'none' }
 
@@ -172,79 +173,81 @@ export default class extends PureComponent {
                                   <DataMutation mutation={UPDATE_SITES}>
                                     {/* eslint-disable-next-line no-unused-vars */}
                                     {({ executeMutation, mutationLoading, mutationError }) => (
-                                      <>
-                                        {/* Menu bar */}
-                                        <Grid noSpacing>
-                                          <Cell size={12}>
-                                            <EditorHeader
-                                              title={`Site #${site.id}`}
-                                              loading={mutationLoading}
-                                              {...props}
-                                              actions={[
-                                                <Button
-                                                  tooltipPosition="left"
-                                                  tooltipLabel="CLOSE SITE EDITOR"
-                                                  style={{ float: 'right' }}
-                                                  key={0}
-                                                  onClick={() => unselectFeature()}
-                                                  icon
-                                                >
-                                                  close
-                                                </Button>,
-                                                <Button
-                                                  style={{ float: 'right' }}
-                                                  key={1}
-                                                  tooltipLabel="DELETE SITE"
-                                                  tooltipPosition="left"
-                                                  onClick={() =>
-                                                    unselectFeature(() => {
-                                                      const sourceIds = layer
-                                                        .getSource()
-                                                        .getFeatures()
-                                                        .map(f => f.get('id'))
-                                                        .filter(id => id !== site.id)
+                                      <CSSTransition unmountOnExit timeout={1000} in={true} classNames="my-node" appear>
+                                        <div>
+                                          {/* Menu bar */}
+                                          <Grid noSpacing>
+                                            <Cell size={12}>
+                                              <EditorHeader
+                                                title={`Site #${site.id}`}
+                                                loading={mutationLoading}
+                                                {...props}
+                                                actions={[
+                                                  <Button
+                                                    tooltipPosition="left"
+                                                    tooltipLabel="CLOSE SITE EDITOR"
+                                                    style={{ float: 'right' }}
+                                                    key={0}
+                                                    onClick={() => unselectFeature()}
+                                                    icon
+                                                  >
+                                                    close
+                                                  </Button>,
+                                                  <Button
+                                                    style={{ float: 'right' }}
+                                                    key={1}
+                                                    tooltipLabel="DELETE SITE"
+                                                    tooltipPosition="left"
+                                                    onClick={() =>
+                                                      unselectFeature(() => {
+                                                        const sourceIds = layer
+                                                          .getSource()
+                                                          .getFeatures()
+                                                          .map(f => f.get('id'))
+                                                          .filter(id => id !== site.id)
 
-                                                      this.setState({
-                                                        sites: this.state.sites.filter(({ id }) =>
-                                                          sourceIds.includes(id)
-                                                        )
+                                                        this.setState({
+                                                          sites: this.state.sites.filter(({ id }) =>
+                                                            sourceIds.includes(id)
+                                                          )
+                                                        })
                                                       })
-                                                    })
-                                                  }
-                                                  flat
-                                                  iconChildren="delete"
-                                                >
-                                                  Delete
-                                                </Button>,
-                                                <EditorSaveButton
-                                                  key={2}
-                                                  saveEntity={() => alert('Should it be possible to update sites?')}
-                                                />
-                                              ]}
-                                            />
-                                          </Cell>
-                                        </Grid>
-
-                                        <Card style={cardStyle}>
-                                          <CardText>
-                                            <div
-                                              style={{
-                                                paddingRight: '10px',
-                                                marginRight: '-10px',
-                                                maxHeight: '200px',
-                                                overflow: 'auto'
-                                              }}
-                                            >
-                                              <EntityEditor
-                                                className="none"
-                                                fieldDefinitions={fieldDefinitions}
-                                                updateForm={updateForm}
-                                                {...fields}
+                                                    }
+                                                    flat
+                                                    iconChildren="delete"
+                                                  >
+                                                    Delete
+                                                  </Button>,
+                                                  <EditorSaveButton
+                                                    key={2}
+                                                    saveEntity={() => alert('Should it be possible to update sites?')}
+                                                  />
+                                                ]}
                                               />
-                                            </div>
-                                          </CardText>
-                                        </Card>
-                                      </>
+                                            </Cell>
+                                          </Grid>
+
+                                          <Card style={cardStyle}>
+                                            <CardText>
+                                              <div
+                                                style={{
+                                                  paddingRight: '10px',
+                                                  marginRight: '-10px',
+                                                  maxHeight: '200px',
+                                                  overflow: 'auto'
+                                                }}
+                                              >
+                                                <EntityEditor
+                                                  className="none"
+                                                  fieldDefinitions={fieldDefinitions}
+                                                  updateForm={updateForm}
+                                                  {...fields}
+                                                />
+                                              </div>
+                                            </CardText>
+                                          </Card>
+                                        </div>
+                                      </CSSTransition>
                                     )}
                                   </DataMutation>
                                 )}
