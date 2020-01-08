@@ -1,4 +1,4 @@
-import React  from 'react'
+import React from 'react'
 import { Toolbar, Button, LinearProgress, Badge } from 'react-md'
 import DataQuery from '../data-query'
 import { useHistory } from 'react-router-dom'
@@ -69,7 +69,8 @@ export default ({ resetFn, selectedIds, ...props }) => {
                   </Badge>,
 
                   <SideMenu
-                    style={{ minWidth: '100%' }}
+                    style={{ maxWidth: '100%' }}
+                    toolbarTitle={'Metadata search results'}
                     key={51}
                     toolbarActions={[]}
                     control={({ toggleMenu }) => (

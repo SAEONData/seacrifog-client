@@ -60,6 +60,7 @@ export default class extends PureComponent {
               query search($byNetworks: [Int!], $byProtocols: [Int!], $byVariables: [Int!]) {
                 searchMetadata(byNetworks: $byNetworks, byVariables: $byVariables, byProtocols: $byProtocols) {
                   id
+                  record
                 }
               }
             `,
