@@ -69,7 +69,6 @@ export default ({ resetFn, selectedIds, ...props }) => {
                   </Badge>,
 
                   <SideMenu
-                    style={{ maxWidth: '100%' }}
                     toolbarTitle={'Metadata search results'}
                     key={51}
                     toolbarActions={[]}
