@@ -7,7 +7,7 @@ export const pointSource = ({ points }) =>
     features: points.map(
       p =>
         new Feature({
-          geometry: new Point(JSON.parse(p.xyz).coordinates),
+          geometry: p.geometry ? p.geometry : new Point(JSON.parse(p.xyz).coordinates),
           ...p
         })
     ),

@@ -7,167 +7,332 @@ import { Button, Grid, Cell, Card, CardText, Toolbar } from 'react-md'
 import DataQuery from '../../modules/data-query'
 import DataMutation from '../../modules/data-mutation'
 import { SITE } from '../../graphql/queries'
-import { UPDATE_SITES } from '../../graphql/mutations'
-import { Form } from '../../modules/shared-components'
+import { UPDATE_SITES, CREATE_SITE } from '../../graphql/mutations'
+import { Form, DropdownSelect } from '../../modules/shared-components'
 import { EditorSaveButton, EntityEditor, EditorHeader } from '../../modules/editor-page'
 import { fieldDefinitions } from './site-definitions'
 import { Draw, Modify } from 'ol/interaction'
+import { CSSTransition } from 'react-transition-group'
 
 const cardStyle = { boxShadow: 'none' }
 
 export default class extends PureComponent {
   state = {
     moveSiteActive: false,
-    addSiteActive: false
+    addSiteActive: false,
+    sites: [...this.props.network.sites]
   }
 
   constructor(props) {
     super(props)
-    this.source = pointSource({ points: this.props.network.sites })
-    this.modify = new Modify({ source: this.source })
-    this.draw = new Draw({
-      source: this.source,
-      type: 'Point'
-    })
+
+    this.layer = pointLayer({ style: dotStyle3, source: pointSource({ points: this.state.sites }) })
+
+    // Map interactions
+    this.modify
+    this.draw
   }
 
   render() {
-    const { props, source, modify, draw } = this
+    const { props, layer, state } = this
+    const { sites } = state
 
     return (
-      <>
-        <p>(NOTE: Saving is not enabled in this part - it&apos;s a prototype)</p>
-        <OlReact
-          style={{ height: '500px', width: '100%' }}
-          layers={[
-            ahocevarBaseMap(),
-            pointLayer({
-              style: dotStyle3,
-              source
+      <Form selectedItems={sites.length > 100 ? [] : sites.map(({ id, name: value }) => ({ id, value }))}>
+        {({ updateForm, selectedItems }) => {
+          layer.setSource(
+            pointSource({
+              points: selectedItems.length ? sites.filter(({ id }) => selectedItems.includes(id)) : sites
             })
-          ]}
-        >
-          {({ map }) => (
-            <SingleFeatureSelector
-              ignoreClicks={this.state.moveSiteActive || this.state.addSiteActive || false}
-              unselectedStyle={dotStyle3}
-              selectedStyle={dotStyle4}
-              map={map}
-            >
-              {({ selectedFeature, unselectFeature }) => {
-                return selectedFeature ? (
-                  <DataQuery query={SITE} variables={{ id: selectedFeature.get('id') }}>
-                    {({ site }) => (
-                      <Form {...site}>
-                        {({ updateForm, ...fields }) => (
-                          <DataMutation mutation={UPDATE_SITES}>
-                            {/* eslint-disable-next-line no-unused-vars */}
-                            {({ executeMutation, mutationLoading, mutationError }) => (
-                              <>
-                                {/* Menu bar */}
-                                <Grid noSpacing>
-                                  <Cell size={12}>
-                                    <EditorHeader
-                                      title={`Site #${site.id}`}
-                                      loading={mutationLoading}
-                                      {...props}
-                                      actions={[
-                                        <Button style={{ float: 'right' }} key={0} onClick={unselectFeature} icon>
-                                          close
-                                        </Button>,
-                                        <EditorSaveButton
-                                          key={1}
-                                          saveEntity={() => alert('Should it be possible to update sites?')}
-                                        />
-                                      ]}
-                                    />
-                                  </Cell>
-                                </Grid>
+          )
 
-                                <Card style={cardStyle}>
-                                  <CardText>
-                                    <div
-                                      style={{
-                                        paddingRight: '10px',
-                                        marginRight: '-10px',
-                                        maxHeight: '200px',
-                                        overflow: 'auto'
-                                      }}
-                                    >
-                                      <EntityEditor
-                                        className="none"
-                                        fieldDefinitions={fieldDefinitions}
-                                        updateForm={updateForm}
-                                        {...fields}
-                                      />
-                                    </div>
-                                  </CardText>
-                                </Card>
-                              </>
+          this.layer = layer
+
+          return (
+            <>
+              <DropdownSelect
+                id="search-site-field"
+                label={'Search site name...'}
+                selectedItems={selectedItems}
+                items={props.network.sites.map(({ id, name: value }) => ({ id, value }))}
+                onItemToggle={val => {
+                  const newItems = [...selectedItems]
+                  if (newItems.indexOf(val) >= 0) {
+                    newItems.splice(newItems.indexOf(val), 1)
+                  } else {
+                    newItems.push(val)
+                  }
+                  updateForm({
+                    selectedItems: newItems
+                  })
+                }}
+              />
+
+              <OlReact style={{ height: '500px', width: '100%' }} layers={[ahocevarBaseMap(), layer]}>
+                {({ map }) => (
+                  <SingleFeatureSelector
+                    ignoreClicks={this.state.moveSiteActive || this.state.addSiteActive || false}
+                    unselectedStyle={dotStyle3}
+                    selectedStyle={dotStyle4}
+                    map={map}
+                  >
+                    {({ selectedFeature, unselectFeature }) => {
+                      return selectedFeature ? (
+                        !selectedFeature.get('id') ? (
+                          <Form>
+                            {({ updateForm, ...fields }) => (
+                              <DataMutation mutation={CREATE_SITE}>
+                                {/* eslint-disable-next-line no-unused-vars */}
+                                {({ executeMutation, mutationLoading, mutationError }) => (
+                                  <>
+                                    {/* Menu bar */}
+                                    <Grid noSpacing>
+                                      <Cell size={12}>
+                                        <EditorHeader
+                                          title={`New Site`}
+                                          loading={mutationLoading}
+                                          {...props}
+                                          actions={[
+                                            <Button
+                                              tooltipPosition="left"
+                                              tooltipLabel="CLOSE SITE EDITOR"
+                                              style={{ float: 'right' }}
+                                              key={0}
+                                              onClick={() => unselectFeature()}
+                                              icon
+                                            >
+                                              close
+                                            </Button>,
+                                            <Button
+                                              style={{ float: 'right' }}
+                                              key={1}
+                                              tooltipLabel="DELETE SITE"
+                                              tooltipPosition="left"
+                                              onClick={() =>
+                                                unselectFeature(() => {
+                                                  // Remove map interactions
+                                                  map.getInteractions().forEach(interaction => {
+                                                    if (interaction instanceof Draw || interaction instanceof Modify)
+                                                      map.removeInteraction(interaction)
+                                                  })
+
+                                                  this.setState({
+                                                    sites: [...this.state.sites],
+                                                    addSiteActive: false,
+                                                    moveSiteActive: false
+                                                  })
+                                                })
+                                              }
+                                              flat
+                                              iconChildren="delete"
+                                            >
+                                              Delete
+                                            </Button>,
+                                            <EditorSaveButton
+                                              key={2}
+                                              saveEntity={() => alert('Should it be possible to update sites?')}
+                                            />
+                                          ]}
+                                        />
+                                      </Cell>
+                                    </Grid>
+
+                                    <Card style={cardStyle}>
+                                      <CardText>
+                                        <div
+                                          style={{
+                                            paddingRight: '10px',
+                                            marginRight: '-10px',
+                                            maxHeight: '200px',
+                                            overflow: 'auto'
+                                          }}
+                                        >
+                                          <EntityEditor
+                                            className="none"
+                                            fieldDefinitions={fieldDefinitions}
+                                            updateForm={updateForm}
+                                            {...fields}
+                                          />
+                                        </div>
+                                      </CardText>
+                                    </Card>
+                                  </>
+                                )}
+                              </DataMutation>
                             )}
-                          </DataMutation>
-                        )}
-                      </Form>
-                    )}
-                  </DataQuery>
-                ) : (
-                  <Toolbar
-                    colored
-                    actions={[
-                      <Button
-                        style={this.state.moveSiteActive ? { color: 'yellow' } : {}}
-                        key={0}
-                        onClick={() =>
-                          this.setState(
-                            {
-                              moveSiteActive: !this.state.moveSiteActive,
-                              addSiteActive: false
-                            },
-                            () => {
-                              map.getInteractions().forEach(interaction => {
-                                if (interaction instanceof Draw || interaction instanceof Modify)
-                                  map.removeInteraction(interaction)
-                              })
-                              if (this.state.moveSiteActive) map.addInteraction(modify)
-                            }
-                          )
-                        }
-                        flat
-                        iconChildren={'open_with'}
-                      >
-                        Move site
-                      </Button>,
-                      <Button
-                        style={this.state.addSiteActive ? { color: 'yellow' } : {}}
-                        key={1}
-                        onClick={() =>
-                          this.setState(
-                            {
-                              moveSiteActive: false,
-                              addSiteActive: !this.state.addSiteActive
-                            },
-                            () => {
-                              map.getInteractions().forEach(interaction => {
-                                if (interaction instanceof Draw || interaction instanceof Modify)
-                                  map.removeInteraction(interaction)
-                              })
-                              if (this.state.addSiteActive) map.addInteraction(draw)
-                            }
-                          )
-                        }
-                        flat
-                        iconChildren={'add'}
-                      >
-                        Add site
-                      </Button>
-                    ]}
-                  />
-                )
-              }}
-            </SingleFeatureSelector>
-          )}
-        </OlReact>
-      </>
+                          </Form>
+                        ) : (
+                          <DataQuery
+                            loadingComponent={<div style={{ margin: '20px' }}>Loading...</div>}
+                            query={SITE}
+                            variables={{ id: selectedFeature.get('id') }}
+                          >
+                            {({ site }) => (
+                              <Form {...site}>
+                                {({ updateForm, ...fields }) => (
+                                  <DataMutation mutation={UPDATE_SITES}>
+                                    {/* eslint-disable-next-line no-unused-vars */}
+                                    {({ executeMutation, mutationLoading, mutationError }) => (
+                                      <CSSTransition unmountOnExit timeout={1000} in={true} classNames="my-node" appear>
+                                        <div>
+                                          {/* Menu bar */}
+                                          <Grid noSpacing>
+                                            <Cell size={12}>
+                                              <EditorHeader
+                                                title={`Site #${site.id}`}
+                                                loading={mutationLoading}
+                                                {...props}
+                                                actions={[
+                                                  <Button
+                                                    tooltipPosition="left"
+                                                    tooltipLabel="CLOSE SITE EDITOR"
+                                                    style={{ float: 'right' }}
+                                                    key={0}
+                                                    onClick={() => unselectFeature()}
+                                                    icon
+                                                  >
+                                                    close
+                                                  </Button>,
+                                                  <Button
+                                                    style={{ float: 'right' }}
+                                                    key={1}
+                                                    tooltipLabel="DELETE SITE"
+                                                    tooltipPosition="left"
+                                                    onClick={() =>
+                                                      unselectFeature(() => {
+                                                        const sourceIds = layer
+                                                          .getSource()
+                                                          .getFeatures()
+                                                          .map(f => f.get('id'))
+                                                          .filter(id => id !== site.id)
+
+                                                        this.setState({
+                                                          sites: this.state.sites.filter(({ id }) =>
+                                                            sourceIds.includes(id)
+                                                          )
+                                                        })
+                                                      })
+                                                    }
+                                                    flat
+                                                    iconChildren="delete"
+                                                  >
+                                                    Delete
+                                                  </Button>,
+                                                  <EditorSaveButton
+                                                    key={2}
+                                                    saveEntity={() => alert('Should it be possible to update sites?')}
+                                                  />
+                                                ]}
+                                              />
+                                            </Cell>
+                                          </Grid>
+
+                                          <Card style={cardStyle}>
+                                            <CardText>
+                                              <div
+                                                style={{
+                                                  paddingRight: '10px',
+                                                  marginRight: '-10px',
+                                                  maxHeight: '200px',
+                                                  overflow: 'auto'
+                                                }}
+                                              >
+                                                <EntityEditor
+                                                  className="none"
+                                                  fieldDefinitions={fieldDefinitions}
+                                                  updateForm={updateForm}
+                                                  {...fields}
+                                                />
+                                              </div>
+                                            </CardText>
+                                          </Card>
+                                        </div>
+                                      </CSSTransition>
+                                    )}
+                                  </DataMutation>
+                                )}
+                              </Form>
+                            )}
+                          </DataQuery>
+                        )
+                      ) : (
+                        <Toolbar
+                          colored
+                          actions={[
+                            <Button
+                              style={this.state.moveSiteActive ? { color: 'yellow' } : {}}
+                              key={0}
+                              onClick={() =>
+                                this.setState(
+                                  {
+                                    moveSiteActive: !this.state.moveSiteActive,
+                                    addSiteActive: false
+                                  },
+                                  () => {
+                                    map.getInteractions().forEach(interaction => {
+                                      if (interaction instanceof Draw || interaction instanceof Modify)
+                                        map.removeInteraction(interaction)
+                                    })
+
+                                    if (this.state.moveSiteActive) {
+                                      this.modify = new Modify({ source: layer.getSource() })
+                                      map.addInteraction(this.modify)
+                                      // TODO. The original xyz value is out of sync now
+                                      this.modify.on('modifyend', () => {
+                                        this.setState({
+                                          sites: layer
+                                            .getSource()
+                                            .getFeatures()
+                                            .map(f => f.getProperties())
+                                        })
+                                      })
+                                    }
+                                  }
+                                )
+                              }
+                              flat
+                              iconChildren={'open_with'}
+                            >
+                              Move site
+                            </Button>,
+                            <Button
+                              style={this.state.addSiteActive ? { color: 'yellow' } : {}}
+                              key={1}
+                              onClick={() =>
+                                this.setState(
+                                  {
+                                    moveSiteActive: false,
+                                    addSiteActive: !this.state.addSiteActive
+                                  },
+                                  () => {
+                                    map.getInteractions().forEach(interaction => {
+                                      if (interaction instanceof Draw || interaction instanceof Modify)
+                                        map.removeInteraction(interaction)
+                                    })
+                                    this.draw = new Draw({
+                                      source: this.layer.getSource(),
+                                      type: 'Point'
+                                    })
+                                    if (this.state.addSiteActive) map.addInteraction(this.draw)
+                                  }
+                                )
+                              }
+                              flat
+                              iconChildren={'add'}
+                            >
+                              Add site
+                            </Button>
+                          ]}
+                        />
+                      )
+                    }}
+                  </SingleFeatureSelector>
+                )}
+              </OlReact>
+            </>
+          )
+        }}
+      </Form>
     )
   }
 }

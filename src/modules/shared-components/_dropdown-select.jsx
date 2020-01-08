@@ -7,6 +7,16 @@ const listItemStyle = {
   margin: '2px 0'
 }
 
+/**
+ * Interface:
+ *
+ * selectedItems (Array of Int values)
+ * items [{id, value}]
+ * id
+ * label
+ * truncateLength?
+ * className? Optional classname
+ */
 export default class extends PureComponent {
   state = { searchTerm: '', filteredItems: [], visible: false, listSize: 20 }
 
