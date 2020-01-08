@@ -18,7 +18,7 @@ export default class extends PureComponent {
     return (
       <>
         <Drawer
-          style={style || drawerStyle}
+          style={style ? Object.assign({ ...drawerStyle }, style) : drawerStyle}
           visible={menuOpen}
           mobileType={Drawer.DrawerTypes.TEMPORARY}
           tabletType={Drawer.DrawerTypes.TEMPORARY}

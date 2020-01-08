@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React  from 'react'
 import { Toolbar, Button, LinearProgress, Badge } from 'react-md'
 import DataQuery from '../data-query'
 import { useHistory } from 'react-router-dom'
@@ -26,7 +26,6 @@ const badgeStyle = disabled => ({
 export default ({ resetFn, selectedIds, ...props }) => {
   const history = useHistory()
   const ctx = props.location.pathname.replace('/', '').toUpperCase()
-  const [showList, toggleShowList] = useState(false)
 
   return (
     <GlobalStateContext.Consumer>
@@ -68,25 +67,39 @@ export default ({ resetFn, selectedIds, ...props }) => {
                       error
                     </Button>
                   </Badge>,
-                  <Badge
-                    key={1}
-                    badgeStyle={badgeStyle(searchResults.length > 0 ? false : true)}
-                    badgeContent={searchResults.length}
-                    badgeId={'search-results-notification'}
+
+                  <SideMenu
+                    style={{ minWidth: '100%' }}
+                    key={51}
+                    toolbarActions={[]}
+                    control={({ toggleMenu }) => (
+                      <Badge
+                        key={1}
+                        badgeStyle={badgeStyle(searchResults.length > 0 ? false : true)}
+                        badgeContent={searchResults.length}
+                        badgeId={'search-results-notification'}
+                      >
+                        <Button
+                          tooltipLabel={`${searchResults.length} metadata record${
+                            searchResults.length === 1 ? '' : 's'
+                          } found`}
+                          tooltipPosition="left"
+                          className="md-btn--toolbar"
+                          disabled={searchResults.length > 0 ? false : true}
+                          style={Object.assign(
+                            { marginTop: 0 },
+                            mainMenuIconStyle(searchResults.length > 0 ? false : true)
+                          )}
+                          onClick={toggleMenu}
+                          icon
+                        >
+                          storage
+                        </Button>
+                      </Badge>
+                    )}
                   >
-                    <Button
-                      style={mainMenuIconStyle(searchResults.length > 0 ? false : true)}
-                      disabled={searchResults.length > 0 ? false : true}
-                      tooltipLabel={`${searchResults.length} metadata record${
-                        searchResults.length === 1 ? '' : 's'
-                      } found`}
-                      onClick={() => toggleShowList(!showList)}
-                      icon
-                    >
-                      storage
-                    </Button>
-                    <MetadataList showList={showList} searchResults={searchResults} />
-                  </Badge>,
+                    <MetadataList searchResults={searchResults} />
+                  </SideMenu>,
                   <Button
                     key={2}
                     style={mainMenuIconStyle(selectedIds.length > 0 ? false : true)}
@@ -97,7 +110,6 @@ export default ({ resetFn, selectedIds, ...props }) => {
                   >
                     map
                   </Button>,
-
                   <Button
                     key={3}
                     component={'a'}
