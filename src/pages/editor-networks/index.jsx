@@ -14,7 +14,7 @@ import {
   EditorHeader,
   EditorContentWrapperInner
 } from '../../modules/editor-page'
-import SiteEditor from './map'
+import SiteEditor from './editor-sites'
 
 const cardStyle = { boxShadow: 'none' }
 

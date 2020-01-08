@@ -24,10 +24,10 @@ body {
 // #app-navigation-drawer {
 //   /* Top Navigation toolbar */
 //   .sf-toolbar {
-//     // -webkit-box-shadow: 74px 2px 13px 0px $sf-shadow-color;
-//     // -moz-box-shadow: 74px 2px 13px 0px $sf-shadow-color;
-//     // box-shadow: 74px 2px 13px 0px $sf-shadow-color;
-//     // @include sf-box-shadow($x-axis: 0);
+//     -webkit-box-shadow: 74px 2px 13px 0px $sf-shadow-color;
+//     -moz-box-shadow: 74px 2px 13px 0px $sf-shadow-color;
+//     box-shadow: 74px 2px 13px 0px $sf-shadow-color;
+//     @include sf-box-shadow($x-axis: 0);
 //   }
 // }
 
@@ -51,6 +51,31 @@ body {
   background-color: $md-data-table-hover-color;
 }
 
+.opacity-animation-enter,
+.opacity-animation-appear {
+  opacity: 0;
+}
+
+.opacity-animation-enter-active,
+.opacity-animation-appear-active {
+  opacity: 1;
+  transition: all 1000ms;
+}
+
+.opacity-animation-enter-done,
+.opacity-animation-appear-done {
+  opacity: 1;
+}
+
+.opacity-animation-exit {
+  opacity: 1;
+}
+
+.opacity-animation-exit-active {
+  opacity: 0;
+  transition: all 1000ms;
+}
+
 .my-node-enter,
 .my-node-appear {
   opacity: 0;
@@ -60,19 +85,19 @@ body {
 .my-node-enter-active,
 .my-node-appear-active {
   opacity: 1;
-  height: calc(100% - 330px);
+  height: calc(100% - 350px);
   transition: all 1000ms;
 }
 
 .my-node-enter-done,
 .my-node-appear-done {
   opacity: 1;
-  height: calc(100% - 330px);
+  height: calc(100% - 350px);
 }
 
 .my-node-exit {
   opacity: 1;
-  height: calc(100% - 330px);
+  height: calc(100% - 350px);
 }
 
 .my-node-exit-active {
