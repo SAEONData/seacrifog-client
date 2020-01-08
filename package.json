@@ -14,6 +14,7 @@
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-client": "^2.6.8",
     "apollo-link-http": "^1.5.16",
+    "classnames": "^2.2.6",
     "core-js": "^3.6.2",
     "echarts": "^4.6.0",
     "echarts-for-react": "^2.0.15-beta.1",

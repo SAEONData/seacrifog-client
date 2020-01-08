@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Toolbar, Button, LinearProgress, Badge } from 'react-md'
 import DataQuery from '../data-query'
 import { useHistory } from 'react-router-dom'
 import { ENTIRE_GRAPH } from '../../graphql/queries'
 import { ExplorerSideMenuFilter } from './index'
 import { SideMenu } from '../shared-components/index'
+import MetadataList from './_metadata-list'
 import { GlobalStateContext } from '../../global-state'
 
 const getProgresStyle = loading => ({
@@ -23,8 +24,10 @@ const badgeStyle = disabled => ({
 })
 
 export default ({ resetFn, selectedIds, ...props }) => {
-  const ctx = props.location.pathname.replace('/', '').toUpperCase()
   const history = useHistory()
+  const ctx = props.location.pathname.replace('/', '').toUpperCase()
+  const [showList, toggleShowList] = useState(false)
+
   return (
     <GlobalStateContext.Consumer>
       {({ loadingSearchResults, searchResults, searchErrors }) => (
@@ -77,11 +80,12 @@ export default ({ resetFn, selectedIds, ...props }) => {
                       tooltipLabel={`${searchResults.length} metadata record${
                         searchResults.length === 1 ? '' : 's'
                       } found`}
-                      onClick={() => history.push(`/datasets`)}
+                      onClick={() => toggleShowList(!showList)}
                       icon
                     >
                       storage
                     </Button>
+                    <MetadataList showList={showList} searchResults={searchResults} />
                   </Badge>,
                   <Button
                     key={2}
