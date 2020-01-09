@@ -43,10 +43,12 @@
     "clean:dist": "rimraf ./dist",
     "copy:public": "copyfiles -u 1 ./public/* dist",
     "pack": "webpack --env.mode=production",
+    "pre-commit": "npm-run-all prettier lint",
+    "prettier": "prettier --write \"src/**/*.@(js|jsx|css|scss)\"",
     "lint": "eslint \"./src/**/*.{js,jsx}\""
   },
   "pre-commit": [
-    "lint"
+    "pre-commit"
   ],
   "devDependencies": {
     "@babel/core": "^7.7.7",
