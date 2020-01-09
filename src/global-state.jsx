@@ -59,7 +59,6 @@ export default class extends PureComponent {
             query: gql`
               query search($byNetworks: [Int!], $byProtocols: [Int!], $byVariables: [Int!]) {
                 searchMetadata(byNetworks: $byNetworks, byVariables: $byVariables, byProtocols: $byProtocols) {
-                  id
                   target
                   result
                 }
@@ -76,14 +75,11 @@ export default class extends PureComponent {
         } catch (error) {
           errors = [error].flat()
         } finally {
-          this.setState(
-            {
-              loadingSearchResults: false,
-              searchResults: data || [],
-              searchErrors: errors || []
-            },
-            () => console.log(this.state)
-          )
+          this.setState({
+            loadingSearchResults: false,
+            searchResults: data || [],
+            searchErrors: errors || []
+          })
         }
       })
     }
