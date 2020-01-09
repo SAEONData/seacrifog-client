@@ -79,7 +79,7 @@ body {
 .my-node-enter,
 .my-node-appear {
   opacity: 0;
-  height: 0;
+  height: 64px;
 }
 
 .my-node-enter-active,
@@ -102,6 +102,6 @@ body {
 
 .my-node-exit-active {
   opacity: 0;
-  height: 0;
+  height: 64px;
   transition: all 1000ms;
 }
