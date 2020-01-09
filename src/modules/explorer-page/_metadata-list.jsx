@@ -3,11 +3,23 @@ import { Divider, Button } from 'react-md'
 
 export default ({ searchResults }) => (
   <div style={{ padding: '20px' }}>
-    {searchResults.map((rcrd, i) => {
-      const viewerUrl = `http://www.sasdi.net/metaview.aspx?uuid=${rcrd.record.metadata_json.alternateIdentifiers[0].alternateIdentifier}`
-      return (
+    {searchResults
+      .map(r => r.result.results)
+      .flat()
+      .map((rcrd, i) => (
         <div key={i}>
-          <Button onClick={() => window.open(viewerUrl, '_blank')} primary swapTheming flat iconChildren={'visibility'}>
+          <Button
+            onClick={() =>
+              window.open(
+                `http://www.sasdi.net/metaview.aspx?uuid=${rcrd.metadata_json.alternateIdentifiers[0].alternateIdentifier}`,
+                '_blank'
+              )
+            }
+            primary
+            swapTheming
+            flat
+            iconChildren={'visibility'}
+          >
             View record
           </Button>
           <p
@@ -24,7 +36,6 @@ export default ({ searchResults }) => (
           </p>
           <Divider style={{ margin: '20px' }} />
         </div>
-      )
-    })}
+      ))}
   </div>
 )

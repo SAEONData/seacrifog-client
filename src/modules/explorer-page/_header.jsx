@@ -76,13 +76,15 @@ export default ({ resetFn, selectedIds, ...props }) => {
                       <Badge
                         key={1}
                         badgeStyle={badgeStyle(searchResults.length > 0 ? false : true)}
-                        badgeContent={searchResults.length}
+                        badgeContent={searchResults.map(r => r.result.result_length).reduce((sum, val) => sum + val, 0)}
                         badgeId={'search-results-notification'}
                       >
                         <Button
-                          tooltipLabel={`${searchResults.length} metadata record${
-                            searchResults.length === 1 ? '' : 's'
-                          } found`}
+                          tooltipLabel={`Organizations searched: ${
+                            searchResults.length
+                          }. Records found: ${searchResults
+                            .map(r => r.result.result_length)
+                            .reduce((sum, val) => sum + val, 0)}`}
                           tooltipPosition="left"
                           className="md-btn--toolbar"
                           disabled={searchResults.length > 0 ? false : true}
