@@ -107,7 +107,9 @@ export default ({ resetFn, selectedIds, ...props }) => {
                         </Badge>
                       )}
                     >
-                      <MetadataList searchResults={searchResults} />
+                      <div style={{ padding: '40px' }}>
+                        <MetadataList searchResults={searchResults} />
+                      </div>
                     </SideMenu>,
                     <Button
                       key={2}
