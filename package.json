@@ -31,7 +31,7 @@
     "react-router-dom": "^5.1.2",
     "react-transition-group": "^4.3.0",
     "regenerator-runtime": "^0.13.3",
-    "sift": "^9.0.6",
+    "sift": "^10.0.0",
     "webfontloader": "^1.6.28"
   },
   "scripts": {
