@@ -94,26 +94,6 @@ export default ({ id, ...props }) => {
                                 </Grid>
 
                                 {/* Page content */}
-                                <TestChart
-                                  data={[
-                                    {
-                                      value: addDirectlyRelatedProtocols.length,
-                                      name: 'Directly Related Protocols'
-                                    },
-                                    {
-                                      value: addIndirectlyRelatedProtocols.length,
-                                      name: 'Indirectly Related Protocols'
-                                    },
-                                    {
-                                      value: addDataproducts.length,
-                                      name: 'Dataproducts'
-                                    },
-                                    {
-                                      value: addRForcings.length,
-                                      name: 'Radiative Forcings'
-                                    }
-                                  ]}
-                                />
                                 <Grid noSpacing>
                                   <Cell size={12}>
                                     <Card style={cardStyle}>

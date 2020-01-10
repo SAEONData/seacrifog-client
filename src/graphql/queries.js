@@ -355,3 +355,12 @@ export const SITES_AGGREGATION = gql`
     }
   }
 `
+
+export const NETWORKS_TYPES = gql`
+  query networksTypes($ids: [Int!]) {
+    networksTypes(ids: $ids) {
+      network_count
+      type
+    }
+  }
+`

@@ -2,12 +2,12 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { GlobalStateContext } from '../../global-state'
 import DataQuery from '../../modules/data-query'
-import { NETWORKS_MIN, NETWORK, SITES_AGGREGATION } from '../../graphql/queries'
+import { NETWORKS_MIN, NETWORK, SITES_AGGREGATION, NETWORKS_TYPES } from '../../graphql/queries'
 import {
   NoneMessage,
   ExplorerFormattedObject,
   ExplorerHeader,
-  ExplorerHeaderCharts,
+  ExplorerHeaderChart,
   ExplorerLayout,
   ExplorerTableLayout,
   ExplorerTabsLayout,
@@ -20,7 +20,7 @@ import {
   ExplorerHeaderContainer
 } from '../../modules/explorer-page'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
-import { List, ListItem, CardTitle } from 'react-md'
+import { List, ListItem, Collapse, Grid } from 'react-md'
 import { Table } from '../../modules/shared-components'
 const mappings = {}
 
@@ -35,10 +35,12 @@ const networksDataDefinitions = {
   __typename: { show: false }
 }
 
-/*
-DataQuery has the charts as a child. This means they are rerendered every time DataQuery renders(Any time selection changes).
-Instead of using DataQuery, do a graphql fetch without actually creating a component. Do this by making use of ComponentWillRender, ComponentWillUnmount, etc
-*/
+//NEXT TO DO: PUSH, PULL FROM MASTER, MERGE, PUSH
+//Delete these comments when no longer useful
+// current={currentNetwork} //int INDEX of the currently focused network out of selectedNetworks array. If selectedNetworks.length is 3 then currentNetwork is 0,1, or 2
+// selectedVariables={selectedVariables}
+// networks={networks}
+// selectedNetworks={selectedNetworks} //int array of the selected network ids
 export default props => {
   const history = useHistory()
   return (
@@ -58,31 +60,39 @@ export default props => {
                         resetFn={() => updateGlobalState({ selectedNetworks: [] })}
                         {...props}
                       />
-                      <DataQuery
-                        loadingComponent={<></>}
-                        query={SITES_AGGREGATION}
-                        variables={{
-                          ids: selectedNetworks.length > 0 ? selectedNetworks : networks.map(n => n.id)
-                        }}
-                      >
-                        {({ sitesAggregation }) => (
-                          <ExplorerHeaderCharts
-                            collapsed={collapsed}
-                            data={sitesAggregation.map(s => ({ value: s.site_count, name: s.acronym }))}
-                            current={currentNetwork} //int INDEX of the currently focused network out of selectedNetworks array. If selectedNetworks.length is 3 then currentNetwork is 0,1, or 2
-                            selectedVariables={selectedVariables}
-                            networks={networks}
-                            selectedNetworks={selectedNetworks} //int array of the selected network ids
-                            argProps={props}
+                      <Collapse collapsed={collapsed}>
+                        <Grid style={{ backgroundColor: '#EEEEEE' }}>
+                          <ExplorerHeaderChart
+                            title="Site Count"
+                            subtitle="of selected Networks"
+                            chartType="pie"
+                            query={SITES_AGGREGATION}
+                            queryVariable={'sitesAggregation'}
+                            variables={{
+                              ids: selectedNetworks.length > 0 ? selectedNetworks : networks.map(n => n.id)
+                            }}
+                            entryName="acronym"
+                            entryValue="site_count"
                           />
-                        )}
-                      </DataQuery>
+                          <ExplorerHeaderChart
+                            title="Network Type Distribution"
+                            subtitle="of selected Networks"
+                            chartType="pie"
+                            query={NETWORKS_TYPES}
+                            queryVariable={'networksTypes'}
+                            variables={{
+                              ids: selectedNetworks.length > 0 ? selectedNetworks : networks.map(n => n.id)
+                            }}
+                            entryName="type"
+                            entryValue="network_count"
+                          />
+                        </Grid>
+                      </Collapse>
                     </>
                   )}
                 </ExplorerHeaderContainer>
 
                 <ExplorerLayout>
-                  <div style={{}}></div>
                   <ExplorerTableLayout>
                     <Table
                       actions={[<ScrollButton key={1} disabled={selectedNetworks.length > 0 ? false : true} />]}
