@@ -2,12 +2,11 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { GlobalStateContext } from '../../global-state'
 import DataQuery from '../../modules/data-query'
-import { NETWORKS_MIN, NETWORK, SITES_AGGREGATION, NETWORKS_TYPES } from '../../graphql/queries'
+import { NETWORKS_MIN, NETWORK } from '../../graphql/queries'
 import {
   NoneMessage,
   ExplorerFormattedObject,
-  ExplorerHeader,
-  ExplorerHeaderChart,
+  ExplorerHeaderBar,
   ExplorerLayout,
   ExplorerTableLayout,
   ExplorerTabsLayout,
@@ -17,15 +16,13 @@ import {
   iconLink,
   ExplorerCoverageMap,
   variableIcon,
-  ExplorerHeaderContainer
+  ExplorerHeaderContainer,
+  ExplorerHeaderCharts
 } from '../../modules/explorer-page'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
-import { List, ListItem, Collapse, Grid } from 'react-md'
+import { List, ListItem, Collapse, Grid, Button, Cell } from 'react-md'
 import { Table } from '../../modules/shared-components'
-import { OlReact } from '@saeon/atlas'
-import { ahocevarBaseMap, geoJsonLayer } from '../../modules/atlas/layers'
-import { dotStyle2 } from '../../modules/atlas/styles'
-
+import { networkCharts } from './network-charts'
 const mappings = {}
 
 const networksDataDefinitions = {
@@ -38,13 +35,8 @@ const networksDataDefinitions = {
   end_year: { show: true, order: 6, label: 'End Year' },
   __typename: { show: false }
 }
-
-//NEXT TO DO: PUSH, PULL FROM MASTER, MERGE, PUSH
-//Delete these comments when no longer useful
-// current={currentNetwork} //int INDEX of the currently focused network out of selectedNetworks array. If selectedNetworks.length is 3 then currentNetwork is 0,1, or 2
-// selectedVariables={selectedVariables}
-// networks={networks}
-// selectedNetworks={selectedNetworks} //int array of the selected network ids
+//move collapse and grid into a class, maybe ExplorerHeaderChart as well or make it a child
+//error 500 is from node version. update to v13 next week
 export default props => {
   const history = useHistory()
   return (
@@ -55,43 +47,24 @@ export default props => {
             {({ networks }) => (
               <>
                 <ExplorerHeaderContainer>
-                  {({ collapsed, toggleCharts }) => (
+                  {({ collapsed, toggleCharts, chartType, setChartType }) => (
                     <>
-                      <ExplorerHeader
+                      <ExplorerHeaderBar
                         collapsed={collapsed}
                         toggleCharts={toggleCharts}
                         selectedIds={selectedNetworks}
                         resetFn={() => updateGlobalState({ selectedNetworks: [] })}
                         {...props}
                       />
-                      <Collapse collapsed={collapsed}>
-                        <Grid style={{ backgroundColor: '#EEEEEE' }}>
-                          <ExplorerHeaderChart
-                            title="Site Count"
-                            subtitle="of selected Networks"
-                            chartType="pie"
-                            query={SITES_AGGREGATION}
-                            queryVariable={'sitesAggregation'}
-                            variables={{
-                              ids: selectedNetworks.length > 0 ? selectedNetworks : networks.map(n => n.id)
-                            }}
-                            entryName="acronym"
-                            entryValue="site_count"
-                          />
-                          <ExplorerHeaderChart
-                            title="Network Type Distribution"
-                            subtitle="of selected Networks"
-                            chartType="pie"
-                            query={NETWORKS_TYPES}
-                            queryVariable={'networksTypes'}
-                            variables={{
-                              ids: selectedNetworks.length > 0 ? selectedNetworks : networks.map(n => n.id)
-                            }}
-                            entryName="type"
-                            entryValue="network_count"
-                          />
-                        </Grid>
-                      </Collapse>
+                      <ExplorerHeaderCharts
+                        collapsed={collapsed}
+                        chartType={chartType}
+                        setChartType={setChartType}
+                        chartDefinitions={networkCharts}
+                        variables={{
+                          ids: selectedNetworks.length > 0 ? selectedNetworks : networks.map(n => n.id)
+                        }}
+                      />
                     </>
                   )}
                 </ExplorerHeaderContainer>

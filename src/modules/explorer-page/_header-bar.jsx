@@ -122,8 +122,6 @@ export default ({ resetFn, selectedIds, collapsed, toggleCharts, ...props }) => 
                     </Button>,
                     <Button
                       style={mainMenuIconStyle(false, !collapsed)}
-                      // floating={!collapsed}
-                      // mini={!collapsed}
                       tooltipLabel={'View charts'}
                       onClick={() => {
                         toggleCharts()

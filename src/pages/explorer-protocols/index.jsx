@@ -6,7 +6,7 @@ import { PROTOCOLS_MIN, PROTOCOL } from '../../graphql/queries'
 import {
   NoneMessage,
   ExplorerFormattedObject,
-  ExplorerHeader,
+  ExplorerHeaderBar,
   ExplorerLayout,
   ExplorerTableLayout,
   ExplorerTabsLayout,
@@ -41,7 +41,7 @@ export default props => {
         <DataQuery query={PROTOCOLS_MIN}>
           {({ protocols }) => (
             <ExplorerLayout>
-              <ExplorerHeader
+              <ExplorerHeaderBar
                 selectedIds={selectedProtocols}
                 resetFn={() => updateGlobalState({ selectedProtocols: [] })}
                 {...props}

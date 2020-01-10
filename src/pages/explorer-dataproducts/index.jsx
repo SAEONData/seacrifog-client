@@ -6,7 +6,7 @@ import { DATAPRODUCTS_MIN, DATAPRODUCT } from '../../graphql/queries'
 import {
   NoneMessage,
   ExplorerFormattedObject,
-  ExplorerHeader,
+  ExplorerHeaderBar,
   ExplorerLayout,
   ExplorerTableLayout,
   ExplorerTabsLayout,
@@ -41,7 +41,7 @@ export default props => {
         <DataQuery query={DATAPRODUCTS_MIN}>
           {({ dataproducts }) => (
             <ExplorerLayout>
-              <ExplorerHeader
+              <ExplorerHeaderBar
                 selectedIds={selectedDataproducts}
                 resetFn={() => updateGlobalState({ selectedDataproducts: [] })}
                 {...props}

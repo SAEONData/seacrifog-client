@@ -5,9 +5,12 @@ import echartsTheme from '../../lib/echarts-theme'
 import { cardStyle } from './_shared'
 import { useQuery } from '@apollo/react-hooks'
 
-//function component version:
+//is this too prop reliant?
+//should the cell size be fixed instead of the default dynamic sizing?
+//what should happen onClick of a pie slice if anything?
+//bar chart to be looked at as it is very ugly
+//
 export default ({ query, queryVariable, variables, chartType, title, subtitle, entryName, entryValue }) => {
-  //quer
   var queryResult = {}
   queryResult = useQuery(query, { variables })
   var data = {}
@@ -16,20 +19,20 @@ export default ({ query, queryVariable, variables, chartType, title, subtitle, e
   }
   return (
     <>
-      <Cell>
+      <Cell phoneSize={4} tabletSize={8} size={6}>
         <Card style={cardStyle}>
           <CardTitle title={title} subtitle={subtitle} />
           {chartType === 'pie' ? (
             <ECharts
-              notMerge={true}
-              lazyUpdate={false}
               theme={echartsTheme}
               onEvents={{
                 click: () => {
                   console.log('pie slice clicked!')
+                  //maybe deselect this entity when clicked? maybe do nothing and stay read-only? maybe fire a method that is passed from the parent? popup a larger version of just that 1 chart?
                 }
               }}
               option={{
+                tooltip: { show: true },
                 series: [
                   {
                     data: data,
@@ -40,8 +43,6 @@ export default ({ query, queryVariable, variables, chartType, title, subtitle, e
             />
           ) : chartType === 'bar' ? (
             <ECharts
-              notMerge={true}
-              lazyUpdate={false}
               theme={echartsTheme}
               onEvents={{
                 click: () => {
@@ -49,12 +50,10 @@ export default ({ query, queryVariable, variables, chartType, title, subtitle, e
                 }
               }}
               option={{
-                title: { text: 'my title', show: true },
-                xAxis: {
-                  type: 'category',
-                  data: Object.values(data).map(entry => entry.name)
-                },
-                yAxis: { type: 'value' },
+                tooltip: { show: true },
+                xAxis: { name: '' },
+                yAxis: { type: 'category', data: Object.values(data).map(entry => entry.name) },
+                grid: { top: '0', bottom: '30', right: '7%', left: '22%' },
                 series: [
                   {
                     data: data,

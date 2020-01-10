@@ -6,7 +6,7 @@ import { VARIABLES_MIN, VARIABLE } from '../../graphql/queries'
 import {
   NoneMessage,
   ExplorerFormattedObject,
-  ExplorerHeader,
+  ExplorerHeaderBar,
   ExplorerLayout,
   ExplorerTableLayout,
   ExplorerTabsLayout,
@@ -57,7 +57,7 @@ export default props => {
         <DataQuery query={VARIABLES_MIN}>
           {({ variables }) => (
             <ExplorerLayout>
-              <ExplorerHeader
+              <ExplorerHeaderBar
                 selectedIds={selectedVariables}
                 resetFn={() => updateGlobalState({ selectedVariables: [] })}
                 {...props}
