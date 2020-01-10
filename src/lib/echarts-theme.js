@@ -197,7 +197,11 @@ export default {
   gauge: {
     axisLine: {
       lineStyle: {
-        color: [[0.2, '#2ec7c9'], [0.8, '#5ab1ef'], [1, '#d87a80']],
+        color: [
+          [0.2, '#2ec7c9'],
+          [0.8, '#5ab1ef'],
+          [1, '#d87a80']
+        ],
         width: 10
       }
     },

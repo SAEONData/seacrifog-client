@@ -51,6 +51,7 @@ export const NETWORK = gql`
       abstract
       coverage_spatial
       variables ${VARIABLE_FRAGMENT}
+      sites ${SITE_FRAGMENT}
     }
   }
 `

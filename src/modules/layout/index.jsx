@@ -63,7 +63,7 @@ class Navigation extends PureComponent {
             ? NavigationDrawer.DrawerTypes.TEMPORARY
             : NavigationDrawer.DrawerTypes.PERSISTENT_MINI
         }
-        toolbarActions={[<img style={seacrifogLogoStyle} src={`/seacrifog-logo.png`} alt="SEACRIFOG logo" />]}
+        toolbarActions={[<img key={0} style={seacrifogLogoStyle} src={`/seacrifog-logo.png`} alt="SEACRIFOG logo" />]}
         onVisibilityChange={debounce(() => window.dispatchEvent(new Event('sidenav-resize')))}
         defaultVisible={false}
       >

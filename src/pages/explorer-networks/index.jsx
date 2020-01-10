@@ -22,6 +22,10 @@ import {
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
 import { List, ListItem, Collapse, Grid } from 'react-md'
 import { Table } from '../../modules/shared-components'
+import { OlReact } from '@saeon/atlas'
+import { ahocevarBaseMap, geoJsonLayer } from '../../modules/atlas/layers'
+import { dotStyle2 } from '../../modules/atlas/styles'
+
 const mappings = {}
 
 const networksDataDefinitions = {

@@ -14,12 +14,13 @@ export default ({ selectedIds, currentIndex, updateCurrentIndex, id, children, .
                 icon={
                   <Avatar
                     key={i}
-                    children={id}
                     style={{ backgroundColor: '#b1d0b6ed' }}
                     contentStyle={{ fontSize: '10px' }}
                     suffix="grey"
                     iconSized
-                  />
+                  >
+                    {id}
+                  </Avatar>
                 }
               >
                 {children({ id })}

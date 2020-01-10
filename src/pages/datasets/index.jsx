@@ -1,12 +1,8 @@
 import React from 'react'
-import { Grid, Cell, Card, CardText } from 'react-md'
+import { Grid, Cell } from 'react-md'
 
-export default props => (
-  <Grid noSpacing>
-    <Cell>
-      <Card>
-        <CardText>TODO</CardText>
-      </Card>
-    </Cell>
+export default () => (
+  <Grid>
+    <Cell>TODO?</Cell>
   </Grid>
 )

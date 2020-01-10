@@ -13,12 +13,12 @@ export default class extends PureComponent {
   render() {
     const { menuOpen } = this.state
     const { toggleMenu, closeMenu, onVizChange } = this
-    const { toolbarActions, menuPosition, style } = this.props
+    const { toolbarActions, toolbarTitle, menuPosition, style } = this.props
 
     return (
       <>
         <Drawer
-          style={style || drawerStyle}
+          style={style ? Object.assign({ ...drawerStyle }, style) : drawerStyle}
           visible={menuOpen}
           mobileType={Drawer.DrawerTypes.TEMPORARY}
           tabletType={Drawer.DrawerTypes.TEMPORARY}
@@ -28,6 +28,8 @@ export default class extends PureComponent {
           header={
             <Toolbar
               actions={toolbarActions}
+              title={toolbarTitle || ''}
+              titleStyle={{ color: 'black' }}
               nav={
                 <Button className={'close-button'} icon swapTheming onClick={closeMenu}>
                   close
