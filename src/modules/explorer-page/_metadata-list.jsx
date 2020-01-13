@@ -2,7 +2,7 @@ import React from 'react'
 import { Divider, Button } from 'react-md'
 
 export default ({ searchResults }) => (
-  <div style={{ padding: '20px' }}>
+  <div>
     {searchResults
       .map(r => r.result.results)
       .flat()
