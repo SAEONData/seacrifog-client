@@ -1,15 +1,15 @@
 import React from 'react'
-import { Card, Cell, CardText, CardTitle } from 'react-md'
+import { Card, Cell, CardText, CardTitle, Button } from 'react-md'
 import ECharts from 'echarts-for-react'
 import echartsTheme from '../../lib/echarts-theme'
 import { cardStyle } from './_shared'
 import { useQuery } from '@apollo/react-hooks'
 
 //is this too prop reliant?
-//should the cell size be fixed instead of the default dynamic sizing?
 //what should happen onClick of a pie slice if anything?
-//bar chart to be looked at as it is very ugly
 //
+
+const enabledColor = '#d1e2ed'
 export default ({ query, queryVariable, variables, chartType, title, subtitle, entryName, entryValue }) => {
   var queryResult = {}
   queryResult = useQuery(query, { variables })
@@ -21,8 +21,29 @@ export default ({ query, queryVariable, variables, chartType, title, subtitle, e
     <>
       <Cell phoneSize={4} tabletSize={8} size={6}>
         <Card style={cardStyle}>
-          <CardTitle title={title} subtitle={subtitle} />
+          <CardTitle title={title} subtitle={subtitle}>
+            <Button
+              style={{
+                backgroundColor: chartType === 'pie' ? enabledColor : ''
+              }}
+              primary
+              icon
+            >
+              pie_chart
+            </Button>{' '}
+            <Button style={{ backgroundColor: chartType === 'bar' ? enabledColor : '' }} primary icon>
+              bar_chart
+            </Button>
+          </CardTitle>
+
+          <Button style={{ float: 'right', backgroundColor: chartType === 'bar' ? enabledColor : '' }} primary icon>
+            bar_chart
+          </Button>
+          <Button style={{ float: 'right', backgroundColor: chartType === 'pie' ? enabledColor : '' }} primary icon>
+            pie_chart
+          </Button>
           {chartType === 'pie' ? (
+            // <div style={{ minHeight: '400px', backgroundColor: 'red' }}>
             <ECharts
               theme={echartsTheme}
               onEvents={{
@@ -35,13 +56,15 @@ export default ({ query, queryVariable, variables, chartType, title, subtitle, e
                 tooltip: { show: true },
                 series: [
                   {
+                    center: ['43%', '57%'],
                     data: data,
                     type: 'pie'
                   }
                 ]
               }}
             />
-          ) : chartType === 'bar' ? (
+          ) : // </div>
+          chartType === 'bar' ? (
             <ECharts
               theme={echartsTheme}
               onEvents={{
@@ -53,7 +76,13 @@ export default ({ query, queryVariable, variables, chartType, title, subtitle, e
                 tooltip: { show: true },
                 xAxis: { name: '' },
                 yAxis: { type: 'category', data: Object.values(data).map(entry => entry.name) },
-                grid: { top: '0', bottom: '30', right: '7%', left: '22%' },
+                grid: {
+                  tooltip: { trigger: 'item', position: ['60%', '-10%'] },
+                  top: '0',
+                  bottom: '30',
+                  right: '7%',
+                  left: '24%'
+                },
                 series: [
                   {
                     data: data,

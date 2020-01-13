@@ -347,6 +347,8 @@ export const VARIABLES = gql`
     }
   }
 `
+
+// Aggregations
 export const SITES_AGGREGATION = gql`
   query sitesAggregation($ids: [Int!]) {
     sitesAggregation(ids: $ids) {
@@ -356,12 +358,68 @@ export const SITES_AGGREGATION = gql`
     }
   }
 `
-
 export const NETWORKS_TYPES = gql`
   query networksTypes($ids: [Int!]) {
     networksTypes(ids: $ids) {
       network_count
       type
+    }
+  }
+`
+export const VARIABLES_DOMAINS = gql`
+  query variablesDomains($ids: [Int!]) {
+    variablesDomains(ids: $ids) {
+      domain
+      variable_count
+    }
+  }
+`
+export const VARIABLES_RF_TYPES = gql`
+  query variablesRfTypes($ids: [Int!]) {
+    variablesRfTypes(ids: $ids) {
+      rftype
+      variable_count
+    }
+  }
+`
+export const VARIABLES_SETS = gql`
+  query variablesSets($ids: [Int!]) {
+    variablesSets(ids: $ids) {
+      set
+      variable_count
+    }
+  }
+`
+export const VARIABLES_REQ_SOURCES = gql`
+  query variablesReqSources($ids: [Int!]) {
+    variablesReqSources(ids: $ids) {
+      req_source
+      variable_count
+    }
+  }
+`
+
+export const PROTOCOLS_COVERAGES = gql`
+  query protocolsCoverages($ids: [Int!]) {
+    protocolsCoverages(ids: $ids) {
+      coverage
+      protocol_count
+    }
+  }
+`
+export const PROTOCOLS_COVERAGE_TYPES = gql`
+  query protocolsCoverageTypes($ids: [Int!]) {
+    protocolsCoverageTypes(ids: $ids) {
+      coverage_type
+      protocol_count
+    }
+  }
+`
+export const PROTOCOLS_DOMAINS = gql`
+  query protocolsDomains($ids: [Int!]) {
+    protocolsDomains(ids: $ids) {
+      domain
+      protocol_count
     }
   }
 `
