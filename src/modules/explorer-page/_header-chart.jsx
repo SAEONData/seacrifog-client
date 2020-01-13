@@ -7,7 +7,8 @@ import { useQuery } from '@apollo/react-hooks'
 
 //is this too prop reliant?
 //what should happen onClick of a pie slice if anything?
-//
+//If each chart is to have its own toggle for chart Type then each chart will need its own _header-chart-container(probably just declared within _header_charts)
+//This is because class components cannot use apollo hooks
 
 const enabledColor = '#d1e2ed'
 export default ({ query, queryVariable, variables, chartType, title, subtitle, entryName, entryValue }) => {

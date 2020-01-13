@@ -42,6 +42,7 @@ export default ({ collapsed, chartDefinitions, setChartType, chartType, variable
                   title={title}
                   subtitle={subtitle}
                   chartType={chartType}
+                  setChartType={setChartType}
                   query={query}
                   queryVariable={queryVariable}
                   variables={variables}
