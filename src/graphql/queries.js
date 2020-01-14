@@ -382,19 +382,12 @@ export const VARIABLES_RF_TYPES = gql`
     }
   }
 `
-export const VARIABLES_SETS = gql`
-  query variablesSets($ids: [Int!]) {
-    variablesSets(ids: $ids) {
-      set
-      variable_count
-    }
-  }
-`
-export const VARIABLES_REQ_SOURCES = gql`
-  query variablesReqSources($ids: [Int!]) {
-    variablesReqSources(ids: $ids) {
-      req_source
-      variable_count
+export const VARIABLES_PROTOCOLS = gql`
+  query variablesProtocols($ids: [Int!]) {
+    variablesProtocols(ids: $ids) {
+      id
+      variable_name
+      protocol_count
     }
   }
 `
@@ -420,6 +413,15 @@ export const PROTOCOLS_DOMAINS = gql`
     protocolsDomains(ids: $ids) {
       domain
       protocol_count
+    }
+  }
+`
+export const PROTOCOLS_VARIABLES = gql`
+  query protocolsVariables($ids: [Int!]) {
+    protocolsVariables(ids: $ids) {
+      protocol_id
+      protocol_title
+      variable_count
     }
   }
 `

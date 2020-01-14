@@ -61,7 +61,7 @@ export default props => {
           {({ variables }) => (
             <>
               <ExplorerHeaderContainer>
-                {({ collapsed, toggleCharts, chartType, setChartType }) => (
+                {({ collapsed, toggleCharts }) => (
                   <>
                     <ExplorerHeaderBar
                       collapsed={collapsed}
@@ -72,8 +72,6 @@ export default props => {
                     />
                     <ExplorerHeaderCharts
                       collapsed={collapsed}
-                      chartType={chartType}
-                      setChartType={setChartType}
                       chartDefinitions={variableCharts}
                       variables={{
                         ids: selectedVariables.length > 0 ? selectedVariables : variables.map(n => n.id)

@@ -1,10 +1,14 @@
-import { PROTOCOLS_COVERAGES, PROTOCOLS_DOMAINS, PROTOCOLS_COVERAGE_TYPES } from '../../graphql/queries'
+import {
+  PROTOCOLS_COVERAGES,
+  PROTOCOLS_DOMAINS,
+  PROTOCOLS_COVERAGE_TYPES,
+  PROTOCOLS_VARIABLES
+} from '../../graphql/queries'
 
 export const protocolCharts = [
   {
     //Protocol Coverages
     title: 'Coverage Groupings',
-    subtitle: 'based on selected Protocols',
     query: PROTOCOLS_COVERAGES,
     queryVariable: 'protocolsCoverages',
     entryName: 'coverage',
@@ -13,7 +17,6 @@ export const protocolCharts = [
   {
     //Protocol Coverage Types
     title: 'Coverage Type Groupings',
-    subtitle: 'based on selected Protocols',
     query: PROTOCOLS_COVERAGE_TYPES,
     queryVariable: 'protocolsCoverageTypes',
     entryName: 'coverage_type',
@@ -22,10 +25,17 @@ export const protocolCharts = [
   {
     //Protocol Domains
     title: 'Domain Groupings',
-    subtitle: 'based on selected Protocols',
     query: PROTOCOLS_DOMAINS,
     queryVariable: 'protocolsDomains',
     entryName: 'domain',
     entryValue: 'protocol_count'
+  },
+  {
+    //Protocol Variables
+    title: 'Related Variable Count',
+    query: PROTOCOLS_VARIABLES,
+    queryVariable: 'protocolsVariables',
+    entryName: 'protocol_title',
+    entryValue: 'variable_count'
   }
 ]

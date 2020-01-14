@@ -1,20 +1,18 @@
-import React from 'react'
-import { Card, Cell, CardTitle, Button } from 'react-md'
+import React, { useState } from 'react'
+import { Card, Cell, Button, Toolbar } from 'react-md'
 import ECharts from 'echarts-for-react'
 import echartsTheme from '../../lib/echarts-theme'
 import { cardStyle } from './_shared'
 import { useQuery } from '@apollo/react-hooks'
 
-//is this too prop reliant?
-//what should happen onClick of a pie slice if anything?
-//If each chart is to have its own toggle for chart Type then each chart will need its own _header-chart-container(probably just declared within _header_charts)
-//This is because class components cannot use apollo hooks
+const enabledColor = 'rgba(255,255,255,0.3)'
+export default ({ query, queryVariable, variables, title, entryName, entryValue }) => {
+  const [chartType, setChartType] = useState('pie')
 
-const enabledColor = '#d1e2ed'
-export default ({ query, queryVariable, variables, chartType, title, subtitle, entryName, entryValue }) => {
   var queryResult = {}
   queryResult = useQuery(query, { variables })
   var data = {}
+  var show_labels = true
   if (queryResult.data) {
     data = queryResult.data[queryVariable].map(r => ({ value: r[entryValue], name: r[entryName] }))
   }
@@ -22,79 +20,93 @@ export default ({ query, queryVariable, variables, chartType, title, subtitle, e
     <>
       <Cell phoneSize={4} tabletSize={8} size={6}>
         <Card style={cardStyle}>
-          <CardTitle title={title} subtitle={subtitle}>
-            <Button
-              style={{
-                backgroundColor: chartType === 'pie' ? enabledColor : ''
-              }}
-              primary
-              icon
-            >
-              pie_chart
-            </Button>{' '}
-            <Button style={{ backgroundColor: chartType === 'bar' ? enabledColor : '' }} primary icon>
-              bar_chart
-            </Button>
-          </CardTitle>
+          <div style={{ border: '2px solid #00796b' }}>
+            {/* TOOLBAR */}
+            <Toolbar
+              style={{ height: '46px', alignItems: 'center' }}
+              colored
+              title={title}
+              actions={[
+                <Button
+                  onClick={() => {
+                    setChartType('pie')
+                  }}
+                  style={{
+                    backgroundColor: chartType === 'pie' ? enabledColor : ''
+                  }}
+                  icon
+                >
+                  pie_chart
+                </Button>,
+                <Button
+                  onClick={() => {
+                    setChartType('bar')
+                  }}
+                  style={{
+                    backgroundColor: chartType === 'bar' ? enabledColor : ''
+                  }}
+                  icon
+                  icon
+                >
+                  bar_chart
+                </Button>
+              ]}
+            />
+            {/* PIE CHART */}
+            {chartType === 'pie' ? (
+              <ECharts
+                theme={echartsTheme}
+                onEvents={{
+                  click: () => {
+                    console.log('pie slice clicked!')
+                  }
+                }}
+                option={{
+                  tooltip: { show: true },
 
-          <Button style={{ float: 'right', backgroundColor: chartType === 'bar' ? enabledColor : '' }} primary icon>
-            bar_chart
-          </Button>
-          <Button style={{ float: 'right', backgroundColor: chartType === 'pie' ? enabledColor : '' }} primary icon>
-            pie_chart
-          </Button>
-          {chartType === 'pie' ? (
-            // <div style={{ minHeight: '400px', backgroundColor: 'red' }}>
-            <ECharts
-              theme={echartsTheme}
-              onEvents={{
-                click: () => {
-                  console.log('pie slice clicked!')
-                  //maybe deselect this entity when clicked? maybe do nothing and stay read-only? maybe fire a method that is passed from the parent? popup a larger version of just that 1 chart?
-                }
-              }}
-              option={{
-                tooltip: { show: true },
-                series: [
-                  {
-                    center: ['43%', '57%'],
-                    data: data,
-                    type: 'pie'
+                  series: [
+                    {
+                      minShowLabelAngle: 6,
+                      center: ['50%', '57%'],
+                      data: data,
+                      type: 'pie'
+                    }
+                  ]
+                }}
+              />
+            ) : // BAR CHART
+            chartType === 'bar' ? (
+              <ECharts
+                theme={echartsTheme}
+                onEvents={{
+                  click: () => {
+                    console.log('bar clicked!')
                   }
-                ]
-              }}
-            />
-          ) : // </div>
-          chartType === 'bar' ? (
-            <ECharts
-              theme={echartsTheme}
-              onEvents={{
-                click: () => {
-                  console.log('bar clicked!')
-                }
-              }}
-              option={{
-                tooltip: { show: true },
-                xAxis: { name: '' },
-                yAxis: { type: 'category', data: Object.values(data).map(entry => entry.name) },
-                grid: {
-                  tooltip: { trigger: 'item', position: ['60%', '-10%'] },
-                  top: '0',
-                  bottom: '30',
-                  right: '7%',
-                  left: '24%'
-                },
-                series: [
-                  {
-                    data: data,
-                    type: 'bar'
-                  }
-                ]
-              }}
-            />
-          ) : (
-            <p style={{ color: 'red' }}>Unsupported chart type!</p>
-          )}
+                }}
+                option={{
+                  tooltip: { show: true },
+
+                  xAxis: { name: '' },
+                  yAxis: { type: 'category', data: Object.values(data).map(entry => entry.name) },
+                  grid: {
+                    top: '20',
+                    bottom: '30',
+                    right: '5%',
+                    left: '14%'
+                  },
+                  series: [
+                    {
+                      data: data,
+                      type: 'bar'
+                    }
+                  ]
+                }}
+              />
+            ) : (
+              // UNSUPPORTED CHART
+              <p style={{ color: 'red' }}>Unsupported chart type!</p>
+            )}
+          </div>
         </Card>
       </Cell>
     </>

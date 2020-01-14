@@ -47,7 +47,7 @@ export default props => {
             {({ networks }) => (
               <>
                 <ExplorerHeaderContainer>
-                  {({ collapsed, toggleCharts, chartType, setChartType }) => (
+                  {({ collapsed, toggleCharts }) => (
                     <>
                       <ExplorerHeaderBar
                         collapsed={collapsed}
@@ -58,8 +58,6 @@ export default props => {
                       />
                       <ExplorerHeaderCharts
                         collapsed={collapsed}
-                        chartType={chartType}
-                        setChartType={setChartType}
                         chartDefinitions={networkCharts}
                         variables={{
                           ids: selectedNetworks.length > 0 ? selectedNetworks : networks.map(n => n.id)

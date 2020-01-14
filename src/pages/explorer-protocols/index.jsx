@@ -44,7 +44,7 @@ export default props => {
           {({ protocols }) => (
             <>
               <ExplorerHeaderContainer>
-                {({ collapsed, toggleCharts, chartType, setChartType }) => (
+                {({ collapsed, toggleCharts }) => (
                   <>
                     <ExplorerHeaderBar
                       collapsed={collapsed}
@@ -55,8 +55,6 @@ export default props => {
                     />
                     <ExplorerHeaderCharts
                       collapsed={collapsed}
-                      chartType={chartType}
-                      setChartType={setChartType}
                       chartDefinitions={protocolCharts}
                       variables={{
                         ids: selectedProtocols.length > 0 ? selectedProtocols : protocols.map(n => n.id)
