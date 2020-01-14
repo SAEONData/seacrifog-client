@@ -123,16 +123,6 @@ export default ({ resetFn, selectedIds, collapsed, toggleCharts, ...props }) => 
                       map
                     </Button>,
                     <Button
-                      style={mainMenuIconStyle(false, !collapsed)}
-                      tooltipLabel={'View charts'}
-                      onClick={() => {
-                        toggleCharts()
-                      }}
-                      icon
-                    >
-                      bar_chart
-                    </Button>,
-                    <Button
                       key={3}
                       component={'a'}
                       tooltipLabel={'Download selected overviews'}
@@ -158,6 +148,17 @@ export default ({ resetFn, selectedIds, collapsed, toggleCharts, ...props }) => 
                       icon
                     >
                       refresh
+                    </Button>,
+                    <Button
+                      key={67}
+                      style={mainMenuIconStyle(false, !collapsed)}
+                      tooltipLabel={'View charts'}
+                      onClick={() => {
+                        toggleCharts()
+                      }}
+                      icon
+                    >
+                      bar_chart
                     </Button>,
                     <SideMenu
                       key={5}

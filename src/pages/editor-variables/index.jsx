@@ -10,8 +10,7 @@ import {
   EntityEditor,
   RelationEditor,
   EditorHeader,
-  EditorContentWrapperInner,
-  TestChart
+  EditorContentWrapperInner
 } from '../../modules/editor-page'
 import { VARIABLE, DATAPRODUCTS_MIN, PROTOCOLS_MIN, RFORCINGS_MIN } from '../../graphql/queries'
 import { UPDATE_VARIABLES } from '../../graphql/mutations'

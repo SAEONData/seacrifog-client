@@ -1,6 +1,5 @@
 import React from 'react'
-import { Cell, Collapse, Grid, Button } from 'react-md'
-import { useQuery } from '@apollo/react-hooks'
+import { Collapse, Grid, Button } from 'react-md'
 import ExplorerHeaderChart from './_header-chart'
 
 const enabledColor = '#d1e2ed'

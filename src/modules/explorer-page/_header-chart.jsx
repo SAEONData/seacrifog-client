@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Cell, CardText, CardTitle, Button } from 'react-md'
+import { Card, Cell, CardTitle, Button } from 'react-md'
 import ECharts from 'echarts-for-react'
 import echartsTheme from '../../lib/echarts-theme'
 import { cardStyle } from './_shared'
