@@ -12,7 +12,6 @@ export default ({ query, queryVariable, variables, title, entryName, entryValue 
   var queryResult = {}
   queryResult = useQuery(query, { variables })
   var data = {}
-  var show_labels = true
   if (queryResult.data) {
     data = queryResult.data[queryVariable].map(r => ({ value: r[entryValue], name: r[entryName] }))
   }
@@ -87,7 +86,11 @@ export default ({ query, queryVariable, variables, title, entryName, entryValue 
                   tooltip: { show: true },
 
                   xAxis: { name: '' },
-                  yAxis: { type: 'category', data: Object.values(data).map(entry => entry.name) },
+                  yAxis: {
+                    type: 'category',
+                    data: Object.values(data).map(entry => entry.name),
+                    axisLabel: { show: false }
+                  },
                   grid: {
                     top: '20',
                     bottom: '30',
@@ -96,6 +99,12 @@ export default ({ query, queryVariable, variables, title, entryName, entryValue 
                   },
                   series: [
                     {
+                      label: {
+                        show: true,
+                        position: 'insideLeft',
+                        formatter: '{b}',
+                        color: 'black'
+                      },
                       data: data,
                       type: 'bar'
                     }
