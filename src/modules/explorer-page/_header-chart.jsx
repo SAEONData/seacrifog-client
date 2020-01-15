@@ -27,6 +27,7 @@ export default ({ query, queryVariable, variables, title, entryName, entryValue 
               title={title}
               actions={[
                 <Button
+                  key={0}
                   onClick={() => {
                     setChartType('pie')
                   }}
@@ -38,13 +39,13 @@ export default ({ query, queryVariable, variables, title, entryName, entryValue 
                   pie_chart
                 </Button>,
                 <Button
+                  key={1}
                   onClick={() => {
                     setChartType('bar')
                   }}
                   style={{
                     backgroundColor: chartType === 'bar' ? enabledColor : ''
                   }}
-                  icon
                   icon
                 >
                   bar_chart
