@@ -12,8 +12,10 @@ export default ({ query, queryVariable, variables, title, entryName, entryValue 
   var queryResult = {}
   queryResult = useQuery(query, { variables })
   var data = {}
+  var showLabels = true
   if (queryResult.data) {
     data = queryResult.data[queryVariable].map(r => ({ value: r[entryValue], name: r[entryName] }))
+    if (data.length > 20) showLabels = false
   }
   return (
     <>
@@ -100,7 +102,7 @@ export default ({ query, queryVariable, variables, title, entryName, entryValue 
                   series: [
                     {
                       label: {
-                        show: true,
+                        show: showLabels,
                         position: 'insideLeft',
                         formatter: '{b}',
                         color: 'black'
