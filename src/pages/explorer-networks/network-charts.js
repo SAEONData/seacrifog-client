@@ -1,5 +1,4 @@
 import { SITES_AGGREGATION, NETWORKS_TYPES } from '../../graphql/queries'
-
 export const networkCharts = [
   {
     //Site Count

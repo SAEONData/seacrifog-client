@@ -1,4 +1,9 @@
-import { VARIABLES_DOMAINS, VARIABLES_RF_TYPES, VARIABLES_PROTOCOLS } from '../../graphql/queries'
+import {
+  VARIABLES_DOMAINS,
+  VARIABLES_RF_TYPES,
+  VARIABLES_PROTOCOLS,
+  VARIABLES_RFORCING_COMPOUNDS
+} from '../../graphql/queries'
 
 export const variableCharts = [
   {
@@ -24,5 +29,13 @@ export const variableCharts = [
     queryVariable: 'variablesProtocols',
     entryName: 'variable_name',
     entryValue: 'protocol_count'
+  },
+  {
+    //Associated RF Compound Count
+    title: 'Associated Radiative Forcing Compounds',
+    query: VARIABLES_RFORCING_COMPOUNDS,
+    queryVariable: 'variablesRforcingCompounds',
+    entryName: 'variable_name',
+    entryValue: 'rforcing_count'
   }
 ]

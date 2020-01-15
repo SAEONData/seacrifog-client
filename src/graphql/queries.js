@@ -391,6 +391,15 @@ export const VARIABLES_PROTOCOLS = gql`
     }
   }
 `
+export const VARIABLES_RFORCING_COMPOUNDS = gql`
+  query variablesRforcingCompounds($ids: [Int!]) {
+    variablesRforcingCompounds(ids: $ids) {
+      variable_id
+      variable_name
+      rforcing_count
+    }
+  }
+`
 
 export const PROTOCOLS_COVERAGES = gql`
   query protocolsCoverages($ids: [Int!]) {

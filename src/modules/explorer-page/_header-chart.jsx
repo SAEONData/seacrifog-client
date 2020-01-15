@@ -20,7 +20,7 @@ export default ({ query, queryVariable, variables, title, entryName, entryValue 
     <>
       <Cell phoneSize={4} tabletSize={8} size={6}>
         <Card style={cardStyle}>
-          <div style={{ border: '2px solid #00796b' }}>
+          <div style={{ border: '1px solid #00796b' }}>
             {/* TOOLBAR */}
             <Toolbar
               style={{ height: '46px', alignItems: 'center' }}
