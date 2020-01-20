@@ -2,7 +2,7 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { GlobalStateContext } from '../../global-state'
 import DataQuery from '../../modules/data-query'
-import { NETWORKS_MIN, NETWORK } from '../../graphql/queries'
+import { NETWORKS_MIN, NETWORK, EXPLORER_NETWORK_CHARTS } from '../../graphql/queries'
 import {
   NoneMessage,
   ExplorerFormattedObject,
@@ -56,7 +56,9 @@ export default props => {
                         resetFn={() => updateGlobalState({ selectedNetworks: [] })}
                         {...props}
                       />
+
                       <ExplorerHeaderCharts
+                        query={EXPLORER_NETWORK_CHARTS}
                         collapsed={collapsed}
                         chartDefinitions={networkCharts}
                         variables={{

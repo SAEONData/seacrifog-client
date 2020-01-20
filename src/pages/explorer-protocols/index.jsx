@@ -2,7 +2,7 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { GlobalStateContext } from '../../global-state'
 import DataQuery from '../../modules/data-query'
-import { PROTOCOLS_MIN, PROTOCOL } from '../../graphql/queries'
+import { PROTOCOLS_MIN, PROTOCOL, EXPLORER_PROTOCOL_CHARTS } from '../../graphql/queries'
 import {
   NoneMessage,
   ExplorerFormattedObject,
@@ -54,6 +54,7 @@ export default props => {
                       {...props}
                     />
                     <ExplorerHeaderCharts
+                      query={EXPLORER_PROTOCOL_CHARTS}
                       collapsed={collapsed}
                       chartDefinitions={protocolCharts}
                       variables={{

@@ -1,41 +1,42 @@
-import {
-  PROTOCOLS_COVERAGES,
-  PROTOCOLS_DOMAINS,
-  PROTOCOLS_COVERAGE_TYPES,
-  PROTOCOLS_VARIABLES
-} from '../../graphql/queries'
-
 export const protocolCharts = [
   {
     //Protocol Coverages
     title: 'Coverage Groupings',
-    query: PROTOCOLS_COVERAGES,
-    queryVariable: 'protocolsCoverages',
+    datafield: 'protocolsCoverages',
     entryName: 'coverage',
-    entryValue: 'protocol_count'
+    entryValue: 'protocol_count',
+    dataFilter: data => {
+      return data
+    }
   },
   {
     //Protocol Coverage Types
     title: 'Coverage Type Groupings',
-    query: PROTOCOLS_COVERAGE_TYPES,
-    queryVariable: 'protocolsCoverageTypes',
+    datafield: 'protocolsCoverageTypes',
     entryName: 'coverage_type',
-    entryValue: 'protocol_count'
+    entryValue: 'protocol_count',
+    dataFilter: data => {
+      return data
+    }
   },
   {
     //Protocol Domains
     title: 'Domain Groupings',
-    query: PROTOCOLS_DOMAINS,
-    queryVariable: 'protocolsDomains',
+    datafield: 'protocolsDomains',
     entryName: 'domain',
-    entryValue: 'protocol_count'
+    entryValue: 'protocol_count',
+    dataFilter: data => {
+      return data
+    }
   },
   {
     //Protocol Variables
     title: 'Related Variable Count',
-    query: PROTOCOLS_VARIABLES,
-    queryVariable: 'protocolsVariables',
+    datafield: 'protocolsVariables',
     entryName: 'protocol_title',
-    entryValue: 'variable_count'
+    entryValue: 'variable_count',
+    dataFilter: data => {
+      return data
+    }
   }
 ]
