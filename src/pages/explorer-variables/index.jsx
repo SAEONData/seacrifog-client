@@ -2,7 +2,7 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { GlobalStateContext } from '../../global-state'
 import DataQuery from '../../modules/data-query'
-import { VARIABLES_MIN, VARIABLE } from '../../graphql/queries'
+import { VARIABLES_MIN, VARIABLE, EXPLORER_VARIABLE_CHARTS } from '../../graphql/queries'
 import {
   NoneMessage,
   ExplorerFormattedObject,
@@ -71,6 +71,7 @@ export default props => {
                       {...props}
                     />
                     <ExplorerHeaderCharts
+                      query={EXPLORER_VARIABLE_CHARTS}
                       collapsed={collapsed}
                       chartDefinitions={variableCharts}
                       variables={{

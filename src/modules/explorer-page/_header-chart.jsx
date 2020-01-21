@@ -3,20 +3,11 @@ import { Card, Cell, Button, Toolbar } from 'react-md'
 import ECharts from 'echarts-for-react'
 import echartsTheme from '../../lib/echarts-theme'
 import { cardStyle } from './_shared'
-import { useQuery } from '@apollo/react-hooks'
 
 const enabledColor = 'rgba(255,255,255,0.3)'
-export default ({ query, queryVariable, variables, title, entryName, entryValue }) => {
+export default ({ data, title }) => {
+  //state
   const [chartType, setChartType] = useState('pie')
-
-  var queryResult = {}
-  queryResult = useQuery(query, { variables })
-  var data = {}
-  var showLabels = true
-  if (queryResult.data) {
-    data = queryResult.data[queryVariable].map(r => ({ value: r[entryValue], name: r[entryName] }))
-    if (data.length > 20) showLabels = false
-  }
   return (
     <>
       <Cell phoneSize={4} tabletSize={8} size={6}>
@@ -91,7 +82,7 @@ export default ({ query, queryVariable, variables, title, entryName, entryValue 
                   xAxis: { name: '' },
                   yAxis: {
                     type: 'category',
-                    data: Object.values(data).map(entry => entry.name),
+                    data: data,
                     axisLabel: { show: false }
                   },
                   grid: {
@@ -103,7 +94,7 @@ export default ({ query, queryVariable, variables, title, entryName, entryValue 
                   series: [
                     {
                       label: {
-                        show: showLabels,
+                        show: data.length > 20 ? false : true, //bar charts with more than 20 rows start to overlap text. A better approach would be basing show on row height
                         position: 'insideLeft',
                         formatter: '{b}',
                         color: 'black'

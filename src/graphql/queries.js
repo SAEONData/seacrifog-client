@@ -348,51 +348,35 @@ export const VARIABLES = gql`
   }
 `
 
-// Aggregations
-export const SITES_AGGREGATION = gql`
-  query sitesAggregation($ids: [Int!]) {
+// Explorer Chart Queries
+export const EXPLORER_NETWORK_CHARTS = gql`
+  query explorerNetworkCharts($ids: [Int!]) {
     sitesAggregation(ids: $ids) {
       network_id
       acronym
       site_count
     }
-  }
-`
-export const NETWORKS_TYPES = gql`
-  query networksTypes($ids: [Int!]) {
     networksTypes(ids: $ids) {
       network_count
       type
     }
   }
 `
-export const VARIABLES_DOMAINS = gql`
-  query variablesDomains($ids: [Int!]) {
+export const EXPLORER_VARIABLE_CHARTS = gql`
+  query explorerVariableCharts($ids: [Int!]) {
     variablesDomains(ids: $ids) {
       domain
       variable_count
     }
-  }
-`
-export const VARIABLES_RF_TYPES = gql`
-  query variablesRfTypes($ids: [Int!]) {
     variablesRfTypes(ids: $ids) {
       rftype
       variable_count
     }
-  }
-`
-export const VARIABLES_PROTOCOLS = gql`
-  query variablesProtocols($ids: [Int!]) {
     variablesProtocols(ids: $ids) {
       id
       variable_name
       protocol_count
     }
-  }
-`
-export const VARIABLES_RFORCING_COMPOUNDS = gql`
-  query variablesRforcingCompounds($ids: [Int!]) {
     variablesRforcingCompounds(ids: $ids) {
       variable_id
       variable_name
@@ -400,33 +384,20 @@ export const VARIABLES_RFORCING_COMPOUNDS = gql`
     }
   }
 `
-
-export const PROTOCOLS_COVERAGES = gql`
-  query protocolsCoverages($ids: [Int!]) {
+export const EXPLORER_PROTOCOL_CHARTS = gql`
+  query explorerProtocolCharts($ids: [Int!]) {
     protocolsCoverages(ids: $ids) {
       coverage
       protocol_count
     }
-  }
-`
-export const PROTOCOLS_COVERAGE_TYPES = gql`
-  query protocolsCoverageTypes($ids: [Int!]) {
     protocolsCoverageTypes(ids: $ids) {
       coverage_type
       protocol_count
     }
-  }
-`
-export const PROTOCOLS_DOMAINS = gql`
-  query protocolsDomains($ids: [Int!]) {
     protocolsDomains(ids: $ids) {
       domain
       protocol_count
     }
-  }
-`
-export const PROTOCOLS_VARIABLES = gql`
-  query protocolsVariables($ids: [Int!]) {
     protocolsVariables(ids: $ids) {
       protocol_id
       protocol_title

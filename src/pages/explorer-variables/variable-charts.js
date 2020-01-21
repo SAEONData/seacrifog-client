@@ -1,41 +1,63 @@
-import {
-  VARIABLES_DOMAINS,
-  VARIABLES_RF_TYPES,
-  VARIABLES_PROTOCOLS,
-  VARIABLES_RFORCING_COMPOUNDS
-} from '../../graphql/queries'
-
 export const variableCharts = [
   {
     //Domains
     title: 'Domain Groupings',
-    query: VARIABLES_DOMAINS,
-    queryVariable: 'variablesDomains',
+    datafield: 'variablesDomains',
     entryName: 'domain',
-    entryValue: 'variable_count'
+    entryValue: 'variable_count',
+    dataFilter: data => {
+      return data
+    }
   },
   {
     //Rf Types
-    title: 'Rf Types',
-    query: VARIABLES_RF_TYPES,
-    queryVariable: 'variablesRfTypes',
+    title: 'Radiative Forcing Types',
+    datafield: 'variablesRfTypes',
     entryName: 'rftype',
-    entryValue: 'variable_count'
+    entryValue: 'variable_count',
+    dataFilter: data => {
+      return data
+    }
   },
   {
     //Protocol Count
     title: 'Related Protocol Count',
-    query: VARIABLES_PROTOCOLS,
-    queryVariable: 'variablesProtocols',
+    datafield: 'variablesProtocols',
     entryName: 'variable_name',
-    entryValue: 'protocol_count'
+    entryValue: 'protocol_count',
+    dataFilter: data => {
+      return data
+    }
   },
   {
     //Associated RF Compound Count
     title: 'Associated Radiative Forcing Compounds',
-    query: VARIABLES_RFORCING_COMPOUNDS,
-    queryVariable: 'variablesRforcingCompounds',
+    datafield: 'variablesRforcingCompounds',
     entryName: 'variable_name',
-    entryValue: 'rforcing_count'
+    entryValue: 'rforcing_count',
+    dataFilter: data => {
+      return data
+    }
+  },
+  //DUMMY COPIED CHARTS TO BE DELETED
+  {
+    //Domains
+    title: 'Domain Groupings',
+    datafield: 'variablesDomains',
+    entryName: 'domain',
+    entryValue: 'variable_count',
+    dataFilter: data => {
+      return data
+    }
+  },
+  {
+    //Rf Types
+    title: 'Radiative Forcing Types',
+    datafield: 'variablesRfTypes',
+    entryName: 'rftype',
+    entryValue: 'variable_count',
+    dataFilter: data => {
+      return data
+    }
   }
 ]
