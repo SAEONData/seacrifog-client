@@ -1,5 +1,5 @@
 import React from 'react'
-import { Collapse, Grid, Cell, TabsContainer, Tabs, Tab, Avatar, Button, FontIcon, Card, CardText } from 'react-md'
+import { Collapse, Grid, Cell, TabsContainer, Tabs, Tab, Avatar } from 'react-md'
 import ExplorerHeaderChart from './_header-chart'
 import { useQuery } from '@apollo/react-hooks'
 
@@ -59,8 +59,7 @@ export default ({ collapsed, chartDefinitions, query, variables }) => {
           backgroundColor: tabBackgroundColor,
           border: '1px solid ' + tabBorderColor
         }}
-        children={[]}
-      ></Tabs>
+      >{[]}</Tabs>
     )
 
     //appending Tab elements to Tabs as children
