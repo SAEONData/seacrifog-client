@@ -1,4 +1,4 @@
-import React  from 'react'
+import React from 'react'
 import { Toolbar, Button, LinearProgress, Badge } from 'react-md'
 import DataQuery from '../data-query'
 import { useHistory } from 'react-router-dom'
