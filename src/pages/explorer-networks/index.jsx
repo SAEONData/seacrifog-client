@@ -41,170 +41,177 @@ const networksDataDefinitions = {
 export default props => {
   const history = useHistory()
   return (
-    <>
-      <GlobalStateContext.Consumer>
-        {({ updateGlobalState, selectedNetworks, currentNetwork, selectedVariables }) => (
-          <DataQuery query={NETWORKS_MIN}>
-            {({ networks }) => (
-              <>
-                <ExplorerHeaderContainer>
-                  {({ collapsed, toggleCharts }) => (
-                    <>
-                      <ExplorerHeaderBar
-                        key={'itsakey'}
-                        id={'itsanid'}
-                        collapsed={collapsed}
-                        toggleCharts={toggleCharts}
-                        selectedIds={selectedNetworks}
-                        resetFn={() => updateGlobalState({ selectedNetworks: [] })}
-                        {...props}
-                      />
+    <DataQuery query={NETWORKS_MIN}>
+      {({ networks }) => {
+        return (
+          <GlobalStateContext.Consumer>
+            {({ updateGlobalState, selectedNetworks, currentNetwork, selectedVariables }) => {
+              return (
+                <>
+                  <ExplorerHeaderContainer>
+                    {({ collapsed, toggleCharts }) => (
+                      <>
+                        <ExplorerHeaderBar
+                          key={'itsakey'}
+                          id={'itsanid'}
+                          collapsed={collapsed}
+                          toggleCharts={toggleCharts}
+                          selectedIds={selectedNetworks}
+                          resetFn={() => updateGlobalState({ selectedNetworks: [] })}
+                          {...props}
+                        />
 
-                      <ExplorerHeaderChartsTest
-                        key={'thisisakey'}
-                        id={'thisisanid'}
-                        query={EXPLORER_NETWORK_CHARTS}
-                        collapsed={collapsed}
-                        chartDefinitions={networkCharts}
-                        variables={{
-                          ids: selectedNetworks.length > 0 ? selectedNetworks : networks.map(n => n.id)
-                        }}
-                      />
-                    </>
-                  )}
-                </ExplorerHeaderContainer>
-
-                <ExplorerLayout>
-                  <ExplorerTableLayout>
-                    <Table
-                      actions={[<ScrollButton key={1} disabled={selectedNetworks.length > 0 ? false : true} />]}
-                      baseId={'networks-table'}
-                      searchbar={true}
-                      className={'fixed-table'}
-                      defaultPaginationRows={5}
-                      selectedIds={selectedNetworks}
-                      dataDefinitions={networksDataDefinitions}
-                      data={networks}
-                      toggleSelect={({ id }) =>
-                        updateGlobalState(
-                          {
-                            selectedNetworks: selectedNetworks.includes(id)
-                              ? [...selectedNetworks].filter(vId => vId !== id)
-                              : [...new Set([...selectedNetworks, id])]
-                          },
-                          { currentIndex: 'currentNetwork', selectedIds: 'selectedNetworks' }
-                        )
-                      }
-                    />
-                  </ExplorerTableLayout>
-                  <ExplorerTabsLayout
-                    currentIndex={currentNetwork}
-                    updateCurrentIndex={i => updateGlobalState({ currentNetwork: i })}
-                    id="selected-variables-tabs"
-                    selectedIds={selectedNetworks}
-                    {...props}
-                  >
-                    {({ id }) => (
-                      <DataQuery query={NETWORK} variables={{ id }}>
-                        {({ network }) => (
-                          <ExplorerEntityLayout
-                            title={network.title}
-                            authors={network.acronym}
-                            abstract={network.abstract}
-                            clickClose={() =>
-                              updateGlobalState(
-                                { selectedNetworks: selectedNetworks.filter(sId => sId !== network.id) },
-                                { currentIndex: 'currentNetwork', selectedIds: 'selectedNetworks' }
-                              )
-                            }
-                            href={encodeURI(
-                              `${process.env.DOWNLOADS_ENDPOINT ||
-                                'https://api.seacrifog.saeon.ac.za/downloads'}/NETWORKS?filename=NETWORK-${new Date()}.json&ids=${[
-                                network.id
-                              ].join(',')}`
-                            )}
-                            clickEdit={() => history.push(`/networks/${network.id}`)}
-                          >
-                            <ExplorerSectionLayout
-                              sections={[
-                                // General information
-                                {
-                                  title: 'Additional Information',
-                                  subTitle: 'All available fields',
-                                  component: (
-                                    <ExplorerFormattedObject
-                                      object={formatAndFilterObjectKeys(network, mappings, ([key, val]) =>
-                                        ['abstract', '__typename'].includes(key) || typeof val === 'object'
-                                          ? false
-                                          : true
-                                      )}
-                                    />
-                                  )
-                                },
-
-                                // Related variables
-                                {
-                                  title: 'Variables',
-                                  subTitle: 'Measured by this network',
-                                  component: network.variables[0] ? (
-                                    <div>
-                                      <List>
-                                        {network.variables
-                                          .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-                                          .map((variable, i) => (
-                                            <ListItem
-                                              onClick={() =>
-                                                updateGlobalState(
-                                                  {
-                                                    selectedVariables: [...new Set([...selectedVariables, variable.id])]
-                                                  },
-                                                  { currentIndex: 'currentVariable', selectedIds: 'selectedVariables' },
-                                                  () => history.push('/variables')
-                                                )
-                                              }
-                                              className="add-on-hover"
-                                              key={i}
-                                              rightIcon={variableIcon}
-                                              leftIcon={iconLink}
-                                              primaryText={`${variable.name}`}
-                                            />
-                                          ))}
-                                      </List>
-                                    </div>
-                                  ) : (
-                                    <NoneMessage />
-                                  )
-                                },
-
-                                // Coverage map
-                                {
-                                  title: 'Spatial Coverage',
-                                  subTitle: 'Of this network',
-                                  component: network.coverage_spatial ? (
-                                    <ExplorerCoverageMap geoJson={network.coverage_spatial} />
-                                  ) : (
-                                    <NoneMessage />
-                                  ),
-                                  style: { height: '500px' },
-                                  grid: network.coverage_spatial
-                                    ? {
-                                        size: 12
-                                      }
-                                    : {}
-                                }
-                              ]}
-                            />
-                          </ExplorerEntityLayout>
-                        )}
-                      </DataQuery>
+                        <ExplorerHeaderCharts
+                          key={'thisisakey'}
+                          id={'thisisanid'}
+                          query={EXPLORER_NETWORK_CHARTS}
+                          collapsed={collapsed}
+                          chartDefinitions={networkCharts}
+                          variables={{
+                            ids: selectedNetworks.length > 0 ? selectedNetworks : networks.map(n => n.id)
+                          }}
+                        />
+                      </>
                     )}
-                  </ExplorerTabsLayout>
-                </ExplorerLayout>
-              </>
-            )}
-          </DataQuery>
-        )}
-      </GlobalStateContext.Consumer>
-    </>
+                  </ExplorerHeaderContainer>
+
+                  <ExplorerLayout>
+                    <ExplorerTableLayout>
+                      <Table
+                        actions={[<ScrollButton key={1} disabled={selectedNetworks.length > 0 ? false : true} />]}
+                        baseId={'networks-table'}
+                        searchbar={true}
+                        className={'fixed-table'}
+                        defaultPaginationRows={5}
+                        selectedIds={selectedNetworks}
+                        dataDefinitions={networksDataDefinitions}
+                        data={networks}
+                        toggleSelect={({ id }) =>
+                          updateGlobalState(
+                            {
+                              selectedNetworks: selectedNetworks.includes(id)
+                                ? [...selectedNetworks].filter(vId => vId !== id)
+                                : [...new Set([...selectedNetworks, id])]
+                            },
+                            { currentIndex: 'currentNetwork', selectedIds: 'selectedNetworks' }
+                          )
+                        }
+                      />
+                    </ExplorerTableLayout>
+                    <ExplorerTabsLayout
+                      currentIndex={currentNetwork}
+                      updateCurrentIndex={i => updateGlobalState({ currentNetwork: i })}
+                      id="selected-variables-tabs"
+                      selectedIds={selectedNetworks}
+                      {...props}
+                    >
+                      {({ id }) => (
+                        <DataQuery query={NETWORK} variables={{ id }}>
+                          {({ network }) => (
+                            <ExplorerEntityLayout
+                              title={network.title}
+                              authors={network.acronym}
+                              abstract={network.abstract}
+                              clickClose={() =>
+                                updateGlobalState(
+                                  { selectedNetworks: selectedNetworks.filter(sId => sId !== network.id) },
+                                  { currentIndex: 'currentNetwork', selectedIds: 'selectedNetworks' }
+                                )
+                              }
+                              href={encodeURI(
+                                `${process.env.DOWNLOADS_ENDPOINT ||
+                                  'https://api.seacrifog.saeon.ac.za/downloads'}/NETWORKS?filename=NETWORK-${new Date()}.json&ids=${[
+                                  network.id
+                                ].join(',')}`
+                              )}
+                              clickEdit={() => history.push(`/networks/${network.id}`)}
+                            >
+                              <ExplorerSectionLayout
+                                sections={[
+                                  // General information
+                                  {
+                                    title: 'Additional Information',
+                                    subTitle: 'All available fields',
+                                    component: (
+                                      <ExplorerFormattedObject
+                                        object={formatAndFilterObjectKeys(network, mappings, ([key, val]) =>
+                                          ['abstract', '__typename'].includes(key) || typeof val === 'object'
+                                            ? false
+                                            : true
+                                        )}
+                                      />
+                                    )
+                                  },
+
+                                  // Related variables
+                                  {
+                                    title: 'Variables',
+                                    subTitle: 'Measured by this network',
+                                    component: network.variables[0] ? (
+                                      <div>
+                                        <List>
+                                          {network.variables
+                                            .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
+                                            .map((variable, i) => (
+                                              <ListItem
+                                                onClick={() =>
+                                                  updateGlobalState(
+                                                    {
+                                                      selectedVariables: [
+                                                        ...new Set([...selectedVariables, variable.id])
+                                                      ]
+                                                    },
+                                                    {
+                                                      currentIndex: 'currentVariable',
+                                                      selectedIds: 'selectedVariables'
+                                                    },
+                                                    () => history.push('/variables')
+                                                  )
+                                                }
+                                                className="add-on-hover"
+                                                key={i}
+                                                rightIcon={variableIcon}
+                                                leftIcon={iconLink}
+                                                primaryText={`${variable.name}`}
+                                              />
+                                            ))}
+                                        </List>
+                                      </div>
+                                    ) : (
+                                      <NoneMessage />
+                                    )
+                                  },
+
+                                  // Coverage map
+                                  {
+                                    title: 'Spatial Coverage',
+                                    subTitle: 'Of this network',
+                                    component: network.coverage_spatial ? (
+                                      <ExplorerCoverageMap geoJson={network.coverage_spatial} />
+                                    ) : (
+                                      <NoneMessage />
+                                    ),
+                                    style: { height: '500px' },
+                                    grid: network.coverage_spatial
+                                      ? {
+                                          size: 12
+                                        }
+                                      : {}
+                                  }
+                                ]}
+                              />
+                            </ExplorerEntityLayout>
+                          )}
+                        </DataQuery>
+                      )}
+                    </ExplorerTabsLayout>
+                  </ExplorerLayout>
+                </>
+              )
+            }}
+          </GlobalStateContext.Consumer>
+        )
+      }}
+    </DataQuery>
   )
 }
