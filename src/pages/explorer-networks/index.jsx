@@ -16,7 +16,6 @@ import {
   iconLink,
   ExplorerCoverageMap,
   variableIcon,
-  ExplorerHeaderContainer,
   ExplorerHeaderCharts
 } from '../../modules/explorer-page'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
@@ -46,28 +45,24 @@ export default props => {
           <DataQuery query={NETWORKS_MIN}>
             {({ networks }) => (
               <>
-                <ExplorerHeaderContainer>
-                  {({ collapsed, toggleCharts }) => (
-                    <>
-                      <ExplorerHeaderBar
-                        collapsed={collapsed}
-                        toggleCharts={toggleCharts}
-                        selectedIds={selectedNetworks}
-                        resetFn={() => updateGlobalState({ selectedNetworks: [] })}
-                        {...props}
-                      />
-
+                <ExplorerHeaderBar
+                  selectedIds={selectedNetworks}
+                  resetFn={() => updateGlobalState({ selectedNetworks: [] })}
+                  {...props}
+                >
+                  {expanded => {
+                    return (
                       <ExplorerHeaderCharts
                         query={EXPLORER_NETWORK_CHARTS}
-                        collapsed={collapsed}
+                        collapsed={!expanded}
                         chartDefinitions={networkCharts}
                         variables={{
                           ids: selectedNetworks.length > 0 ? selectedNetworks : networks.map(n => n.id)
                         }}
                       />
-                    </>
-                  )}
-                </ExplorerHeaderContainer>
+                    )
+                  }}
+                </ExplorerHeaderBar>
 
                 <ExplorerLayout>
                   <ExplorerTableLayout>
