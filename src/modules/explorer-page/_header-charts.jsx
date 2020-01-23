@@ -62,8 +62,9 @@ export default ({ collapsed, chartDefinitions, query, variables }) => {
           backgroundColor: tabBackgroundColor,
           border: '1px solid ' + tabBorderColor
         }}
-        children={[]}
-      ></Tabs>
+      >
+        {[]}
+      </Tabs>
     )
 
     //appending Tab elements to Tabs as children
