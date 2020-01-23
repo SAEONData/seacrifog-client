@@ -30,6 +30,7 @@ export default class extends PureComponent {
    * update the metadata search in the background
    */
   async componentDidUpdate(prevProps, prevState) {
+    console.log('Global state updated')
     const { gqlClient } = this.props
     const searchFields = ['selectedNetworks', 'selectedVariables', 'selectedProtocols']
     let refresh = false
@@ -100,6 +101,7 @@ export default class extends PureComponent {
     })
 
   render() {
+    // console.log('RENDERING GLOBAL STATE')
     const { updateGlobalState, state, props } = this
 
     return (

@@ -17,7 +17,8 @@ import {
   ExplorerCoverageMap,
   variableIcon,
   ExplorerHeaderContainer,
-  ExplorerHeaderCharts
+  ExplorerHeaderCharts,
+  ExplorerHeaderChartsTest
 } from '../../modules/explorer-page'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
 import { List, ListItem } from 'react-md'
@@ -50,6 +51,8 @@ export default props => {
                   {({ collapsed, toggleCharts }) => (
                     <>
                       <ExplorerHeaderBar
+                        key={'itsakey'}
+                        id={'itsanid'}
                         collapsed={collapsed}
                         toggleCharts={toggleCharts}
                         selectedIds={selectedNetworks}
@@ -57,7 +60,9 @@ export default props => {
                         {...props}
                       />
 
-                      <ExplorerHeaderCharts
+                      <ExplorerHeaderChartsTest
+                        key={'thisisakey'}
+                        id={'thisisanid'}
                         query={EXPLORER_NETWORK_CHARTS}
                         collapsed={collapsed}
                         chartDefinitions={networkCharts}

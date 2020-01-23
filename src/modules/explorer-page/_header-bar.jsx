@@ -25,6 +25,7 @@ const badgeStyle = disabled => ({
 })
 
 export default ({ resetFn, selectedIds, collapsed, toggleCharts, ...props }) => {
+  // console.log('RENDERING HEADER BAR')
   const history = useHistory()
   const ctx = props.location.pathname.replace('/', '').toUpperCase()
 

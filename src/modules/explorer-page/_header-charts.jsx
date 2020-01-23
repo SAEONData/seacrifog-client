@@ -1,7 +1,8 @@
 import React from 'react'
-import { Collapse, Grid, Cell, TabsContainer, Tabs, Tab, Avatar, Button, FontIcon, Card, CardText } from 'react-md'
+import { Collapse, Grid, Cell, TabsContainer, Tabs, Tab, Avatar } from 'react-md'
 import ExplorerHeaderChart from './_header-chart'
 import { useQuery } from '@apollo/react-hooks'
+import _headerChart from './_header-chart'
 
 //colors and styling used multiple times on this component. Should maybe be somewhere else
 const tabBackgroundColor = '#00897B'
@@ -16,6 +17,7 @@ const tabStyle = {
 
 //No overflow management currently in place. Can be an issue if Explorer pages end up with many charts(unlikely for now, 37 charts would be needed to overflow currently)
 export default ({ collapsed, chartDefinitions, query, variables }) => {
+  // const memoCharts = useMemo(()=>{return},[])
   const { loading, error, data } = useQuery(query, { variables })
 
   //Dispay a simple empty grid while loading charts to avoid jarring movement of page:
@@ -55,6 +57,7 @@ export default ({ collapsed, chartDefinitions, query, variables }) => {
     var chartTabs = (
       <Tabs
         id={'tabsid1'}
+        tabId="tabsId1"
         style={{
           backgroundColor: tabBackgroundColor,
           border: '1px solid ' + tabBorderColor
@@ -86,7 +89,6 @@ export default ({ collapsed, chartDefinitions, query, variables }) => {
           <Grid style={{ backgroundColor: '#EEEEEE' }}>
             {Object.entries(chartDefinitions).map(
               ([chartIndex, { title, datafield, entryName, entryValue, dataFilter }]) => {
-                data[datafield].map(r => ({ value: r[entryValue], name: r[entryName] }))
                 var chartData = dataFilter(data[datafield])
                 chartData = chartData.map(r => ({ value: r[entryValue], name: r[entryName] }))
 
@@ -97,8 +99,6 @@ export default ({ collapsed, chartDefinitions, query, variables }) => {
                       key={'explorer-chart' + chartIndex}
                       title={title}
                       data={chartData}
-                      entryName={entryName}
-                      entryValue={entryValue}
                     />
                   )
                 else return null
@@ -108,6 +108,8 @@ export default ({ collapsed, chartDefinitions, query, variables }) => {
         </Tab>
       )
     }
+
+    // const headerCharts = useMemo(()=>{})
     return (
       <Collapse collapsed={collapsed}>
         <>
@@ -117,3 +119,20 @@ export default ({ collapsed, chartDefinitions, query, variables }) => {
     )
   }
 }
+
+function propsAreEqual(prev, next) {
+  console.log('In propsAreEqual')
+  if (prev.props === next.props) {
+    console.log('propsAreEqual returning false')
+    console.log('prev', prev)
+    console.log('next', next)
+    return false
+  } else {
+    console.log('propsAreEqual returning true')
+    console.log('prev', prev)
+    console.log('next', next)
+    return true
+  }
+}
+
+// export default memo(headerCharts, propsAreEqual)
