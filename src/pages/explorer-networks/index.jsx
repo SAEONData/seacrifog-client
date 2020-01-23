@@ -16,9 +16,7 @@ import {
   iconLink,
   ExplorerCoverageMap,
   variableIcon,
-  ExplorerHeaderContainer,
-  ExplorerHeaderCharts,
-  ExplorerHeaderChartsTest
+  ExplorerHeaderCharts
 } from '../../modules/explorer-page'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
 import { List, ListItem } from 'react-md'
@@ -48,32 +46,28 @@ export default props => {
             {({ updateGlobalState, selectedNetworks, currentNetwork, selectedVariables }) => {
               return (
                 <>
-                  <ExplorerHeaderContainer>
-                    {({ collapsed, toggleCharts }) => (
-                      <>
-                        <ExplorerHeaderBar
-                          key={'itsakey'}
-                          id={'itsanid'}
-                          collapsed={collapsed}
-                          toggleCharts={toggleCharts}
-                          selectedIds={selectedNetworks}
-                          resetFn={() => updateGlobalState({ selectedNetworks: [] })}
-                          {...props}
-                        />
-
+                  <ExplorerHeaderBar
+                    key={'itsakey'}
+                    id={'itsanid'}
+                    selectedIds={selectedNetworks}
+                    resetFn={() => updateGlobalState({ selectedNetworks: [] })}
+                    {...props}
+                  >
+                    {expanded => {
+                      return (
                         <ExplorerHeaderCharts
                           key={'thisisakey'}
                           id={'thisisanid'}
                           query={EXPLORER_NETWORK_CHARTS}
-                          collapsed={collapsed}
+                          collapsed={!expanded}
                           chartDefinitions={networkCharts}
                           variables={{
                             ids: selectedNetworks.length > 0 ? selectedNetworks : networks.map(n => n.id)
                           }}
                         />
-                      </>
-                    )}
-                  </ExplorerHeaderContainer>
+                      )
+                    }}
+                  </ExplorerHeaderBar>
 
                   <ExplorerLayout>
                     <ExplorerTableLayout>
