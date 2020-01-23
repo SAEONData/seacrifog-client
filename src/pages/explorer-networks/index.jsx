@@ -22,6 +22,7 @@ import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
 import { List, ListItem } from 'react-md'
 import { Table } from '../../modules/shared-components'
 import { networkCharts } from './network-charts'
+import ShowChartState from '../../chart-state'
 const mappings = {}
 
 const networksDataDefinitions = {
@@ -34,8 +35,7 @@ const networksDataDefinitions = {
   end_year: { show: true, order: 6, label: 'End Year' },
   __typename: { show: false }
 }
-//move collapse and grid into a class, maybe ExplorerHeaderChart as well or make it a child
-//error 500 is from node version. update to v13 next week
+
 export default props => {
   const history = useHistory()
   return (
@@ -46,28 +46,21 @@ export default props => {
             {({ updateGlobalState, selectedNetworks, currentNetwork, selectedVariables }) => {
               return (
                 <>
-                  <ExplorerHeaderBar
-                    key={'itsakey'}
-                    id={'itsanid'}
-                    selectedIds={selectedNetworks}
-                    resetFn={() => updateGlobalState({ selectedNetworks: [] })}
-                    {...props}
-                  >
-                    {expanded => {
-                      return (
-                        <ExplorerHeaderCharts
-                          key={'thisisakey'}
-                          id={'thisisanid'}
-                          query={EXPLORER_NETWORK_CHARTS}
-                          collapsed={!expanded}
-                          chartDefinitions={networkCharts}
-                          variables={{
-                            ids: selectedNetworks.length > 0 ? selectedNetworks : networks.map(n => n.id)
-                          }}
-                        />
-                      )
-                    }}
-                  </ExplorerHeaderBar>
+                  <ShowChartState>
+                    <ExplorerHeaderBar
+                      selectedIds={selectedNetworks}
+                      resetFn={() => updateGlobalState({ selectedNetworks: [] })}
+                      {...props}
+                    />
+
+                    <ExplorerHeaderCharts
+                      query={EXPLORER_NETWORK_CHARTS}
+                      chartDefinitions={networkCharts}
+                      variables={{
+                        ids: selectedNetworks.length > 0 ? selectedNetworks : networks.map(n => n.id)
+                      }}
+                    />
+                  </ShowChartState>
 
                   <ExplorerLayout>
                     <ExplorerTableLayout>

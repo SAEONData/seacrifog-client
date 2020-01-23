@@ -17,7 +17,6 @@ import {
   protocolsIcon,
   iconLink,
   ExplorerCoverageMap,
-  ExplorerHeaderContainer,
   ExplorerHeaderCharts
 } from '../../modules/explorer-page'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
@@ -25,6 +24,7 @@ import { List, ListItem, DataTable, TableHeader, TableRow, TableColumn, TableBod
 import { mergeLeft } from 'ramda'
 import { Table } from '../../modules/shared-components'
 import { variableCharts } from './variable-charts'
+import ShowChartState from '../../chart-state'
 
 const mappings = {
   rftype: 'Radiative Forcing',
@@ -55,32 +55,26 @@ const getGeoJson = dps => ({
 export default props => {
   const history = useHistory()
   return (
-    <GlobalStateContext.Consumer>
-      {({ updateGlobalState, selectedVariables, currentVariable, selectedDataproducts, selectedProtocols }) => (
-        <DataQuery query={VARIABLES_MIN}>
-          {({ variables }) => (
+    <DataQuery query={VARIABLES_MIN}>
+      {({ variables }) => (
+        <GlobalStateContext.Consumer>
+          {({ updateGlobalState, selectedVariables, currentVariable, selectedDataproducts, selectedProtocols }) => (
             <>
-              <ExplorerHeaderContainer>
-                {({ collapsed, toggleCharts }) => (
-                  <>
-                    <ExplorerHeaderBar
-                      collapsed={collapsed}
-                      toggleCharts={toggleCharts}
-                      selectedIds={selectedVariables}
-                      resetFn={() => updateGlobalState({ selectedVariables: [] })}
-                      {...props}
-                    />
-                    <ExplorerHeaderCharts
-                      query={EXPLORER_VARIABLE_CHARTS}
-                      collapsed={collapsed}
-                      chartDefinitions={variableCharts}
-                      variables={{
-                        ids: selectedVariables.length > 0 ? selectedVariables : variables.map(n => n.id)
-                      }}
-                    />
-                  </>
-                )}
-              </ExplorerHeaderContainer>
+              <ShowChartState>
+                <ExplorerHeaderBar
+                  selectedIds={selectedVariables}
+                  resetFn={() => updateGlobalState({ selectedVariables: [] })}
+                  {...props}
+                />
+
+                <ExplorerHeaderCharts
+                  query={EXPLORER_VARIABLE_CHARTS}
+                  chartDefinitions={variableCharts}
+                  variables={{
+                    ids: selectedVariables.length > 0 ? selectedVariables : variables.map(n => n.id)
+                  }}
+                />
+              </ShowChartState>
 
               <ExplorerLayout>
                 <ExplorerTableLayout>
@@ -320,8 +314,8 @@ export default props => {
               </ExplorerLayout>
             </>
           )}
-        </DataQuery>
+        </GlobalStateContext.Consumer>
       )}
-    </GlobalStateContext.Consumer>
+    </DataQuery>
   )
 }

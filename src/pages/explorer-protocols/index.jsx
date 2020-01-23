@@ -15,7 +15,6 @@ import {
   ScrollButton,
   variableIcon,
   iconLink,
-  ExplorerHeaderContainer,
   ExplorerHeaderCharts
 } from '../../modules/explorer-page'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
@@ -23,6 +22,8 @@ import { List, ListItem } from 'react-md'
 import { mergeLeft } from 'ramda'
 import { Table } from '../../modules/shared-components'
 import { protocolCharts } from './protocol-charts'
+import ShowChartState from '../../chart-state'
+
 const protocolsDataDefinitions = {
   id: { order: 0, show: true, label: 'ID' },
   title: { order: 1, show: true, label: 'Protocol' },
@@ -38,32 +39,26 @@ const mappings = {}
 export default props => {
   const history = useHistory()
   return (
-    <GlobalStateContext.Consumer>
-      {({ updateGlobalState, selectedProtocols, selectedVariables, currentProtocol }) => (
-        <DataQuery query={PROTOCOLS_MIN}>
-          {({ protocols }) => (
+    <DataQuery query={PROTOCOLS_MIN}>
+      {({ protocols }) => (
+        <GlobalStateContext.Consumer>
+          {({ updateGlobalState, selectedProtocols, selectedVariables, currentProtocol }) => (
             <>
-              <ExplorerHeaderContainer>
-                {({ collapsed, toggleCharts }) => (
-                  <>
-                    <ExplorerHeaderBar
-                      collapsed={collapsed}
-                      toggleCharts={toggleCharts}
-                      selectedIds={selectedProtocols}
-                      resetFn={() => updateGlobalState({ selectedProtocols: [] })}
-                      {...props}
-                    />
-                    <ExplorerHeaderCharts
-                      query={EXPLORER_PROTOCOL_CHARTS}
-                      collapsed={collapsed}
-                      chartDefinitions={protocolCharts}
-                      variables={{
-                        ids: selectedProtocols.length > 0 ? selectedProtocols : protocols.map(n => n.id)
-                      }}
-                    />
-                  </>
-                )}
-              </ExplorerHeaderContainer>
+              <ShowChartState>
+                <ExplorerHeaderBar
+                  selectedIds={selectedProtocols}
+                  resetFn={() => updateGlobalState({ selectedProtocols: [] })}
+                  {...props}
+                />
+
+                <ExplorerHeaderCharts
+                  query={EXPLORER_PROTOCOL_CHARTS}
+                  chartDefinitions={protocolCharts}
+                  variables={{
+                    ids: selectedProtocols.length > 0 ? selectedProtocols : protocols.map(n => n.id)
+                  }}
+                />
+              </ShowChartState>
 
               <ExplorerLayout>
                 <ExplorerTableLayout>
@@ -179,8 +174,8 @@ export default props => {
               </ExplorerLayout>
             </>
           )}
-        </DataQuery>
+        </GlobalStateContext.Consumer>
       )}
-    </GlobalStateContext.Consumer>
+    </DataQuery>
   )
 }

@@ -1,7 +1,16 @@
-import React from 'react'
-import { Collapse, Grid, Cell, TabsContainer, Tabs, Tab, Avatar } from 'react-md'
+import React, { PureComponent } from 'react'
+import { Collapse, Grid, TabsContainer, Tabs, Tab, Avatar } from 'react-md'
 import ExplorerHeaderChart from './_header-chart'
-import { useQuery } from '@apollo/react-hooks'
+import { ApolloConsumer } from '@apollo/react-hooks'
+import { ShowChartsState } from '../../chart-state'
+
+Number.prototype.mapFromInt = function(cb) {
+  const result = []
+  for (let i = 0; i < this; i++) {
+    result.push(cb(i))
+  }
+  return result
+}
 
 //colors and styling used multiple times on this component. Should maybe be somewhere else
 const tabBackgroundColor = '#00897B'
@@ -14,108 +23,87 @@ const tabStyle = {
   padding: '7px'
 }
 
-//No overflow management currently in place. Can be an issue if Explorer pages end up with many charts(unlikely for now, 37 charts would be needed to overflow currently)
-export default ({ collapsed, chartDefinitions, query, variables }) => {
-  // const memoCharts = useMemo(()=>{return},[])
-  const { loading, error, data } = useQuery(query, { variables })
+export class Charts extends PureComponent {
+  static contextType = ShowChartsState
 
-  //Dispay a simple empty grid while loading charts to avoid jarring movement of page:
-  if (loading) {
-    return (
-      <Collapse collapsed={collapsed}>
-        <Grid style={{ backgroundColor: '#EEEEEE' }}>
-          {Object.entries(chartDefinitions).map(([, { title }], i) => {
-            return <ExplorerHeaderChart id={'explorer-chart' + i} key={'explorer-chart' + i} title={title} data={{}} />
-          })}
-        </Grid>
-      </Collapse>
-    )
+  state = {
+    data: null
   }
 
-  //display error if an error occurs:
-  if (error) {
-    console.log('error', error)
-    return (
-      <Collapse collapsed={collapsed}>
-        <Grid style={{ backgroundColor: '#EEEEEE' }}>
-          <Cell>
-            <p>error!</p>
-          </Cell>
-        </Grid>
-      </Collapse>
-    )
+  async componentDidMount() {
+    await this.setData()
   }
 
-  //display charts:
-  if (data) {
-    //calculating how many tabs will be needed if there are up to 4 charts per tab
-    const chartCount = Object.keys(chartDefinitions).length
-    var tabCount = Math.ceil(chartCount / 4)
+  async componentDidUpdate() {
+    await this.setData()
+  }
 
-    //Initializing the Tabs element so that Tab elements can be appended to its children
-    var chartTabs = (
-      <Tabs
-        id={'tabsid1'}
-        tabId="tabsId1"
-        style={{
-          backgroundColor: tabBackgroundColor,
-          border: '1px solid ' + tabBorderColor
-        }}
-      >
-        {[]}
-      </Tabs>
-    )
+  async setData() {
+    const { client, query, variables } = this.props
+    const { data, loading, error } = await client.query({ query, variables })
+    this.setState({
+      data,
+      loading,
+      error
+    })
+  }
 
-    //appending Tab elements to Tabs as children
-    for (var tabIndex = 1; tabIndex <= tabCount; tabIndex++) {
-      chartTabs.props.children.push(
-        <Tab
-          className={'thisismyclassname'}
-          id={'Tab' + tabIndex}
-          key={tabIndex}
-          style={tabStyle}
-          icon={
-            <Avatar
-              key={tabIndex}
-              style={{ backgroundColor: labelInnerColor, border: '1px solid ' + tabBorderColor, margin: '0px' }}
-              contentStyle={{ fontSize: 20 }}
-              id={'tabAvatar' + tabIndex}
-            >
-              {tabIndex}
-            </Avatar>
-          }
-        >
-          {/* Contents of tab (charts) */}
-          <Grid style={{ backgroundColor: '#EEEEEE' }}>
-            {Object.entries(chartDefinitions).map(
-              ([chartIndex, { title, datafield, entryName, entryValue, dataFilter }]) => {
-                var chartData = dataFilter(data[datafield])
-                chartData = chartData.map(r => ({ value: r[entryValue], name: r[entryName] }))
-
-                if (parseInt(chartIndex) + 1 > tabIndex * 4 - 4 && parseInt(chartIndex) + 1 <= tabIndex * 4)
-                  return (
-                    <ExplorerHeaderChart
-                      id={'explorer-chart' + chartIndex}
-                      key={'explorer-chart' + chartIndex}
-                      title={title}
-                      data={chartData}
-                    />
-                  )
-                else return null
-              }
-            )}
-          </Grid>
-        </Tab>
-      )
-    }
-
-    // const headerCharts = useMemo(()=>{})
-    return (
-      <Collapse collapsed={collapsed}>
-        <>
-          <TabsContainer>{chartTabs}</TabsContainer>
-        </>
+  render() {
+    const { chartDefinitions } = this.props
+    const { data, loading } = this.state
+    const { showCharts } = this.context
+    return loading || !data ? (
+      'Loading ...'
+    ) : (
+      <Collapse collapsed={showCharts}>
+        <TabsContainer>
+          <Tabs
+            id={'tabsid1'}
+            tabId="tabsId1"
+            style={{
+              backgroundColor: tabBackgroundColor,
+              border: '1px solid ' + tabBorderColor
+            }}
+          >
+            {Math.ceil(Object.keys(chartDefinitions).length / 4).mapFromInt(i => (
+              <Tab
+                className={'thisismyclassname'}
+                id={'Tab' + i}
+                key={i}
+                style={tabStyle}
+                icon={
+                  <Avatar
+                    key={i}
+                    style={{ backgroundColor: labelInnerColor, border: '1px solid ' + tabBorderColor, margin: '0px' }}
+                    contentStyle={{ fontSize: 20 }}
+                    id={'tabAvatar' + i}
+                  >
+                    {i}
+                  </Avatar>
+                }
+              >
+                <Grid style={{ backgroundColor: '#EEEEEE' }}>
+                  {Object.entries(chartDefinitions).map(
+                    ([chartIndex, { title, datafield, entryName, entryValue, dataFilter }]) => (
+                      <ExplorerHeaderChart
+                        id={'explorer-chart' + chartIndex}
+                        key={'explorer-chart' + chartIndex}
+                        title={title}
+                        data={dataFilter(data[datafield]).map(r => ({
+                          value: r[entryValue],
+                          name: r[entryName]
+                        }))}
+                      />
+                    )
+                  )}
+                </Grid>
+              </Tab>
+            ))}
+          </Tabs>
+        </TabsContainer>
       </Collapse>
     )
   }
 }
+
+export default props => <ApolloConsumer>{client => <Charts client={client} {...props} />}</ApolloConsumer>
