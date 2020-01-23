@@ -1,4 +1,4 @@
-import React, { PureComponent, Component } from 'react'
+import React, { Component } from 'react'
 import { Card, Cell, Button, Toolbar } from 'react-md'
 import ECharts from 'echarts-for-react'
 import echartsTheme from '../../lib/echarts-theme'

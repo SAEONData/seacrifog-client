@@ -1,4 +1,4 @@
-import React, { PureComponent, Component } from 'react'
+import React, { Component } from 'react'
 
 //A simple class that holds some basic state in place of its children.
 export default class extends Component {

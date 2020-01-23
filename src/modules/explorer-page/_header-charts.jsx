@@ -2,7 +2,6 @@ import React from 'react'
 import { Collapse, Grid, Cell, TabsContainer, Tabs, Tab, Avatar } from 'react-md'
 import ExplorerHeaderChart from './_header-chart'
 import { useQuery } from '@apollo/react-hooks'
-import _headerChart from './_header-chart'
 
 //colors and styling used multiple times on this component. Should maybe be somewhere else
 const tabBackgroundColor = '#00897B'
@@ -120,20 +119,3 @@ export default ({ collapsed, chartDefinitions, query, variables }) => {
     )
   }
 }
-
-function propsAreEqual(prev, next) {
-  console.log('In propsAreEqual')
-  if (prev.props === next.props) {
-    console.log('propsAreEqual returning false')
-    console.log('prev', prev)
-    console.log('next', next)
-    return false
-  } else {
-    console.log('propsAreEqual returning true')
-    console.log('prev', prev)
-    console.log('next', next)
-    return true
-  }
-}
-
-// export default memo(headerCharts, propsAreEqual)

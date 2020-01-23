@@ -18,8 +18,7 @@ import {
   iconLink,
   ExplorerCoverageMap,
   ExplorerHeaderContainer,
-  ExplorerHeaderCharts,
-  ExplorerHeaderChartsTest
+  ExplorerHeaderCharts
 } from '../../modules/explorer-page'
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
 import { List, ListItem, DataTable, TableHeader, TableRow, TableColumn, TableBody } from 'react-md'
