@@ -10,31 +10,21 @@ export default class extends Component {
     super(props)
     this.state = { chartType: 'pie' }
   }
-  // const [chartType, setChartType] = useState('pie')
   setChartType = chartType => {
     this.setState({ chartType: chartType })
   }
 
-  componentDidUpdate() {
-    console.log(this.props.title + ' chart updated!')
-  }
-  componentDidMount() {
-    console.log(this.props.title + ' chart mounted')
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
-    console.log('in shouldComponentUpdate')
-    if (nextProps.data != this.props.data || nextState.chartType != this.state.chartType) {
-      console.log('returning true')
+    if (
+      JSON.stringify(nextProps.data) != JSON.stringify(this.props.data) ||
+      nextState.chartType != this.state.chartType
+    ) {
       return true
     }
-    console.log('returning false')
     return false
   }
 
-  //state
   render() {
-    // console.log('rendering chart ' + this.props.title)
     const data = this.props.data
     const title = this.props.title
 

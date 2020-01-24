@@ -4,7 +4,7 @@ export const ShowChartsState = React.createContext()
 
 export default class extends PureComponent {
   state = {
-    showCharts: true
+    showCharts: false
   }
 
   toggleCharts = (cb = null) =>

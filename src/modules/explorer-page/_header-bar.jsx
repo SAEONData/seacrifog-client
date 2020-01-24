@@ -29,9 +29,10 @@ export default ({ resetFn, selectedIds, ...props }) => {
   const history = useHistory()
   const ctx = props.location.pathname.replace('/', '').toUpperCase()
 
+  console.log('props', props)
   return (
     <ShowChartsState.Consumer>
-      {({ toggleCharts }) => (
+      {({ toggleCharts, showCharts }) => (
         <GlobalStateContext.Consumer>
           {({ loadingSearchResults, searchResults, searchErrors }) => {
             const searchResultLength = searchErrors.length
@@ -163,7 +164,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
                           </Button>,
                           <Button
                             key={67}
-                            style={mainMenuIconStyle(false)}
+                            style={mainMenuIconStyle(props.history.location.pathname === '/dataproducts', showCharts)}
                             tooltipLabel={'View charts'}
                             onClick={() => toggleCharts()}
                             icon

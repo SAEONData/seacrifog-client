@@ -100,7 +100,6 @@ export default class extends PureComponent {
     })
 
   render() {
-    // console.log('RENDERING GLOBAL STATE')
     const { updateGlobalState, state, props } = this
 
     return (

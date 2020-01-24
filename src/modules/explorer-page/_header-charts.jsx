@@ -42,9 +42,9 @@ export class Charts extends PureComponent {
     const { client, query, variables } = this.props
     const { data, loading, error } = await client.query({ query, variables })
     this.setState({
-      data,
-      loading,
-      error
+      data
+      // loading,
+      // error
     })
   }
 
@@ -52,10 +52,8 @@ export class Charts extends PureComponent {
     const { chartDefinitions } = this.props
     const { data, loading } = this.state
     const { showCharts } = this.context
-    return loading || !data ? (
-      'Loading ...'
-    ) : (
-      <Collapse collapsed={showCharts}>
+    return loading || !data ? null : (
+      <Collapse collapsed={!showCharts}>
         <TabsContainer>
           <Tabs
             id={'tabsid1'}
@@ -65,40 +63,49 @@ export class Charts extends PureComponent {
               border: '1px solid ' + tabBorderColor
             }}
           >
-            {Math.ceil(Object.keys(chartDefinitions).length / 4).mapFromInt(i => (
-              <Tab
-                className={'thisismyclassname'}
-                id={'Tab' + i}
-                key={i}
-                style={tabStyle}
-                icon={
-                  <Avatar
-                    key={i}
-                    style={{ backgroundColor: labelInnerColor, border: '1px solid ' + tabBorderColor, margin: '0px' }}
-                    contentStyle={{ fontSize: 20 }}
-                    id={'tabAvatar' + i}
-                  >
-                    {i}
-                  </Avatar>
-                }
-              >
-                <Grid style={{ backgroundColor: '#EEEEEE' }}>
-                  {Object.entries(chartDefinitions).map(
-                    ([chartIndex, { title, datafield, entryName, entryValue, dataFilter }]) => (
-                      <ExplorerHeaderChart
-                        id={'explorer-chart' + chartIndex}
-                        key={'explorer-chart' + chartIndex}
-                        title={title}
-                        data={dataFilter(data[datafield]).map(r => ({
-                          value: r[entryValue],
-                          name: r[entryName]
-                        }))}
-                      />
-                    )
-                  )}
-                </Grid>
-              </Tab>
-            ))}
+            {Math.ceil(Object.keys(chartDefinitions).length / 4).mapFromInt(tabIndex => {
+              return (
+                <Tab
+                  // className={'thisismyclassname'}
+                  id={'Tab' + tabIndex}
+                  key={tabIndex}
+                  style={tabStyle}
+                  icon={
+                    <Avatar
+                      key={tabIndex}
+                      style={{ backgroundColor: labelInnerColor, border: '1px solid ' + tabBorderColor, margin: '0px' }}
+                      contentStyle={{ fontSize: 20 }}
+                      id={'tabAvatar' + tabIndex}
+                    >
+                      {tabIndex + 1}
+                    </Avatar>
+                  }
+                >
+                  <Grid style={{ backgroundColor: '#EEEEEE' }}>
+                    {Object.entries(chartDefinitions).map(
+                      ([chartIndex, { title, datafield, entryName, entryValue, dataFilter }]) => {
+                        if (
+                          parseInt(chartIndex) + 1 > (tabIndex + 1) * 4 - 4 &&
+                          parseInt(chartIndex) + 1 <= (tabIndex + 1) * 4
+                        )
+                          return (
+                            <ExplorerHeaderChart
+                              id={'explorer-chart' + chartIndex}
+                              key={'explorer-chart' + chartIndex}
+                              title={title}
+                              data={dataFilter(data[datafield]).map(r => ({
+                                value: r[entryValue],
+                                name: r[entryName]
+                              }))}
+                            />
+                          )
+                        else return null
+                      }
+                    )}
+                  </Grid>
+                </Tab>
+              )
+            })}
           </Tabs>
         </TabsContainer>
       </Collapse>

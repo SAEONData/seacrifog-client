@@ -42,7 +42,7 @@ export const variableCharts = [
   //DUMMY COPIED CHARTS TO BE DELETED
   {
     //Domains
-    title: 'Domain Groupings',
+    title: 'Domain Groupings COPY',
     datafield: 'variablesDomains',
     entryName: 'domain',
     entryValue: 'variable_count',
@@ -52,7 +52,7 @@ export const variableCharts = [
   },
   {
     //Rf Types
-    title: 'Radiative Forcing Types',
+    title: 'Radiative Forcing Types COPY',
     datafield: 'variablesRfTypes',
     entryName: 'rftype',
     entryValue: 'variable_count',

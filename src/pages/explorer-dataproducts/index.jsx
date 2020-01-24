@@ -21,6 +21,7 @@ import {
 import formatAndFilterObjectKeys from '../../lib/format-filter-obj-keys'
 import { List, ListItem } from 'react-md'
 import { Table } from '../../modules/shared-components'
+import ShowChartState from '../../chart-state'
 
 const mappings = []
 const dataproductsDataDefinitions = {
@@ -36,132 +37,138 @@ const dataproductsDataDefinitions = {
 export default props => {
   const history = useHistory()
   return (
-    <GlobalStateContext.Consumer>
-      {({ updateGlobalState, selectedDataproducts, currentDataproduct, selectedVariables }) => (
-        <DataQuery query={DATAPRODUCTS_MIN}>
-          {({ dataproducts }) => (
-            <ExplorerLayout>
-              <ExplorerHeaderBar
-                selectedIds={selectedDataproducts}
-                resetFn={() => updateGlobalState({ selectedDataproducts: [] })}
-                {...props}
-              />
-              <ExplorerTableLayout>
-                <Table
-                  actions={[<ScrollButton key={1} disabled={selectedDataproducts.length > 0 ? false : true} />]}
-                  baseId={'dataproducts-table'}
-                  searchbar={true}
-                  className={'fixed-table'}
-                  defaultPaginationRows={5}
+    <DataQuery query={DATAPRODUCTS_MIN}>
+      {({ dataproducts }) => (
+        <GlobalStateContext.Consumer>
+          {({ updateGlobalState, selectedDataproducts, currentDataproduct, selectedVariables }) => (
+            <>
+              <ShowChartState>
+                <ExplorerHeaderBar
                   selectedIds={selectedDataproducts}
-                  dataDefinitions={dataproductsDataDefinitions}
-                  data={dataproducts}
-                  toggleSelect={({ id }) =>
-                    updateGlobalState(
-                      {
-                        selectedDataproducts: selectedDataproducts.includes(id)
-                          ? [...selectedDataproducts].filter(vId => vId !== id)
-                          : [...new Set([...selectedDataproducts, id])]
-                      },
-                      { currentIndex: 'currentDataproduct', selectedIds: 'selectedDataproducts' }
-                    )
-                  }
+                  resetFn={() => updateGlobalState({ selectedDataproducts: [] })}
+                  {...props}
                 />
-              </ExplorerTableLayout>
-              <ExplorerTabsLayout
-                id="selected-dataproducts-tabs"
-                currentIndex={currentDataproduct}
-                updateCurrentIndex={i => updateGlobalState({ currentDataproduct: i })}
-                selectedIds={selectedDataproducts}
-                {...props}
-              >
-                {({ id }) => (
-                  <DataQuery query={DATAPRODUCT} variables={{ id: id }}>
-                    {({ dataproduct }) => (
-                      <ExplorerEntityLayout
-                        title={dataproduct.title}
-                        authors={dataproduct.author}
-                        abstract={dataproduct.abstract}
-                        clickClose={() =>
-                          updateGlobalState(
-                            {
-                              selectedDataproducts: selectedDataproducts.filter(sId => sId !== dataproduct.id)
-                            },
-                            { currentIndex: 'currentDataproduct', selectedIds: 'selectedDataproducts' }
-                          )
-                        }
-                        href={encodeURI(
-                          `${process.env.DOWNLOADS_ENDPOINT ||
-                            'https://api.seacrifog.saeon.ac.za/downloads'}/DATAPRODUCTS?filename=DATAPRODUCT-${new Date()}.json&ids=${[
-                            dataproduct.id
-                          ].join(',')}`
-                        )}
-                        clickEdit={() => history.push(`/dataproducts/${dataproduct.id}`)}
-                      >
-                        {/* All Entity Attributes */}
-                        <ExplorerSectionLayout
-                          sections={[
-                            {
-                              title: 'Additional Information',
-                              subTitle: 'All available fields',
-                              component: (
-                                <ExplorerFormattedObject
-                                  object={formatAndFilterObjectKeys(dataproduct, mappings, ([key, val]) =>
-                                    ['abstract', '__typename'].includes(key) || typeof val === 'object' ? false : true
-                                  )}
-                                />
-                              )
-                            },
-                            {
-                              title: 'Essential Variables',
-                              subTitle: 'For this Data Product',
-                              component: dataproduct.variables[0] ? (
-                                <div>
-                                  <List>
-                                    {dataproduct.variables
-                                      .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-                                      .map((variable, i) => (
-                                        <ListItem
-                                          onClick={() =>
-                                            updateGlobalState(
-                                              { selectedVariables: [...new Set([...selectedVariables, variable.id])] },
-                                              { currentIndex: 'currentVariable', selectedIds: 'selectedVariables' },
-                                              () => history.push('/variables')
-                                            )
-                                          }
-                                          className="add-on-hover"
-                                          key={i}
-                                          rightIcon={variableIcon}
-                                          leftIcon={iconLink}
-                                          primaryText={`${variable.name}`}
-                                        />
-                                      ))}
-                                  </List>
-                                </div>
-                              ) : (
-                                <NoneMessage />
-                              )
-                            },
-                            {
-                              title: 'Spatial Coverage',
-                              subTitle: 'Of this data product',
-                              component: <ExplorerCoverageMap geoJson={dataproduct.coverage_spatial} />,
-                              style: { height: '500px' },
-                              grid: {
-                                size: 12
+              </ShowChartState>
+              <ExplorerLayout>
+                <ExplorerTableLayout>
+                  <Table
+                    actions={[<ScrollButton key={1} disabled={selectedDataproducts.length > 0 ? false : true} />]}
+                    baseId={'dataproducts-table'}
+                    searchbar={true}
+                    className={'fixed-table'}
+                    defaultPaginationRows={5}
+                    selectedIds={selectedDataproducts}
+                    dataDefinitions={dataproductsDataDefinitions}
+                    data={dataproducts}
+                    toggleSelect={({ id }) =>
+                      updateGlobalState(
+                        {
+                          selectedDataproducts: selectedDataproducts.includes(id)
+                            ? [...selectedDataproducts].filter(vId => vId !== id)
+                            : [...new Set([...selectedDataproducts, id])]
+                        },
+                        { currentIndex: 'currentDataproduct', selectedIds: 'selectedDataproducts' }
+                      )
+                    }
+                  />
+                </ExplorerTableLayout>
+                <ExplorerTabsLayout
+                  id="selected-dataproducts-tabs"
+                  currentIndex={currentDataproduct}
+                  updateCurrentIndex={i => updateGlobalState({ currentDataproduct: i })}
+                  selectedIds={selectedDataproducts}
+                  {...props}
+                >
+                  {({ id }) => (
+                    <DataQuery query={DATAPRODUCT} variables={{ id: id }}>
+                      {({ dataproduct }) => (
+                        <ExplorerEntityLayout
+                          title={dataproduct.title}
+                          authors={dataproduct.author}
+                          abstract={dataproduct.abstract}
+                          clickClose={() =>
+                            updateGlobalState(
+                              {
+                                selectedDataproducts: selectedDataproducts.filter(sId => sId !== dataproduct.id)
+                              },
+                              { currentIndex: 'currentDataproduct', selectedIds: 'selectedDataproducts' }
+                            )
+                          }
+                          href={encodeURI(
+                            `${process.env.DOWNLOADS_ENDPOINT ||
+                              'https://api.seacrifog.saeon.ac.za/downloads'}/DATAPRODUCTS?filename=DATAPRODUCT-${new Date()}.json&ids=${[
+                              dataproduct.id
+                            ].join(',')}`
+                          )}
+                          clickEdit={() => history.push(`/dataproducts/${dataproduct.id}`)}
+                        >
+                          {/* All Entity Attributes */}
+                          <ExplorerSectionLayout
+                            sections={[
+                              {
+                                title: 'Additional Information',
+                                subTitle: 'All available fields',
+                                component: (
+                                  <ExplorerFormattedObject
+                                    object={formatAndFilterObjectKeys(dataproduct, mappings, ([key, val]) =>
+                                      ['abstract', '__typename'].includes(key) || typeof val === 'object' ? false : true
+                                    )}
+                                  />
+                                )
+                              },
+                              {
+                                title: 'Essential Variables',
+                                subTitle: 'For this Data Product',
+                                component: dataproduct.variables[0] ? (
+                                  <div>
+                                    <List>
+                                      {dataproduct.variables
+                                        .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
+                                        .map((variable, i) => (
+                                          <ListItem
+                                            onClick={() =>
+                                              updateGlobalState(
+                                                {
+                                                  selectedVariables: [...new Set([...selectedVariables, variable.id])]
+                                                },
+                                                { currentIndex: 'currentVariable', selectedIds: 'selectedVariables' },
+                                                () => history.push('/variables')
+                                              )
+                                            }
+                                            className="add-on-hover"
+                                            key={i}
+                                            rightIcon={variableIcon}
+                                            leftIcon={iconLink}
+                                            primaryText={`${variable.name}`}
+                                          />
+                                        ))}
+                                    </List>
+                                  </div>
+                                ) : (
+                                  <NoneMessage />
+                                )
+                              },
+                              {
+                                title: 'Spatial Coverage',
+                                subTitle: 'Of this data product',
+                                component: <ExplorerCoverageMap geoJson={dataproduct.coverage_spatial} />,
+                                style: { height: '500px' },
+                                grid: {
+                                  size: 12
+                                }
                               }
-                            }
-                          ]}
-                        />
-                      </ExplorerEntityLayout>
-                    )}
-                  </DataQuery>
-                )}
-              </ExplorerTabsLayout>
-            </ExplorerLayout>
+                            ]}
+                          />
+                        </ExplorerEntityLayout>
+                      )}
+                    </DataQuery>
+                  )}
+                </ExplorerTabsLayout>
+              </ExplorerLayout>
+            </>
           )}
-        </DataQuery>
+        </GlobalStateContext.Consumer>
       )}
-    </GlobalStateContext.Consumer>
+    </DataQuery>
   )
 }

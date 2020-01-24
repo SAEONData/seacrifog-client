@@ -17,7 +17,6 @@ export default class extends Component {
     console.log('headerContainer updated')
   }
   render() {
-    // console.log('RENDERING HEADER CONTAINER')
     return <this.props.children collapsed={this.state.collapsed} toggleCharts={this.toggleCharts} />
   }
 }
