@@ -29,7 +29,6 @@ export default ({ resetFn, selectedIds, ...props }) => {
   const history = useHistory()
   const ctx = props.location.pathname.replace('/', '').toUpperCase()
 
-  console.log('props', props)
   return (
     <ShowChartsState.Consumer>
       {({ toggleCharts, showCharts }) => (
@@ -89,6 +88,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
 
                           <SideMenu
                             toolbarTitle={'Metadata search results'}
+                            style={{ width: '100%' }}
                             key={51}
                             toolbarActions={[]}
                             control={({ toggleMenu }) => (

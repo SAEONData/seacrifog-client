@@ -12,22 +12,40 @@ Number.prototype.mapFromInt = function(cb) {
   return result
 }
 
-//colors and styling used multiple times on this component. Should maybe be somewhere else
-const tabBackgroundColor = '#00897B'
-const tabBorderColor = 'rgba(255,255,255,0.3)'
-const labelInnerColor = '#00796B'
-const tabStyle = {
-  backgroundColor: tabBackgroundColor,
-  borderRight: '1px solid ' + tabBorderColor,
+const tabsBackgroundColor = '#00897B'
+const tabsBorderColor = 'rgba(255,255,255,0.3)'
+
+const tabStyleSelected = {
+  backgroundColor: '#00796B',
+  borderRight: '1px solid ' + 'rgba(255,255,255,0.3)',
   height: 'max-content',
   padding: '7px'
+}
+const tabStyleNotSelected = {
+  backgroundColor: '#00897B',
+  borderRight: '1px solid ' + 'rgba(255,255,255,0.3)',
+  height: 'max-content',
+  padding: '7px'
+}
+const tabLabelStyleSelected = {
+  backgroundColor: '#00897B',
+  border: '1px solid rgba(255,255,255,0.3)',
+  margin: '0px',
+  color: 'white'
+}
+const tabLabelStyleNotSelected = {
+  backgroundColor: '#00796B',
+  border: '1px solid rgba(255,255,255,0.3)',
+  margin: '0px',
+  color: 'white'
 }
 
 export class Charts extends PureComponent {
   static contextType = ShowChartsState
 
   state = {
-    data: null
+    data: null,
+    selectedTabIndex: 1
   }
 
   async componentDidMount() {
@@ -43,8 +61,6 @@ export class Charts extends PureComponent {
     const { data, loading, error } = await client.query({ query, variables })
     this.setState({
       data
-      // loading,
-      // error
     })
   }
 
@@ -59,35 +75,38 @@ export class Charts extends PureComponent {
             id={'tabsid1'}
             tabId="tabsId1"
             style={{
-              backgroundColor: tabBackgroundColor,
-              border: '1px solid ' + tabBorderColor
+              backgroundColor: tabsBackgroundColor,
+              border: '1px solid ' + tabsBorderColor
             }}
           >
-            {Math.ceil(Object.keys(chartDefinitions).length / 4).mapFromInt(tabIndex => {
+            {Math.ceil(Object.keys(chartDefinitions).length / 4).mapFromInt(index => {
+              const tabIndex = index + 1
               return (
                 <Tab
                   // className={'thisismyclassname'}
                   id={'Tab' + tabIndex}
                   key={tabIndex}
-                  style={tabStyle}
+                  style={tabIndex === this.state.selectedTabIndex ? tabStyleSelected : tabStyleNotSelected}
                   icon={
                     <Avatar
                       key={tabIndex}
-                      style={{ backgroundColor: labelInnerColor, border: '1px solid ' + tabBorderColor, margin: '0px' }}
+                      style={
+                        tabIndex === this.state.selectedTabIndex ? tabLabelStyleSelected : tabLabelStyleNotSelected
+                      }
                       contentStyle={{ fontSize: 20 }}
                       id={'tabAvatar' + tabIndex}
                     >
-                      {tabIndex + 1}
+                      {tabIndex}
                     </Avatar>
                   }
+                  onClick={() => {
+                    this.setState({ selectedTabIndex: tabIndex })
+                  }}
                 >
                   <Grid style={{ backgroundColor: '#EEEEEE' }}>
                     {Object.entries(chartDefinitions).map(
                       ([chartIndex, { title, datafield, entryName, entryValue, dataFilter }]) => {
-                        if (
-                          parseInt(chartIndex) + 1 > (tabIndex + 1) * 4 - 4 &&
-                          parseInt(chartIndex) + 1 <= (tabIndex + 1) * 4
-                        )
+                        if (parseInt(chartIndex) + 1 > tabIndex * 4 - 4 && parseInt(chartIndex) + 1 <= tabIndex * 4)
                           return (
                             <ExplorerHeaderChart
                               id={'explorer-chart' + chartIndex}
