@@ -6,14 +6,14 @@ const tabsBackgroundColor = '#00897B'
 const tabsBorderColor = 'rgba(255,255,255,0.3)'
 
 const tabStyleSelected = {
-  backgroundColor: '#00796B',
-  borderRight: '1px solid ' + 'rgba(255,255,255,0.3)',
+  backgroundColor: 'white', //'#00796B',
+  // borderRight: '1px solid ' + 'rgba(255,255,255,0.3)',
   height: 'max-content',
   padding: '7px'
 }
 const tabStyleNotSelected = {
-  backgroundColor: '#00897B',
-  borderRight: '1px solid ' + 'rgba(255,255,255,0.3)',
+  backgroundColor: 'white', //'#00897B',
+  // borderRight: '1px solid ' + 'rgba(255,255,255,0.3)',
   height: 'max-content',
   padding: '7px'
 }
@@ -24,7 +24,7 @@ const tabLabelStyleSelected = {
   color: 'white'
 }
 const tabLabelStyleNotSelected = {
-  backgroundColor: '#00796B',
+  backgroundColor: '#004D40',
   border: '1px solid rgba(255,255,255,0.3)',
   margin: '0px',
   color: 'white'
@@ -132,7 +132,7 @@ const searchResults = {
   }
 }*/
 
-const recordsPerPage = 20
+const recordsPerPage = 50
 
 export default class extends PureComponent {
   constructor(props) {
@@ -144,17 +144,19 @@ export default class extends PureComponent {
     const { searchResults } = this.props
     return (
       <>
-        <TabsContainer slideStyle={{ height: '100%' }}>
+        <button>collapse all</button>
+        <TabsContainer slideStyle={{ height: '100%', backgroundColor: 'white' }}>
           <Tabs
             id={'tabsid1'}
             tabId="tabsId1"
+            indicatorHeight={0}
             style={{
-              backgroundColor: tabsBackgroundColor,
+              backgroundColor: 'white',
               border: '1px solid ' + tabsBorderColor,
               marginBottom: '50px'
             }}
           >
-            {Math.ceil(Object.keys(searchResults).length / recordsPerPage).mapFromInt(index => {
+            {Math.ceil(searchResults[0].result.result_length / recordsPerPage).mapFromInt(index => {
               const tabIndex = index + 1
               return (
                 <Tab
@@ -179,8 +181,7 @@ export default class extends PureComponent {
                 >
                   {/* Left half of view */}
                   <Grid noSpacing style={{ border: '1px solid #00897B', float: 'left', width: '50%' }}>
-                    {Object.entries(searchResults).map((r, recordIndex) => {
-                      console.log('record r:', r)
+                    {searchResults[0].result.results.map((r, recordIndex) => {
                       if (
                         (tabIndex - 1) * recordsPerPage <= recordIndex &&
                         recordIndex < recordsPerPage * tabIndex &&
@@ -192,7 +193,7 @@ export default class extends PureComponent {
                   </Grid>
                   {/* Right half of view */}
                   <Grid noSpacing style={{ border: '1px solid #00897B', float: 'right', width: '50%' }}>
-                    {Object.entries(searchResults).map((r, recordIndex) => {
+                    {searchResults[0].result.results.map((r, recordIndex) => {
                       if (
                         (tabIndex - 1) * recordsPerPage <= recordIndex &&
                         recordIndex < recordsPerPage * tabIndex &&

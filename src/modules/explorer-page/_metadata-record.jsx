@@ -42,16 +42,15 @@ export default class extends PureComponent {
             title=""
             style={{
               backgroundColor: headerBackgroundColor,
-              maxHeight: '80px',
+              height: '50px',
               border: '1px solid ' + headerBackgroundColor
             }}
           >
-            <p style={{ color: headerFontColor, fontSize: 'large' }}>
-              {/* {record.metadata_json.titles[0].title
-                ? index + 1 + ' - ' + record.metadata_json.titles[0].title
-                : 'record ' + index} */}
-              {index + ' ' + record[1].title} MOCK DATA RECORD TITLE
-              {console.log(record)}
+            <p style={{ color: headerFontColor, fontSize: 'larger' }}>
+              {record.metadata_json.titles[0].title
+                ? index + ' - ' + record.metadata_json.titles[0].title
+                : 'record ' + index}
+              {/* {index + ' ' + record[1].title} MOCK DATA RECORD TITLE */}
             </p>
           </CardTitle>
           <CardText expandable>
