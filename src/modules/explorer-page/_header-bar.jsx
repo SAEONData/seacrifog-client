@@ -88,7 +88,6 @@ export default ({ resetFn, selectedIds, ...props }) => {
 
                           <SideMenu
                             toolbarTitle={'Metadata search results'}
-                            style={{ width: '100%' }}
                             key={51}
                             toolbarActions={[]}
                             control={({ toggleMenu }) => (

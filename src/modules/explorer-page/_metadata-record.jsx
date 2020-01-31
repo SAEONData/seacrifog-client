@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Button, Card, CardText, CardTitle, FontIcon, Cell } from 'react-md'
+import { Button, Card, CardText, CardTitle, FontIcon, Cell, CardActions } from 'react-md'
 
 export default class extends PureComponent {
   constructor(props) {
@@ -24,7 +24,7 @@ export default class extends PureComponent {
         <Card
           style={{
             boxShadow: 'none',
-            maxHeight: this.state.expanded ? null : '80px',
+            // maxHeight: this.state.expanded ? null : '60px',
             width: '100%'
             // overflowY: this.state.expanded ? 'scroll' : 'hidden'
           }}
@@ -42,19 +42,19 @@ export default class extends PureComponent {
             title=""
             style={{
               backgroundColor: headerBackgroundColor,
-              height: '50px',
-              border: '1px solid ' + headerBackgroundColor
+              height: '60px',
+              border: '1px solid ' + headerBackgroundColor,
+              paddingBottom: '24px'
             }}
           >
             <p style={{ color: headerFontColor, fontSize: 'larger' }}>
               {record.metadata_json.titles[0].title
-                ? index + ' - ' + record.metadata_json.titles[0].title
+                ? (index + ' - ' + record.metadata_json.titles[0].title).length < 100
+                  ? index + ' - ' + record.metadata_json.titles[0].title
+                  : (index + ' - ' + record.metadata_json.titles[0].title).substring(0, 97) + '...'
                 : 'record ' + index}
-              {/* {index + ' ' + record[1].title} MOCK DATA RECORD TITLE */}
             </p>
-          </CardTitle>
-          <CardText expandable>
-            <div key={index}>
+            <CardActions>
               <Button
                 onClick={() =>
                   window.open(
@@ -66,22 +66,29 @@ export default class extends PureComponent {
                 swapTheming
                 flat
                 iconChildren={'visibility'}
+                label=""
+                // style={{ float: 'right', margin: '0px' }}
+                tooltipLabel="View Record"
+                tooltipPosition="top"
               >
-                View record
+                VIEW
               </Button>
-              <p
-                style={{
-                  maxHeight: '300px',
-                  overflow: 'auto',
-                  padding: '15px',
-                  whiteSpace: 'pre-wrap',
-                  wordBreak: 'break-all',
-                  backgroundColor: 'rgba(0,0,0,0.1)'
-                }}
-              >
-                {JSON.stringify(record, null, 2)}
-              </p>
-            </div>
+            </CardActions>
+          </CardTitle>
+
+          <CardText expandable>
+            <p
+              style={{
+                maxHeight: '300px',
+                overflow: 'auto',
+                padding: '15px',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-all',
+                backgroundColor: 'rgba(0,0,0,0.1)'
+              }}
+            >
+              {JSON.stringify(record, null, 2)}
+            </p>
           </CardText>
         </Card>
         {/* </div> */}
