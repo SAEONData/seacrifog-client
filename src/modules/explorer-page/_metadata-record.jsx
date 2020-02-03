@@ -8,7 +8,7 @@ export default class extends PureComponent {
   }
   render() {
     const { record, index } = this.props
-
+    // console.log('props', this.props)
     const headerBackgroundColor = '#00897B'
     const headerFontColor = 'white'
 
@@ -24,12 +24,12 @@ export default class extends PureComponent {
         <Card
           style={{
             boxShadow: 'none',
-            // maxHeight: this.state.expanded ? null : '60px',
             width: '100%'
-            // overflowY: this.state.expanded ? 'scroll' : 'hidden'
           }}
           expanded={this.state.expanded}
-          expanderIcon={<FontIcon style={{ color: headerFontColor }}>keyboard_arrow_down</FontIcon>}
+          expanderIcon={
+            <FontIcon style={{ color: headerFontColor, marginLeft: 'unset' }}>keyboard_arrow_down</FontIcon>
+          }
           onExpanderClick={() => {
             this.setState({ expanded: !this.state.expanded })
           }}
@@ -38,7 +38,7 @@ export default class extends PureComponent {
             onClick={() => {
               this.setState({ expanded: !this.state.expanded })
             }}
-            expander
+            expander={true}
             title=""
             style={{
               backgroundColor: headerBackgroundColor,
@@ -47,14 +47,22 @@ export default class extends PureComponent {
               paddingBottom: '24px'
             }}
           >
-            <p style={{ color: headerFontColor, fontSize: 'larger' }}>
+            <p
+              style={{
+                color: headerFontColor,
+                fontSize: 'larger',
+                marginBottom: '0px',
+                alignContent: 'right',
+                alignItems: 'right'
+              }}
+            >
               {record.metadata_json.titles[0].title
                 ? (index + ' - ' + record.metadata_json.titles[0].title).length < 100
                   ? index + ' - ' + record.metadata_json.titles[0].title
                   : (index + ' - ' + record.metadata_json.titles[0].title).substring(0, 97) + '...'
                 : 'record ' + index}
             </p>
-            <CardActions>
+            <CardActions style={{ marginLeft: 'auto', flex: 'auto' }}>
               <Button
                 onClick={() =>
                   window.open(
@@ -62,21 +70,44 @@ export default class extends PureComponent {
                     '_blank'
                   )
                 }
-                primary
                 swapTheming
-                flat
-                iconChildren={'visibility'}
-                label=""
-                // style={{ float: 'right', margin: '0px' }}
+                icon
+                style={{ marginLeft: 'auto' }}
                 tooltipLabel="View Record"
                 tooltipPosition="top"
               >
-                VIEW
+                visibility
+              </Button>
+              <Button
+                onClick={() =>
+                  window.open(
+                    `http://www.sasdi.net/metaview.aspx?uuid=${record.metadata_json.alternateIdentifiers[0].alternateIdentifier}`,
+                    '_blank'
+                  )
+                }
+                swapTheming
+                icon
+                // style={{ float: 'right', marginLeft: 'auto' }}
+                tooltipLabel="View Record"
+                tooltipPosition="top"
+              >
+                visibility
               </Button>
             </CardActions>
           </CardTitle>
-
           <CardText expandable>
+            <p>
+              <b>Contributors:</b>
+            </p>
+            {/* {Object.entries(record.metadata_json.contributors).map((r, i) => (
+              <p key={i}>
+                {' '}
+                <b>Type:</b> {r[1].contributorType} <b>Name:</b> {r[1].name} */}
+            {/* </p> */}
+            {/* ))} */}
+            <p>
+              <b>Full metadata:</b>
+            </p>
             <p
               style={{
                 maxHeight: '300px',
