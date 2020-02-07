@@ -6,17 +6,13 @@ import DataList from '../../modules/explorer-page/_metadata-list'
 export default () => (
   <GlobalStateContext.Consumer>
     {({ searchResults, searchErrors }) => (
-      <Grid>
-        <Cell size={12}>
-          <p>
+      /* <p>
             {searchErrors.length
               ? 0
               : searchResults.map(r => r.result.result_length).reduce((sum, val) => sum + val, 0)}{' '}
             results
-          </p>
-          <DataList searchResults={searchResults} />
-        </Cell>
-      </Grid>
+          </p> */
+      <DataList searchResults={searchResults} />
     )}
   </GlobalStateContext.Consumer>
 )
