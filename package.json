@@ -19,7 +19,7 @@
     "echarts": "^4.6.0",
     "echarts-for-react": "^2.0.15-beta.1",
     "graphql": "^14.6.0",
-    "graphql-tag": "^2.10.1",
+    "graphql-tag": "^2.10.3",
     "ol": "^6.1.1",
     "query-string": "^6.10.1",
     "ramda": "^0.27.0",
@@ -31,7 +31,7 @@
     "react-router-dom": "^5.1.2",
     "react-transition-group": "^4.3.0",
     "regenerator-runtime": "^0.13.3",
-    "sift": "^11.1.2",
+    "sift": "^11.1.6",
     "webfontloader": "^1.6.28"
   },
   "scripts": {
@@ -71,12 +71,12 @@
     "onchange": "^6.1.0",
     "pre-commit": "^1.2.2",
     "prettier": "^1.19.1",
-    "rimraf": "^3.0.1",
+    "rimraf": "^3.0.2",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.1.3",
     "url-loader": "^3.0.0",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.10.2"
+    "webpack-dev-server": "^3.10.3"
   }
 }
