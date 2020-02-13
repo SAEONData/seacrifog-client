@@ -10,3 +10,10 @@
 ::-webkit-scrollbar-thumb {
   background-color: #999999;
 }
+
+//scrollbar variant that is thicker
+.thick-scrollbar::-webkit-scrollbar {
+  width: 13px;
+  height: 13px;
+  background-color: #f5f5f5;
+}

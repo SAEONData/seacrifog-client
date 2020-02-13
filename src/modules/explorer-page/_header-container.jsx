@@ -9,13 +9,6 @@ export default class extends Component {
       collapsed: !this.state.collapsed
     })
   }
-
-  componentDidMount() {
-    console.log('headerContainer mounted')
-  }
-  componentDidUpdate() {
-    console.log('headerContainer updated')
-  }
   render() {
     return <this.props.children collapsed={this.state.collapsed} toggleCharts={this.toggleCharts} />
   }
