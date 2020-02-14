@@ -10,68 +10,124 @@ export default class extends PureComponent {
     super(props)
   }
   render() {
-    const { record, index } = this.props
+    const { record, index, source } = this.props
+    if (source === 'icos') console.log('icos record', record)
     return (
-      <Cell
-        key={'grid-cell-' + index}
-        phoneSize={4}
-        tabletSize={8}
-        size={6}
-        key={'panel' + index}
-        style={{ width: '98%', textAlign: 'left' }}
-        onMouseEnter={() => {
-          this.setState({ hovered: true })
-        }}
-        onMouseLeave={() => {
-          this.setState({ hovered: false })
-        }}
-      >
-        <Card>
-          <CardTitle title="">
-            <h2 className="md-card-title--title md-card-title--large md-text">
-              {record.metadata_json //If record has a title:
-                ? record.metadata_json.titles[0].title.length < 100 /*|| this.state.expanded */ //If title is less than 100 characters OR card is expanded:
-                  ? record.metadata_json.titles[0].title //display full title
-                  : record.metadata_json.titles[0].title.substring(0, 97) + '...' //else: shorten title to fit card
-                : 'metadata record ' + index}
-            </h2>
-            <CardActions style={{ marginLeft: 'auto' }}>
-              <Button
-                onClick={() => {
-                  window.open(
-                    `http://www.sasdi.net/metaview.aspx?uuid=${record.metadata_json.alternateIdentifiers[0].alternateIdentifier}`,
-                    '_blank'
-                  )
-                }}
-                swapTheming
-                icon
-                style={{
-                  marginLeft: 'auto',
-                  color: iconColor
-                }}
-                tooltipLabel="View Record"
-                tooltipPosition="top"
-              >
-                visibility
-              </Button>
-            </CardActions>
-          </CardTitle>
-          {/* <CardText>
-            <p
-              style={{
-                maxHeight: '300px',
-                overflow: 'auto',
-                padding: '15px',
-                whiteSpace: 'pre-wrap',
-                wordBreak: 'break-all',
-                backgroundColor: 'rgba(0,0,0,0.1)'
+      <Card style={{ width: '95%', textAlign: 'left' }}>
+        <CardTitle title="">
+          <h2 className="md-card-title--title md-card-title--large md-text">
+            {record.metadata_json //If record has a title:
+              ? record.metadata_json.titles[0].title.length < 100 /*|| this.state.expanded */ //If title is less than 100 characters OR card is expanded:
+                ? record.metadata_json.titles[0].title //display full title
+                : record.metadata_json.titles[0].title.substring(0, 97) + '...' //else: shorten title to fit card
+              : 'metadata record ' + index}
+          </h2>
+          <CardActions style={{ marginLeft: 'auto' }}>
+            <Button
+              onClick={() => {
+                window.open(
+                  `http://www.sasdi.net/metaview.aspx?uuid=${record.metadata_json.alternateIdentifiers[0].alternateIdentifier}`,
+                  '_blank'
+                )
               }}
+              swapTheming
+              icon
+              style={{
+                marginLeft: 'auto',
+                color: iconColor
+              }}
+              tooltipLabel="View Record"
+              tooltipPosition="top"
             >
-              {JSON.stringify(record, null, 2)}
-            </p>
-          </CardText> */}
-        </Card>
-      </Cell>
+              visibility
+            </Button>
+          </CardActions>
+        </CardTitle>
+        <CardText style={{ height: '350px', overflow: 'auto' }}>
+          {source === 'saeon' ? (
+            <div style={{ display: 'grid' }}>
+              {record.metadata_json.subject ? (
+                <p id="subjects">
+                  <b>Subjects: </b>
+                  {record.metadata_json.subjects
+                    .map(s => {
+                      return s.subject
+                    })
+                    .join()}
+                </p>
+              ) : null}
+
+              {record.metadata_json.descriptions ? (
+                <p id="descriptions">
+                  {record.metadata_json.descriptions.map((d, i) => {
+                    return (
+                      <span key={i}>
+                        <b>{d.descriptionType}: </b>
+                        {d.description}
+                      </span>
+                    )
+                  })}
+                </p>
+              ) : null}
+
+              {record.metadata_json.creators ? (
+                <p id="creators">
+                  <b>Creators: </b>
+                  {record.metadata_json.creators
+                    .map(c => {
+                      return c.name
+                    })
+                    .join()}
+                </p>
+              ) : null}
+
+              {record.metadata_json.contributors
+                ? record.metadata_json.contributors.map((c, i) => {
+                    return (
+                      <p key={i}>
+                        <b>{c.contributorType}: </b>
+                        {c.name}
+                      </p>
+                    )
+                  })
+                : null}
+
+              {record.metadata_json.dates
+                ? record.metadata_json.dates.map((d, i) => {
+                    return (
+                      <p id="dates" key={i}>
+                        <b>{d.dateType}: </b>
+                        {d.date}
+                      </p>
+                    )
+                  })
+                : null}
+
+              {record.metadata_json.publisher ? (
+                <p id="publisher">
+                  <b>Publisher: </b>
+                  {record.metadata_json.publisher}
+                </p>
+              ) : null}
+
+              {record.metadata_json.publicationYear ? (
+                <p id="publisher">
+                  <b>Year Published: </b>
+                  {record.metadata_json.publicationYear}
+                </p>
+              ) : null}
+            </div>
+          ) : source === 'icos' ? (
+            <div>
+              <p>
+                <b>ICOS:??</b>
+              </p>
+            </div>
+          ) : (
+            <p>unknown source</p>
+          )}
+        </CardText>
+      </Card>
     )
   }
 }

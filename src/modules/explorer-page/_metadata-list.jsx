@@ -16,31 +16,28 @@ import saeonLogo from '../../../public/saeon-logo.png'
 import icosLogo from '../../../public/icos-logo.png'
 import { FixedSizeList } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
-/*
+import MetadataToolbar from './_metadata-toolbar'
+/*TO DO
   Infinite Scrolling to be implemented still(react-window-infinite-loader) https://web.dev/virtualize-long-lists-react-window/
  */
 /**BUGS:
- * Zoom bug mentioned by vhToPx()
- * middle click press scroll sometimes doesn't work within tabPanel. Might be only happening of right half of panel but unsure. Cause unknown(maybe z-index issues)
- * ICOS to bottom button somehow broke
+ *One bug is that a browser user zooming out doesn't update 100vh until a rerender. Hopefully a more streamline solution can be found(Maybe giving body a height of 100vh but that may cause the zoom bug everywhere)
  */
+
 export default class extends PureComponent {
   constructor(props) {
     super(props)
-    this.state = { listRef: this.saeonListRef, displayFilterMenu: false }
+    this.state = { currentSource: 'saeon', displayFilterMenu: false }
   }
   saeonListRef = React.createRef()
   icosListRef = React.createRef()
-
-  scrolltoRecord = (index, listRef) => {
-    listRef.current.scrollToItem(index)
+  setDisplayFilterMenu(displayFilterMenu) {
+    this.setState({ displayFilterMenu: displayFilterMenu })
   }
 
   /*This is used to calculate the height of a tab panel(container of metadata records). 
   The desired height is 100vh - height of any other elements above/below the tab panel
-  This is necessary to avoid autoSizer collapsing its children with 0 height. 
-  One bug is that a browser user zooming out doesn't update 100vh until a rerender.
-  Hopefully a more streamline solution can be found(Maybe giving body a height of 100vh but that may cause the zoom bug everywhere)   */
+  This is necessary to avoid autoSizer collapsing its children with 0 height.*/
   vhToPx(value) {
     var w = window,
       d = document,
@@ -65,29 +62,28 @@ export default class extends PureComponent {
         {
           result: {
             results: [
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} },
-              { metadata_jsonFake: {} }
+              {
+                metadata_json: {
+                  subjects: [
+                    { subject: 'some subject' },
+                    { subject: 'another subject' },
+                    { subject: 'one last subject' }
+                  ],
+                  titles: [{ titleType: '', title: 'some title' }],
+                  descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
+                  creators: [{ name: 'some creator name' }],
+                  contributors: [
+                    { contributorType: 'ContactPerson', name: 'Brenda Daly' },
+                    { contributorType: 'Distributor', name: 'SAEON' }
+                  ],
+                  publisher: 'some publisher',
+                  dates: [
+                    { dateType: 'collected', date: '2011' },
+                    { dateType: 'another type of date', date: '2012' }
+                  ],
+                  publicationYear: '2020'
+                }
+              }
             ]
           }
         }
@@ -95,88 +91,35 @@ export default class extends PureComponent {
     const saeonResults = searchResults[1].result.results
     const icosResults = searchResults[0].result.results
     const saeonElements = saeonResults.map((r, recordIndex) => {
-      return <MetadataRecord record={r} index={recordIndex + 1} key={recordIndex} logo={saeonLogo} />
+      return <MetadataRecord record={r} index={recordIndex + 1} key={recordIndex} logo={saeonLogo} source="saeon" />
     })
     const icosElements = icosResults.map((r, recordIndex) => {
-      return <MetadataRecord record={r} index={recordIndex + 1} key={recordIndex} logo={icosLogo} />
+      return <MetadataRecord record={r} index={recordIndex + 1} key={recordIndex} logo={icosLogo} source="icos" />
     })
     return (
       <div style={{ height: '100%' }}>
-        {/* SAEON RECORDS */}
-        <Toolbar
-          colored
-          title={saeonResults.length + ' SAEON metadata records | ' + icosResults.length + ' ICOS metadata records'}
-          style={{
-            position: 'fixed',
-            zIndex: 1000,
-            left: '72px',
-            right: 0
-          }}
-          actions={[
-            // FILTER MENU
-            <MenuButton
-              id="filtermenubutton"
-              menuItems={['Option 1', 'Option 2', 'Option 3', 'Option 4']}
-              tooltipLabel="Filter"
-              icon
-              position={'below'}
-            >
-              filter_list
-            </MenuButton>,
-            //SEARCH MENU
-            <Button
-              tooltipLabel="Search"
-              onClick={() => this.setState({ displayFilterMenu: !this.state.displayFilterMenu })}
-              icon
-            >
-              search
-            </Button>,
-            //TO TOP BUTTON
-            <Button tooltipLabel="To top" onClick={() => this.scrolltoRecord(0, this.state.listRef)} icon>
-              arrow_upward
-            </Button>,
-            //TO BOTTOM BUTTON
-            <Button
-              tooltipLabel="To bottom"
-              onClick={() => this.scrolltoRecord(saeonElements.length - 1, this.state.listRef)}
-              icon
-            >
-              arrow_downward
-            </Button>
-          ]}
+        <MetadataToolbar
+          saeonResults={saeonResults}
+          icosResults={icosResults}
+          displayFilterMenu={this.state.displayFilterMenu}
+          setDisplayFilterMenu={this.setDisplayFilterMenu}
+          currentSource={this.state.currentSource}
+          saeonListRef={this.saeonListRef}
+          icosListRef={this.icosListRef}
         />
-        {/*This fake toolbar renders behind the real toolbar so that real content doesn't. Hopefully some css can make this not needed */}
-        <Toolbar />
-        <DialogContainer
-          id="dialog-container"
-          visible={this.state.displayFilterMenu}
-          title="Search Menu"
-          onHide={() => {
-            this.setState({ displayFilterMenu: false })
-          }}
-        >
-          <TextField id="textfield" label="Associated Variables" defaultValue="variables list"></TextField>
-          <TextField id="textfield" label="Date Created" defaultValue="some date"></TextField>
-          <TextField id="textfield" label="Date Modified" defaultValue="some date"></TextField>
-          <Button flat secondary>
-            Cancel
-          </Button>
-          <Button flat primary>
-            Save
-          </Button>
-        </DialogContainer>
+
         <>
           <TabsContainer
             onTabChange={newActiveTabIndex => {
               newActiveTabIndex === 0
-                ? this.setState({ listRef: this.saeonListRef })
-                : this.setState({ listRef: this.icosListRef })
+                ? this.setState({ listRef: this.saeonListRef, currentSource: 'saeon' })
+                : this.setState({ listRef: this.icosListRef, currentSource: 'icos' })
             }}
           >
             <Tabs className="tabs-header" tabId="tabsid">
               {/* SAEON TAB */}
               <Tab icon={<img src={saeonLogo} style={{ height: '45px', margin: '0px' }} />} id="this-is-a-tab">
-                <div style={{ height: this.tabPanelHeight }}>
+                <div style={{ height: this.tabPanelHeight, marginTop: '20px' }}>
                   <AutoSizer id="autosizer" style={{ textAlign: '-webkit-center' }}>
                     {({ height, width }) => {
                       return (
@@ -185,7 +128,8 @@ export default class extends PureComponent {
                           height={height}
                           width={width}
                           itemCount={saeonElements.length}
-                          itemSize={120}
+                          // itemSize={120}
+                          itemSize={500}
                           ref={this.saeonListRef}
                         >
                           {({ index, style }) => (
@@ -201,7 +145,7 @@ export default class extends PureComponent {
               </Tab>
               {/* ICOS TAB */}
               <Tab icon={<img src={icosLogo} style={{ height: '45px', margin: '0px' }} />}>
-                <div style={{ height: this.tabPanelHeight }}>
+                <div style={{ height: this.tabPanelHeight, marginTop: '20px' }}>
                   <AutoSizer id="autosizer" style={{ textAlign: '-webkit-center' }}>
                     {({ height, width }) => (
                       <div>
@@ -210,7 +154,8 @@ export default class extends PureComponent {
                           height={height}
                           width={width}
                           itemCount={icosElements.length}
-                          itemSize={120}
+                          // itemSize={120}
+                          itemSize={500}
                           ref={this.icosListRef}
                         >
                           {({ index, style }) => (

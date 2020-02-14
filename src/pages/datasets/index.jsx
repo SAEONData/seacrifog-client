@@ -5,6 +5,7 @@ import DataList from '../../modules/explorer-page/_metadata-list'
 export default () => (
   <GlobalStateContext.Consumer>
     {({ searchResults }) => {
+      return <DataList searchResults={searchResults} />
       return searchResults.length ? (
         <DataList searchResults={searchResults} />
       ) : (
