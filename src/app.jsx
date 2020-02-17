@@ -3,7 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import GlobalState from './global-state'
 import Navigation from './modules/layout'
 import Home from './pages/home'
-import Datasets from './pages/datasets'
+import SearchResults from './pages/search-results'
 import SitesExplorer from './pages/explorer-sites'
 import ProtocolsExplorer from './pages/explorer-protocols'
 import VariablesExplorer from './pages/explorer-variables'
@@ -27,8 +27,13 @@ const App = ({ gqlClient }) => (
         {/* Sites */}
         <Route key={'sites-explorer'} path={'/sites'} exact={true} render={props => <SitesExplorer {...props} />} />
 
-        {/* Datasets */}
-        <Route key={'datasets'} path={'/datasets'} exact={true} render={props => <Datasets {...props} />} />
+        {/* Search results */}
+        <Route
+          key={'search-results'}
+          path={'/search-results'}
+          exact={true}
+          render={props => <SearchResults {...props} />}
+        />
 
         {/* Network Explorer */}
         <Route

@@ -53,8 +53,8 @@ export default [
   {
     keyval: 'nav-item-records',
     exact: false,
-    label: 'Datasets',
-    to: '/datasets',
+    label: 'Search Results',
+    to: '/search-results',
     icon: 'storage'
   },
 

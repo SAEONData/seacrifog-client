@@ -103,7 +103,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
                               tooltipPosition="left"
                               disabled={searchResultLength > 0 ? false : true}
                               style={mainMenuIconStyle(searchResultLength > 0 ? false : true)}
-                              onClick={() => history.push(`/datasets`)}
+                              onClick={() => history.push(`/search-results`)}
                               icon
                             >
                               storage
