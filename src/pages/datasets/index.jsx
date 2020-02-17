@@ -1,11 +1,15 @@
 import React from 'react'
 import { GlobalStateContext } from '../../global-state'
-import DataList from '../../modules/explorer-page/_metadata-list'
+import { MetadataListView } from '../../modules/metadata-list-view'
 
 export default () => (
   <GlobalStateContext.Consumer>
     {({ searchResults }) =>
-      searchResults.length ? <DataList searchResults={searchResults} /> : <p>No metadata available for selection</p>
+      searchResults.length ? (
+        <MetadataListView searchResults={searchResults} />
+      ) : (
+        <p>No metadata available for selection</p>
+      )
     }
   </GlobalStateContext.Consumer>
 )

@@ -5,26 +5,16 @@ export default class extends PureComponent {
   constructor(props) {
     super(props)
   }
-  scrolltoRecord = (index, listRef) => {
-    listRef.current.scrollToItem(index)
-  }
+  scrolltoRecord = (index, ref) => ref.current.scrollToItem(index)
 
   render() {
-    const {
-      saeonResults,
-      icosResults,
-      displayFilterMenu,
-      setDisplayFilterMenu,
-      currentSource,
-      saeonListRef,
-      icosListRef
-    } = this.props
+    const { searchResultLengths, displayFilterMenu, setDisplayFilterMenu, currentSourceIndex, searchRefs } = this.props
 
     return (
       <>
         <Toolbar
           colored
-          title={saeonResults.length + ' SAEON metadata records | ' + icosResults.length + ' ICOS metadata records'}
+          title={searchResultLengths.join(' results | ') + ' results'}
           style={{
             position: 'fixed',
             zIndex: 1000,
@@ -51,10 +41,7 @@ export default class extends PureComponent {
             <Button
               key={2}
               tooltipLabel="To top"
-              onClick={() => {
-                if (currentSource === 'saeon') this.scrolltoRecord(0, saeonListRef)
-                else this.scrolltoRecord(0, icosListRef)
-              }}
+              onClick={() => this.scrolltoRecord(0, searchRefs[currentSourceIndex])}
               icon
             >
               arrow_upward
@@ -63,10 +50,7 @@ export default class extends PureComponent {
             <Button
               key={3}
               tooltipLabel="To bottom"
-              onClick={() => {
-                if (currentSource === 'saeon') this.scrolltoRecord(saeonResults.length - 1, saeonListRef)
-                else this.scrolltoRecord(icosResults.length - 1, icosListRef)
-              }}
+              onClick={() => this.scrolltoRecord(1, searchRefs[currentSourceIndex])}
               icon
             >
               arrow_downward

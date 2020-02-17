@@ -9,7 +9,6 @@ export default class extends PureComponent {
   }
   render() {
     const { record, index, source } = this.props
-    if (source === 'icos') console.log('icos record', record)
     return (
       <Card style={{ width: '95%', textAlign: 'left' }}>
         <CardTitle title="">
