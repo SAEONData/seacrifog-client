@@ -5,6 +5,7 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import { GlobalStateContext } from '../../global-state'
 import orgs from './configuration'
 import RecordViewer from './metadata-record-view'
+import Footer from '../../modules/layout/footer'
 
 const scrolltoRecord = (index, ref) => ref.current.scrollToItem(index)
 
@@ -68,7 +69,7 @@ class View extends PureComponent {
 
               return (
                 <Tab key={i} icon={<img src={org.logo} style={{ height: '45px', margin: '0px' }} />}>
-                  <div style={{ height: tabPanelHeight, padding: '20px' }}>
+                  <div style={{ height: tabPanelHeight - 60, padding: '20px' }}>
                     <AutoSizer id={`autosizer-${i}`}>
                       {({ height, width }) => {
                         return (
@@ -106,6 +107,7 @@ class View extends PureComponent {
             })}
           </Tabs>
         </TabsContainer>
+        <Footer />
       </div>
     )
   }
