@@ -25,6 +25,10 @@ export default class extends PureComponent {
     searchErrors: []
   }
 
+  componentDidMount() {
+    this.updateGlobalState({ selectedVariables: [2] })
+  }
+
   /**
    * If any selected* lists were changed,
    * update the metadata search in the background
