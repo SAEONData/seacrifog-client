@@ -23,8 +23,13 @@ const Content = ({ children, style, className = '' }) => (
 )
 
 const euFunding = partners[0]
-
 const sfFunding = partners[1]
+
+const mainPartnerStyle = {
+  maxHeight: '60px',
+  display: 'block',
+  margin: 'auto'
+}
 
 export default () => {
   const history = useHistory()
@@ -94,34 +99,18 @@ export default () => {
             <Content>
               <Grid>
                 <Cell phoneSize={4} tabletSize={4} size={6}>
-                  <img
-                    style={{
-                      maxHeight: '100px',
-                      display: 'block',
-                      margin: '20px auto'
-                    }}
-                    src={euFunding.logo}
-                    alt={euFunding.alt}
-                  />
-                  <h4 style={{ paddingTop: '16px' }}>
+                  <img style={mainPartnerStyle} src={euFunding.logo} alt={euFunding.alt} />
+                  <p style={{ paddingTop: '10px' }}>
                     This project has received funding from the European Union&apos;s Horizon 2020 research and
                     innovation programme under grant agreement No 730995
-                  </h4>
+                  </p>
                 </Cell>
                 <Cell phoneSize={4} tabletSize={4} size={6}>
-                  <img
-                    style={{
-                      maxHeight: '100px',
-                      display: 'block',
-                      margin: '20px auto'
-                    }}
-                    src={sfFunding.logo}
-                    alt={sfFunding.alt}
-                  />
-                  <h4 style={{ paddingTop: '16px' }}>
+                  <img style={mainPartnerStyle} src={sfFunding.logo} alt={sfFunding.alt} />
+                  <p style={{ paddingTop: '10px' }}>
                     Supporting EU-African Cooperation on Research Infrastructures for Food Security and Greenhouse Gas
                     Observations
-                  </h4>
+                  </p>
                 </Cell>
               </Grid>
             </Content>
