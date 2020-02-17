@@ -26,7 +26,7 @@ export default class extends PureComponent {
   }
 
   componentDidMount() {
-    this.updateGlobalState({ selectedVariables: [1] })
+    // this.updateGlobalState({ selectedVariables: [1] })
   }
 
   /**
