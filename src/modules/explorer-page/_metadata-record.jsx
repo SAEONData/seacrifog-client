@@ -25,10 +25,14 @@ export default class extends PureComponent {
           <CardActions style={{ marginLeft: 'auto' }}>
             <Button
               onClick={() => {
-                window.open(
-                  `http://www.sasdi.net/metaview.aspx?uuid=${record.metadata_json.alternateIdentifiers[0].alternateIdentifier}`,
-                  '_blank'
-                )
+                if (source === 'saeon')
+                  window.open(
+                    `http://www.sasdi.net/metaview.aspx?uuid=${record.metadata_json.alternateIdentifiers[0].alternateIdentifier}`,
+                    '_blank'
+                  )
+                else {
+                  window.open(`http://www.google.com`)
+                }
               }}
               swapTheming
               icon
@@ -120,12 +124,10 @@ export default class extends PureComponent {
           ) : source === 'icos' ? (
             <div>
               <p>
-                <b>ICOS:??</b>
+                <b>TO BE PLANNED OUT</b>
               </p>
             </div>
-          ) : (
-            <p>unknown source</p>
-          )}
+          ) : null}
         </CardText>
       </Card>
     )
