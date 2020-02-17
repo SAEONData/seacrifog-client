@@ -4,15 +4,13 @@ import { TabsContainer, Tabs, Tab, Button, Toolbar } from 'react-md'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { GlobalStateContext } from '../../global-state'
 import orgs from './configuration'
+import RecordViewer from './metadata-record-view'
 
 const scrolltoRecord = (index, ref) => ref.current.scrollToItem(index)
 
 class View extends PureComponent {
   state = { currentIndex: 0 }
 
-  /*This is used to calculate the height of a tab panel(container of metadata records). 
-  The desired height is 100vh - height of any other elements above/below the tab panel
-  This is necessary to avoid autoSizer collapsing its children with 0 height.*/
   vhToPx(value) {
     var w = window,
       d = document,
@@ -85,14 +83,15 @@ class View extends PureComponent {
                               <div id={index} style={style}>
                                 {
                                   results.map((result, j) => (
-                                    <div key={j}>
-                                      {org.component({
-                                        record: result,
-                                        titlePath: org.titlePath,
-                                        explorerUri: org.explorerUri,
-                                        explorerUriBase: org.explorerUriBase
-                                      })}
-                                    </div>
+                                    <RecordViewer
+                                      key={j}
+                                      record={result}
+                                      titlePath={org.titlePath}
+                                      explorerUriBase={org.explorerUriBase}
+                                      explorerUriPath={org.explorerUri}
+                                      contentPath={org.contentPath}
+                                      FormatContent={org.FormatContent}
+                                    />
                                   ))[index]
                                 }
                               </div>
