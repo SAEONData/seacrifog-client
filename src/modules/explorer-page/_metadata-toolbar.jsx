@@ -34,6 +34,7 @@ export default class extends PureComponent {
           actions={[
             // FILTER MENU
             <MenuButton
+              key={0}
               id="filtermenubutton"
               menuItems={['Option 1', 'Option 2', 'Option 3', 'Option 4']}
               tooltipLabel="Filter"
@@ -43,11 +44,12 @@ export default class extends PureComponent {
               filter_list
             </MenuButton>,
             //SEARCH MENU
-            <Button tooltipLabel="Search" onClick={() => setDisplayFilterMenu(!displayFilterMenu)} icon>
+            <Button key={1} tooltipLabel="Search" onClick={() => setDisplayFilterMenu(!displayFilterMenu)} icon>
               search
             </Button>,
             //TO TOP BUTTON
             <Button
+              key={2}
               tooltipLabel="To top"
               onClick={() => {
                 if (currentSource === 'saeon') this.scrolltoRecord(0, saeonListRef)
@@ -59,6 +61,7 @@ export default class extends PureComponent {
             </Button>,
             //TO BOTTOM BUTTON
             <Button
+              key={3}
               tooltipLabel="To bottom"
               onClick={() => {
                 if (currentSource === 'saeon') this.scrolltoRecord(saeonResults.length - 1, saeonListRef)

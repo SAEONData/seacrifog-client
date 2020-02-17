@@ -1,16 +1,5 @@
 import React, { PureComponent } from 'react'
-import {
-  Toolbar,
-  Button,
-  TabsContainer,
-  Tabs,
-  Tab,
-  MenuButton,
-  DialogContainer,
-  ListItem,
-  List,
-  TextField
-} from 'react-md'
+import { TabsContainer, Tabs, Tab } from 'react-md'
 import MetadataRecord from './_metadata-record'
 import saeonLogo from '../../../public/saeon-logo.png'
 import icosLogo from '../../../public/icos-logo.png'
@@ -43,7 +32,6 @@ export default class extends PureComponent {
       d = document,
       e = d.documentElement,
       g = d.getElementsByTagName('body')[0],
-      x = w.innerWidth || e.clientWidth || g.clientWidth,
       y = w.innerHeight || e.clientHeight || g.clientHeight
 
     var result = (y * value) / 100

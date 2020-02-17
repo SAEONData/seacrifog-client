@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Button, Card, CardText, CardTitle, FontIcon, Cell, CardActions } from 'react-md'
-import saeonLogo from '../../../public/saeon-logo.png'
-import icosLogo from '../../../public/icos-logo.png'
+import { Button, Card, CardText, CardTitle, CardActions } from 'react-md'
 
 const iconColor = '#00897b'
 

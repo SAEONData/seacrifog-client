@@ -58,7 +58,7 @@ export class Charts extends PureComponent {
 
   async setData() {
     const { client, query, variables } = this.props
-    const { data, loading, error } = await client.query({ query, variables })
+    const { data } = await client.query({ query, variables })
     this.setState({
       data
     })

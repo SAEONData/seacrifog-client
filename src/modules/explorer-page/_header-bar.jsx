@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom'
 import { ENTIRE_GRAPH } from '../../graphql/queries'
 import { ExplorerSideMenuFilter } from './index'
 import { SideMenu } from '../shared-components/index'
-import MetadataList from './_metadata-list'
 import { GlobalStateContext } from '../../global-state'
 import { ShowChartsState } from '../../chart-state'
 
@@ -86,45 +85,31 @@ export default ({ resetFn, selectedIds, ...props }) => {
                             </Button>
                           </Badge>,
 
-                          <SideMenu
-                            toolbarTitle={'Metadata search results'}
-                            style={{ width: '100%' }}
+                          <Badge
+                            style={searchErrors.length < 1 ? {} : { display: 'none' }}
                             key={51}
-                            toolbarActions={[]}
-                            control={({ toggleMenu }) => (
-                              <Badge
-                                key={1}
-                                badgeStyle={badgeStyle(searchResultLength > 0 ? false : true)}
-                                badgeContent={searchResults
-                                  .map(r => r.result.result_length)
-                                  .reduce((sum, val) => sum + val, 0)}
-                                badgeId={'search-results-notification'}
-                              >
-                                <Button
-                                  tooltipLabel={`Organizations searched: ${
-                                    searchResults.length
-                                  }. Records found: ${searchResults
-                                    .map(r => r.result.result_length)
-                                    .reduce((sum, val) => sum + val, 0)}`}
-                                  tooltipPosition="left"
-                                  className="md-btn--toolbar"
-                                  disabled={searchResultLength > 0 ? false : true}
-                                  style={Object.assign(
-                                    { marginTop: 0 },
-                                    mainMenuIconStyle(searchResultLength > 0 ? false : true)
-                                  )}
-                                  onClick={toggleMenu}
-                                  icon
-                                >
-                                  storage
-                                </Button>
-                              </Badge>
-                            )}
+                            badgeStyle={badgeStyle(searchResultLength > 0 ? false : true)}
+                            badgeContent={searchResults
+                              .map(r => r.result.result_length)
+                              .reduce((sum, val) => sum + val, 0)}
+                            badgeId={'search-results-notification'}
                           >
-                            <div style={{ padding: '40px' }}>
-                              <MetadataList searchResults={searchResults} />
-                            </div>
-                          </SideMenu>,
+                            <Button
+                              tooltipLabel={`Organizations searched: ${
+                                searchResults.length
+                              }. Records found: ${searchResults
+                                .map(r => r.result.result_length)
+                                .reduce((sum, val) => sum + val, 0)}`}
+                              tooltipPosition="left"
+                              disabled={searchResultLength > 0 ? false : true}
+                              style={mainMenuIconStyle(searchResultLength > 0 ? false : true)}
+                              onClick={() => history.push(`/datasets`)}
+                              icon
+                            >
+                              storage
+                            </Button>
+                          </Badge>,
+
                           <Button
                             key={2}
                             style={mainMenuIconStyle(selectedIds.length > 0 ? false : true)}
