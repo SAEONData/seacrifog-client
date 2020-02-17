@@ -5,7 +5,7 @@ export default [
     name: 'European Union',
     fixed: true,
     id: 1,
-    logo: `${PATH}/eu-funding-achnowledgement.jpg`,
+    logo: `${PATH}/eu-funding-acknowledgement.jpg`,
     alt: 'EU funding acknowledgement',
     content:
       "This project has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement No 730995",
