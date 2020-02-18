@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { OlReact, SingleFeatureSelector } from '@saeon/atlas'
+import { OlReact, SingleFeatureSelector } from '@saeon/ol-react'
 import { ahocevarBaseMap, pointLayer } from '../../../modules/atlas/layers'
 import { pointSource } from '../../../modules/atlas/sources'
 import { dotStyle3, dotStyle4 } from '../../../modules/atlas/styles'
