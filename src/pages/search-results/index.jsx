@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react'
 import { FixedSizeList } from 'react-window'
-import { TabsContainer, Tabs, Tab, Button, Toolbar } from 'react-md'
+import { TabsContainer, Tabs, Tab, Button, Toolbar, Grid, Cell } from 'react-md'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { GlobalStateContext } from '../../global-state'
 import orgs from './configuration'
 import RecordViewer from './metadata-record-view'
+import { Link } from 'react-router-dom'
 import Footer from '../../modules/layout/footer'
 
 const scrolltoRecord = (index, ref) => ref.current.scrollToItem(index)
@@ -39,7 +40,7 @@ class View extends PureComponent {
         {/* Toolbar */}
         <Toolbar
           colored
-          title={searchResults.map(({ result }) => result.results.length).join(' results | ') + ' results'}
+          title={searchResults.map(({ result }) => result?.results?.length || 0).join(' results | ') + ' results'}
           actions={[
             <Button key={0} tooltipLabel="To top" onClick={() => scrolltoRecord(0, searchRefs[currentIndex])} icon>
               arrow_upward
@@ -49,7 +50,7 @@ class View extends PureComponent {
               tooltipLabel="To bottom"
               onClick={() =>
                 scrolltoRecord(
-                  searchResults.map(({ result }) => result.results.length)[currentIndex] - 1,
+                  searchResults.map(({ result }) => result?.results?.length || 0)[currentIndex] - 1,
                   searchRefs[currentIndex]
                 )
               }
@@ -70,37 +71,41 @@ class View extends PureComponent {
               return (
                 <Tab key={i} icon={<img src={org.logo} style={{ height: '45px', margin: '0px' }} />}>
                   <div style={{ height: tabPanelHeight - 60, padding: '20px' }}>
-                    <AutoSizer id={`autosizer-${i}`}>
-                      {({ height, width }) => {
-                        return (
-                          <FixedSizeList
-                            height={height}
-                            width={width}
-                            itemCount={results.length}
-                            itemSize={300}
-                            ref={searchRefs[i]}
-                          >
-                            {({ index, style }) => (
-                              <div id={index} style={style}>
-                                {
-                                  results.map((result, j) => (
-                                    <RecordViewer
-                                      key={j}
-                                      record={result}
-                                      titlePath={org.titlePath}
-                                      explorerUriBase={org.explorerUriBase}
-                                      explorerUriPath={org.explorerUri}
-                                      contentPath={org.contentPath}
-                                      FormatContent={org.FormatContent}
-                                    />
-                                  ))[index]
-                                }
-                              </div>
-                            )}
-                          </FixedSizeList>
-                        )
-                      }}
-                    </AutoSizer>
+                    {results && results.length > 0 ? (
+                      <AutoSizer id={`autosizer-${i}`}>
+                        {({ height, width }) => {
+                          return (
+                            <FixedSizeList
+                              height={height}
+                              width={width}
+                              itemCount={results.length}
+                              itemSize={300}
+                              ref={searchRefs[i]}
+                            >
+                              {({ index, style }) => (
+                                <div id={index} style={style}>
+                                  {
+                                    results.map((result, j) => (
+                                      <RecordViewer
+                                        key={j}
+                                        record={result}
+                                        titlePath={org.titlePath}
+                                        explorerUriBase={org.explorerUriBase}
+                                        explorerUriPath={org.explorerUri}
+                                        contentPath={org.contentPath}
+                                        FormatContent={org.FormatContent}
+                                      />
+                                    ))[index]
+                                  }
+                                </div>
+                              )}
+                            </FixedSizeList>
+                          )
+                        }}
+                      </AutoSizer>
+                    ) : (
+                      'NO RESULTS'
+                    )}
                   </div>
                 </Tab>
               )
@@ -115,8 +120,37 @@ class View extends PureComponent {
 
 export default () => (
   <GlobalStateContext.Consumer>
-    {({ searchResults }) =>
-      searchResults.length ? <View searchResults={searchResults} /> : <p>No metadata available for selection</p>
+    {({ searchResults, loadingSearchResults }) =>
+      searchResults.length ? (
+        <View searchResults={searchResults} />
+      ) : (
+        <Grid>
+          <Cell>
+            {loadingSearchResults ? (
+              <p>Loading ...</p>
+            ) : (
+              <div>
+                <h2>No Search Defined</h2>
+                <Link className="link" to="/sites">
+                  Filter by sites
+                </Link>
+                <br />
+                <Link className="link" to="/networks">
+                  Filter by networks
+                </Link>
+                <br />
+                <Link className="link" to="/variables">
+                  Filter by variables
+                </Link>
+                <br />
+                <Link className="link" to="/protocols">
+                  Filter by protocols
+                </Link>
+              </div>
+            )}
+          </Cell>
+        </Grid>
+      )
     }
   </GlobalStateContext.Consumer>
 )

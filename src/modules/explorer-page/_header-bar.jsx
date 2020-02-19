@@ -35,7 +35,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
           {({ loadingSearchResults, searchResults, searchErrors }) => {
             const searchResultLength = searchErrors.length
               ? 0
-              : searchResults.map(r => r.result.result_length).reduce((sum, val) => sum + val, 0)
+              : searchResults.map(r => r?.result?.result_length || 0).reduce((sum, val) => sum + val, 0)
 
             return (
               <>
@@ -90,7 +90,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
                             key={51}
                             badgeStyle={badgeStyle(searchResultLength > 0 ? false : true)}
                             badgeContent={searchResults
-                              .map(r => r.result.result_length)
+                              .map(r => r?.result?.result_length || 0)
                               .reduce((sum, val) => sum + val, 0)}
                             badgeId={'search-results-notification'}
                           >
