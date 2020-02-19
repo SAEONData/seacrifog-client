@@ -30,7 +30,7 @@ WebFontLoader.load({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App gqlClient={client} />
+    <App />
   </ApolloProvider>,
   document.getElementById('app')
 )

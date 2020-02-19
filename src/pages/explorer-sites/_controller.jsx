@@ -152,10 +152,14 @@ export default class extends PureComponent {
 
                 {/* Feature click panel (individual feature, no menu) */}
                 <SingleFeatureSelector
-                  onFeatureSelect={selectedFeature => console.log(selectedFeature)}
+                  map={map}
                   unselectedStyle={clusterStyle1}
                   selectedStyle={clusterStyle2}
-                  map={map}
+                  onFeatureSelect={selectedFeature =>
+                    updateGlobalState({
+                      selectedSites: selectedFeature.get('features').map(feature => feature.get('id'))
+                    })
+                  }
                 >
                   {({ selectedFeature, unselectFeature }) =>
                     selectedFeature ? (
@@ -188,7 +192,11 @@ export default class extends PureComponent {
                             >
                               save_alt
                             </Button>,
-                            <Button key={1} onClick={unselectFeature} icon>
+                            <Button
+                              key={1}
+                              onClick={() => unselectFeature(() => updateGlobalState({ selectedSites: [] }))}
+                              icon
+                            >
                               close
                             </Button>
                           ]}

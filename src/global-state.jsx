@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react'
 import gql from 'graphql-tag'
+import { ApolloConsumer } from 'react-apollo'
 
 export const GlobalStateContext = React.createContext()
 
-export default class extends PureComponent {
+class GlobalState extends PureComponent {
   state = {
     // Lists of IDs
     selectedSites: [],
@@ -34,8 +35,8 @@ export default class extends PureComponent {
    * update the metadata search in the background
    */
   async componentDidUpdate(prevProps, prevState) {
-    const { gqlClient } = this.props
-    const searchFields = ['selectedNetworks', 'selectedVariables', 'selectedProtocols']
+    const { client } = this.props
+    const searchFields = ['selectedSites', 'selectedNetworks', 'selectedVariables', 'selectedProtocols']
     let refresh = false
     for (const field of searchFields) {
       const oldF = prevState[field]
@@ -50,6 +51,7 @@ export default class extends PureComponent {
       return
     } else {
       const {
+        selectedSites: bySites,
         selectedNetworks: byNetworks,
         selectedVariables: byVariables,
         selectedProtocols: byProtocols
@@ -59,16 +61,25 @@ export default class extends PureComponent {
         let data
         let errors
         try {
-          const response = await gqlClient.query({
+          const response = await client.query({
             query: gql`
-              query search($byNetworks: [Int!], $byProtocols: [Int!], $byVariables: [Int!]) {
-                searchMetadata(byNetworks: $byNetworks, byVariables: $byVariables, byProtocols: $byProtocols) {
+              query search($bySites: [Int!], $byNetworks: [Int!], $byProtocols: [Int!], $byVariables: [Int!]) {
+                searchMetadata(
+                  bySites: $bySites
+                  byNetworks: $byNetworks
+                  byVariables: $byVariables
+                  byProtocols: $byProtocols
+                ) {
+                  i
                   target
                   result
+                  error
                 }
               }
             `,
+            fetchPolicy: 'network-only',
             variables: {
+              bySites,
               byNetworks,
               byVariables,
               byProtocols
@@ -118,3 +129,7 @@ export default class extends PureComponent {
     )
   }
 }
+
+export default ({ children }) => (
+  <ApolloConsumer>{client => <GlobalState client={client}>{children}</GlobalState>}</ApolloConsumer>
+)

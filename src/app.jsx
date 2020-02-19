@@ -16,8 +16,8 @@ import DataproductEditor from './pages/editor-dataproducts'
 import navItems from './nav-items'
 
 // SPA wrapper
-const App = ({ gqlClient }) => (
-  <GlobalState gqlClient={gqlClient}>
+const App = () => (
+  <GlobalState>
     <BrowserRouter>
       <Navigation navItems={navItems}>
         {/* Basic navigation */}
