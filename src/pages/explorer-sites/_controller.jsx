@@ -244,7 +244,7 @@ class AtlasController extends PureComponent {
                     </Button>
 
                     {/* Search results error button */}
-                    <div style={{ ...badgeContainer, top: 150 }}>
+                    <div style={{ ...badgeContainer, bottom: 0 }}>
                       <Badge
                         style={searchErrors.length > 0 ? {} : { display: 'none' }}
                         key={89}
@@ -267,7 +267,7 @@ class AtlasController extends PureComponent {
                     </div>
 
                     {/* Search results button */}
-                    <div style={{ ...badgeContainer, top: 150 }}>
+                    <div style={{ ...badgeContainer, bottom: 0 }}>
                       <Badge
                         style={searchErrors.length < 1 ? {} : { display: 'none' }}
                         key={91}
