@@ -16,6 +16,10 @@ const listItemStyle = {
  * label
  * truncateLength?
  * className? Optional classname
+ *
+ * TODO
+ * (1) Convert menuItems to use virtual list instead of splicing and 'clicking more'
+ * (2) Convert the list of selected items to also be a virtualized list
  */
 export default class extends PureComponent {
   state = { searchTerm: '', filteredItems: [], visible: false, listSize: 20 }
@@ -79,7 +83,7 @@ export default class extends PureComponent {
                   ))
                 : 'No search result'
 
-            if (result.length > 20)
+            if (result.length >= 20)
               result.push(
                 <ListItem
                   key={'more-items'}
