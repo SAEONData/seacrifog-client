@@ -17,13 +17,13 @@ const buttonStyle = disabled => ({
   color: disabled ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,1)'
 })
 
-const mainMenuIconStyle = (disabled, toggled) => ({
+const mainMenuIconStyle = disabled => ({
   color: disabled ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,1)',
-  backgroundColor: toggled ? 'rgba(0,0,0,0.3)' : ''
+  backgroundColor: disabled ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.7)'
 })
 
 const badgeStyle = disabled => ({
-  color: disabled ? 'rgba(0,0,0,03)' : 'rgba(0,0,0,1)'
+  color: disabled ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,1)'
 })
 
 let timer
