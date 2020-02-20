@@ -125,17 +125,9 @@ class View extends PureComponent {
                               {({ index, style }) => (
                                 <div id={index} style={style}>
                                   {
-                                    results.map((result, j) => (
-                                      <RecordViewer
-                                        key={j}
-                                        record={result}
-                                        titlePath={org.titlePath}
-                                        explorerUriBase={org.explorerUriBase}
-                                        explorerUriPath={org.explorerUri}
-                                        contentPath={org.contentPath}
-                                        FormatContent={org.FormatContent}
-                                      />
-                                    ))[index]
+                                    results.map((result, j) => <RecordViewer i={j} key={j} record={result} {...org} />)[
+                                      index
+                                    ]
                                   }
                                 </div>
                               )}
