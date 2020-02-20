@@ -56,31 +56,7 @@ class View extends PureComponent {
         <Toolbar
           colored
           className={'sf-content-header'}
-          title={
-            <div>
-              {searchResults
-                .map(({ result, target }, i) => {
-                  const org = orgs[target]
-                  return (
-                    <div key={i} style={{ float: 'left' }}>
-                      <div style={{ fontSize: 16 }}>
-                        {result?.results?.length || 0} results (
-                        <img
-                          src={org.logo}
-                          style={{ width: '70px', display: 'inline-block', verticalAlign: 'middle' }}
-                        />
-                        )
-                      </div>
-                    </div>
-                  )
-                })
-                .map((el, i) => (
-                  <>
-                    {i > 0 ? <div style={{ float: 'left', margin: '0 10px' }}>|</div> : ''} {el}
-                  </>
-                ))}
-            </div>
-          }
+          title={searchResults.reduce((sum, { result }) => sum + (result?.results?.length || 0), 0) + ' search results'}
           actions={[
             <Button key={0} tooltipLabel="To top" onClick={() => scrolltoRecord(0, searchRefs[currentIndex])} icon>
               arrow_upward
@@ -120,14 +96,20 @@ class View extends PureComponent {
         />
 
         {/* Tabs header (list of orgs) */}
-        <TabsContainer onTabChange={currentIndex => this.setState({ currentIndex })}>
+        <TabsContainer labelAndIcon onTabChange={currentIndex => this.setState({ currentIndex })}>
           <Tabs tabId="metadata-search-tabs">
             {searchResults.map(({ result, target }, i) => {
               const { results } = result
               const org = orgs[target]
 
               return (
-                <Tab key={i} icon={<img src={org.logo} style={{ height: '45px', margin: '0px' }} />}>
+                <Tab
+                  key={i}
+                  label={
+                    <span style={{ color: 'rgba(1, 1, 1, 0.5)' }}>{(result?.results?.length || '0') + ' records'}</span>
+                  }
+                  icon={<img src={org.logo} style={{ height: '30px', marginBottom: 5 }} />}
+                >
                   <div style={{ height: tabPanelHeight - 60, padding: '20px' }}>
                     {results && results.length > 0 ? (
                       <AutoSizer id={`autosizer-${i}`}>
@@ -196,7 +178,7 @@ export default () => (
         <Grid>
           <Cell>
             {loadingSearchResults ? (
-              <p>Loading..</p>
+              <p>Loading ...</p>
             ) : (
               <div>
                 <h2>No Search Defined</h2>
