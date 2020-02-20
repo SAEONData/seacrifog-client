@@ -3,7 +3,7 @@ import { Toolbar, Button, LinearProgress, Badge } from 'react-md'
 import DataQuery from '../data-query'
 import { useHistory } from 'react-router-dom'
 import { ENTIRE_GRAPH } from '../../graphql/queries'
-import { ExplorerSideMenuFilter } from './index'
+import { SideMenuFilter } from '../shared-components'
 import { SideMenu } from '../shared-components/index'
 import { GlobalStateContext } from '../../global-state'
 import { ShowChartsState } from '../../chart-state'
@@ -55,7 +55,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
                   {({ sites, networks, variables, protocols }) => (
                     <>
                       <LinearProgress
-                        id={'entity-save-progress-indicator'}
+                        id={'search-loading-progress-indicator'}
                         style={getProgresStyle(loadingSearchResults)}
                       />
                       <Toolbar
@@ -172,7 +172,7 @@ export default ({ resetFn, selectedIds, ...props }) => {
                               </Button>
                             )}
                           >
-                            <ExplorerSideMenuFilter
+                            <SideMenuFilter
                               sites={sites}
                               networks={networks}
                               variables={variables}

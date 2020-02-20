@@ -1,7 +1,10 @@
 import React, { PureComponent } from 'react'
 import { FixedSizeList } from 'react-window'
-import { TabsContainer, Tabs, Tab, Button, Toolbar, Grid, Cell } from 'react-md'
+import { TabsContainer, Tabs, Tab, Button, Toolbar, Grid, Cell, LinearProgress } from 'react-md'
+import DataQuery from '../../modules/data-query'
+import { ENTIRE_GRAPH } from '../../graphql/queries'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import { SideMenu, SideMenuFilter } from '../../modules/shared-components'
 import { GlobalStateContext } from '../../global-state'
 import orgs from './configuration'
 import RecordViewer from './metadata-record-view'
@@ -9,6 +12,17 @@ import { Link } from 'react-router-dom'
 import Footer from '../../modules/layout/footer'
 
 const scrolltoRecord = (index, ref) => ref.current.scrollToItem(index)
+
+const mainMenuIconStyle = (disabled, toggled) => ({
+  color: disabled ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,1)',
+  backgroundColor: toggled ? 'rgba(255,255,255,0.3)' : ''
+})
+
+const getProgresStyle = loading => ({
+  margin: 0,
+  visibility: loading ? 'inherit' : 'hidden',
+  position: 'absolute'
+})
 
 class View extends PureComponent {
   state = { currentIndex: 0 }
@@ -33,14 +47,40 @@ class View extends PureComponent {
 
   render() {
     const { searchRefs, props, state, tabPanelHeight } = this
-    const { searchResults } = props
+    const { loadingSearchResults, searchResults, sites, networks, variables, protocols } = props
     const { currentIndex } = state
     return (
       <div>
         {/* Toolbar */}
+        <LinearProgress id={'search-loading-progress-indicator'} style={getProgresStyle(loadingSearchResults)} />
         <Toolbar
           colored
-          title={searchResults.map(({ result }) => result?.results?.length || 0).join(' results | ') + ' results'}
+          className={'sf-content-header'}
+          title={
+            <div>
+              {searchResults
+                .map(({ result, target }, i) => {
+                  const org = orgs[target]
+                  return (
+                    <div key={i} style={{ float: 'left' }}>
+                      <div style={{ fontSize: 16 }}>
+                        {result?.results?.length || 0} results (
+                        <img
+                          src={org.logo}
+                          style={{ width: '70px', display: 'inline-block', verticalAlign: 'middle' }}
+                        />
+                        )
+                      </div>
+                    </div>
+                  )
+                })
+                .map((el, i) => (
+                  <>
+                    {i > 0 ? <div style={{ float: 'left', margin: '0 10px' }}>|</div> : ''} {el}
+                  </>
+                ))}
+            </div>
+          }
           actions={[
             <Button key={0} tooltipLabel="To top" onClick={() => scrolltoRecord(0, searchRefs[currentIndex])} icon>
               arrow_upward
@@ -57,7 +97,25 @@ class View extends PureComponent {
               icon
             >
               arrow_downward
-            </Button>
+            </Button>,
+            <SideMenu
+              key={2}
+              toolbarActions={[]}
+              control={({ toggleMenu }) => (
+                <Button
+                  tooltipLabel={'View current filters'}
+                  tooltipPosition="left"
+                  className="md-btn--toolbar"
+                  style={mainMenuIconStyle()}
+                  onClick={toggleMenu}
+                  icon
+                >
+                  filter_list
+                </Button>
+              )}
+            >
+              <SideMenuFilter sites={sites} networks={networks} variables={variables} protocols={protocols} />
+            </SideMenu>
           ]}
         />
 
@@ -122,12 +180,23 @@ export default () => (
   <GlobalStateContext.Consumer>
     {({ searchResults, loadingSearchResults }) =>
       searchResults.length ? (
-        <View searchResults={searchResults} />
+        <DataQuery query={ENTIRE_GRAPH} variables={{}}>
+          {({ sites, networks, variables, protocols }) => (
+            <View
+              sites={sites}
+              networks={networks}
+              variables={variables}
+              protocols={protocols}
+              searchResults={searchResults}
+              loadingSearchResults={loadingSearchResults}
+            />
+          )}
+        </DataQuery>
       ) : (
         <Grid>
           <Cell>
             {loadingSearchResults ? (
-              <p>Loading ...</p>
+              <p>Loading..</p>
             ) : (
               <div>
                 <h2>No Search Defined</h2>

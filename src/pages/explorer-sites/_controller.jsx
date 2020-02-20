@@ -7,8 +7,7 @@ import { clusterLayer, ahocevarBaseMap } from '../../modules/atlas/layers'
 import { clusterSource } from '../../modules/atlas/sources'
 import { clusterStyle1, clusterStyle2 } from '../../modules/atlas/styles'
 import { GlobalStateContext } from '../../global-state'
-import { SideMenu } from '../../modules/shared-components'
-import { ExplorerSideMenuFilter } from '../../modules/explorer-page'
+import { SideMenu, SideMenuFilter } from '../../modules/shared-components'
 import ApplySitesFilter from './_apply-sites-filter'
 import FeatureDetail from './_feature-detail'
 import downloadMapData from './_download'
@@ -26,6 +25,12 @@ const mainMenuIconStyle = (disabled, toggled) => ({
 const badgeStyle = disabled => ({
   color: disabled ? 'rgba(0,0,0,03)' : 'rgba(0,0,0,1)'
 })
+
+let timer
+function resizeMap() {
+  clearTimeout(timer)
+  timer = setTimeout(() => this.updateSize(), 1000)
+}
 
 const badgeContainer = {
   position: 'absolute',
@@ -69,6 +74,10 @@ class AtlasController extends PureComponent {
     this.layers = [ahocevarBaseMap(), this.clusteredSitesLayer]
   }
 
+  componentDidMount() {
+    setTimeout(() => window.dispatchEvent(new Event('resize-map')), 100)
+  }
+
   render() {
     const { layers, data, props } = this
     const { history } = props
@@ -100,246 +109,248 @@ class AtlasController extends PureComponent {
 
           return (
             <OlReact
-              viewOptions={{}}
+              viewOptions={{
+                zoom: 3.5
+              }}
               style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
               layers={layers}
             >
-              {({ map }) => (
-                <ApplySitesFilter
-                  sites={sites}
-                  selectedSites={selectedSites}
-                  selectedNetworks={selectedNetworks}
-                  selectedVariables={selectedVariables}
-                  selectedProtocols={selectedProtocols}
-                  xrefSitesNetworks={xrefSitesNetworks}
-                  xrefNetworksVariables={xrefNetworksVariables}
-                  xrefProtocolsVariables={xrefProtocolsVariables}
-                  updateMapLayer={({ source }) => this.clusteredSitesLayer.setSource(source)}
-                >
-                  {/* Display a progress bar while search is loading */}
-                  <LinearProgress
-                    id="loading-progress-indicator"
-                    style={Object.assign(
-                      { margin: 0, position: 'absolute' },
-                      loadingSearchResults
-                        ? {}
-                        : {
-                            display: 'none'
-                          }
-                    )}
-                  />
-                  {/* Side Filter menu */}
-                  <SideMenu
-                    toolbarActions={[
-                      <Button
-                        key={0}
-                        disabled={
-                          selectedSites.length ||
-                          selectedNetworks.length ||
-                          selectedVariables.length ||
-                          selectedProtocols.length
-                            ? false
-                            : true
-                        }
-                        primary
-                        onClick={() =>
-                          updateGlobalState({
-                            selectedSites: [],
-                            selectedNetworks: [],
-                            selectedVariables: [],
-                            selectedProtocols: []
-                          })
-                        }
-                        icon
-                      >
-                        refresh
-                      </Button>
-                    ]}
-                    control={({ toggleMenu }) => (
-                      <Button
-                        tooltipLabel="Filter"
-                        tooltipPosition="left"
-                        style={{ position: 'absolute', top: 0, right: 0, margin: '10px', zIndex: 1 }}
-                        swapTheming
-                        primary
-                        icon
-                        onClick={toggleMenu}
-                      >
-                        filter_list
-                      </Button>
-                    )}
+              {({ map }) => {
+                // This makes the map redraw when the sidenav changes sizes
+                window.removeEventListener('resize-map', resizeMap)
+                window.addEventListener('resize-map', resizeMap.bind(map))
+                return (
+                  <ApplySitesFilter
+                    sites={sites}
+                    selectedSites={selectedSites}
+                    selectedNetworks={selectedNetworks}
+                    selectedVariables={selectedVariables}
+                    selectedProtocols={selectedProtocols}
+                    xrefSitesNetworks={xrefSitesNetworks}
+                    xrefNetworksVariables={xrefNetworksVariables}
+                    xrefProtocolsVariables={xrefProtocolsVariables}
+                    updateMapLayer={({ source }) => this.clusteredSitesLayer.setSource(source)}
                   >
-                    <ExplorerSideMenuFilter
-                      sites={sites}
-                      networks={networks}
-                      variables={variables}
-                      protocols={protocols}
+                    {/* Display a progress bar while search is loading */}
+                    <LinearProgress
+                      id="loading-progress-indicator"
+                      style={Object.assign(
+                        { margin: 0, position: 'absolute' },
+                        loadingSearchResults
+                          ? {}
+                          : {
+                              display: 'none'
+                            }
+                      )}
                     />
-                  </SideMenu>
-
-                  {/* Feature click panel, all shown features, WITH menu */}
-                  <SideMenu
-                    style={{ minWidth: '100%', overflowY: 'auto', zIndex: 999 }}
-                    control={({ toggleMenu }) => (
-                      <Button
-                        tooltipLabel="View site info"
-                        tooltipPosition="left"
-                        swapTheming
-                        primary
-                        style={{ position: 'absolute', top: 50, right: 0, margin: '10px', zIndex: 1 }}
-                        icon
-                        onClick={toggleMenu}
-                      >
-                        bar_chart
-                      </Button>
-                    )}
-                  >
-                    <div style={{ padding: 0, height: 'calc(100% - 67px)' }}>
-                      <FeatureDetail toolbarActions={[]} getFeatureIds={() => getFeatureIds({ map })} map={map} />
-                    </div>
-                  </SideMenu>
-
-                  {/* Reset buton */}
-                  <Button
-                    tooltipLabel="Reset the filter selection"
-                    tooltipPosition="left"
-                    style={Object.assign(
-                      [...selectedSites, ...selectedNetworks, ...selectedVariables, ...selectedProtocols].length > 0
-                        ? {}
-                        : {
-                            backgroundColor: 'grey',
-                            color: 'black',
-                            opacity: 0.4
-                          },
-                      { position: 'absolute', top: 100, right: 0, margin: '10px', zIndex: 1 }
-                    )}
-                    swapTheming
-                    primary
-                    icon
-                    disabled={
-                      [...selectedSites, ...selectedNetworks, ...selectedVariables, ...selectedProtocols].length > 0
-                        ? false
-                        : true
-                    }
-                    onClick={() =>
-                      updateGlobalState({
-                        selectedSites: [],
-                        selectedNetworks: [],
-                        selectedVariables: [],
-                        selectedProtocols: []
-                      })
-                    }
-                  >
-                    refresh
-                  </Button>
-
-                  {/* Search results error button */}
-                  <div style={{ ...badgeContainer, top: 150 }}>
-                    <Badge
-                      style={searchErrors.length > 0 ? {} : { display: 'none' }}
-                      key={89}
-                      badgeStyle={badgeStyle(searchErrors.length > 0 ? false : true)}
-                      badgeContent={searchErrors.length}
-                      badgeId={'search-results-errors'}
-                    >
-                      <Button
-                        style={mainMenuIconStyle(searchErrors.length ? false : true)}
-                        disabled={searchErrors.length ? false : true}
-                        tooltipLabel={`${searchErrors.length} error${
-                          searchErrors.length === 1 ? '' : 's'
-                        } occured searching metadata`}
-                        onClick={() => alert('Please alert SEACRIFOG administrators that search errors are occuring')}
-                        icon
-                      >
-                        error
-                      </Button>
-                    </Badge>
-                  </div>
-
-                  {/* Search results button */}
-                  <div style={{ ...badgeContainer, top: 150 }}>
-                    <Badge
-                      style={searchErrors.length < 1 ? {} : { display: 'none' }}
-                      key={91}
-                      badgeStyle={badgeStyle(searchResultLength > 0 ? false : true)}
-                      badgeContent={searchResults
-                        .map(r => r?.result?.result_length || 0)
-                        .reduce((sum, val) => sum + val, 0)}
-                      badgeId={'search-results-notification'}
-                    >
-                      <Button
-                        tooltipLabel={`Organizations searched: ${
-                          searchResults.length
-                        }. Records found: ${searchResults
-                          .map(r => r.result.result_length)
-                          .reduce((sum, val) => sum + val, 0)}`}
-                        tooltipPosition="left"
-                        disabled={searchResultLength > 0 ? false : true}
-                        style={mainMenuIconStyle(searchResultLength > 0 ? false : true)}
-                        onClick={() => history.push(`/search-results`)}
-                        icon
-                      >
-                        storage
-                      </Button>
-                    </Badge>
-                  </div>
-
-                  {/* Feature click panel (individual feature, no menu) */}
-                  <SingleFeatureSelector
-                    map={map}
-                    unselectedStyle={clusterStyle1}
-                    selectedStyle={clusterStyle2}
-                    onFeatureSelect={selectedFeature =>
-                      updateGlobalState({
-                        selectedSites: selectedFeature.get('features').map(feature => feature.get('id'))
-                      })
-                    }
-                  >
-                    {({ selectedFeature, unselectFeature }) =>
-                      selectedFeature ? (
-                        <div
-                          style={{
-                            zIndex: 1,
-                            position: 'absolute',
-                            margin: '12px 0 12px 12px',
-                            top: 0,
-                            bottom: 0,
-                            left: 0,
-                            right: 64,
-                            display: selectedFeature ? 'inherit' : 'none',
-                            opacity: 0.8
-                          }}
+                    {/* Side Filter menu */}
+                    <SideMenu
+                      toolbarActions={[
+                        <Button
+                          key={0}
+                          disabled={
+                            selectedSites.length ||
+                            selectedNetworks.length ||
+                            selectedVariables.length ||
+                            selectedProtocols.length
+                              ? false
+                              : true
+                          }
+                          primary
+                          onClick={() =>
+                            updateGlobalState({
+                              selectedSites: [],
+                              selectedNetworks: [],
+                              selectedVariables: [],
+                              selectedProtocols: []
+                            })
+                          }
+                          icon
                         >
-                          <FeatureDetail
-                            toolbarActions={[
-                              <Button
-                                key={0}
-                                tooltipLabel={'Download data for selected features'}
-                                disabled={selectedFeature.get('features').length > 500 ? true : false}
-                                onClick={async () =>
-                                  downloadMapData({
-                                    ids: selectedFeature.get('features').map(feature => feature.get('id'))
-                                  })
-                                }
-                                icon
-                                style={buttonStyle(selectedFeature.get('features').length > 500 ? true : false)}
-                              >
-                                save_alt
-                              </Button>,
-                              <Button key={1} onClick={() => unselectFeature()} icon>
-                                close
-                              </Button>
-                            ]}
-                            getFeatureIds={() => selectedFeature.get('features').map(feature => feature.get('id'))}
-                          />
-                        </div>
-                      ) : (
-                        ''
-                      )
-                    }
-                  </SingleFeatureSelector>
-                </ApplySitesFilter>
-              )}
+                          refresh
+                        </Button>
+                      ]}
+                      control={({ toggleMenu }) => (
+                        <Button
+                          tooltipLabel="Filter"
+                          tooltipPosition="left"
+                          style={{ position: 'absolute', top: 0, right: 0, margin: '10px', zIndex: 1 }}
+                          swapTheming
+                          primary
+                          icon
+                          onClick={toggleMenu}
+                        >
+                          filter_list
+                        </Button>
+                      )}
+                    >
+                      <SideMenuFilter sites={sites} networks={networks} variables={variables} protocols={protocols} />
+                    </SideMenu>
+
+                    {/* Feature click panel, all shown features, WITH menu */}
+                    <SideMenu
+                      style={{ minWidth: '100%', overflowY: 'auto', zIndex: 999 }}
+                      control={({ toggleMenu }) => (
+                        <Button
+                          tooltipLabel="View site info"
+                          tooltipPosition="left"
+                          swapTheming
+                          primary
+                          style={{ position: 'absolute', top: 50, right: 0, margin: '10px', zIndex: 1 }}
+                          icon
+                          onClick={toggleMenu}
+                        >
+                          bar_chart
+                        </Button>
+                      )}
+                    >
+                      <div style={{ padding: 0, height: 'calc(100% - 67px)' }}>
+                        <FeatureDetail toolbarActions={[]} getFeatureIds={() => getFeatureIds({ map })} map={map} />
+                      </div>
+                    </SideMenu>
+
+                    {/* Reset buton */}
+                    <Button
+                      tooltipLabel="Reset the filter selection"
+                      tooltipPosition="left"
+                      style={Object.assign(
+                        [...selectedSites, ...selectedNetworks, ...selectedVariables, ...selectedProtocols].length > 0
+                          ? {}
+                          : {
+                              backgroundColor: 'grey',
+                              color: 'black',
+                              opacity: 0.4
+                            },
+                        { position: 'absolute', top: 100, right: 0, margin: '10px', zIndex: 1 }
+                      )}
+                      swapTheming
+                      primary
+                      icon
+                      disabled={
+                        [...selectedSites, ...selectedNetworks, ...selectedVariables, ...selectedProtocols].length > 0
+                          ? false
+                          : true
+                      }
+                      onClick={() =>
+                        updateGlobalState({
+                          selectedSites: [],
+                          selectedNetworks: [],
+                          selectedVariables: [],
+                          selectedProtocols: []
+                        })
+                      }
+                    >
+                      refresh
+                    </Button>
+
+                    {/* Search results error button */}
+                    <div style={{ ...badgeContainer, top: 150 }}>
+                      <Badge
+                        style={searchErrors.length > 0 ? {} : { display: 'none' }}
+                        key={89}
+                        badgeStyle={badgeStyle(searchErrors.length > 0 ? false : true)}
+                        badgeContent={searchErrors.length}
+                        badgeId={'search-results-errors'}
+                      >
+                        <Button
+                          style={mainMenuIconStyle(searchErrors.length ? false : true)}
+                          disabled={searchErrors.length ? false : true}
+                          tooltipLabel={`${searchErrors.length} error${
+                            searchErrors.length === 1 ? '' : 's'
+                          } occured searching metadata`}
+                          onClick={() => alert('Please alert SEACRIFOG administrators that search errors are occuring')}
+                          icon
+                        >
+                          error
+                        </Button>
+                      </Badge>
+                    </div>
+
+                    {/* Search results button */}
+                    <div style={{ ...badgeContainer, top: 150 }}>
+                      <Badge
+                        style={searchErrors.length < 1 ? {} : { display: 'none' }}
+                        key={91}
+                        badgeStyle={badgeStyle(searchResultLength > 0 ? false : true)}
+                        badgeContent={searchResults
+                          .map(r => r?.result?.result_length || 0)
+                          .reduce((sum, val) => sum + val, 0)}
+                        badgeId={'search-results-notification'}
+                      >
+                        <Button
+                          tooltipLabel={`Organizations searched: ${
+                            searchResults.length
+                          }. Records found: ${searchResults
+                            .map(r => r.result.result_length)
+                            .reduce((sum, val) => sum + val, 0)}`}
+                          tooltipPosition="left"
+                          disabled={searchResultLength > 0 ? false : true}
+                          style={mainMenuIconStyle(searchResultLength > 0 ? false : true)}
+                          onClick={() => history.push(`/search-results`)}
+                          icon
+                        >
+                          storage
+                        </Button>
+                      </Badge>
+                    </div>
+
+                    {/* Feature click panel (individual feature, no menu) */}
+                    <SingleFeatureSelector
+                      map={map}
+                      unselectedStyle={clusterStyle1}
+                      selectedStyle={clusterStyle2}
+                      onFeatureSelect={selectedFeature =>
+                        updateGlobalState({
+                          selectedSites: selectedFeature.get('features').map(feature => feature.get('id'))
+                        })
+                      }
+                    >
+                      {({ selectedFeature, unselectFeature }) =>
+                        selectedFeature ? (
+                          <div
+                            style={{
+                              zIndex: 1,
+                              position: 'absolute',
+                              margin: '12px 0 12px 12px',
+                              top: 0,
+                              bottom: 0,
+                              left: 0,
+                              right: 64,
+                              display: selectedFeature ? 'inherit' : 'none',
+                              opacity: 0.8
+                            }}
+                          >
+                            <FeatureDetail
+                              toolbarActions={[
+                                <Button
+                                  key={0}
+                                  tooltipLabel={'Download data for selected features'}
+                                  disabled={selectedFeature.get('features').length > 500 ? true : false}
+                                  onClick={async () =>
+                                    downloadMapData({
+                                      ids: selectedFeature.get('features').map(feature => feature.get('id'))
+                                    })
+                                  }
+                                  icon
+                                  style={buttonStyle(selectedFeature.get('features').length > 500 ? true : false)}
+                                >
+                                  save_alt
+                                </Button>,
+                                <Button key={1} onClick={() => unselectFeature()} icon>
+                                  close
+                                </Button>
+                              ]}
+                              getFeatureIds={() => selectedFeature.get('features').map(feature => feature.get('id'))}
+                            />
+                          </div>
+                        ) : (
+                          ''
+                        )
+                      }
+                    </SingleFeatureSelector>
+                  </ApplySitesFilter>
+                )
+              }}
             </OlReact>
           )
         }}
