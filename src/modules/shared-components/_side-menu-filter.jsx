@@ -1,8 +1,8 @@
 import React from 'react'
-import { DropdownSelect } from '../shared-components'
+import { DropdownSelect } from '.'
 import { GlobalStateContext } from '../../global-state'
 
-const sideMenuContentStyle = { paddingLeft: '24px', paddingRight: '24px' }
+const sideMenuContentStyle = { paddingLeft: '24px', paddingRight: '24px', color: 'black' }
 
 export default ({ sites, networks, variables, protocols }) => (
   <GlobalStateContext.Consumer>

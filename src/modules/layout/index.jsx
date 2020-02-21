@@ -67,7 +67,7 @@ class Navigation extends PureComponent {
           <img key={0} style={seacrifogLogoStyle} src={`/seacrifog-logo.png`} alt="SEACRIFOG logo" />,
           <img key={1} style={seacrifogLogoStyle} src={`/eu-funding-acknowledgement.jpg`} alt="EU logo" />
         ]}
-        onVisibilityChange={debounce(() => window.dispatchEvent(new Event('sidenav-resize')))}
+        onVisibilityChange={debounce(() => window.dispatchEvent(new Event('resize-map')))}
         defaultVisible={false}
       >
         <Switch key={location.pathname || '/'}>{this.props.children}</Switch>

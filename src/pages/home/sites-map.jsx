@@ -17,8 +17,8 @@ export default () => (
         <OlReact viewOptions={{}} style={{ height: '100%', width: '100%' }} layers={[]}>
           {({ map }) => {
             // This makes the map redraw when the sidenav changes sizes
-            window.removeEventListener('sidenav-resize', resizeMap)
-            window.addEventListener('sidenav-resize', resizeMap.bind(map))
+            window.removeEventListener('resize-map', resizeMap)
+            window.addEventListener('resize-map', resizeMap.bind(map))
 
             // I have found that it's better to add the layers asynchronously
             new Promise(res => {

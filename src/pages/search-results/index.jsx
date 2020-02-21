@@ -1,428 +1,29 @@
 import React, { PureComponent } from 'react'
 import { FixedSizeList } from 'react-window'
 import InfiniteLoader from 'react-window-infinite-loader'
-import { TabsContainer, Tabs, Tab, Button, Toolbar } from 'react-md'
+import { TabsContainer, Tabs, Tab, Button, Toolbar, Grid, Cell, LinearProgress } from 'react-md'
+import DataQuery from '../../modules/data-query'
+import { ENTIRE_GRAPH } from '../../graphql/queries'
 import AutoSizer from 'react-virtualized-auto-sizer'
+import { SideMenu, SideMenuFilter } from '../../modules/shared-components'
 import { GlobalStateContext } from '../../global-state'
 import orgs from './configuration'
 import RecordViewer from './metadata-record-view'
+import { Link } from 'react-router-dom'
 import Footer from '../../modules/layout/footer'
 
 const scrolltoRecord = (index, ref) => ref.current.scrollToItem(index)
 
-const fakeSearchResults = [
-  {
-    result: {
-      results: ['some bindings']
-    },
-    target: 'ICOS Metadata Results'
-  },
-  {
-    result: {
-      results: [
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        },
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        }
-      ]
-    },
-    target: 'SAEON CKAN: saeon-odp-4-2'
-  }
-]
+const mainMenuIconStyle = (disabled, toggled) => ({
+  color: disabled ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,1)',
+  backgroundColor: toggled ? 'rgba(255,255,255,0.3)' : ''
+})
 
-const initialSearchResults = [
-  {
-    result: {
-      results: ['some bindings']
-    },
-    target: 'ICOS Metadata Results'
-  },
-  {
-    result: {
-      results: [
-        {
-          metadata_json: {
-            subjects: [{ subject: 'some subject' }, { subject: 'another subject' }, { subject: 'one last subject' }],
-            titles: [{ titleType: '', title: 'some title' }],
-            descriptions: [{ descriptionType: 'Abstract', description: 'some description' }],
-            creators: [{ name: 'some creator name' }],
-            contributors: [
-              { contributorType: 'ContactPerson', name: 'Brenda Daly' },
-              { contributorType: 'Distributor', name: 'SAEON' }
-            ],
-            publisher: 'some publisher',
-            dates: [
-              { dateType: 'collected', date: '2011' },
-              { dateType: 'another type of date', date: '2012' }
-            ],
-            publicationYear: '2020'
-          }
-        }
-      ]
-    },
-    target: 'SAEON CKAN: saeon-odp-4-2'
-  }
-]
-var initialIcos = fakeSearchResults[0]
-var initialSaeon = fakeSearchResults[1]
-// initialSaeon.result.slice(0, 0)
-var initialItems = [initialIcos, initialSaeon]
+const getProgresStyle = loading => ({
+  margin: 0,
+  visibility: loading ? 'inherit' : 'hidden',
+  position: 'absolute'
+})
 
 class View extends PureComponent {
   state = {
@@ -467,7 +68,7 @@ class View extends PureComponent {
   }
   render() {
     const { searchRefs, props, state, tabPanelHeight } = this
-    // var { searchResults } = props
+    const { loadingSearchResults, searchResults, sites, networks, variables, protocols } = props
     const { currentIndex } = state
 
     const searchResults = fakeSearchResults
@@ -475,9 +76,11 @@ class View extends PureComponent {
     return (
       <div>
         {/* Toolbar */}
+        <LinearProgress id={'search-loading-progress-indicator'} style={getProgresStyle(loadingSearchResults)} />
         <Toolbar
           colored
-          title={searchResults.map(({ result }) => result.results.length).join(' results | ') + ' results'}
+          className={'sf-content-header'}
+          title={searchResults.reduce((sum, { result }) => sum + (result?.results?.length || 0), 0) + ' search results'}
           actions={[
             <Button key={0} tooltipLabel="To top" onClick={() => scrolltoRecord(0, searchRefs[currentIndex])} icon>
               arrow_upward
@@ -487,14 +90,32 @@ class View extends PureComponent {
               tooltipLabel="To bottom"
               onClick={() =>
                 scrolltoRecord(
-                  searchResults.map(({ result }) => result.results.length)[currentIndex] - 1,
+                  searchResults.map(({ result }) => result?.results?.length || 0)[currentIndex] - 1,
                   searchRefs[currentIndex]
                 )
               }
               icon
             >
               arrow_downward
-            </Button>
+            </Button>,
+            <SideMenu
+              key={2}
+              toolbarActions={[]}
+              control={({ toggleMenu }) => (
+                <Button
+                  tooltipLabel={'View current filters'}
+                  tooltipPosition="left"
+                  className="md-btn--toolbar"
+                  style={mainMenuIconStyle()}
+                  onClick={toggleMenu}
+                  icon
+                >
+                  filter_list
+                </Button>
+              )}
+            >
+              <SideMenuFilter sites={sites} networks={networks} variables={variables} protocols={protocols} />
+            </SideMenu>
           ]}
         />
         <button
@@ -505,7 +126,7 @@ class View extends PureComponent {
           +1 record
         </button>
         {/* Tabs header (list of orgs) */}
-        <TabsContainer onTabChange={currentIndex => this.setState({ currentIndex })}>
+        <TabsContainer labelAndIcon onTabChange={currentIndex => this.setState({ currentIndex })}>
           <Tabs tabId="metadata-search-tabs">
             {/* {searchResults.map(({ result, target }, i) => { */}
             {this.state.items.map(({ result, target }, i) => {
@@ -513,49 +134,42 @@ class View extends PureComponent {
               const org = orgs[target]
 
               return (
-                <Tab key={i} icon={<img src={org.logo} style={{ height: '45px', margin: '0px' }} />}>
+                <Tab
+                  key={i}
+                  label={
+                    <span style={{ color: 'rgba(1, 1, 1, 0.5)' }}>{(result?.results?.length || '0') + ' records'}</span>
+                  }
+                  icon={<img src={org.logo} style={{ height: '30px', marginBottom: 5 }} />}
+                >
                   <div style={{ height: tabPanelHeight - 60, padding: '20px' }}>
-                    <AutoSizer id={`autosizer-${i}`}>
-                      {({ height, width }) => {
-                        return (
-                          <InfiniteLoader
-                            isItemLoaded={index => index < this.state.items.length}
-                            itemCount={this.state.items.length}
-                            loadMoreItems={this.loadMoreItems}
-                          >
-                            {({ onItemsRendered, ref }) => (
-                              <FixedSizeList
-                                height={height}
-                                width={width}
-                                itemCount={results.length}
-                                itemSize={300}
-                                ref={searchRefs[i]}
-                              >
-                                {({ index, style }) => (
-                                  <div id={index} style={style}>
-                                    {
-                                      results.map((result, j) => {
-                                        return (
-                                          <RecordViewer
-                                            key={j}
-                                            record={result}
-                                            titlePath={org.titlePath}
-                                            explorerUriBase={org.explorerUriBase}
-                                            explorerUriPath={org.explorerUri}
-                                            contentPath={org.contentPath}
-                                            FormatContent={org.FormatContent}
-                                          />
-                                        )
-                                      })[index]
-                                    }
-                                  </div>
-                                )}
-                              </FixedSizeList>
-                            )}
-                          </InfiniteLoader>
-                        )
-                      }}
-                    </AutoSizer>
+                    {/* TODO - the conflict stuff */}
+                    {results && results.length > 0 ? (
+                      <AutoSizer id={`autosizer-${i}`}>
+                        {({ height, width }) => {
+                          return (
+                            <FixedSizeList
+                              height={height}
+                              width={width}
+                              itemCount={results.length}
+                              itemSize={300}
+                              ref={searchRefs[i]}
+                            >
+                              {({ index, style }) => (
+                                <div id={index} style={style}>
+                                  {
+                                    results.map((result, j) => <RecordViewer i={j} key={j} record={result} {...org} />)[
+                                      index
+                                    ]
+                                  }
+                                </div>
+                              )}
+                            </FixedSizeList>
+                          )
+                        }}
+                      </AutoSizer>
+                    ) : (
+                      'NO RESULTS'
+                    )}
                   </div>
                 </Tab>
               )
@@ -570,8 +184,48 @@ class View extends PureComponent {
 
 export default () => (
   <GlobalStateContext.Consumer>
-    {({ searchResults }) => <View searchResults={searchResults} />
-    // searchResults.length ? <View searchResults={searchResults} /> : <p>No metadata available for selection</p>
+    {({ searchResults, loadingSearchResults }) =>
+      searchResults.length ? (
+        <DataQuery query={ENTIRE_GRAPH} variables={{}}>
+          {({ sites, networks, variables, protocols }) => (
+            <View
+              sites={sites}
+              networks={networks}
+              variables={variables}
+              protocols={protocols}
+              searchResults={searchResults}
+              loadingSearchResults={loadingSearchResults}
+            />
+          )}
+        </DataQuery>
+      ) : (
+        <Grid>
+          <Cell>
+            {loadingSearchResults ? (
+              <p>Loading ...</p>
+            ) : (
+              <div>
+                <h2>No Search Defined</h2>
+                <Link className="link" to="/sites">
+                  Filter by sites
+                </Link>
+                <br />
+                <Link className="link" to="/networks">
+                  Filter by networks
+                </Link>
+                <br />
+                <Link className="link" to="/variables">
+                  Filter by variables
+                </Link>
+                <br />
+                <Link className="link" to="/protocols">
+                  Filter by protocols
+                </Link>
+              </div>
+            )}
+          </Cell>
+        </Grid>
+      )
     }
   </GlobalStateContext.Consumer>
 )
