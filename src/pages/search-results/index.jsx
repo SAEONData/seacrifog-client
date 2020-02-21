@@ -71,7 +71,7 @@ class View extends PureComponent {
     const { loadingSearchResults, searchResults, sites, networks, variables, protocols } = props
     const { currentIndex } = state
 
-    const searchResults = fakeSearchResults
+    // const searchResults = fakeSearchResults
 
     return (
       <div>
