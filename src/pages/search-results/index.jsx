@@ -28,7 +28,11 @@ const getProgresStyle = loading => ({
 class View extends PureComponent {
   state = {
     currentIndex: 0,
-    items: initialSearchResults
+    items: this.props.searchResults.map(sr => {
+      var organization = JSON.parse(JSON.stringify(sr))
+      organization.result.results = organization.result.results.slice(0, 5)
+      return organization
+    })
   }
 
   vhToPx(value) {
@@ -48,20 +52,13 @@ class View extends PureComponent {
     this.searchRefs = props.searchResults.map(() => React.createRef())
   }
 
-  loadMoreItems = () => {
-    var newIcos = JSON.parse(JSON.stringify(fakeSearchResults[0]))
-    var newSaeon = JSON.parse(JSON.stringify(fakeSearchResults[1]))
-    console.log('newSaeon.result.results', newSaeon.result.results)
-    console.log('this.state.items', this.state.items)
-    newSaeon.result.results = newSaeon.result.results.slice(0, this.state.items[1].result.results.length + 1)
-    const newItems = [newIcos, newSaeon]
-    /*
-    fakeSearchResults is an array of objects: [{icos},{saeon}]
-    {saeon} is an object of objects: {result,target}
-    result is an object: {results}
-    results is an array of record objects:[{record1},{record2},{record3}]
-    results is to be incremented
-    */
+  loadMoreItems = increment => {
+    const { currentIndex, items } = this.state
+    var newItems = JSON.parse(JSON.stringify(items))
+    newItems[currentIndex].result.results = this.props.searchResults[currentIndex].result.results.slice(
+      0,
+      items[currentIndex].result.results.length + increment
+    )
     this.setState({
       items: newItems
     })
@@ -70,8 +67,6 @@ class View extends PureComponent {
     const { searchRefs, props, state, tabPanelHeight } = this
     const { loadingSearchResults, searchResults, sites, networks, variables, protocols } = props
     const { currentIndex } = state
-
-    // const searchResults = fakeSearchResults
 
     return (
       <div>
@@ -118,17 +113,11 @@ class View extends PureComponent {
             </SideMenu>
           ]}
         />
-        <button
-          onClick={() => {
-            this.loadMoreItems()
-          }}
-        >
-          +1 record
-        </button>
         {/* Tabs header (list of orgs) */}
         <TabsContainer labelAndIcon onTabChange={currentIndex => this.setState({ currentIndex })}>
           <Tabs tabId="metadata-search-tabs">
             {/* {searchResults.map(({ result, target }, i) => { */}
+
             {this.state.items.map(({ result, target }, i) => {
               const { results } = result
               const org = orgs[target]
@@ -142,28 +131,39 @@ class View extends PureComponent {
                   icon={<img src={org.logo} style={{ height: '30px', marginBottom: 5 }} />}
                 >
                   <div style={{ height: tabPanelHeight - 60, padding: '20px' }}>
-                    {/* TODO - the conflict stuff */}
                     {results && results.length > 0 ? (
                       <AutoSizer id={`autosizer-${i}`}>
                         {({ height, width }) => {
                           return (
-                            <FixedSizeList
-                              height={height}
-                              width={width}
-                              itemCount={results.length}
-                              itemSize={300}
-                              ref={searchRefs[i]}
+                            <InfiniteLoader
+                              isItemLoaded={index => index < results.length}
+                              itemCount={searchResults[i].result.results.length}
+                              loadMoreItems={() => {
+                                this.loadMoreItems(1)
+                              }}
                             >
-                              {({ index, style }) => (
-                                <div id={index} style={style}>
-                                  {
-                                    results.map((result, j) => <RecordViewer i={j} key={j} record={result} {...org} />)[
-                                      index
-                                    ]
-                                  }
-                                </div>
+                              {({ onItemsRendered, ref }) => (
+                                <FixedSizeList
+                                  height={height}
+                                  width={width}
+                                  itemCount={results.length}
+                                  itemSize={300}
+                                  onItemsRendered={onItemsRendered}
+                                  ref={ref}
+                                  // ref={searchRefs[i]}
+                                >
+                                  {({ index, style }) => (
+                                    <div id={index} style={style}>
+                                      {
+                                        results.map((result, j) => (
+                                          <RecordViewer i={j} key={j} record={result} {...org} />
+                                        ))[index]
+                                      }
+                                    </div>
+                                  )}
+                                </FixedSizeList>
                               )}
-                            </FixedSizeList>
+                            </InfiniteLoader>
                           )
                         }}
                       </AutoSizer>
@@ -176,6 +176,20 @@ class View extends PureComponent {
             })}
           </Tabs>
         </TabsContainer>
+        <button
+          onClick={() => {
+            this.loadMoreItems(1)
+          }}
+        >
+          +1 record
+        </button>
+        <button
+          onClick={() => {
+            this.loadMoreItems(100)
+          }}
+        >
+          +100 records
+        </button>
         <Footer />
       </div>
     )
